@@ -1,0 +1,7 @@
+{
+    "version": "1.0",
+    "host": "ldap://ldap.example.net/",
+    "port": 389,
+    "user": "userp1",
+    "pass": "passp1"
+}
