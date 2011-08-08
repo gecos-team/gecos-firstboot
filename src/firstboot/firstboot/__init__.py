@@ -3,6 +3,7 @@
 # This file is in the public domain
 ### END LICENSE
 
+import os
 import optparse
 
 import gettext
@@ -21,13 +22,39 @@ def parse_options():
     parser.add_option(
         "-v", "--verbose", action="count", dest="verbose",
         help=_("Show debug messages (-vv debugs firstboot_lib also)"))
+    parser.add_option(
+        "-d", "--debug", action="store_true", dest="debug",
+        help=_("Debug mode. Force run the application after the first start"))
     (options, args) = parser.parse_args()
 
     set_up_logging(options)
+    return options
+
+def is_first_start(debug):
+
+    config_path = os.path.join(os.getenv('HOME'), '.config/firstboot')
+    config_file = os.path.join(config_path, 'firstboot.conf')
+
+    if not debug and os.path.exists(config_file):
+        return False
+
+    if not os.path.exists(config_path):
+        os.mkdir(config_path)
+
+    if not os.path.exists(config_file):
+        fd = open(config_file, 'w')
+        if fd != None:
+            fd.write('[firstboot]')
+            fd.close()
+
+    return True
 
 def main():
     'constructor for your class instances'
-    parse_options()
+    options = parse_options()
+
+    if not is_first_start(options.debug):
+        return
 
     # preferences
     # set some values for our first session

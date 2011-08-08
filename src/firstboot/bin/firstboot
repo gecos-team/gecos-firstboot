@@ -11,23 +11,6 @@ import gettext
 from gettext import gettext as _
 gettext.textdomain('firstboot')
 
-CONFIG_PATH = os.path.join(os.getenv('HOME'), '.config/firstboot')
-CONFIG_FILE = os.path.join(CONFIG_PATH, 'firstboot.conf')
-
-
-if os.path.exists(CONFIG_FILE):
-    exit(1)
-
-if not os.path.exists(CONFIG_PATH):
-    os.mkdir(CONFIG_PATH)
-
-if not os.path.exists(CONFIG_FILE):
-    fd = open(CONFIG_FILE, 'w')
-    if fd != None:
-        fd.write('[firstboot]')
-        fd.close()
-
-
 # Add project root directory (enable symlink and trunk execution)
 PROJECT_ROOT_DIRECTORY = os.path.abspath(
     os.path.dirname(os.path.dirname(os.path.realpath(sys.argv[0]))))
