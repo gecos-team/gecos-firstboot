@@ -71,7 +71,7 @@ class LinkToServerPage(gtk.Window):
 
         self.show_status()
 
-        self.txtUrl.set_text('file:///home/ahernandez/dev/firstboot/data/response.txt')
+        self.txtUrl.set_text('file:///home/ahernandez/dev/guadalinex/firstboot/gecos/src/firstboot/data/response.txt')
 
         container = builder.get_object('ContainerWindow')
         page = builder.get_object('LinkToServerPage')
@@ -119,7 +119,7 @@ class LinkToServerPage(gtk.Window):
 
             if 'version' in conf and 'host' in conf and 'port' in conf:
                 version = conf['version']
-                if version != '1.0':
+                if version != __CONFIG_FILE_VERSION__:
                     raise Exception(_('Incorrect version of the configuration file.'))
 
                 return conf
