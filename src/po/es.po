@@ -1,0 +1,99 @@
+# Spanish translations for PACKAGE package.
+# Copyright (C) 2011 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# AHernandez <ahernandez@emergya.com>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-08-08 13:49+0200\n"
+"PO-Revision-Date: 2011-08-08 13:38+0200\n"
+"Last-Translator: AHernandez <ahernandez@emergya.com>\n"
+"Language-Team: Spanish\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: firstboot/firstboot/__init__.py:23
+msgid "Show debug messages (-vv debugs firstboot_lib also)"
+msgstr ""
+
+#: firstboot/firstboot/pages/localUsers/__init__.py:12
+msgid "Local users"
+msgstr "Usuarios locales"
+
+#: firstboot/firstboot/pages/localUsers/__init__.py:67
+msgid "Create local users"
+msgstr "Crear usuarios locales"
+
+#: firstboot/firstboot/pages/linkToServer/__init__.py:15
+msgid "Link workstation to a server"
+msgstr "Enlazar terminal a un servidor"
+
+#: firstboot/firstboot/pages/linkToServer/__init__.py:82
+msgid "Write the server information"
+msgstr "Escribe la información del servidor"
+
+#: firstboot/firstboot/pages/linkToServer/__init__.py:83
+msgid "Test"
+msgstr "Probar"
+
+#: firstboot/firstboot/pages/linkToServer/__init__.py:84
+msgid "Save"
+msgstr "Guardar"
+
+#: firstboot/firstboot/pages/linkToServer/__init__.py:123
+msgid "Incorrect version of the configuration file."
+msgstr "Versión incorrecta del fichero de configuración."
+
+#: firstboot/firstboot/pages/linkToServer/__init__.py:133
+msgid "Configuration file is not valid."
+msgstr "El fichero de configuración no es válido."
+
+#: firstboot/firstboot/pages/linkToServer/__init__.py:149
+msgid "The configuration file is valid"
+msgstr "El fichero de configuración es válido."
+
+#: firstboot/firstboot/pages/linkToServer/__init__.py:161
+msgid "Trying to connect..."
+msgstr "Intentando conectar..."
+
+#: firstboot/firstboot/pages/installSoftware/__init__.py:12
+#: firstboot/firstboot/pages/installSoftware/__init__.py:67
+msgid "Install software"
+msgstr "Instalar software"
+
+#: firstboot/firstboot/pages/network/__init__.py:15
+#: firstboot/firstboot/pages/network/__init__.py:74
+msgid "Network configuration"
+msgstr "Configuración de la red"
+
+#: firstboot/firstboot/pages/network/__init__.py:117
+msgid "Name"
+msgstr "Nombre"
+
+#: firstboot/firstboot/pages/network/__init__.py:123
+msgid "IP"
+msgstr "IP"
+
+#: firstboot/firstboot/pages/runApplications/__init__.py:14
+msgid "Run applications"
+msgstr "Ejecutar aplicaciones"
+
+#: firstboot/firstboot/FirstbootWindow.py:45
+msgid "First Boot Assistant"
+msgstr "Asistente de Primer Arranque"
+
+#: firstboot/firstboot/FirstbootWindow.py:48
+msgid "Previous"
+msgstr "Anterior"
+
+#: firstboot/firstboot/FirstbootWindow.py:49
+msgid "Next"
+msgstr "Siguiente"
+
+#~ msgid "Setup networking"
+#~ msgstr "Configurar red"

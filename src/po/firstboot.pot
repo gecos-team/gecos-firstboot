@@ -1,0 +1,96 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-08-08 13:49+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: firstboot/firstboot/__init__.py:23
+msgid "Show debug messages (-vv debugs firstboot_lib also)"
+msgstr ""
+
+#: firstboot/firstboot/pages/localUsers/__init__.py:12
+msgid "Local users"
+msgstr ""
+
+#: firstboot/firstboot/pages/localUsers/__init__.py:67
+msgid "Create local users"
+msgstr ""
+
+#: firstboot/firstboot/pages/linkToServer/__init__.py:15
+msgid "Link workstation to a server"
+msgstr ""
+
+#: firstboot/firstboot/pages/linkToServer/__init__.py:82
+msgid "Write the server information"
+msgstr ""
+
+#: firstboot/firstboot/pages/linkToServer/__init__.py:83
+msgid "Test"
+msgstr ""
+
+#: firstboot/firstboot/pages/linkToServer/__init__.py:84
+msgid "Save"
+msgstr ""
+
+#: firstboot/firstboot/pages/linkToServer/__init__.py:123
+msgid "Incorrect version of the configuration file."
+msgstr ""
+
+#: firstboot/firstboot/pages/linkToServer/__init__.py:133
+msgid "Configuration file is not valid."
+msgstr ""
+
+#: firstboot/firstboot/pages/linkToServer/__init__.py:149
+msgid "The configuration file is valid"
+msgstr ""
+
+#: firstboot/firstboot/pages/linkToServer/__init__.py:161
+msgid "Trying to connect..."
+msgstr ""
+
+#: firstboot/firstboot/pages/installSoftware/__init__.py:12
+#: firstboot/firstboot/pages/installSoftware/__init__.py:67
+msgid "Install software"
+msgstr ""
+
+#: firstboot/firstboot/pages/network/__init__.py:15
+#: firstboot/firstboot/pages/network/__init__.py:74
+msgid "Network configuration"
+msgstr ""
+
+#: firstboot/firstboot/pages/network/__init__.py:117
+msgid "Name"
+msgstr ""
+
+#: firstboot/firstboot/pages/network/__init__.py:123
+msgid "IP"
+msgstr ""
+
+#: firstboot/firstboot/pages/runApplications/__init__.py:14
+msgid "Run applications"
+msgstr ""
+
+#: firstboot/firstboot/FirstbootWindow.py:45
+msgid "First Boot Assistant"
+msgstr ""
+
+#: firstboot/firstboot/FirstbootWindow.py:48
+msgid "Previous"
+msgstr ""
+
+#: firstboot/firstboot/FirstbootWindow.py:49
+msgid "Next"
+msgstr ""

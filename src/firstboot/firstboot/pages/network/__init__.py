@@ -12,7 +12,7 @@ from interface import localifs, internet_on
 
 __REQUIRED__ = True
 
-__TITLE__ = _('Setup networking')
+__TITLE__ = _('Network configuration')
 
 def get_page():
 

@@ -43,7 +43,7 @@ class FirstbootWindow(Window):
 
     def translate(self):
         self.set_title(_('First Boot Assistant'))
-        self.lblDescription.set_text(_(''))
+        self.lblDescription.set_text('')
         #self.btnClose.set_label(_('Close'))
         self.btnPrev.set_label(_('Previous'))
         self.btnNext.set_label(_('Next'))
