@@ -81,7 +81,7 @@ class LinkToServerPage(gtk.Window):
     def translate(self):
         self.lblDescription.set_text(_('Write the server information'))
         self.btnTest.set_text(_('Test'))
-        self.btnLinkToServer.set_text(_('Save'))
+        self.btnLinkToServer.set_text(_('Associate'))
 
     def get_widget(self):
         return self.page

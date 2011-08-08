@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-08 13:49+0200\n"
+"POT-Creation-Date: 2011-08-08 14:42+0200\n"
 "PO-Revision-Date: 2011-08-08 13:38+0200\n"
 "Last-Translator: AHernandez <ahernandez@emergya.com>\n"
 "Language-Team: Spanish\n"
@@ -42,8 +42,12 @@ msgid "Test"
 msgstr "Probar"
 
 #: firstboot/firstboot/pages/linkToServer/__init__.py:84
-msgid "Save"
-msgstr "Guardar"
+msgid "Associate"
+msgstr "Associar"
+
+#:
+msgid "Disassociate"
+msgstr "Desasociar"
 
 #: firstboot/firstboot/pages/linkToServer/__init__.py:123
 msgid "Incorrect version of the configuration file."
@@ -94,6 +98,9 @@ msgstr "Anterior"
 #: firstboot/firstboot/FirstbootWindow.py:49
 msgid "Next"
 msgstr "Siguiente"
+
+#~ msgid "Save"
+#~ msgstr "Guardar"
 
 #~ msgid "Setup networking"
 #~ msgstr "Configurar red"
