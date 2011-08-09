@@ -68,6 +68,8 @@ class LinkToServerPage(gtk.Window):
         self.txtUrl = builder.get_object('txtUrl')
         self.imgStatus = builder.get_object('imgStatus')
         self.lblStatus = builder.get_object('lblStatus')
+        self.btnLinkToServer = builder.get_object('btnLinkToServer')
+        self.btnTest = builder.get_object('btnTest')
 
         self.show_status()
 

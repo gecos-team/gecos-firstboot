@@ -12,7 +12,7 @@ from interface import localifs, internet_on
 
 __REQUIRED__ = True
 
-__TITLE__ = _('Network configuration')
+__TITLE__ = _('Configure the network')
 
 def get_page():
 
@@ -71,7 +71,7 @@ class NetworkPage(gtk.Window):
         self.page = page
 
         self.btnNetworkDialog = builder.get_object('btnNetworkDialog')
-        self.btnNetworkDialog.set_label(_('Network configuration'))
+        self.btnNetworkDialog.set_label(_('Configure the network'))
 
         self.lblDescription = builder.get_object('lblDescription')
         self.treeviewInterfaces = builder.get_object('treeviewInterfaces')

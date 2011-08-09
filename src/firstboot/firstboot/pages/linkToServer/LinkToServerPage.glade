@@ -150,7 +150,7 @@
             </child>
             <child>
               <object class="GtkButton" id="btnLinkToServer">
-                <property name="label" translatable="yes">Save</property>
+                <property name="label" translatable="yes">Associate</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>

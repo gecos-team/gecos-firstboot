@@ -9,7 +9,7 @@ gettext.textdomain('firstboot')
 
 __REQUIRED__ = False
 
-__TITLE__ = _('Local users')
+__TITLE__ = _('Create local users')
 
 def get_page():
 

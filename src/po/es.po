@@ -21,17 +21,13 @@ msgstr ""
 msgid "Show debug messages (-vv debugs firstboot_lib also)"
 msgstr ""
 
-#: firstboot/firstboot/pages/localUsers/__init__.py:12
-msgid "Local users"
-msgstr "Usuarios locales"
-
 #: firstboot/firstboot/pages/localUsers/__init__.py:67
 msgid "Create local users"
 msgstr "Crear usuarios locales"
 
 #: firstboot/firstboot/pages/linkToServer/__init__.py:15
 msgid "Link workstation to a server"
-msgstr "Enlazar terminal a un servidor"
+msgstr "Enlazar puesto a un servidor"
 
 #: firstboot/firstboot/pages/linkToServer/__init__.py:82
 msgid "Write the server information"
@@ -44,10 +40,6 @@ msgstr "Probar"
 #: firstboot/firstboot/pages/linkToServer/__init__.py:84
 msgid "Associate"
 msgstr "Associar"
-
-#:
-msgid "Disassociate"
-msgstr "Desasociar"
 
 #: firstboot/firstboot/pages/linkToServer/__init__.py:123
 msgid "Incorrect version of the configuration file."
@@ -72,8 +64,8 @@ msgstr "Instalar software"
 
 #: firstboot/firstboot/pages/network/__init__.py:15
 #: firstboot/firstboot/pages/network/__init__.py:74
-msgid "Network configuration"
-msgstr "Configuración de la red"
+msgid "Configure the network"
+msgstr "Configurar la red"
 
 #: firstboot/firstboot/pages/network/__init__.py:117
 msgid "Name"
@@ -98,9 +90,3 @@ msgstr "Anterior"
 #: firstboot/firstboot/FirstbootWindow.py:49
 msgid "Next"
 msgstr "Siguiente"
-
-#~ msgid "Save"
-#~ msgstr "Guardar"
-
-#~ msgid "Setup networking"
-#~ msgstr "Configurar red"
