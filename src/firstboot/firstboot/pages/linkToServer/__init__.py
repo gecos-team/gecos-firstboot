@@ -73,7 +73,7 @@ class LinkToServerPage(gtk.Window):
 
         self.show_status()
 
-        self.txtUrl.set_text('file:///home/ahernandez/dev/guadalinex/firstboot/gecos/src/firstboot/data/response.txt')
+        self.txtUrl.set_text('file:///common/src/guadalinex/firstboot/gecos/src/firstboot/data/response.txt')
 
         container = builder.get_object('ContainerWindow')
         page = builder.get_object('LinkToServerPage')
@@ -105,7 +105,35 @@ class LinkToServerPage(gtk.Window):
             self.show_status(gtk.STOCK_DIALOG_ERROR, e)
 
     def on_btnLinkToServer_Clicked(self, button):
-        print button
+
+        #self.show_status(gtk.STOCK_CONNECT)
+        self.show_status()
+
+        try:
+            
+            conf = self.get_conf_from_server()
+            
+            import subprocess
+
+            cmd = '../firstboot/pages/linkToServer/ldapconf.sh'
+            #conf['uri'], conf['port'], conf['base']
+            
+            process = subprocess.Popen(['../firstboot/pages/linkToServer/ldapconf.sh', 'a', 'b', 'c'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            exit_code = os.waitpid(process.pid, 0)
+            #output = process.communicate()[0]
+            
+            if exit_code[1] == 0:
+                self.show_status(gtk.STOCK_APPLY)
+                #print output
+            
+            else:
+                self.show_status(gtk.STOCK_DIALOG_ERROR, exit_code)
+                print 'ERROR:', exit_code
+                print process.stderr
+            
+
+        except Exception as e:
+            self.show_status(gtk.STOCK_DIALOG_ERROR, e)
 
     def get_conf_from_server(self):
 
@@ -119,7 +147,7 @@ class LinkToServerPage(gtk.Window):
             content = fp.read()
             conf = json.loads(content)
 
-            if 'version' in conf and 'host' in conf and 'port' in conf:
+            if 'version' in conf and 'uri' in conf and 'port' in conf and 'base' in conf:
                 version = conf['version']
                 if version != __CONFIG_FILE_VERSION__:
                     raise Exception(_('Incorrect version of the configuration file.'))

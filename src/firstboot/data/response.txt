@@ -1,7 +1,6 @@
 {
     "version": "1.0",
-    "host": "ldap://ldap.example.net/",
+    "uri": "ldap://ldap.example.net/",
     "port": 389,
-    "user": "userp1",
-    "pass": "passp1"
+    "base": "o=example,dc=net"
 }
