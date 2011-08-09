@@ -8,6 +8,7 @@ from gettext import gettext as _
 gettext.textdomain('firstboot')
 
 import gtk
+import pango
 import logging
 logger = logging.getLogger('firstboot')
 
@@ -101,9 +102,17 @@ class FirstbootWindow(Window):
             try:
                 module = __import__('firstboot.pages.%s' % page_name, fromlist=['firstboot.pages'])
 
-                button = gtk.Button(module.__TITLE__)
+                #button = gtk.Button(module.__TITLE__)
+                button = gtk.Button()
                 button.set_relief(gtk.RELIEF_NONE)
+                button.set_property('focus-on-click', False)
                 button.set_property('xalign', 0)
+
+                label = gtk.Label()
+                label.set_text(module.__TITLE__)
+                label.show()
+                button.add(label)
+
                 self.boxIndex.pack_start(button, False, True)
                 button.connect('clicked', self.on_btnIndex_Clicked, page_name, module)
                 button.show()
@@ -138,10 +147,10 @@ class FirstbootWindow(Window):
             pass
 
 
-        #for btn in self.buttons:
-        #    self.button_set_inactive(btn)
+        for button_name in self.buttons:
+            self.button_set_inactive(self.buttons[button_name])
 
-        #self.button_set_active(button)
+        self.button_set_active(button)
 
         for child in self.swContent.get_children():
             self.swContent.remove(child)
@@ -149,10 +158,12 @@ class FirstbootWindow(Window):
         self.swContent.add_with_viewport(self.current_page['page'].get_widget())
 
     def button_set_active(self, button):
-        pass
+        label = button.get_children()[0]
+        label.set_markup('<b>%s</b>' % (label.get_text(),))
 
     def button_set_inactive(self, button):
-        pass
+        label = button.get_children()[0]
+        label.set_markup(label.get_text())
 
     def on_link_status(self, sender, status):
         for button_name in self.buttons:
