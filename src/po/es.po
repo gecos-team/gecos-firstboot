@@ -39,7 +39,7 @@ msgstr "Probar"
 
 #: firstboot/firstboot/pages/linkToServer/__init__.py:84
 msgid "Associate"
-msgstr "Associar"
+msgstr "Asociar"
 
 #: firstboot/firstboot/pages/linkToServer/__init__.py:123
 msgid "Incorrect version of the configuration file."

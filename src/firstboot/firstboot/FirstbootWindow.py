@@ -102,7 +102,6 @@ class FirstbootWindow(Window):
             try:
                 module = __import__('firstboot.pages.%s' % page_name, fromlist=['firstboot.pages'])
 
-                #button = gtk.Button(module.__TITLE__)
                 button = gtk.Button()
                 button.set_relief(gtk.RELIEF_NONE)
                 button.set_property('focus-on-click', False)
