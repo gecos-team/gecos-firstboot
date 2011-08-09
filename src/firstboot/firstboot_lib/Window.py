@@ -8,7 +8,6 @@ import logging
 logger = logging.getLogger('firstboot_lib')
 
 from . helpers import get_builder, show_uri, get_help_uri
-from . preferences import preferences
 
 # This class is meant to be subclassed by FirstbootWindow.  It provides
 # common functions and some boilerplate.
@@ -47,8 +46,6 @@ class Window(gtk.Window):
         self.builder = builder
         self.ui = builder.get_ui(self, True)
 
-        preferences.connect('changed', self.on_preferences_changed)
-
         # Optional Launchpad integration
         # This shouldn't crash if not found as it is simply used for bug reporting.
         # See https://wiki.ubuntu.com/UbuntuDevelopment/Internationalisation/Coding
@@ -79,8 +76,3 @@ class Window(gtk.Window):
         """Called when the FirstbootWindow is closed."""
         # Clean up code for saving application state should be added here.
         gtk.main_quit()
-
-    def on_preferences_changed(self, widget, data=None):
-        logger.debug('main window received preferences changed')
-        for key in data:
-            logger.debug('preference changed: %s = %s' % (key, preferences[key]))

@@ -14,7 +14,7 @@ import gtk
 
 from firstboot import FirstbootWindow
 
-from firstboot_lib import set_up_logging, preferences, get_version
+from firstboot_lib import set_up_logging, get_version
 
 def parse_options():
     """Support for command line options"""
@@ -56,20 +56,7 @@ def main():
     if not is_first_start(options.debug):
         return
 
-    # preferences
-    # set some values for our first session
-    # TODO: replace defaults with your own values
-    default_preferences = {
-    'example_entry': 'I remember stuff',
-    }
-    preferences.update(default_preferences)
-    # user's stored preferences are used for 2nd and subsequent sessions
-    preferences.db_connect()
-    preferences.load()
-
     # Run the application.    
     window = FirstbootWindow.FirstbootWindow()
     window.show()
     gtk.main()
-
-    preferences.save()
