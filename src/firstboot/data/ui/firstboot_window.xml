@@ -1,8 +1,0 @@
-<glade-catalog name="firstboot_window" domain="glade-3" 
-               depends="gtk+" version="1.0">
-  <glade-widget-classes>
-    <glade-widget-class title="Firstboot Window" name="FirstbootWindow" 
-                        generic-name="FirstbootWindow" parent="GtkWindow"
-                        icon-name="widget-gtk-window"/>
-  </glade-widget-classes>
-</glade-catalog>
