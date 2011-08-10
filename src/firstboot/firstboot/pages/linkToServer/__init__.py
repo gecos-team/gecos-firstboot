@@ -111,8 +111,11 @@ class LinkToServerPage(gtk.Window):
             conf = self.get_conf_from_server()
             self.show_status(__STATUS_TEST_PASSED__)
 
-        except Exception as e:
+        except LinkToServerException as e:
             self.show_status(__STATUS_ERROR__, e)
+
+        except Exception as e:
+            print e
 
     def on_btnLinkToServer_Clicked(self, button):
 
@@ -134,10 +137,14 @@ class LinkToServerPage(gtk.Window):
                 self.show_status(__STATUS_CONFIG_CHANGED__)
 
             else:
-                self.show_status(__STATUS_ERROR__, Exception('An error occurred: ' + output))
+                self.show_status(__STATUS_ERROR__, Exception(_('An error occurred') + ': ' + output))
+
+        except LinkToServerException as e:
+            self.show_status(__STATUS_ERROR__, e)
 
         except Exception as e:
-            self.show_status(__STATUS_ERROR__, e)
+            self.show_status(__STATUS_ERROR__, _('An error occurred'))
+            print e
 
     def get_conf_from_server(self):
 
@@ -166,10 +173,10 @@ class LinkToServerPage(gtk.Window):
             raise ValueError()
 
         except urllib2.URLError as e:
-            raise Exception(e.args[0])
+            raise LinkToServerException(e.args[0])
 
         except ValueError as e:
-            raise Exception(_('Configuration file is not valid.'))
+            raise LinkToServerException(_('Configuration file is not valid.'))
 
         except Exception as e:
             raise Exception(e.args[0])
@@ -214,3 +221,8 @@ class LinkToServerPage(gtk.Window):
             self.lblStatus.set_label(_('Trying to connect...'))
             self.lblStatus.set_visible(True)
 
+
+class LinkToServerException(Exception):
+
+    def __init__(self, msg):
+        Exception.__init__(self, msg)
