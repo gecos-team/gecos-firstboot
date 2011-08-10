@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-08 14:42+0200\n"
+"POT-Creation-Date: 2011-08-10 14:58+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,80 +17,99 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: firstboot/firstboot/__init__.py:23
+#: ../firstboot/firstboot/__init__.py:24
 msgid "Show debug messages (-vv debugs firstboot_lib also)"
 msgstr ""
 
-#: firstboot/firstboot/pages/localUsers/__init__.py:12
-msgid "Local users"
+#: ../firstboot/firstboot/__init__.py:27
+msgid "Debug mode. Force run the application after the first start"
 msgstr ""
 
-#: firstboot/firstboot/pages/localUsers/__init__.py:67
+#: ../firstboot/firstboot/pages/localUsers/__init__.py:12
+#: ../firstboot/firstboot/pages/localUsers/__init__.py:67
 msgid "Create local users"
 msgstr ""
 
-#: firstboot/firstboot/pages/linkToServer/__init__.py:15
-msgid "Link workstation to a server"
-msgstr ""
-
-#: firstboot/firstboot/pages/linkToServer/__init__.py:82
-msgid "Write the server information"
-msgstr ""
-
-#: firstboot/firstboot/pages/linkToServer/__init__.py:83
-msgid "Test"
-msgstr ""
-
-#: firstboot/firstboot/pages/linkToServer/__init__.py:84
-msgid "Associate"
-msgstr ""
-
-#: firstboot/firstboot/pages/linkToServer/__init__.py:123
+#: ../firstboot/firstboot/pages/linkToServer/ldapconf.py:50
+#: ../firstboot/firstboot/pages/linkToServer/__init__.py:212
 msgid "Incorrect version of the configuration file."
 msgstr ""
 
-#: firstboot/firstboot/pages/linkToServer/__init__.py:133
+#: ../firstboot/firstboot/pages/linkToServer/__init__.py:18
+msgid "Link workstation to a server"
+msgstr ""
+
+#: ../firstboot/firstboot/pages/linkToServer/__init__.py:101
+msgid "Write the server information"
+msgstr ""
+
+#: ../firstboot/firstboot/pages/linkToServer/__init__.py:102
+msgid "Test"
+msgstr ""
+
+#: ../firstboot/firstboot/pages/linkToServer/__init__.py:105
+#: ../firstboot/firstboot/pages/linkToServer/__init__.py:157
+msgid "Disassociate"
+msgstr ""
+
+#: ../firstboot/firstboot/pages/linkToServer/__init__.py:107
+#: ../firstboot/firstboot/pages/linkToServer/__init__.py:183
+msgid "Associate"
+msgstr ""
+
+#: ../firstboot/firstboot/pages/linkToServer/__init__.py:160
+#: ../firstboot/firstboot/pages/linkToServer/__init__.py:166
+#: ../firstboot/firstboot/pages/linkToServer/__init__.py:186
+#: ../firstboot/firstboot/pages/linkToServer/__init__.py:189
+msgid "An error occurred"
+msgstr ""
+
+#: ../firstboot/firstboot/pages/linkToServer/__init__.py:222
 msgid "Configuration file is not valid."
 msgstr ""
 
-#: firstboot/firstboot/pages/linkToServer/__init__.py:149
+#: ../firstboot/firstboot/pages/linkToServer/__init__.py:238
 msgid "The configuration file is valid"
 msgstr ""
 
-#: firstboot/firstboot/pages/linkToServer/__init__.py:161
+#: ../firstboot/firstboot/pages/linkToServer/__init__.py:244
+msgid "The configuration was updated successfully"
+msgstr ""
+
+#: ../firstboot/firstboot/pages/linkToServer/__init__.py:256
 msgid "Trying to connect..."
 msgstr ""
 
-#: firstboot/firstboot/pages/installSoftware/__init__.py:12
-#: firstboot/firstboot/pages/installSoftware/__init__.py:67
+#: ../firstboot/firstboot/pages/installSoftware/__init__.py:12
+#: ../firstboot/firstboot/pages/installSoftware/__init__.py:67
 msgid "Install software"
 msgstr ""
 
-#: firstboot/firstboot/pages/network/__init__.py:15
-#: firstboot/firstboot/pages/network/__init__.py:74
-msgid "Network configuration"
+#: ../firstboot/firstboot/pages/network/__init__.py:15
+#: ../firstboot/firstboot/pages/network/__init__.py:74
+msgid "Configure the network"
 msgstr ""
 
-#: firstboot/firstboot/pages/network/__init__.py:117
+#: ../firstboot/firstboot/pages/network/__init__.py:117
 msgid "Name"
 msgstr ""
 
-#: firstboot/firstboot/pages/network/__init__.py:123
+#: ../firstboot/firstboot/pages/network/__init__.py:123
 msgid "IP"
 msgstr ""
 
-#: firstboot/firstboot/pages/runApplications/__init__.py:14
+#: ../firstboot/firstboot/pages/runApplications/__init__.py:14
 msgid "Run applications"
 msgstr ""
 
-#: firstboot/firstboot/FirstbootWindow.py:45
+#: ../firstboot/firstboot/FirstbootWindow.py:46
 msgid "First Boot Assistant"
 msgstr ""
 
-#: firstboot/firstboot/FirstbootWindow.py:48
+#: ../firstboot/firstboot/FirstbootWindow.py:49
 msgid "Previous"
 msgstr ""
 
-#: firstboot/firstboot/FirstbootWindow.py:49
+#: ../firstboot/firstboot/FirstbootWindow.py:50
 msgid "Next"
 msgstr ""
