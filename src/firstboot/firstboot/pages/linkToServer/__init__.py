@@ -1,9 +1,12 @@
 
 import os
 import gtk
+import subprocess
+import shlex
 import urllib2
 import json
 import urlparse
+import ldapconf
 from firstboot_lib.Builder import Builder
 
 import gettext
@@ -15,6 +18,12 @@ __REQUIRED__ = False
 __TITLE__ = _('Link workstation to a server')
 
 __CONFIG_FILE_VERSION__ = '1.0'
+
+__STATUS_TEST_PASSED__ = gtk.STOCK_APPLY
+__STATUS_CONFIG_CHANGED__ = gtk.STOCK_APPLY
+__STATUS_CONNECTING__ = gtk.STOCK_CONNECT
+__STATUS_ERROR__ = gtk.STOCK_DIALOG_ERROR
+
 
 def get_page():
 
@@ -73,7 +82,7 @@ class LinkToServerPage(gtk.Window):
 
         self.show_status()
 
-        self.txtUrl.set_text('file:///common/src/guadalinex/firstboot/gecos/src/firstboot/data/response.txt')
+        self.txtUrl.set_text('file:///home/ahernandez/dev/guadalinex/firstboot/gecos/src/firstboot/data/response.txt')
 
         container = builder.get_object('ContainerWindow')
         page = builder.get_object('LinkToServerPage')
@@ -94,55 +103,53 @@ class LinkToServerPage(gtk.Window):
 
     def on_btnTest_Clicked(self, button):
 
-        #self.show_status(gtk.STOCK_CONNECT)
         self.show_status()
 
         try:
             conf = self.get_conf_from_server()
-            self.show_status(gtk.STOCK_APPLY)
+            self.show_status(__STATUS_TEST_PASSED__)
 
         except Exception as e:
-            self.show_status(gtk.STOCK_DIALOG_ERROR, e)
+            self.show_status(__STATUS_ERROR__, e)
 
     def on_btnLinkToServer_Clicked(self, button):
 
-        #self.show_status(gtk.STOCK_CONNECT)
         self.show_status()
 
         try:
-            
-            conf = self.get_conf_from_server()
-            
-            import subprocess
 
-            cmd = '../firstboot/pages/linkToServer/ldapconf.sh'
-            #conf['uri'], conf['port'], conf['base']
-            
-            process = subprocess.Popen(['../firstboot/pages/linkToServer/ldapconf.sh', 'a', 'b', 'c'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            conf = self.get_conf_from_server()
+
+            script = os.path.join(os.path.dirname(__file__), 'ldapconf.sh')
+            cmd = 'gksu %s %s %s %s' % (script, str(conf['uri']), str(conf['port']), str(conf['base']))
+            args = shlex.split(cmd)
+
+            process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             exit_code = os.waitpid(process.pid, 0)
-            #output = process.communicate()[0]
-            
+            output = process.communicate()[0]
+
             if exit_code[1] == 0:
-                self.show_status(gtk.STOCK_APPLY)
-                #print output
-            
+                self.show_status(__STATUS_CONFIG_CHANGED__)
+
             else:
-                self.show_status(gtk.STOCK_DIALOG_ERROR, exit_code)
-                print 'ERROR:', exit_code
-                print process.stderr
-            
+                self.show_status(__STATUS_ERROR__, Exception('An error occurred: ' + output))
 
         except Exception as e:
-            self.show_status(gtk.STOCK_DIALOG_ERROR, e)
+            self.show_status(__STATUS_ERROR__, e)
 
     def get_conf_from_server(self):
 
-        url = self.txtUrl.get_text()
-        #parsed_url = urlparse.urlparse(url)
-        # TODO: Algorithm for version controll
+        self.show_status(__STATUS_CONNECTING__)
 
         try:
-            fp = urllib2.urlopen(url, timeout=20)
+
+#            ldapconf.get_config_file(
+#                self.txtUrl.get_text(),
+#                self.on_get_conf_ok,
+#                self.on_get_conf_error
+#            )
+
+            fp = urllib2.urlopen(self.txtUrl.get_text(), timeout=5)
             #print fp.url(), fp.info()
             content = fp.read()
             conf = json.loads(content)
@@ -165,6 +172,14 @@ class LinkToServerPage(gtk.Window):
         except Exception as e:
             raise Exception(e.args[0])
 
+    def on_get_conf_ok(self, conf):
+        self.show_status(__STATUS_TEST_PASSED__)
+        ldapconf.configure(conf)
+
+    def on_get_conf_error(self, error):
+        print error
+        self.show_status(__STATUS_ERROR__, error)
+
     def show_status(self, status=None, exception=None):
 
         icon_size = gtk.ICON_SIZE_BUTTON
@@ -173,19 +188,25 @@ class LinkToServerPage(gtk.Window):
             self.imgStatus.set_visible(False)
             self.lblStatus.set_visible(False)
 
-        elif status == gtk.STOCK_APPLY:
+        elif status == __STATUS_TEST_PASSED__:
             self.imgStatus.set_from_stock(status, icon_size)
             self.imgStatus.set_visible(True)
             self.lblStatus.set_label(_('The configuration file is valid'))
             self.lblStatus.set_visible(True)
 
-        elif status == gtk.STOCK_DIALOG_ERROR:
+        elif status == __STATUS_CONFIG_CHANGED__:
+            self.imgStatus.set_from_stock(status, icon_size)
+            self.imgStatus.set_visible(True)
+            self.lblStatus.set_label(_('The configuration was updated successfully'))
+            self.lblStatus.set_visible(True)
+
+        elif status == __STATUS_ERROR__:
             self.imgStatus.set_from_stock(status, icon_size)
             self.imgStatus.set_visible(True)
             self.lblStatus.set_label(str(exception.args[0]))
             self.lblStatus.set_visible(True)
 
-        elif status == gtk.STOCK_CONNECT:
+        elif status == __STATUS_CONNECTING__:
             self.imgStatus.set_from_stock(status, icon_size)
             self.imgStatus.set_visible(True)
             self.lblStatus.set_label(_('Trying to connect...'))

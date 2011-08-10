@@ -1,6 +1,6 @@
 {
     "version": "1.0",
-    "uri": "ldap://ldap.example.net/",
+    "uri": "ldap://ldap.juntadeandalucia.net/",
     "port": 389,
-    "base": "o=example,dc=net"
+    "base": "dc=juntadeandalucia,dc=net"
 }
