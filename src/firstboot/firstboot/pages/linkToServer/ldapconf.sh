@@ -6,7 +6,7 @@ base=$3
 
 ldapconf=/etc/ldap.conf
 tmpconf=/etc/ldap.conf.tmp
-bakconf=/etc/ldap.conf.bak
+bakconf=/etc/ldap.conf.firstboot.bak
 
 # Check prerequisites
 if [ 0 != `id -u` ]; then
@@ -19,6 +19,21 @@ if [ ! -f $ldapconf ]; then
     exit 1
 fi
 
+# Restore the configuration
+if [ "$uri" == "--restore" -o "$uri" == "-r" ]; then
+
+    if [ ! -f $bakconf ]; then
+        echo "File not found: "$bakconf
+        exit 1
+    fi
+    
+    mv $ldapconf $ldapconf".bak"
+    mv $bakconf $ldapconf
+    
+    exit 0
+fi
+
+# Check prerequisites
 if [ "" == "$uri" ]; then
     echo "URI is empty"
     exit 1
@@ -36,7 +51,9 @@ fi
 
 
 # Make a backup
-cp $ldapconf $bakconf
+if [ ! -f $bakconf ]; then
+    cp $ldapconf $bakconf
+fi
 
 
 # Replace the configuration parameters
