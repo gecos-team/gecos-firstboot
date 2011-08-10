@@ -3,6 +3,7 @@ import os
 import gtk
 import subprocess
 import shlex
+import urllib
 import urllib2
 import json
 import urlparse
@@ -110,8 +111,17 @@ class LinkToServerPage(gtk.Window):
         return self.page
 
     def on_txtUrl_changed(self, entry):
-        url = entry.get_text()
-        #parsed_url = urlparse.urlparse(url)
+        pass
+
+    def get_url(self):
+        url = self.txtUrl.get_text()
+        parsed_url = list(urlparse.urlparse(url))
+        query = urlparse.parse_qsl(parsed_url[4])
+        query.append(('v', __CONFIG_FILE_VERSION__))
+        query = urllib.urlencode(query)
+        parsed_url[4] = query
+        url = urlparse.urlunparse(parsed_url)
+        return url
 
     def on_btnTest_Clicked(self, button):
 
@@ -196,12 +206,12 @@ class LinkToServerPage(gtk.Window):
         try:
 
 #            ldapconf.get_config_file(
-#                self.txtUrl.get_text(),
+#                self.get_url(),
 #                self.on_get_conf_ok,
 #                self.on_get_conf_error
 #            )
 
-            fp = urllib2.urlopen(self.txtUrl.get_text(), timeout=__URLOPEN_TIMEOUT__)
+            fp = urllib2.urlopen(self.get_url(), timeout=__URLOPEN_TIMEOUT__)
             #print fp.url(), fp.info()
             content = fp.read()
             conf = json.loads(content)
