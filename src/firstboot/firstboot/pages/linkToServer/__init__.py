@@ -19,6 +19,8 @@ __TITLE__ = _('Link workstation to a server')
 
 __CONFIG_FILE_VERSION__ = '1.0'
 
+__URLOPEN_TIMEOUT__ = 5
+
 __STATUS_TEST_PASSED__ = gtk.STOCK_APPLY
 __STATUS_CONFIG_CHANGED__ = gtk.STOCK_APPLY
 __STATUS_CONNECTING__ = gtk.STOCK_CONNECT
@@ -149,7 +151,7 @@ class LinkToServerPage(gtk.Window):
 #                self.on_get_conf_error
 #            )
 
-            fp = urllib2.urlopen(self.txtUrl.get_text(), timeout=5)
+            fp = urllib2.urlopen(self.txtUrl.get_text(), timeout=__URLOPEN_TIMEOUT__)
             #print fp.url(), fp.info()
             content = fp.read()
             conf = json.loads(content)
