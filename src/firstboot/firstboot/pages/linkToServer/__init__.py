@@ -20,11 +20,12 @@ __TITLE__ = _('Link workstation to a server')
 __CONFIG_FILE_VERSION__ = '1.0'
 
 __URLOPEN_TIMEOUT__ = 5
+__LDAP_BAK_FILE__ = '/etc/ldap.conf.firstboot.bak'
 
-__STATUS_TEST_PASSED__ = gtk.STOCK_APPLY
-__STATUS_CONFIG_CHANGED__ = gtk.STOCK_APPLY
-__STATUS_CONNECTING__ = gtk.STOCK_CONNECT
-__STATUS_ERROR__ = gtk.STOCK_DIALOG_ERROR
+__STATUS_TEST_PASSED__ = 0
+__STATUS_CONFIG_CHANGED__ = 1
+__STATUS_CONNECTING__ = 2
+__STATUS_ERROR__ = 3
 
 
 def get_page():
@@ -91,10 +92,19 @@ class LinkToServerPage(gtk.Window):
         container.remove(page)
         self.page = page
 
+        self.translate()
+
+    def is_associated(self):
+        return os.path.exists(__LDAP_BAK_FILE__)
+
     def translate(self):
         self.lblDescription.set_text(_('Write the server information'))
-        self.btnTest.set_text(_('Test'))
-        self.btnLinkToServer.set_text(_('Associate'))
+        self.btnTest.set_label(_('Test'))
+
+        if self.is_associated():
+            self.btnLinkToServer.set_label(_('Disassociate'))
+        else:
+            self.btnLinkToServer.set_label(_('Associate'))
 
     def get_widget(self):
         return self.page
@@ -121,12 +131,21 @@ class LinkToServerPage(gtk.Window):
 
         self.show_status()
 
+        if self.is_associated():
+            self.dissasociate_from_server()
+
+        else:
+            self.associate_to_server()
+
+
+    def associate_to_server(self):
+
         try:
 
             conf = self.get_conf_from_server()
 
             script = os.path.join(os.path.dirname(__file__), 'ldapconf.sh')
-            cmd = 'gksu %s %s %s %s' % (script, str(conf['uri']), str(conf['port']), str(conf['base']))
+            cmd = 'gksu "%s %s %s %s"' % (script, str(conf['uri']), str(conf['port']), str(conf['base']))
             args = shlex.split(cmd)
 
             process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -135,6 +154,7 @@ class LinkToServerPage(gtk.Window):
 
             if exit_code[1] == 0:
                 self.show_status(__STATUS_CONFIG_CHANGED__)
+                self.btnLinkToServer.set_label(_('Disassociate'))
 
             else:
                 self.show_status(__STATUS_ERROR__, Exception(_('An error occurred') + ': ' + output))
@@ -143,7 +163,30 @@ class LinkToServerPage(gtk.Window):
             self.show_status(__STATUS_ERROR__, e)
 
         except Exception as e:
-            self.show_status(__STATUS_ERROR__, _('An error occurred'))
+            self.show_status(__STATUS_ERROR__, Exception(_('An error occurred')))
+            print e
+
+    def dissasociate_from_server(self):
+
+        try:
+
+            script = os.path.join(os.path.dirname(__file__), 'ldapconf.sh')
+            cmd = 'gksu "%s --restore"' % (script,)
+            args = shlex.split(cmd)
+
+            process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            exit_code = os.waitpid(process.pid, 0)
+            output = process.communicate()[0]
+
+            if exit_code[1] == 0:
+                self.show_status(__STATUS_CONFIG_CHANGED__)
+                self.btnLinkToServer.set_label(_('Associate'))
+
+            else:
+                self.show_status(__STATUS_ERROR__, Exception(_('An error occurred') + ': ' + output))
+
+        except Exception as e:
+            self.show_status(__STATUS_ERROR__, Exception(_('An error occurred')))
             print e
 
     def get_conf_from_server(self):
@@ -181,14 +224,6 @@ class LinkToServerPage(gtk.Window):
         except Exception as e:
             raise Exception(e.args[0])
 
-    def on_get_conf_ok(self, conf):
-        self.show_status(__STATUS_TEST_PASSED__)
-        ldapconf.configure(conf)
-
-    def on_get_conf_error(self, error):
-        print error
-        self.show_status(__STATUS_ERROR__, error)
-
     def show_status(self, status=None, exception=None):
 
         icon_size = gtk.ICON_SIZE_BUTTON
@@ -198,25 +233,25 @@ class LinkToServerPage(gtk.Window):
             self.lblStatus.set_visible(False)
 
         elif status == __STATUS_TEST_PASSED__:
-            self.imgStatus.set_from_stock(status, icon_size)
+            self.imgStatus.set_from_stock(gtk.STOCK_APPLY, icon_size)
             self.imgStatus.set_visible(True)
             self.lblStatus.set_label(_('The configuration file is valid'))
             self.lblStatus.set_visible(True)
 
         elif status == __STATUS_CONFIG_CHANGED__:
-            self.imgStatus.set_from_stock(status, icon_size)
+            self.imgStatus.set_from_stock(gtk.STOCK_APPLY, icon_size)
             self.imgStatus.set_visible(True)
             self.lblStatus.set_label(_('The configuration was updated successfully'))
             self.lblStatus.set_visible(True)
 
         elif status == __STATUS_ERROR__:
-            self.imgStatus.set_from_stock(status, icon_size)
+            self.imgStatus.set_from_stock(gtk.STOCK_DIALOG_ERROR, icon_size)
             self.imgStatus.set_visible(True)
             self.lblStatus.set_label(str(exception.args[0]))
             self.lblStatus.set_visible(True)
 
         elif status == __STATUS_CONNECTING__:
-            self.imgStatus.set_from_stock(status, icon_size)
+            self.imgStatus.set_from_stock(gtk.STOCK_CONNECT, icon_size)
             self.imgStatus.set_visible(True)
             self.lblStatus.set_label(_('Trying to connect...'))
             self.lblStatus.set_visible(True)
