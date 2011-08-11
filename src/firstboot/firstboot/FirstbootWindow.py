@@ -70,9 +70,13 @@ class FirstbootWindow(Window):
 
         enabled = False
         while not enabled and index >= 0:
-            index -= 1
-            prev_page_name = pages.pages[index]
-            enabled = self.pages[prev_page_name]['enabled']
+            try:
+                index -= 1
+                prev_page_name = pages.pages[index]
+                enabled = self.pages[prev_page_name]['enabled']
+
+            except IndexError:
+                pass
 
         if enabled:
             self.set_current_page(prev_page_name)
@@ -87,9 +91,13 @@ class FirstbootWindow(Window):
 
         enabled = False
         while not enabled and index < len(pages.pages):
-            index += 1
-            next_page_name = pages.pages[index]
-            enabled = self.pages[next_page_name]['enabled']
+            try:
+                index += 1
+                next_page_name = pages.pages[index]
+                enabled = self.pages[next_page_name]['enabled']
+
+            except IndexError:
+                pass
 
         if enabled:
             self.set_current_page(next_page_name)
@@ -199,6 +207,8 @@ class FirstbootWindow(Window):
                     elif isinstance(icon, gio.ThemedIcon):
                         theme = gtk.icon_theme_get_default()
                         pixbuf = theme.load_icon(icon.get_names()[0], 24, gtk.ICON_LOOKUP_USE_BUILTIN)
+
+                    pixbuf = pixbuf.scale_simple(24, 24, gtk.gdk.INTERP_BILINEAR)
 
                 except Exception, e:
                     print "Error loading icon pixbuf: " + e.message;
