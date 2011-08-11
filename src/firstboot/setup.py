@@ -95,12 +95,12 @@ class InstallAndUpdateDataDirectory(DistUtilsExtra.auto.install_auto):
 DistUtilsExtra.auto.setup(
     name='firstboot',
     version='0.1',
-    #license='GPL-3',
-    #author='Your Name',
-    #author_email='email@ubuntu.com',
+    license='GPL-2',
+    author='Antonio Hernández',
+    author_email='ahernandez@emergya.com',
     #description='UI for managing …',
     #long_description='Here a longer description',
-    #url='https://launchpad.net/firstboot',
+    url='https://launchpad.net/firstboot',
     cmdclass={'install': InstallAndUpdateDataDirectory}
     )
 
