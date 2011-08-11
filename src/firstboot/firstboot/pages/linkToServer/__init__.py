@@ -99,13 +99,24 @@ class LinkToServerPage(gtk.Window):
         return os.path.exists(__LDAP_BAK_FILE__)
 
     def translate(self):
-        self.lblDescription.set_text(_('Write the server information'))
+        desc = _('When a workstation is linked to a GECOS server it can be ' +
+            'managed remotely and existing users in the server can login into ' +
+            'the workstation.\n\n')
+
+        if not self.is_associated():
+            desc_detail = _('For linking this workstation, type the URL where the configuration ' +
+                'resides and click on "Link".')
+        else:
+            desc_detail = _('This workstation is currently linked to a GECOS server. ' +
+                'If you want to unlink it click on "Unlink".')
+
+        self.lblDescription.set_text(desc + desc_detail)
         self.btnTest.set_label(_('Test'))
 
         if self.is_associated():
-            self.btnLinkToServer.set_label(_('Disassociate'))
+            self.btnLinkToServer.set_label(_('Unlink'))
         else:
-            self.btnLinkToServer.set_label(_('Associate'))
+            self.btnLinkToServer.set_label(_('Link'))
 
     def get_widget(self):
         return self.page
@@ -164,7 +175,7 @@ class LinkToServerPage(gtk.Window):
 
             if exit_code[1] == 0:
                 self.show_status(__STATUS_CONFIG_CHANGED__)
-                self.btnLinkToServer.set_label(_('Disassociate'))
+                self.btnLinkToServer.set_label(_('Unlink'))
 
             else:
                 self.show_status(__STATUS_ERROR__, Exception(_('An error occurred') + ': ' + output))
@@ -190,7 +201,7 @@ class LinkToServerPage(gtk.Window):
 
             if exit_code[1] == 0:
                 self.show_status(__STATUS_CONFIG_CHANGED__)
-                self.btnLinkToServer.set_label(_('Associate'))
+                self.btnLinkToServer.set_label(_('Link'))
 
             else:
                 self.show_status(__STATUS_ERROR__, Exception(_('An error occurred') + ': ' + output))

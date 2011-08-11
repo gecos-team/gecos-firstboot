@@ -64,7 +64,16 @@ class LocalUsersPage(gtk.Window):
         self.page = page
 
         self.btnLocalUsers = builder.get_object('btnLocalUsers')
+        self.lblDescription = builder.get_object('lblDescription')
+
+        self.translate()
+
+    def translate(self):
         self.btnLocalUsers.set_label(_('Create local users'))
+        self.lblDescription.set_text(_('If you need to manage local users on this ' +
+            'workstation click the button below. Note that if this workstation ' +
+            'is linked to a GECOS server, it\'s likely you don\'t need to create ' +
+            'local users.'))
 
     def get_widget(self):
         return self.page

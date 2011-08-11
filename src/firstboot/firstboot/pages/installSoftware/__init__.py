@@ -64,7 +64,13 @@ class InstallSoftwarePage(gtk.Window):
         self.page = page
 
         self.btnInstallSoftware = builder.get_object('btnInstallSoftware')
+        self.lblDescription = builder.get_object('lblDescription')
+
+        self.translate()
+
+    def translate(self):
         self.btnInstallSoftware.set_label(_('Install software'))
+        self.lblDescription.set_text(_('From this window you can install software and manage packages.'))
 
     def get_widget(self):
         return self.page

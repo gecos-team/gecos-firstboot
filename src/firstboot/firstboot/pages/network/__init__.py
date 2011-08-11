@@ -71,14 +71,18 @@ class NetworkPage(gtk.Window):
         self.page = page
 
         self.btnNetworkDialog = builder.get_object('btnNetworkDialog')
-        self.btnNetworkDialog.set_label(_('Configure the network'))
 
         self.lblDescription = builder.get_object('lblDescription')
         self.treeviewInterfaces = builder.get_object('treeviewInterfaces')
 
         self.timer_ret = True
 
+        self.translate()
         self.init_treeviewInterfaces()
+
+    def translate(self):
+        self.btnNetworkDialog.set_label(_('Configure the network'))
+        self.lblDescription.set_text(_('You need to be connected to the network for linking this workstation to a GECOS server and for installing software.'))
 
     def load_page(self, assistant):
         self.timer_ret = True
