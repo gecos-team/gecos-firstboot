@@ -86,8 +86,6 @@ class LinkToServerPage(gtk.Window):
 
         self.show_status()
 
-        self.txtUrl.set_text('file:///home/ahernandez/dev/guadalinex/firstboot/gecos/src/firstboot/data/response.txt')
-
         container = builder.get_object('ContainerWindow')
         page = builder.get_object('LinkToServerPage')
         container.remove(page)
