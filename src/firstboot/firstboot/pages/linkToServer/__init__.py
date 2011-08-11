@@ -1,3 +1,5 @@
+# -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
+
 # This file is part of Guadalinex
 #
 # This software is free software; you can redistribute it and/or modify
