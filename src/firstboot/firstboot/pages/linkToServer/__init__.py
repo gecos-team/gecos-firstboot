@@ -104,19 +104,16 @@ class LinkToServerPage(gtk.Window):
             'the workstation.\n\n')
 
         if not self.is_associated():
+            self.btnLinkToServer.set_label(_('Link'))
             desc_detail = _('For linking this workstation, type the URL where the configuration ' +
                 'resides and click on "Link".')
         else:
+            self.btnLinkToServer.set_label(_('Unlink'))
             desc_detail = _('This workstation is currently linked to a GECOS server. ' +
                 'If you want to unlink it click on "Unlink".')
 
         self.lblDescription.set_text(desc + desc_detail)
         self.btnTest.set_label(_('Test'))
-
-        if self.is_associated():
-            self.btnLinkToServer.set_label(_('Unlink'))
-        else:
-            self.btnLinkToServer.set_label(_('Link'))
 
     def get_widget(self):
         return self.page
@@ -153,13 +150,13 @@ class LinkToServerPage(gtk.Window):
         self.show_status()
 
         if self.is_associated():
-            self.dissasociate_from_server()
+            self.unlink_from_server()
 
         else:
-            self.associate_to_server()
+            self.link_to_server()
 
 
-    def associate_to_server(self):
+    def link_to_server(self):
 
         try:
 
@@ -175,7 +172,6 @@ class LinkToServerPage(gtk.Window):
 
             if exit_code[1] == 0:
                 self.show_status(__STATUS_CONFIG_CHANGED__)
-                self.btnLinkToServer.set_label(_('Unlink'))
 
             else:
                 self.show_status(__STATUS_ERROR__, Exception(_('An error occurred') + ': ' + output))
@@ -187,7 +183,9 @@ class LinkToServerPage(gtk.Window):
             self.show_status(__STATUS_ERROR__, Exception(_('An error occurred')))
             print e
 
-    def dissasociate_from_server(self):
+        self.translate()
+
+    def unlink_from_server(self):
 
         try:
 
@@ -201,7 +199,6 @@ class LinkToServerPage(gtk.Window):
 
             if exit_code[1] == 0:
                 self.show_status(__STATUS_CONFIG_CHANGED__)
-                self.btnLinkToServer.set_label(_('Link'))
 
             else:
                 self.show_status(__STATUS_ERROR__, Exception(_('An error occurred') + ': ' + output))
@@ -209,6 +206,8 @@ class LinkToServerPage(gtk.Window):
         except Exception as e:
             self.show_status(__STATUS_ERROR__, Exception(_('An error occurred')))
             print e
+
+        self.translate()
 
     def get_conf_from_server(self):
 
