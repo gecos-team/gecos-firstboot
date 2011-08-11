@@ -31,7 +31,7 @@ import gio
 import logging
 logger = logging.getLogger('firstboot')
 
-from firstboot_lib import Window
+from firstboot_lib import Window, firstbootconfig
 
 import pages
 
@@ -42,6 +42,9 @@ class FirstbootWindow(Window):
     def finish_initializing(self, builder): # pylint: disable=E1002
         """Set up the main window"""
         super(FirstbootWindow, self).finish_initializing(builder)
+
+        iconfile = firstbootconfig.get_data_file('media', '%s' % ('wizard1.png',))
+        self.set_icon_from_file(iconfile)
 
         self.lblDescription = builder.get_object('lblDescription')
         self.boxContent = builder.get_object('boxContent')
