@@ -1,2 +1,2 @@
 
-pages = ['network', 'linkToServer', 'localUsers', 'installSoftware', 'runApplications']
+pages = ['network', 'linkToServer', 'localUsers', 'installSoftware']

@@ -9,6 +9,7 @@ gettext.textdomain('firstboot')
 
 import gtk
 import pango
+import gio
 import logging
 logger = logging.getLogger('firstboot')
 
@@ -28,6 +29,7 @@ class FirstbootWindow(Window):
         self.boxContent = builder.get_object('boxContent')
         self.swContent = builder.get_object('swContent')
         self.boxIndex = builder.get_object('boxIndex')
+        self.boxApplications = builder.get_object('boxApplications')
         #self.btnClose = builder.get_object('btnClose')
         self.btnPrev = builder.get_object('btnPrev')
         self.btnNext = builder.get_object('btnNext')
@@ -41,6 +43,7 @@ class FirstbootWindow(Window):
 
         self.set_current_page(pages.pages[0])
         self.on_link_status(None, False)
+        self.show_applications()
 
     def translate(self):
         self.set_title(_('First Boot Assistant'))
@@ -169,3 +172,59 @@ class FirstbootWindow(Window):
             if button_name in ['linkToServer', 'installSoftware']:
                 self.buttons[button_name].set_sensitive(status)
                 self.pages[button_name]['enabled'] = status
+
+    def show_applications(self):
+
+        #lbl = gtk.Label()
+        #lbl.set_text(_('Tools'))
+        #lbl.set_property('xalign', 0)
+        #self.boxApplications.add(lbl)
+        #lbl.show()
+
+        filter = ['firefox', 'gnome-terminal']
+        app_list = gio.app_info_get_all()
+
+        for app in app_list:
+            if app.get_executable() in filter:
+
+                icon = app.get_icon()
+                pixbuf = None
+
+                try:
+                    if isinstance(icon, gio.FileIcon):
+                        pixbuf = gtk.gdk.Pixbuf.from_file(icon).get_file().get_path()
+
+                    elif isinstance(icon, gio.ThemedIcon):
+                        theme = gtk.icon_theme_get_default()
+                        pixbuf = theme.load_icon(icon.get_names()[0], 24, gtk.ICON_LOOKUP_USE_BUILTIN)
+
+                except Exception, e:
+                    print "Error loading icon pixbuf: " + e.message;
+
+                btn = gtk.Button()
+                btn.set_relief(gtk.RELIEF_NONE)
+                btn.set_property('focus-on-click', False)
+                btn.set_property('xalign', 0)
+
+                img = gtk.image_new_from_pixbuf(pixbuf)
+                img.set_pixel_size(16)
+
+                lbl = gtk.Label()
+                lbl.set_text(app.get_name())
+
+                box = gtk.HBox()
+                box.set_spacing(10)
+                box.pack_start(img, False)
+                box.pack_start(lbl, False)
+                btn.add(box)
+
+                self.boxApplications.add(btn)
+                box.show()
+                btn.show()
+                img.show()
+                lbl.show()
+
+                btn.connect('clicked', self.on_btnApplication_Clicked, app)
+
+    def on_btnApplication_Clicked(self, button, app):
+        app.launch()
