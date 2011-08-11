@@ -45,6 +45,8 @@ class FirstbootWindow(Window):
         self.on_link_status(None, False)
         self.show_applications()
 
+        self.set_focus(self.btnNext)
+
     def translate(self):
         self.set_title(_('First Boot Assistant'))
         self.lblDescription.set_text('')
@@ -207,7 +209,6 @@ class FirstbootWindow(Window):
                 btn.set_property('xalign', 0)
 
                 img = gtk.image_new_from_pixbuf(pixbuf)
-                img.set_pixel_size(16)
 
                 lbl = gtk.Label()
                 lbl.set_text(app.get_name())
