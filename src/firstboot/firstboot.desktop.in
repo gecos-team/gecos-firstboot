@@ -1,8 +1,0 @@
-[Desktop Entry]
-_Name=Firstboot
-_Comment=Firstboot application
-Categories=GNOME;Utility;
-Exec=firstboot
-Icon=firstboot
-Terminal=false
-Type=Application
