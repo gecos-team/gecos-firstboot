@@ -44,6 +44,7 @@ __CONFIG_FILE_VERSION__ = '1.0'
 
 __URLOPEN_TIMEOUT__ = 5
 __LDAP_BAK_FILE__ = '/etc/ldap.conf.firstboot.bak'
+__LDAP_SCRIPT_FILE__ = 'firstboot-ldapconf.sh'
 
 __STATUS_TEST_PASSED__ = 0
 __STATUS_CONFIG_CHANGED__ = 1
@@ -129,7 +130,7 @@ class LinkToServerPage(PageWindow.PageWindow):
         query = urlparse.parse_qsl(parsed_url[4])
         query.append(('v', __CONFIG_FILE_VERSION__))
         query = urllib.urlencode(query)
-        parsed_url[4] = query
+        #parsed_url[4] = query
         url = urlparse.urlunparse(parsed_url)
         return url
 
@@ -164,7 +165,10 @@ class LinkToServerPage(PageWindow.PageWindow):
 
             conf = self.get_conf_from_server()
 
-            script = os.path.join(os.path.dirname(__file__), 'ldapconf.sh')
+            script = os.path.join(os.path.dirname(__file__), __LDAP_SCRIPT_FILE__)
+            if not os.path.exists(script):
+                raise LinkToServerException("The file could not be found: " + script)
+
             cmd = 'gksu "%s %s %s %s"' % (script, str(conf['uri']), str(conf['port']), str(conf['base']))
             args = shlex.split(cmd)
 
