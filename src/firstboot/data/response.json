@@ -1,6 +1,0 @@
-{
-    "version": "1.0",
-    "uri": "ldap://192.168.2.2/",
-    "port": 389,
-    "base": "dc=juntadeandalucia,dc=net"
-}
