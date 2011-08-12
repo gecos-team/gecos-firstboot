@@ -23,7 +23,7 @@ __license__ = "GPL-2"
 
 import os
 import gtk
-from firstboot_lib.Builder import Builder
+from firstboot_lib import PageWindow
 
 import gettext
 from gettext import gettext as _
@@ -38,7 +38,7 @@ def get_page():
     page = LocalUsersPage()
     return page
 
-class LocalUsersPage(gtk.Window):
+class LocalUsersPage(PageWindow.PageWindow):
     __gtype_name__ = "LocalUsersPage"
 
     # To construct a new instance of this method, the following notable 
@@ -50,24 +50,6 @@ class LocalUsersPage(gtk.Window):
     #
     # For this reason, it's recommended you leave __init__ empty and put
     # your initialization code in finish_initializing
-
-    def __new__(cls):
-        """Special static method that's automatically called by Python when 
-        constructing a new instance of this class.
-        
-        Returns a fully instantiated BaseFirstbootWindow object.
-        """
-
-        ui_filename = os.path.join(os.path.dirname(__file__), 'LocalUsersPage.glade')
-
-        builder = Builder()
-        builder.set_translation_domain('firstboot')
-        builder.add_from_file(ui_filename)
-
-        new_object = builder.get_object("ContainerWindow")
-        new_object.finish_initializing(builder)
-
-        return new_object
 
     def finish_initializing(self, builder):
         """Called while initializing this instance in __new__

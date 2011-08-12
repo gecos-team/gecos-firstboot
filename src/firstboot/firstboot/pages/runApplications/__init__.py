@@ -25,7 +25,7 @@ import os
 import gtk
 import gio
 import pango
-from firstboot_lib.Builder import Builder
+from firstboot_lib import PageWindow
 
 import gettext
 from gettext import gettext as _
@@ -40,7 +40,7 @@ def get_page():
     page = RunApplicationsPage()
     return page
 
-class RunApplicationsPage(gtk.Window):
+class RunApplicationsPage(PageWindow.PageWindow):
     __gtype_name__ = "RunApplicationsPage"
 
     # To construct a new instance of this method, the following notable 
@@ -52,24 +52,6 @@ class RunApplicationsPage(gtk.Window):
     #
     # For this reason, it's recommended you leave __init__ empty and put
     # your initialization code in finish_initializing
-
-    def __new__(cls):
-        """Special static method that's automatically called by Python when 
-        constructing a new instance of this class.
-        
-        Returns a fully instantiated BaseFirstbootWindow object.
-        """
-
-        ui_filename = os.path.join(os.path.dirname(__file__), 'RunApplicationsPage.glade')
-
-        builder = Builder()
-        builder.set_translation_domain('firstboot')
-        builder.add_from_file(ui_filename)
-
-        new_object = builder.get_object("ContainerWindow")
-        new_object.finish_initializing(builder)
-
-        return new_object
 
     def finish_initializing(self, builder):
         """Called while initializing this instance in __new__
