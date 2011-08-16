@@ -28,7 +28,7 @@ from firstboot_lib import PageWindow
 
 import gettext
 from gettext import gettext as _
-gettext.textdomain('firstboot')
+gettext.bindtextdomain('firstboot', '/usr/local/share/locale')
 
 from interface import localifs, internet_on
 

@@ -23,7 +23,7 @@ __license__ = "GPL-2"
 
 import gettext
 from gettext import gettext as _
-gettext.textdomain('firstboot')
+gettext.bindtextdomain('firstboot', '/usr/local/share/locale')
 
 import gtk
 import pango

@@ -34,7 +34,7 @@ __all__ = [
 
 # Where your project will look for your data (for instance, images and ui
 # files). By default, this is ../data, relative your trunk layout
-__firstboot_data_directory__ = '../data'
+__firstboot_data_directory__ = '../data/'
 __license__ = ''
 __version__ = '0.1'
 
@@ -42,7 +42,7 @@ import os
 
 import gettext
 from gettext import gettext as _
-gettext.textdomain('firstboot')
+gettext.bindtextdomain('firstboot', '/usr/local/share/locale')
 
 class project_path_not_found(Exception):
     """Raised when we can't find the project directory."""

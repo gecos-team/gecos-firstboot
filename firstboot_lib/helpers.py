@@ -32,7 +32,7 @@ from . Builder import Builder
 
 import gettext
 from gettext import gettext as _
-gettext.textdomain('firstboot')
+gettext.bindtextdomain('firstboot', '/usr/local/share/locale')
 
 def get_builder(builder_file_name):
     """Return a fully-instantiated gtk.Builder instance from specified ui 
