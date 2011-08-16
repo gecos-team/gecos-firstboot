@@ -29,7 +29,6 @@ import urllib
 import urllib2
 import json
 import urlparse
-import ldapconf
 from firstboot_lib import PageWindow
 
 import gettext
@@ -195,7 +194,7 @@ class LinkToServerPage(PageWindow.PageWindow):
 
         try:
 
-            script = os.path.join(os.path.dirname(__file__), 'ldapconf.sh')
+            script = os.path.join(os.path.dirname(__file__), __LDAP_CONF_SCRIPT__)
             cmd = 'gksu "%s --restore"' % (script,)
             args = shlex.split(cmd)
 
@@ -220,12 +219,6 @@ class LinkToServerPage(PageWindow.PageWindow):
         self.show_status(__STATUS_CONNECTING__)
 
         try:
-
-#            ldapconf.get_config_file(
-#                self.get_url(),
-#                self.on_get_conf_ok,
-#                self.on_get_conf_error
-#            )
 
             fp = urllib2.urlopen(self.get_url(), timeout=__URLOPEN_TIMEOUT__)
             #print fp.url(), fp.info()
