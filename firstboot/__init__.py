@@ -26,7 +26,7 @@ import optparse
 
 import gettext
 from gettext import gettext as _
-gettext.bindtextdomain('firstboot', '/usr/local/share/locale')
+gettext.textdomain('firstboot')
 
 import gtk
 

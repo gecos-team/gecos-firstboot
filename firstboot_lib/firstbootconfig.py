@@ -42,7 +42,7 @@ import os
 
 import gettext
 from gettext import gettext as _
-gettext.bindtextdomain('firstboot', '/usr/local/share/locale')
+gettext.textdomain('firstboot')
 
 class project_path_not_found(Exception):
     """Raised when we can't find the project directory."""
