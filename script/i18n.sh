@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd ..
+
 lang=$1
 appname="firstboot"
 
@@ -7,13 +9,13 @@ if [ "" == "$lang" ]; then
     lang="es"
 fi
 
-potfilesin="./POTFILES.in"
-potfile="./${appname}.pot"
-pofile="./${lang}.po"
-pofilemerged="./${lang}.merged.po"
-mofile="./${appname}.mo"
+potfilesin="po/POTFILES.in"
+potfile="po/${appname}.pot"
+pofile="po/${lang}.po"
+pofilemerged="po/${lang}.merged.po"
+mofile="po/${appname}.mo"
 
-find ../ -type f -name "*.py" > $potfilesin
+find . -type f -name "*.py" > $potfilesin
 
 xgettext --language=Python --keyword=_ --output=$potfile -f $potfilesin
 
@@ -29,3 +31,5 @@ else
 fi
 
 msgfmt $pofile --output-file $mofile
+
+cd -
