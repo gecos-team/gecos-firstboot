@@ -206,12 +206,6 @@ class FirstbootWindow(Window):
 
     def show_applications(self):
 
-        #lbl = gtk.Label()
-        #lbl.set_text(_('Tools'))
-        #lbl.set_property('xalign', 0)
-        #self.boxApplications.add(lbl)
-        #lbl.show()
-
         filter = ['firefox', 'gnome-terminal']
         app_list = gio.app_info_get_all()
 

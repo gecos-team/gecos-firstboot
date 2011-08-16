@@ -86,7 +86,8 @@ class NetworkPage(PageWindow.PageWindow):
 
     def translate(self):
         self.btnNetworkDialog.set_label(_('Configure the network'))
-        self.lblDescription.set_text(_('You need to be connected to the network for linking this workstation to a GECOS server and for installing software.'))
+        self.lblDescription.set_text(_('You need to be connected to the network \
+for linking this workstation to a GECOS server and for installing software.'))
 
     def load_page(self, assistant):
         self.timer_ret = True

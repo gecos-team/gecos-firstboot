@@ -101,18 +101,18 @@ class LinkToServerPage(PageWindow.PageWindow):
         return os.path.exists(__LDAP_BAK_FILE__)
 
     def translate(self):
-        desc = _('When a workstation is linked to a GECOS server it can be ' +
-            'managed remotely and existing users in the server can login into ' +
-            'the workstation.\n\n')
+        desc = _('When a workstation is linked to a GECOS server it can be \
+managed remotely and existing users in the server can login into \
+the workstation.\n\n')
 
         if not self.is_associated():
             self.btnLinkToServer.set_label(_('Link'))
-            desc_detail = _('For linking this workstation, type the URL where the configuration ' +
-                'resides and click on "Link".')
+            desc_detail = _('For linking this workstation, type the URL where the \
+configuration resides and click on "Link".')
         else:
             self.btnLinkToServer.set_label(_('Unlink'))
-            desc_detail = _('This workstation is currently linked to a GECOS server. ' +
-                'If you want to unlink it click on "Unlink".')
+            desc_detail = _('This workstation is currently linked to a GECOS \
+server. If you want to unlink it click on "Unlink".')
 
         self.lblDescription.set_text(desc + desc_detail)
         self.btnTest.set_label(_('Test'))

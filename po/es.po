@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-11 13:06+0200\n"
+"POT-Creation-Date: 2011-08-16 15:25+0200\n"
 "PO-Revision-Date: 2011-08-08 13:38+0200\n"
 "Last-Translator: AHernandez <ahernandez@emergya.com>\n"
 "Language-Team: Spanish\n"
@@ -17,152 +17,143 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../firstboot/firstboot/__init__.py:24
+#: firstboot/__init__.py:42
 msgid "Show debug messages (-vv debugs firstboot_lib also)"
 msgstr ""
 
-#: ../firstboot/firstboot/__init__.py:27
+#: firstboot/__init__.py:45
 msgid "Debug mode. Force run the application after the first start"
 msgstr ""
 
-#: ../firstboot/firstboot/pages/localUsers/__init__.py:12
-#: ../firstboot/firstboot/pages/localUsers/__init__.py:72
+#: firstboot/pages/localUsers/__init__.py:34
+#: firstboot/pages/localUsers/__init__.py:76
 msgid "Create local users"
 msgstr "Crear usuarios locales"
 
-#: ../firstboot/firstboot/pages/localUsers/__init__.py:73
+#: firstboot/pages/localUsers/__init__.py:77
 msgid ""
-"If you need to manage local users on this "
-"workstation click the button below. Note that if this workstation "
-"is linked to a GECOS server, it's likely you don't need to create "
-"local users."
+"If you need to manage local users on this workstation click the button "
+"below. Note that if this workstation is linked to a GECOS server, it's "
+"likely you don't need to create local users."
 msgstr ""
-"Si necesita gestionar usuarios locales en este "
-"puesto de trabajo haga click en el botón de abajo. Tenga en cuenta "
-"que si este puesto de trabajo está vinculado a un servidor GECOS, lo "
-"más probable es que no necesite crear usuarios locales."
+"Si necesita gestionar usuarios locales en este puesto de trabajo haga click "
+"en el botón de abajo. Tenga en cuenta que si este puesto de trabajo está "
+"vinculado a un servidor GECOS, lo más probable es que no necesite crear "
+"usuarios locales."
 
-#: ../firstboot/firstboot/pages/linkToServer/ldapconf.py:50
-#: ../firstboot/firstboot/pages/linkToServer/__init__.py:233
-msgid "Incorrect version of the configuration file."
-msgstr "Versión incorrecta del fichero de configuración."
-
-#: ../firstboot/firstboot/pages/linkToServer/__init__.py:19
+#: firstboot/pages/linkToServer/__init__.py:40
 msgid "Link workstation to a server"
 msgstr "Enlazar puesto a un servidor"
 
-#: ../firstboot/firstboot/pages/linkToServer/__init__.py:102
+#: firstboot/pages/linkToServer/__init__.py:104
 msgid ""
-"When a workstation is linked to a GECOS server it can be "
-"managed remotely and existing users in the server can login into "
-"the workstation.\n\n"
+"When a workstation is linked to a GECOS server it can be managed remotely "
+"and existing users in the server can login into the workstation.\n"
+"\n"
 msgstr ""
-"Cuando un puesto de trabajo está vinculado a un servidor GECOS "
-"este puede ser gestionado remotamente y los usuarios existentes en el servidor pueden "
-"iniciar sesión en el puesto de trabajo.\n\n"
+"Cuando un puesto de trabajo está vinculado a un servidor GECOS este puede "
+"ser gestionado remotamente y los usuarios existentes en el servidor pueden "
+"iniciar sesión en el puesto de trabajo.\n"
+"\n"
 
-#: ../firstboot/firstboot/pages/linkToServer/__init__.py:107
-msgid ""
-"For linking this workstation, type the URL where the configuration "
-"resides and click on \"Link\"."
-msgstr ""
-"Para vincular este puesto de trabajo, escriba la URL donde se encuentra "
-"la configuración y haga click en \"Vincular\"."
-
-#: ../firstboot/firstboot/pages/linkToServer/__init__.py:110
-msgid ""
-"This workstation is currently linked to a GECOS server. "
-"If you want to unlink it click on \"Unlink\"."
-msgstr ""
-"Este puesto de trabajo está actualmente vinculado a un servidor GECOS. "
-"Si desea desvincularlo haga click en \"Desvincular\"."
-
-#: ../firstboot/firstboot/pages/linkToServer/__init__.py:114
-msgid "Test"
-msgstr "Probar"
-
-#: ../firstboot/firstboot/pages/linkToServer/__init__.py:117
-#: ../firstboot/firstboot/pages/linkToServer/__init__.py:178
-msgid "Unlink"
-msgstr "Desvincular"
-
-#: ../firstboot/firstboot/pages/linkToServer/__init__.py:119
-#: ../firstboot/firstboot/pages/linkToServer/__init__.py:204
+#: firstboot/pages/linkToServer/__init__.py:109
 msgid "Link"
 msgstr "Vincular"
 
-#: ../firstboot/firstboot/pages/linkToServer/__init__.py:181
-#: ../firstboot/firstboot/pages/linkToServer/__init__.py:187
-#: ../firstboot/firstboot/pages/linkToServer/__init__.py:207
-#: ../firstboot/firstboot/pages/linkToServer/__init__.py:210
+#: firstboot/pages/linkToServer/__init__.py:110
+msgid ""
+"For linking this workstation, type the URL where the configuration resides "
+"and click on \"Link\"."
+msgstr ""
+"Para vincular este puesto de trabajo, escriba la URL donde se encuentra la "
+"configuración y haga click en \"Vincular\"."
+
+#: firstboot/pages/linkToServer/__init__.py:113
+msgid "Unlink"
+msgstr "Desvincular"
+
+#: firstboot/pages/linkToServer/__init__.py:114
+msgid ""
+"This workstation is currently linked to a GECOS server. If you want to "
+"unlink it click on \"Unlink\"."
+msgstr ""
+"Este puesto de trabajo está actualmente vinculado a un servidor GECOS. Si "
+"desea desvincularlo haga click en \"Desvincular\"."
+
+#: firstboot/pages/linkToServer/__init__.py:118
+msgid "Test"
+msgstr "Probar"
+
+#: firstboot/pages/linkToServer/__init__.py:182
+#: firstboot/pages/linkToServer/__init__.py:188
+#: firstboot/pages/linkToServer/__init__.py:209
+#: firstboot/pages/linkToServer/__init__.py:212
 msgid "An error occurred"
 msgstr "Ha ocurrido un error"
 
-#: ../firstboot/firstboot/pages/linkToServer/__init__.py:243
+#: firstboot/pages/linkToServer/__init__.py:231
+msgid "Incorrect version of the configuration file."
+msgstr "Versión incorrecta del fichero de configuración."
+
+#: firstboot/pages/linkToServer/__init__.py:241
 msgid "Configuration file is not valid."
 msgstr "El fichero de configuración no es válido."
 
-#: ../firstboot/firstboot/pages/linkToServer/__init__.py:259
+#: firstboot/pages/linkToServer/__init__.py:257
 msgid "The configuration file is valid"
 msgstr "El fichero de configuración es válido"
 
-#: ../firstboot/firstboot/pages/linkToServer/__init__.py:265
+#: firstboot/pages/linkToServer/__init__.py:263
 msgid "The configuration was updated successfully"
 msgstr "La configuración se actualizó correctamente"
 
-#: ../firstboot/firstboot/pages/linkToServer/__init__.py:277
+#: firstboot/pages/linkToServer/__init__.py:275
 msgid "Trying to connect..."
 msgstr "Intentando conectar..."
 
-#: ../firstboot/firstboot/pages/installSoftware/__init__.py:12
-#: ../firstboot/firstboot/pages/installSoftware/__init__.py:72
+#: firstboot/pages/installSoftware/__init__.py:34
+#: firstboot/pages/installSoftware/__init__.py:76
 msgid "Install software"
 msgstr "Instalar software"
 
-#: ../firstboot/firstboot/pages/installSoftware/__init__.py:73
+#: firstboot/pages/installSoftware/__init__.py:77
 msgid "From this window you can install software and manage packages."
 msgstr "Deste esta venta puede instalar software y gestionar paquetes."
 
-#: ../firstboot/firstboot/pages/network/__init__.py:15
-#: ../firstboot/firstboot/pages/network/__init__.py:84
+#: firstboot/pages/network/__init__.py:37
+#: firstboot/pages/network/__init__.py:88
 msgid "Configure the network"
 msgstr "Configurar la red"
 
-#: ../firstboot/firstboot/pages/network/__init__.py:85
+#: firstboot/pages/network/__init__.py:89
 msgid ""
 "You need to be connected to the network for linking this workstation to a "
 "GECOS server and for installing software."
 msgstr ""
-"Necesita estar conectado a la red para vincular este puesto de trabajo "
-"a un servidor GECOS y para instalar software."
+"Necesita estar conectado a la red para vincular este puesto de trabajo a un "
+"servidor GECOS y para instalar software."
 
-#: ../firstboot/firstboot/pages/network/__init__.py:121
+#: firstboot/pages/network/__init__.py:126
 msgid "Name"
 msgstr "Nombre"
 
-#: ../firstboot/firstboot/pages/network/__init__.py:127
+#: firstboot/pages/network/__init__.py:132
 msgid "IP"
 msgstr "IP"
 
-#: ../firstboot/firstboot/pages/runApplications/__init__.py:14
+#: firstboot/pages/runApplications/__init__.py:36
 msgid "Run applications"
 msgstr "Ejecutar aplicaciones"
 
-#: ../firstboot/firstboot/FirstbootWindow.py:51
+#: firstboot/FirstbootWindow.py:72
 msgid "First Boot Assistant"
 msgstr "Asistente de Primer Arranque"
 
-#: ../firstboot/firstboot/FirstbootWindow.py:54
+#: firstboot/FirstbootWindow.py:75
 msgid "Previous"
 msgstr "Anterior"
 
-#: ../firstboot/firstboot/FirstbootWindow.py:55
+#: firstboot/FirstbootWindow.py:76
 msgid "Next"
 msgstr "Siguiente"
 
-#~ msgid "Write the server information"
-#~ msgstr "Escribe la información del servidor"
-
-#, fuzzy
-#~ msgid "Local users"
-#~ msgstr "Crear usuarios locales"
