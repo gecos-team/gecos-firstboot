@@ -23,7 +23,7 @@ msgstr "Muestra mensaje de depuración (-vv también depura firstboot_lib)"
 
 #: firstboot/__init__.py:46
 msgid "Debug mode. Force run the application after the first start"
-msgstr "Modo de depuración. Fuerza la ejecución de la aplicación despues del primer inicio"
+msgstr "Modo de depuración. Fuerza la ejecución de la aplicación después del primer inicio"
 
 #: firstboot/__init__.py:50
 msgid "Use this URL by default in the \"Link to Server\" page."
