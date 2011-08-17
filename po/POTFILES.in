@@ -3,6 +3,7 @@
 ./firstboot_lib/helpers.py
 ./firstboot_lib/PageWindow.py
 ./firstboot_lib/__init__.py
+./firstboot_lib/FirstbootEntry.py
 ./firstboot_lib/firstbootconfig.py
 ./firstboot_lib/Builder.py
 ./firstboot_lib/Window.py

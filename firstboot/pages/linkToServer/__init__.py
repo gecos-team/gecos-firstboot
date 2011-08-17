@@ -195,13 +195,13 @@ server. If you want to unlink it click on "Unlink".')
                 self.show_status(__STATUS_CONFIG_CHANGED__)
 
             else:
-                self.show_status(__STATUS_ERROR__, Exception(_('An error occurred') + ': ' + output))
+                self.show_status(__STATUS_ERROR__, Exception(_('An error has occurred') + ': ' + output))
 
         except LinkToServerException as e:
             self.show_status(__STATUS_ERROR__, e)
 
         except Exception as e:
-            self.show_status(__STATUS_ERROR__, Exception(_('An error occurred')))
+            self.show_status(__STATUS_ERROR__, Exception(_('An error has occurred')))
             print e
 
         self.translate()
@@ -222,10 +222,10 @@ server. If you want to unlink it click on "Unlink".')
                 self.show_status(__STATUS_CONFIG_CHANGED__)
 
             else:
-                self.show_status(__STATUS_ERROR__, Exception(_('An error occurred') + ': ' + output))
+                self.show_status(__STATUS_ERROR__, Exception(_('An error has occurred') + ': ' + output))
 
         except Exception as e:
-            self.show_status(__STATUS_ERROR__, Exception(_('An error occurred')))
+            self.show_status(__STATUS_ERROR__, Exception(_('An error has occurred')))
             print e
 
         self.translate()

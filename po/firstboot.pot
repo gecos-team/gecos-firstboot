@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-16 15:25+0200\n"
+"POT-Creation-Date: 2011-08-17 13:04+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,8 +21,12 @@ msgstr ""
 msgid "Show debug messages (-vv debugs firstboot_lib also)"
 msgstr ""
 
-#: firstboot/__init__.py:45
+#: firstboot/__init__.py:46
 msgid "Debug mode. Force run the application after the first start"
+msgstr ""
+
+#: firstboot/__init__.py:50
+msgid "Use this URL by default in the \"Link to Server\" page."
 msgstr ""
 
 #: firstboot/pages/localUsers/__init__.py:34
@@ -41,61 +45,61 @@ msgstr ""
 msgid "Link workstation to a server"
 msgstr ""
 
-#: firstboot/pages/linkToServer/__init__.py:104
+#: firstboot/pages/linkToServer/__init__.py:119
 msgid ""
 "When a workstation is linked to a GECOS server it can be managed remotely "
 "and existing users in the server can login into the workstation.\n"
 "\n"
 msgstr ""
 
-#: firstboot/pages/linkToServer/__init__.py:109
+#: firstboot/pages/linkToServer/__init__.py:124
 msgid "Link"
 msgstr ""
 
-#: firstboot/pages/linkToServer/__init__.py:110
+#: firstboot/pages/linkToServer/__init__.py:125
 msgid ""
 "For linking this workstation, type the URL where the configuration resides "
 "and click on \"Link\"."
 msgstr ""
 
-#: firstboot/pages/linkToServer/__init__.py:113
+#: firstboot/pages/linkToServer/__init__.py:128
 msgid "Unlink"
 msgstr ""
 
-#: firstboot/pages/linkToServer/__init__.py:114
+#: firstboot/pages/linkToServer/__init__.py:129
 msgid ""
 "This workstation is currently linked to a GECOS server. If you want to "
 "unlink it click on \"Unlink\"."
 msgstr ""
 
-#: firstboot/pages/linkToServer/__init__.py:118
+#: firstboot/pages/linkToServer/__init__.py:133
 msgid "Test"
 msgstr ""
 
-#: firstboot/pages/linkToServer/__init__.py:182
-#: firstboot/pages/linkToServer/__init__.py:188
-#: firstboot/pages/linkToServer/__init__.py:209
-#: firstboot/pages/linkToServer/__init__.py:212
-msgid "An error occurred"
+#: firstboot/pages/linkToServer/__init__.py:198
+#: firstboot/pages/linkToServer/__init__.py:204
+#: firstboot/pages/linkToServer/__init__.py:225
+#: firstboot/pages/linkToServer/__init__.py:228
+msgid "An error has occurred"
 msgstr ""
 
-#: firstboot/pages/linkToServer/__init__.py:231
+#: firstboot/pages/linkToServer/__init__.py:247
 msgid "Incorrect version of the configuration file."
 msgstr ""
 
-#: firstboot/pages/linkToServer/__init__.py:241
+#: firstboot/pages/linkToServer/__init__.py:257
 msgid "Configuration file is not valid."
 msgstr ""
 
-#: firstboot/pages/linkToServer/__init__.py:257
+#: firstboot/pages/linkToServer/__init__.py:273
 msgid "The configuration file is valid"
 msgstr ""
 
-#: firstboot/pages/linkToServer/__init__.py:263
+#: firstboot/pages/linkToServer/__init__.py:279
 msgid "The configuration was updated successfully"
 msgstr ""
 
-#: firstboot/pages/linkToServer/__init__.py:275
+#: firstboot/pages/linkToServer/__init__.py:291
 msgid "Trying to connect..."
 msgstr ""
 
@@ -109,21 +113,21 @@ msgid "From this window you can install software and manage packages."
 msgstr ""
 
 #: firstboot/pages/network/__init__.py:37
-#: firstboot/pages/network/__init__.py:88
+#: firstboot/pages/network/__init__.py:90
 msgid "Configure the network"
 msgstr ""
 
-#: firstboot/pages/network/__init__.py:89
+#: firstboot/pages/network/__init__.py:91
 msgid ""
 "You need to be connected to the network for linking this workstation to a "
 "GECOS server and for installing software."
 msgstr ""
 
-#: firstboot/pages/network/__init__.py:126
+#: firstboot/pages/network/__init__.py:128
 msgid "Name"
 msgstr ""
 
-#: firstboot/pages/network/__init__.py:132
+#: firstboot/pages/network/__init__.py:134
 msgid "IP"
 msgstr ""
 
@@ -131,14 +135,14 @@ msgstr ""
 msgid "Run applications"
 msgstr ""
 
-#: firstboot/FirstbootWindow.py:72
+#: firstboot/FirstbootWindow.py:76
 msgid "First Boot Assistant"
 msgstr ""
 
-#: firstboot/FirstbootWindow.py:75
+#: firstboot/FirstbootWindow.py:79
 msgid "Previous"
 msgstr ""
 
-#: firstboot/FirstbootWindow.py:76
+#: firstboot/FirstbootWindow.py:80
 msgid "Next"
 msgstr ""
