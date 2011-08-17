@@ -43,7 +43,10 @@ class PageWindow(gtk.Window):
     # For this reason, it's recommended you leave __init__ empty and put
     # your initialization code in finish_initializing
 
-    def __new__(cls):
+    def __init__(self, options=None):
+        gtk.Window.__init__(self)
+
+    def __new__(cls, options=None):
         """Special static method that's automatically called by Python when 
         constructing a new instance of this class.
         
@@ -51,11 +54,11 @@ class PageWindow(gtk.Window):
         """
         builder = get_builder(cls.__gtype_name__)
         new_object = builder.get_object(cls.__page_container__)
-        new_object.finish_initializing(builder)
+        new_object.finish_initializing(builder, options)
 
         return new_object
 
-    def finish_initializing(self, builder):
+    def finish_initializing(self, builder, options):
         """Called while initializing this instance in __new__
 
         finish_initializing should be called after parsing the UI definition
@@ -65,6 +68,8 @@ class PageWindow(gtk.Window):
         # Get a reference to the builder and set up the signals.
         self.builder = builder
         self.ui = builder.get_ui(self, True)
+
+        self.cmd_options = options
 
     def on_destroy(self, widget, data=None):
         """Called when the FirstbootWindow is closed."""

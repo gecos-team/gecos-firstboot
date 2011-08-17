@@ -42,7 +42,10 @@ class Window(gtk.Window):
     # For this reason, it's recommended you leave __init__ empty and put
     # your initialization code in finish_initializing
 
-    def __new__(cls):
+    def __init__(self, options=None):
+        gtk.Window.__init__(self)
+
+    def __new__(cls, options=None):
         """Special static method that's automatically called by Python when 
         constructing a new instance of this class.
         
@@ -50,16 +53,19 @@ class Window(gtk.Window):
         """
         builder = get_builder('FirstbootWindow')
         new_object = builder.get_object("FirstbootWindow")
-        new_object.finish_initializing(builder)
+        new_object.finish_initializing(builder, options)
         return new_object
 
-    def finish_initializing(self, builder):
+    def finish_initializing(self, builder, options=None):
         """Called while initializing this instance in __new__
 
         finish_initializing should be called after parsing the UI definition
         and creating a FirstbootWindow object with it in order to finish
         initializing the start of the new FirstbootWindow instance.
         """
+
+        self.cmd_options = options
+
         # Get a reference to the builder and set up the signals.
         self.builder = builder
         self.ui = builder.get_ui(self, True)

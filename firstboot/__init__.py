@@ -22,27 +22,33 @@ __license__ = "GPL-2"
 
 
 import os
+import gtk
 import optparse
 
 import gettext
 from gettext import gettext as _
 gettext.textdomain('firstboot')
 
-import gtk
-
 from firstboot import FirstbootWindow
+from firstboot_lib import set_up_logging, get_version, FirstbootEntry
 
-from firstboot_lib import set_up_logging, get_version
 
 def parse_options():
     """Support for command line options"""
     parser = optparse.OptionParser(version="%%prog %s" % get_version())
+
     parser.add_option(
         "-v", "--verbose", action="count", dest="verbose",
         help=_("Show debug messages (-vv debugs firstboot_lib also)"))
+
     parser.add_option(
         "-d", "--debug", action="store_true", dest="debug",
         help=_("Debug mode. Force run the application after the first start"))
+
+    parser.add_option(
+        "-u", "--url", action="store", type="string", dest="url",
+        help=_("Use this URL by default in the \"Link to Server\" page."))
+
     (options, args) = parser.parse_args()
 
     set_up_logging(options)
@@ -50,20 +56,13 @@ def parse_options():
 
 def is_first_start(debug):
 
-    config_path = os.path.join(os.getenv('HOME'), '.config/firstboot')
-    config_file = os.path.join(config_path, 'firstboot.conf')
+    fbe = FirstbootEntry.FirstbootEntry()
+    started = fbe.get_firststart()
 
-    if not debug and os.path.exists(config_file):
+    if started and not debug:
         return False
 
-    if not os.path.exists(config_path):
-        os.mkdir(config_path)
-
-    if not os.path.exists(config_file):
-        fd = open(config_file, 'w')
-        if fd != None:
-            fd.write('[firstboot]')
-            fd.close()
+    fbe.set_firststart(1)
 
     return True
 
@@ -75,6 +74,6 @@ def main():
         return
 
     # Run the application.    
-    window = FirstbootWindow.FirstbootWindow()
+    window = FirstbootWindow.FirstbootWindow(options)
     window.show()
     gtk.main()

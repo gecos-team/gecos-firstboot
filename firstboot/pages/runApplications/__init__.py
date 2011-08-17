@@ -35,9 +35,9 @@ __REQUIRED__ = False
 
 __TITLE__ = _('Run applications')
 
-def get_page():
+def get_page(options=None):
 
-    page = RunApplicationsPage()
+    page = RunApplicationsPage(options)
     return page
 
 class RunApplicationsPage(PageWindow.PageWindow):

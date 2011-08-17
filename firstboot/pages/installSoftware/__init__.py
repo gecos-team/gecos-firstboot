@@ -33,9 +33,9 @@ __REQUIRED__ = False
 
 __TITLE__ = _('Install software')
 
-def get_page():
+def get_page(options=None):
 
-    page = InstallSoftwarePage()
+    page = InstallSoftwarePage(options)
     return page
 
 class InstallSoftwarePage(PageWindow.PageWindow):

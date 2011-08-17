@@ -33,9 +33,9 @@ __REQUIRED__ = False
 
 __TITLE__ = _('Create local users')
 
-def get_page():
+def get_page(options=None):
 
-    page = LocalUsersPage()
+    page = LocalUsersPage(options)
     return page
 
 class LocalUsersPage(PageWindow.PageWindow):

@@ -31,7 +31,7 @@ import gio
 import logging
 logger = logging.getLogger('firstboot')
 
-from firstboot_lib import Window, firstbootconfig
+from firstboot_lib import Window, firstbootconfig, FirstbootEntry
 
 import pages
 
@@ -39,12 +39,16 @@ import pages
 class FirstbootWindow(Window):
     __gtype_name__ = "FirstbootWindow"
 
-    def finish_initializing(self, builder): # pylint: disable=E1002
+    def finish_initializing(self, builder, options=None): # pylint: disable=E1002
         """Set up the main window"""
         super(FirstbootWindow, self).finish_initializing(builder)
 
+        self.cmd_options = options
+        self.fbe = FirstbootEntry.FirstbootEntry()
+
         iconfile = firstbootconfig.get_data_file('media', '%s' % ('wizard1.png',))
         self.set_icon_from_file(iconfile)
+
 
         self.lblDescription = builder.get_object('lblDescription')
         self.boxContent = builder.get_object('boxContent')
@@ -167,7 +171,7 @@ class FirstbootWindow(Window):
         button = self.pages[page_name]['button']
         module = self.pages[page_name]['module']
 
-        self.current_page['page'] = module.get_page()
+        self.current_page['page'] = module.get_page(self.cmd_options)
 
         try:
             self.current_page['page'].load_page(self)

@@ -36,9 +36,9 @@ __REQUIRED__ = True
 
 __TITLE__ = _('Configure the network')
 
-def get_page():
+def get_page(options=None):
 
-    page = NetworkPage()
+    page = NetworkPage(options)
     return page
 
 class NetworkPage(PageWindow.PageWindow):
@@ -58,7 +58,7 @@ class NetworkPage(PageWindow.PageWindow):
     # For this reason, it's recommended you leave __init__ empty and put
     # your initialization code in finish_initializing
 
-    def finish_initializing(self, builder):
+    def finish_initializing(self, builder, options=None):
         """Called while initializing this instance in __new__
 
         finish_initializing should be called after parsing the UI definition
@@ -68,6 +68,8 @@ class NetworkPage(PageWindow.PageWindow):
         # Get a reference to the builder and set up the signals.
         self.builder = builder
         self.ui = builder.get_ui(self, True)
+
+        self.cmd_options = options
 
         container = builder.get_object('ContainerWindow')
         page = builder.get_object('NetworkPage')

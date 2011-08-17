@@ -29,7 +29,7 @@ import urllib
 import urllib2
 import json
 import urlparse
-from firstboot_lib import PageWindow
+from firstboot_lib import PageWindow, FirstbootEntry
 
 import gettext
 from gettext import gettext as _
@@ -51,9 +51,9 @@ __STATUS_CONNECTING__ = 2
 __STATUS_ERROR__ = 3
 
 
-def get_page():
+def get_page(options=None):
 
-    page = LinkToServerPage()
+    page = LinkToServerPage(options)
     return page
 
 class LinkToServerPage(PageWindow.PageWindow):
@@ -69,13 +69,14 @@ class LinkToServerPage(PageWindow.PageWindow):
     # For this reason, it's recommended you leave __init__ empty and put
     # your initialization code in finish_initializing
 
-    def finish_initializing(self, builder):
+    def finish_initializing(self, builder, options=None):
         """Called while initializing this instance in __new__
 
         finish_initializing should be called after parsing the UI definition
         and creating a FirstbootWindow object with it in order to finish
         initializing the start of the new FirstbootWindow instance.
         """
+
         # Get a reference to the builder and set up the signals.
         self.builder = builder
         self.ui = builder.get_ui(self, True)
@@ -96,6 +97,20 @@ class LinkToServerPage(PageWindow.PageWindow):
         self.page = page
 
         self.translate()
+
+        self.cmd_options = options
+        self.fbe = FirstbootEntry.FirstbootEntry()
+
+        url_config = self.fbe.get_url()
+        url = self.cmd_options.url
+
+        if url == None or len(url) == 0:
+            url = url_config
+
+        if url == None or len(url) == 0:
+            url = ''
+
+        self.txtUrl.set_text(url)
 
     def is_associated(self):
         return os.path.exists(__LDAP_BAK_FILE__)
