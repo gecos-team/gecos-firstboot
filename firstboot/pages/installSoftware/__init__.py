@@ -51,7 +51,7 @@ class InstallSoftwarePage(PageWindow.PageWindow):
     # For this reason, it's recommended you leave __init__ empty and put
     # your initialization code in finish_initializing
 
-    def finish_initializing(self, builder):
+    def finish_initializing(self, builder, options=None):
         """Called while initializing this instance in __new__
 
         finish_initializing should be called after parsing the UI definition
