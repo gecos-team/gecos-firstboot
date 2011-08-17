@@ -118,7 +118,7 @@ msgstr "Instalar software"
 
 #: firstboot/pages/installSoftware/__init__.py:77
 msgid "From this window you can install software and manage packages."
-msgstr "Deste esta venta puede instalar software y gestionar paquetes."
+msgstr "Desde esta venta puede instalar software y gestionar paquetes."
 
 #: firstboot/pages/network/__init__.py:37
 #: firstboot/pages/network/__init__.py:88
