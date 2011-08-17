@@ -126,10 +126,11 @@ server. If you want to unlink it click on "Unlink".')
     def get_url(self):
         url = self.txtUrl.get_text()
         parsed_url = list(urlparse.urlparse(url))
-        query = urlparse.parse_qsl(parsed_url[4])
-        query.append(('v', __CONFIG_FILE_VERSION__))
-        query = urllib.urlencode(query)
-        #parsed_url[4] = query
+        if parsed_url[0] in ('http', 'https'):
+            query = urlparse.parse_qsl(parsed_url[4])
+            query.append(('v', __CONFIG_FILE_VERSION__))
+            query = urllib.urlencode(query)
+            parsed_url[4] = query
         url = urlparse.urlunparse(parsed_url)
         return url
 
