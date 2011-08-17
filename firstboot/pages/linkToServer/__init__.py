@@ -210,7 +210,10 @@ server. If you want to unlink it click on "Unlink".')
 
         try:
 
-            script = os.path.join(os.path.dirname(__file__), __LDAP_CONF_SCRIPT__)
+            script = os.path.join('/usr/local/bin', __LDAP_CONF_SCRIPT__)
+            if not os.path.exists(script):
+                raise LinkToServerException("The file could not be found: " + script)
+
             cmd = 'gksu "%s --restore"' % (script,)
             args = shlex.split(cmd)
 
