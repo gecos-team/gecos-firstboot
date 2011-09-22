@@ -39,7 +39,7 @@ __REQUIRED__ = False
 
 __TITLE__ = _('Link workstation to a server')
 
-__CONFIG_FILE_VERSION__ = '1.0'
+__CONFIG_FILE_VERSION__ = '1.1'
 
 __URLOPEN_TIMEOUT__ = 5
 __LDAP_BAK_FILE__ = '/etc/ldap.conf.firstboot.bak'
@@ -87,7 +87,6 @@ class LinkToServerPage(PageWindow.PageWindow):
         self.imgStatus = builder.get_object('imgStatus')
         self.lblStatus = builder.get_object('lblStatus')
         self.btnLinkToServer = builder.get_object('btnLinkToServer')
-        self.btnTest = builder.get_object('btnTest')
 
         self.show_status()
 
@@ -121,7 +120,7 @@ managed remotely and existing users in the server can login into \
 the workstation.\n\n')
 
         if not self.is_associated():
-            self.btnLinkToServer.set_label(_('Link'))
+            self.btnLinkToServer.set_label(_('Configure'))
             desc_detail = _('For linking this workstation, type the URL where the \
 configuration resides and click on "Link".')
         else:
@@ -130,7 +129,8 @@ configuration resides and click on "Link".')
 server. If you want to unlink it click on "Unlink".')
 
         self.lblDescription.set_text(desc + desc_detail)
-        self.btnTest.set_label(_('Test'))
+        self.builder.get_object('radioManual').set_label(_('Manual'))
+        self.builder.get_object('radioAuto').set_label(_('Automatic'))
 
     def get_widget(self):
         return self.page
@@ -148,6 +148,14 @@ server. If you want to unlink it click on "Unlink".')
             parsed_url[4] = query
         url = urlparse.urlunparse(parsed_url)
         return url
+
+    def on_radioManual_toggled(self, button):
+        self.lblUrl.set_visible(False)
+        self.txtUrl.set_visible(False)
+
+    def on_radioAutomatic_toggled(self, button):
+        self.lblUrl.set_visible(True)
+        self.txtUrl.set_visible(True)
 
     def on_btnTest_Clicked(self, button):
 
