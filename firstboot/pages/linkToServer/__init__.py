@@ -29,11 +29,13 @@ import urllib
 import urllib2
 import json
 import urlparse
+import gobject
 from firstboot_lib import PageWindow, FirstbootEntry
 
 import gettext
 from gettext import gettext as _
 gettext.textdomain('firstboot')
+
 
 __REQUIRED__ = False
 
@@ -58,6 +60,14 @@ def get_page(options=None):
 
 class LinkToServerPage(PageWindow.PageWindow):
     __gtype_name__ = "LinkToServerPage"
+
+    __gsignals__ = {
+        'page-changed': (
+            gobject.SIGNAL_RUN_LAST,
+            gobject.TYPE_NONE,
+            (gobject.TYPE_STRING, gobject.TYPE_PYOBJECT)
+        )
+    }
 
     # To construct a new instance of this method, the following notable 
     # methods are called in this order:
@@ -150,6 +160,9 @@ server. If you want to unlink it click on "Unlink".')
         return url
 
     def on_btnTest_Clicked(self, button):
+        
+        self.emit('page-changed', 'MyCustom', [1, 2, 3])
+        return
 
         self.show_status()
 
@@ -293,7 +306,6 @@ server. If you want to unlink it click on "Unlink".')
             self.imgStatus.set_visible(True)
             self.lblStatus.set_label(_('Trying to connect...'))
             self.lblStatus.set_visible(True)
-
 
 class LinkToServerException(Exception):
 
