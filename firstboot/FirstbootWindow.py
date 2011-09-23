@@ -207,14 +207,11 @@ class FirstbootWindow(Window):
                 fromlist=['firstboot.pages']
             )
 
-            #===================================================================
-            # module = __import__(
-            #    'firstboot.pages.linkToServer.myCustom',
-            #    fromlist=['firstboot.pages']
-            # )
-            #===================================================================
-
             page = module.get_page(self.cmd_options)
+            try:
+                page.set_params(params)
+            except Exception as e:
+                print e
 
             for child in self.swContent.get_children():
                 self.swContent.remove(child)
