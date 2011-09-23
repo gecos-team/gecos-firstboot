@@ -43,16 +43,17 @@ __LDAP_BAK_FILE__ = '/etc/ldap.conf.firstboot.bak'
 __LDAP_CONF_SCRIPT__ = 'firstboot-ldapconf.sh'
 
 
-def get_server_conf(self):
+def get_server_conf(url):
 
     try:
 
-        fp = urllib2.urlopen(self.get_url(), timeout=__URLOPEN_TIMEOUT__)
+        fp = urllib2.urlopen(url, timeout=__URLOPEN_TIMEOUT__)
         #print fp.url(), fp.info()
         content = fp.read()
         conf = json.loads(content)
+        #print conf
 
-        if 'version' in conf and 'uri' in conf and 'port' in conf and 'base' in conf:
+        if 'version' in conf:
             version = conf['version']
             if version != __CONFIG_FILE_VERSION__:
                 raise Exception(_('Incorrect version of the configuration file.'))
