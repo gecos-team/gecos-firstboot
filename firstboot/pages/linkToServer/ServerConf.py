@@ -31,6 +31,10 @@ import json
 import urlparse
 import gobject
 
+import gettext
+from gettext import gettext as _
+gettext.textdomain('firstboot')
+
 
 __CONFIG_FILE_VERSION__ = '1.1'
 
