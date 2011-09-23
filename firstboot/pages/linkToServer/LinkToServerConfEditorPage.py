@@ -29,6 +29,8 @@ import urllib
 import urllib2
 import json
 import urlparse
+
+import ServerConf
 from firstboot_lib import PageWindow, FirstbootEntry
 
 import gettext
@@ -81,6 +83,16 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
         self.builder = builder
         self.ui = builder.get_ui(self, True)
 
+        self.lblDescription = self.builder.get_object('lblDescription')
+        self.lblVersionValue = self.builder.get_object('lblVersionValue')
+        self.txtOrganization = self.builder.get_object('txtOrganization')
+        self.txtUrlLDAP = self.builder.get_object('txtUrlLDAP')
+        self.txtBaseDN = self.builder.get_object('txtBaseDN')
+        self.txtBindDN = self.builder.get_object('txtBindDN')
+        self.txtPassword = self.builder.get_object('txtPassword')
+        self.txtUrlChef = self.builder.get_object('txtUrlChef')
+        self.txtUrlChefCert = self.builder.get_object('txtUrlChefCert')
+
         self.translate()
 
         container = builder.get_object('ContainerWindow')
@@ -90,6 +102,22 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
 
         self.cmd_options = options
         self.fbe = FirstbootEntry.FirstbootEntry()
+
+    def set_params(self, params):
+        if 'server_conf' in params:
+            self.server_conf = params['server_conf']
+            if not server_conf is None:
+                self.lblVersionValue.set_label(server_conf.get_version())
+                self.txtOrganization.set_text(server_conf.get_organization())
+                self.txtUrlLDAP.set_text(server_conf.get_ldap_conf().get_url())
+                self.txtBaseDN.set_text(server_conf.get_ldap_conf().get_basedn())
+                self.txtBindDN.set_text(server_conf.get_ldap_conf().get_binddn())
+                self.txtPassword.set_text(server_conf.get_ldap_conf().get_password())
+                self.txtUrlChef.set_text(server_conf.get_chef_conf().get_url())
+                self.txtUrlChefCert.set_text(server_conf.get_chef_conf().get_pem_url())
+
+        else:
+            self.server_conf = ServerConf.ServerConf()
 
     def is_associated(self):
         return os.path.exists(__LDAP_BAK_FILE__)
