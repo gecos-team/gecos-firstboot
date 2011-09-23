@@ -1,14 +1,14 @@
 {
     "version": "1.1",
-    "organization": "",
+    "organization": "My Organization",
     "pamldap": {
-        "url": "ldap://ldap.example.net:389/",
-        "base": "",
-        "binddn": "",
-        "pass": ""
+        "url": "ldap://192.168.1.1:389/",
+        "basedn": "dn=foo,dc=bar",
+        "binddn": "dn=john doe,dc=foobar",
+        "password": "12345"
     },
     "chef": {
-        "url": "",
-        "pemurl": ""
+        "url": "http://192.168.1.1",
+        "pemurl": "http://192.168.1.1/validation"
     }
 }
