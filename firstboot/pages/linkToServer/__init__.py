@@ -30,6 +30,8 @@ import urllib2
 import json
 import urlparse
 import gobject
+
+import ServerConf
 from firstboot_lib import PageWindow, FirstbootEntry
 
 import gettext
@@ -40,12 +42,6 @@ gettext.textdomain('firstboot')
 __REQUIRED__ = False
 
 __TITLE__ = _('Link workstation to a server')
-
-__CONFIG_FILE_VERSION__ = '1.1'
-
-__URLOPEN_TIMEOUT__ = 5
-__LDAP_BAK_FILE__ = '/etc/ldap.conf.firstboot.bak'
-__LDAP_CONF_SCRIPT__ = 'firstboot-ldapconf.sh'
 
 __STATUS_TEST_PASSED__ = 0
 __STATUS_CONFIG_CHANGED__ = 1
@@ -65,7 +61,7 @@ class LinkToServerPage(PageWindow.PageWindow):
         'page-changed': (
             gobject.SIGNAL_RUN_LAST,
             gobject.TYPE_NONE,
-            (gobject.TYPE_STRING, gobject.TYPE_PYOBJECT)
+            (gobject.TYPE_STRING, gobject.TYPE_STRING, gobject.TYPE_PYOBJECT)
         )
     }
 
@@ -92,6 +88,9 @@ class LinkToServerPage(PageWindow.PageWindow):
         self.ui = builder.get_ui(self, True)
 
         self.lblDescription = builder.get_object('lblDescription')
+        self.radioUnlink = builder.get_object('radioUnlink')
+        self.radioManual = builder.get_object('radioManual')
+        self.radioAuto = builder.get_object('radioAuto')
         self.lblUrl = builder.get_object('lblUrl')
         self.txtUrl = builder.get_object('txtUrl')
         self.imgStatus = builder.get_object('imgStatus')
@@ -106,6 +105,15 @@ class LinkToServerPage(PageWindow.PageWindow):
         self.page = page
 
         self.translate()
+
+        if not self.is_associated():
+            self.radioUnlink.set_visible(False)
+
+        else:
+            self.radioUnlink.set_active(True)
+            self.radioManual.set_visible(False)
+            self.radioAuto.set_visible(False)
+
 
         self.cmd_options = options
         self.fbe = FirstbootEntry.FirstbootEntry()
@@ -139,14 +147,12 @@ configuration resides and click on "Link".')
 server. If you want to unlink it click on "Unlink".')
 
         self.lblDescription.set_text(desc + desc_detail)
-        self.builder.get_object('radioManual').set_label(_('Manual'))
-        self.builder.get_object('radioAuto').set_label(_('Automatic'))
+        self.radioUnlink.set_label(_('Unlink'))
+        self.radioManual.set_label(_('Manual'))
+        self.radioAuto.set_label(_('Automatic'))
 
     def get_widget(self):
         return self.page
-
-    def on_txtUrl_changed(self, entry):
-        pass
 
     def get_url(self):
         url = self.txtUrl.get_text()
@@ -159,6 +165,10 @@ server. If you want to unlink it click on "Unlink".')
         url = urlparse.urlunparse(parsed_url)
         return url
 
+    def on_radioUnlink_toggled(self, button):
+        self.lblUrl.set_visible(False)
+        self.txtUrl.set_visible(False)
+
     def on_radioManual_toggled(self, button):
         self.lblUrl.set_visible(False)
         self.txtUrl.set_visible(False)
@@ -168,8 +178,8 @@ server. If you want to unlink it click on "Unlink".')
         self.txtUrl.set_visible(True)
 
     def on_btnTest_Clicked(self, button):
-        
-        self.emit('page-changed', 'MyCustom', [1, 2, 3])
+
+        self.emit('page-changed', 'linkToServer', 'LinkToServerPage', [1, 2, 3])
         return
 
         self.show_status()
@@ -185,6 +195,19 @@ server. If you want to unlink it click on "Unlink".')
             print e
 
     def on_btnLinkToServer_Clicked(self, button):
+
+        #self.emit('page-changed', 'linkToServer', 'LinkToServerConfEditorPage', [1, 2, 3])
+
+        if self.radioUnlink.get_active():
+            pass
+
+        elif self.radioManual.get_active():
+            pass
+
+        elif self.radioAuto.get_active():
+            pass
+
+        return
 
         self.show_status()
 
