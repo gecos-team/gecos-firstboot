@@ -151,10 +151,18 @@ class ServerConf():
         pass
 
     def get_version(self):
-        return self._data['version']
+        return str(self._data['version'])
+
+    def set_version(self, version):
+        self._data['version'] = version
+        return self
 
     def get_organization(self):
-        return self._data['organization']
+        return str(self._data['organization'])
+
+    def set_organization(self, organization):
+        self._data['organization'] = organization
+        return self
 
     def get_ldap_conf(self):
         return self._ldap_conf
@@ -172,16 +180,32 @@ class LdapConf():
         pass
 
     def get_url(self):
-        return self._data['url']
+        return str(self._data['url'])
+
+    def set_url(self, url):
+        self._data['url'] = url
+        return self
 
     def get_basedn(self):
-        return self._data['basedn']
+        return str(self._data['basedn'])
+
+    def set_basedn(self, basedn):
+        self._data['basedn'] = basedn
+        return self
 
     def get_binddn(self):
-        return self._data['binddn']
+        return str(self._data['binddn'])
+
+    def set_binddn(self, binddn):
+        self._data['binddn'] = binddn
+        return self
 
     def get_password(self):
-        return self._data['password']
+        return str(self._data['password'])
+
+    def set_password(self, password):
+        self._data['password'] = password
+        return self
 
 class ChefConf():
 
@@ -193,7 +217,15 @@ class ChefConf():
         pass
 
     def get_url(self):
-        return self._data['url']
+        return str(self._data['url'])
+
+    def set_url(self, url):
+        self._data['url'] = url
+        return self
 
     def get_pem_url(self):
-        return self._data['pemurl']
+        return str(self._data['pemurl'])
+
+    def set_pem_url(self, pem_url):
+        self._data['pemurl'] = pem_url
+        return self
