@@ -75,6 +75,65 @@ def get_server_conf(url):
 def apply_conf(server_conf):
     pass
 
+def link_to_server():
+
+    try:
+
+        conf = self.get_conf_from_server()
+
+        script = os.path.join('/usr/local/bin', __LDAP_CONF_SCRIPT__)
+        if not os.path.exists(script):
+            raise LinkToServerException("The file could not be found: " + script)
+
+        cmd = 'gksu "%s %s %s %s"' % (script, str(conf['uri']), str(conf['port']), str(conf['base']))
+        args = shlex.split(cmd)
+
+        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        exit_code = os.waitpid(process.pid, 0)
+        output = process.communicate()[0]
+
+        if exit_code[1] == 0:
+            self.show_status(__STATUS_CONFIG_CHANGED__)
+
+        else:
+            self.show_status(__STATUS_ERROR__, Exception(_('An error has occurred') + ': ' + output))
+
+    except LinkToServerException as e:
+        self.show_status(__STATUS_ERROR__, e)
+
+    except Exception as e:
+        self.show_status(__STATUS_ERROR__, Exception(_('An error has occurred')))
+        print e
+
+    self.translate()
+
+def unlink_from_server():
+
+    try:
+
+        script = os.path.join('/usr/local/bin', __LDAP_CONF_SCRIPT__)
+        if not os.path.exists(script):
+            raise LinkToServerException("The file could not be found: " + script)
+
+        cmd = 'gksu "%s --restore"' % (script,)
+        args = shlex.split(cmd)
+
+        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        exit_code = os.waitpid(process.pid, 0)
+        output = process.communicate()[0]
+
+        if exit_code[1] == 0:
+            self.show_status(__STATUS_CONFIG_CHANGED__)
+
+        else:
+            self.show_status(__STATUS_ERROR__, Exception(_('An error has occurred') + ': ' + output))
+
+    except Exception as e:
+        self.show_status(__STATUS_ERROR__, Exception(_('An error has occurred')))
+        print e
+
+    self.translate()
+
 class LinkToServerException(Exception):
 
     def __init__(self, msg):
