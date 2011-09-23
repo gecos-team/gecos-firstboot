@@ -182,12 +182,12 @@ class FirstbootWindow(Window):
             self.current_page['page'].connect('link-status', self.on_link_status)
         except Exception as e:
             pass
-        
+
         try:
             self.current_page['page'].connect('page-changed', self.on_page_changed)
         except Exception as e:
             pass
-        
+
 
 
         for button_name in self.buttons:
@@ -199,21 +199,20 @@ class FirstbootWindow(Window):
             self.swContent.remove(child)
 
         self.swContent.add_with_viewport(self.current_page['page'].get_widget())
-    
-    def on_page_changed(self, sender, page_name, params):
+
+    def on_page_changed(self, sender, module, page_name, params):
         try:
-            #===================================================================
-            # module = __import__(
-            #    'firstboot.pages.%s.%s' % (self.current_page['page'].__gtype_name__,
-            #                               page_name),
-            #    fromlist=['firstboot.pages.linkToServer.MyCustom']
-            # )
-            #===================================================================
-            
             module = __import__(
-                'firstboot.pages.linkToServer.myCustom',
+                'firstboot.pages.%s.%s' % (module, page_name),
                 fromlist=['firstboot.pages']
             )
+
+            #===================================================================
+            # module = __import__(
+            #    'firstboot.pages.linkToServer.myCustom',
+            #    fromlist=['firstboot.pages']
+            # )
+            #===================================================================
 
             page = module.get_page(self.cmd_options)
 
@@ -224,7 +223,7 @@ class FirstbootWindow(Window):
 
         except ImportError, e:
             print e
-    
+
     def button_set_active(self, button):
         label = button.get_children()[0]
         label.set_markup('<b>%s</b>' % (label.get_text(),))
