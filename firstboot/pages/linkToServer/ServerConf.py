@@ -84,20 +84,32 @@ def get_server_conf(url):
     except Exception as e:
         raise Exception(e.args[0])
 
-def apply_conf(server_conf):
-    pass
+def update_organization(server_conf):
+    print server_conf.get_organization()
 
-def link_to_server():
+def link_to_ldap(ldap_conf):
+
+    url = ldap_conf.get_url()
+    basedn = ldap_conf.get_basedn()
+    binddn = ldap_conf.get_binddn()
+    password = ldap_conf.get_password()
+
+    if len(url) == 0:
+        raise LinkToLDAPException(_('The LDAP URL cannot be empty'))
+
+    if len(basedn) == 0:
+        raise LinkToLDAPException(_('The LDAP BaseDN cannot be empty'))
+
+    if len(binddn) == 0:
+        raise LinkToLDAPException(_('The LDAP BindDN cannot be empty'))
 
     try:
 
-        conf = self.get_conf_from_server()
-
         script = os.path.join('/usr/local/bin', __LDAP_CONF_SCRIPT__)
         if not os.path.exists(script):
-            raise LinkToLDAPException("The file could not be found: " + script)
+            raise LinkToLDAPException(_('The LDAP configuration script could not be found') + ': ' + script)
 
-        cmd = 'gksu "%s %s %s %s"' % (script, str(conf['uri']), str(conf['port']), str(conf['base']))
+        cmd = 'gksu "%s %s %s %s %s"' % (script, url, basedn, binddn, password)
         args = shlex.split(cmd)
 
         process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -105,21 +117,22 @@ def link_to_server():
         output = process.communicate()[0]
 
         if exit_code[1] == 0:
-            self.show_status(__STATUS_CONFIG_CHANGED__)
+            #self.show_status(__STATUS_CONFIG_CHANGED__)
+            pass
 
         else:
-            self.show_status(__STATUS_ERROR__, Exception(_('An error has occurred') + ': ' + output))
+            #self.show_status(__STATUS_ERROR__, Exception(_('An error has occurred') + ': ' + output))
+            raise LinkToLDAPException(_('LDAP setup error') + ': ' + output)
 
-    except LinkToLDAPException as e:
-        self.show_status(__STATUS_ERROR__, e)
 
     except Exception as e:
-        self.show_status(__STATUS_ERROR__, Exception(_('An error has occurred')))
-        print e
+        #self.show_status(__STATUS_ERROR__, Exception(_('An error has occurred')))
+        raise e
 
-    self.translate()
+    return True
+    #self.translate()
 
-def unlink_from_server():
+def unlink_from_ldap():
 
     try:
 
@@ -146,16 +159,43 @@ def unlink_from_server():
 
     self.translate()
 
+def link_to_chef(chef_conf):
+
+    url = chef_conf.get_url()
+    pemurl = chef_conf.get_pem_url()
+
+    if len(url) == 0:
+        raise LinkToChefException(_('The Chef URL cannot be empty'))
+
+    if len(pemurl) == 0:
+        raise LinkToChefException(_('The Chef certificate URL cannot be empty'))
+
+    try:
+        pass
+
+    except Exception as e:
+        raise e
+
+    return True
+
+def unlink_from_chef():
+    pass
+
 class ServerConf():
 
-    def __init__(self, json_conf):
+    def __init__(self, json_conf=None):
         self._data = json_conf
         self._validate()
         self._ldap_conf = LdapConf(self._data['pamldap'])
         self._chef_conf = ChefConf(self._data['chef'])
 
     def _validate(self):
-        pass
+        if self._data is None:
+            self._data = {}
+            self._data['version'] = __CONFIG_FILE_VERSION__
+            self._data['organization'] = ''
+            self._data['pamldap'] = None
+            self._data['chef'] = None
 
     def get_version(self):
         return str(self._data['version'])
@@ -179,12 +219,17 @@ class ServerConf():
 
 class LdapConf():
 
-    def __init__(self, json_conf):
+    def __init__(self, json_conf=None):
         self._data = json_conf
         self._validate()
 
     def _validate(self):
-        pass
+        if self._data is None:
+            self._data = {}
+            self._data['url'] = ''
+            self._data['basedn'] = ''
+            self._data['binddn'] = ''
+            self._data['password'] = ''
 
     def get_url(self):
         return str(self._data['url'])
@@ -216,12 +261,15 @@ class LdapConf():
 
 class ChefConf():
 
-    def __init__(self, json_conf):
+    def __init__(self, json_conf=None):
         self._data = json_conf
         self._validate()
 
     def _validate(self):
-        pass
+        if self._data is None:
+            self._data = {}
+            self._data['url'] = ''
+            self._data['pemurl'] = ''
 
     def get_url(self):
         return str(self._data['url'])
