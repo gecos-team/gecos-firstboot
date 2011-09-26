@@ -76,10 +76,10 @@ def get_server_conf(url):
         raise ValueError()
 
     except urllib2.URLError as e:
-        raise LinkToServerException(e.args[0])
+        raise ServerConfException(e.args[0])
 
     except ValueError as e:
-        raise LinkToServerException(_('Configuration file is not valid.'))
+        raise ServerConfException(_('Configuration file is not valid.'))
 
     except Exception as e:
         raise Exception(e.args[0])
@@ -95,7 +95,7 @@ def link_to_server():
 
         script = os.path.join('/usr/local/bin', __LDAP_CONF_SCRIPT__)
         if not os.path.exists(script):
-            raise LinkToServerException("The file could not be found: " + script)
+            raise LinkToLDAPException("The file could not be found: " + script)
 
         cmd = 'gksu "%s %s %s %s"' % (script, str(conf['uri']), str(conf['port']), str(conf['base']))
         args = shlex.split(cmd)
@@ -110,7 +110,7 @@ def link_to_server():
         else:
             self.show_status(__STATUS_ERROR__, Exception(_('An error has occurred') + ': ' + output))
 
-    except LinkToServerException as e:
+    except LinkToLDAPException as e:
         self.show_status(__STATUS_ERROR__, e)
 
     except Exception as e:
@@ -125,7 +125,7 @@ def unlink_from_server():
 
         script = os.path.join('/usr/local/bin', __LDAP_CONF_SCRIPT__)
         if not os.path.exists(script):
-            raise LinkToServerException("The file could not be found: " + script)
+            raise LinkToLDAPException("The file could not be found: " + script)
 
         cmd = 'gksu "%s --restore"' % (script,)
         args = shlex.split(cmd)

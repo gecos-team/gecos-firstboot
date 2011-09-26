@@ -31,7 +31,7 @@ import json
 import gobject
 
 import ServerConf
-from ServerConf import LinkToServerException
+from ServerConf import ServerConfException, LinkToLDAPException, LinkToChefException
 from firstboot_lib import PageWindow, FirstbootEntry
 
 import gettext
@@ -191,7 +191,7 @@ server. If you want to unlink it click on "Unlink".')
                 self.emit('subpage-changed', 'linkToServer',
                           'LinkToServerConfEditorPage', {'server_conf': server_conf})
 
-            except LinkToServerException as e:
+            except ServerConfException as e:
                 self.show_status(__STATUS_ERROR__, e)
 
             except Exception as e:
