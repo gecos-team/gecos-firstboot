@@ -93,7 +93,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="invisible_char">•</property>
-                    <signal name="changed" handler="on_txtUrl_changed" swapped="no"/>
+                    <signal name="changed" handler="on_serverConf_changed" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">True</property>
@@ -121,11 +121,16 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkLabel" id="lblLDAPInfo">
+              <object class="GtkCheckButton" id="chkLDAP">
+                <property name="label" translatable="yes">Configure LDAP</property>
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="xalign">0</property>
-                <property name="label" translatable="yes">LDAP options</property>
+                <property name="active">True</property>
+                <property name="draw_indicator">True</property>
+                <signal name="toggled" handler="on_chkLDAP_toggle" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -159,6 +164,7 @@
                     <property name="can_focus">True</property>
                     <property name="invisible_char">•</property>
                     <property name="invisible_char_set">True</property>
+                    <signal name="changed" handler="on_serverConf_changed" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">True</property>
@@ -198,6 +204,7 @@
                     <property name="can_focus">True</property>
                     <property name="invisible_char">•</property>
                     <property name="invisible_char_set">True</property>
+                    <signal name="changed" handler="on_serverConf_changed" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">True</property>
@@ -237,6 +244,7 @@
                     <property name="can_focus">True</property>
                     <property name="invisible_char">•</property>
                     <property name="invisible_char_set">True</property>
+                    <signal name="changed" handler="on_serverConf_changed" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">True</property>
@@ -276,6 +284,7 @@
                     <property name="can_focus">True</property>
                     <property name="invisible_char">•</property>
                     <property name="invisible_char_set">True</property>
+                    <signal name="changed" handler="on_serverConf_changed" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">True</property>
@@ -303,11 +312,16 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkLabel" id="lblChefInfo">
+              <object class="GtkCheckButton" id="chkChef">
+                <property name="label" translatable="yes">Configure Chef</property>
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="xalign">0</property>
-                <property name="label" translatable="yes">Chef options</property>
+                <property name="active">True</property>
+                <property name="draw_indicator">True</property>
+                <signal name="toggled" handler="on_chkChef_toggle" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -341,6 +355,7 @@
                     <property name="can_focus">True</property>
                     <property name="invisible_char">•</property>
                     <property name="invisible_char_set">True</property>
+                    <signal name="changed" handler="on_serverConf_changed" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">True</property>
@@ -380,6 +395,7 @@
                     <property name="can_focus">True</property>
                     <property name="invisible_char">•</property>
                     <property name="invisible_char_set">True</property>
+                    <signal name="changed" handler="on_serverConf_changed" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">True</property>
@@ -414,7 +430,7 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_action_appearance">False</property>
-                <signal name="clicked" handler="on_btnTest_Clicked" swapped="no"/>
+                <signal name="clicked" handler="on_btnCancel_Clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -429,7 +445,7 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_action_appearance">False</property>
-                <signal name="clicked" handler="on_btnLinkToServer_Clicked" swapped="no"/>
+                <signal name="clicked" handler="on_btnApply_Clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
