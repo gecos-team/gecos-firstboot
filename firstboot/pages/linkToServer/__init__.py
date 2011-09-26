@@ -61,6 +61,11 @@ class LinkToServerPage(PageWindow.PageWindow):
         'page-changed': (
             gobject.SIGNAL_RUN_LAST,
             gobject.TYPE_NONE,
+            (gobject.TYPE_STRING, gobject.TYPE_PYOBJECT)
+        ),
+        'subpage-changed': (
+            gobject.SIGNAL_RUN_LAST,
+            gobject.TYPE_NONE,
             (gobject.TYPE_STRING, gobject.TYPE_STRING, gobject.TYPE_PYOBJECT)
         )
     }
@@ -166,23 +171,6 @@ server. If you want to unlink it click on "Unlink".')
         self.lblUrl.set_visible(True)
         self.txtUrl.set_visible(True)
 
-    def on_btnTest_Clicked(self, button):
-
-        self.emit('page-changed', 'linkToServer', 'LinkToServerPage', [1, 2, 3])
-        return
-
-        self.show_status()
-
-        try:
-            conf = self.get_conf_from_server()
-            self.show_status(__STATUS_TEST_PASSED__)
-
-        except LinkToServerException as e:
-            self.show_status(__STATUS_ERROR__, e)
-
-        except Exception as e:
-            print e
-
     def on_btnLinkToServer_Clicked(self, button):
 
         self.show_status()
@@ -191,7 +179,7 @@ server. If you want to unlink it click on "Unlink".')
             self.unlink_from_server()
 
         elif self.radioManual.get_active():
-            self.emit('page-changed', 'linkToServer',
+            self.emit('subpage-changed', 'linkToServer',
                       'LinkToServerConfEditorPage', {'server_conf': None})
 
         elif self.radioAuto.get_active():
@@ -200,7 +188,7 @@ server. If you want to unlink it click on "Unlink".')
                 url = self.txtUrl.get_text()
                 server_conf = ServerConf.get_server_conf(url)
                 #self.show_status(__STATUS_TEST_PASSED__)
-                self.emit('page-changed', 'linkToServer',
+                self.emit('subpage-changed', 'linkToServer',
                           'LinkToServerConfEditorPage', {'server_conf': server_conf})
 
             except LinkToServerException as e:

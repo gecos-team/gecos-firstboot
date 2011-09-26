@@ -66,6 +66,11 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
         'page-changed': (
             gobject.SIGNAL_RUN_LAST,
             gobject.TYPE_NONE,
+            (gobject.TYPE_STRING, gobject.TYPE_PYOBJECT)
+        ),
+        'subpage-changed': (
+            gobject.SIGNAL_RUN_LAST,
+            gobject.TYPE_NONE,
             (gobject.TYPE_STRING, gobject.TYPE_STRING, gobject.TYPE_PYOBJECT)
         )
     }
@@ -168,7 +173,7 @@ server. If you want to unlink it click on "Unlink".')
         return self.page
 
     def on_btnCancel_Clicked(self, button):
-        self.emit('page-changed', 'linkToServer', 'LinkToServer', {})
+        self.emit('page-changed', 'linkToServer', {})
 
     def on_btnApply_Clicked(self, button):
 

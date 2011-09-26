@@ -184,10 +184,14 @@ class FirstbootWindow(Window):
             pass
 
         try:
-            self.current_page['page'].connect('page-changed', self.on_page_changed)
+            self.current_page['page'].connect('subpage-changed', self.on_subpage_changed)
         except Exception as e:
             pass
 
+        try:
+            self.current_page['page'].connect('page-changed', self.on_page_changed)
+        except Exception as e:
+            pass
 
 
         for button_name in self.buttons:
@@ -200,7 +204,10 @@ class FirstbootWindow(Window):
 
         self.swContent.add_with_viewport(self.current_page['page'].get_widget())
 
-    def on_page_changed(self, sender, module, page_name, params):
+    def on_page_changed(self, sender, page_name, params):
+        self.set_current_page(page_name)
+
+    def on_subpage_changed(self, sender, module, page_name, params):
         try:
             module = __import__(
                 'firstboot.pages.%s.%s' % (module, page_name),
@@ -208,6 +215,11 @@ class FirstbootWindow(Window):
             )
 
             page = module.get_page(self.cmd_options)
+
+            try:
+                page.connect('subpage-changed', self.on_subpage_changed)
+            except Exception as e:
+                pass
 
             try:
                 page.connect('page-changed', self.on_page_changed)
