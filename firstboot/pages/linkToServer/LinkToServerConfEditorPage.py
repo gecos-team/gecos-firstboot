@@ -106,15 +106,16 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
     def set_params(self, params):
         if 'server_conf' in params:
             self.server_conf = params['server_conf']
-            if not server_conf is None:
-                self.lblVersionValue.set_label(server_conf.get_version())
-                self.txtOrganization.set_text(server_conf.get_organization())
-                self.txtUrlLDAP.set_text(server_conf.get_ldap_conf().get_url())
-                self.txtBaseDN.set_text(server_conf.get_ldap_conf().get_basedn())
-                self.txtBindDN.set_text(server_conf.get_ldap_conf().get_binddn())
-                self.txtPassword.set_text(server_conf.get_ldap_conf().get_password())
-                self.txtUrlChef.set_text(server_conf.get_chef_conf().get_url())
-                self.txtUrlChefCert.set_text(server_conf.get_chef_conf().get_pem_url())
+            if not self.server_conf is None:
+                print self.server_conf
+                self.lblVersionValue.set_label(self.server_conf.get_version())
+                self.txtOrganization.set_text(self.server_conf.get_organization())
+                self.txtUrlLDAP.set_text(self.server_conf.get_ldap_conf().get_url())
+                self.txtBaseDN.set_text(self.server_conf.get_ldap_conf().get_basedn())
+                self.txtBindDN.set_text(self.server_conf.get_ldap_conf().get_binddn())
+                self.txtPassword.set_text(self.server_conf.get_ldap_conf().get_password())
+                self.txtUrlChef.set_text(self.server_conf.get_chef_conf().get_url())
+                self.txtUrlChefCert.set_text(self.server_conf.get_chef_conf().get_pem_url())
 
         else:
             self.server_conf = ServerConf.ServerConf()
