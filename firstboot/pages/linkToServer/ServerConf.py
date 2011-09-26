@@ -146,11 +146,6 @@ def unlink_from_server():
 
     self.translate()
 
-class LinkToServerException(Exception):
-
-    def __init__(self, msg):
-        Exception.__init__(self, msg)
-
 class ServerConf():
 
     def __init__(self, json_conf):
@@ -241,3 +236,28 @@ class ChefConf():
     def set_pem_url(self, pem_url):
         self._data['pemurl'] = pem_url
         return self
+
+
+class ServerConfException(Exception):
+    '''
+    Raised when there are errors retrieving the remote configuration.
+    '''
+
+    def __init__(self, msg):
+        Exception.__init__(self, msg)
+
+class LinkToLDAPException(Exception):
+    '''
+    Raised when there are errors trying to link the client to a LDAP server. 
+    '''
+
+    def __init__(self, msg):
+        Exception.__init__(self, msg)
+
+class LinkToChefException(Exception):
+    '''
+    Raised when there are errors trying to link the client to a Chef server. 
+    '''
+
+    def __init__(self, msg):
+        Exception.__init__(self, msg)
