@@ -208,6 +208,12 @@ class FirstbootWindow(Window):
             )
 
             page = module.get_page(self.cmd_options)
+
+            try:
+                page.connect('page-changed', self.on_page_changed)
+            except Exception as e:
+                pass
+
             try:
                 page.set_params(params)
             except Exception as e:
@@ -218,7 +224,7 @@ class FirstbootWindow(Window):
 
             self.swContent.add_with_viewport(page.get_widget())
 
-        except ImportError, e:
+        except ImportError as e:
             print e
 
     def button_set_active(self, button):
