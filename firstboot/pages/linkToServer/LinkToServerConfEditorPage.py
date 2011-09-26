@@ -121,6 +121,8 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
         self.cmd_options = options
         self.fbe = FirstbootEntry.FirstbootEntry()
 
+        self.update_server_conf = False
+
     def set_params(self, params):
         if 'server_conf' in params:
             self.server_conf = params['server_conf']
@@ -134,8 +136,11 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
                 self.txtUrlChef.set_text(self.server_conf.get_chef_conf().get_url())
                 self.txtUrlChefCert.set_text(self.server_conf.get_chef_conf().get_pem_url())
 
-        else:
+        if self.server_conf is None:
             self.server_conf = ServerConf.ServerConf()
+            print self.server_conf
+
+        self.update_server_conf = True
 
     def is_associated(self):
         return os.path.exists(__LDAP_BAK_FILE__)
@@ -191,13 +196,41 @@ server. If you want to unlink it click on "Unlink".')
 
     def on_btnApply_Clicked(self, button):
 
-        self.show_status()
+        #self.show_status()
+        exceptions = []
 
-        if self.is_associated():
-            self.unlink_from_server()
+        print self.server_conf
+        ServerConf.update_organization(self.server_conf)
 
-        else:
-            self.link_to_server()
+        if self.chkLDAP.get_active():
+            try:
+                ServerConf.link_to_ldap(self.server_conf.get_ldap_conf())
+            except Exception as e:
+                exceptions.append(e)
+
+        if self.chkChef.get_active():
+            try:
+                ServerConf.link_to_chef(self.server_conf.get_chef_conf())
+            except Exception as e:
+                exceptions.append(e)
+
+        result = not bool(len(exceptions))
+        self.emit('subpage-changed', 'linkToServer',
+                  'LinkToServerResultsPage',
+                  {'result': result, 'server_conf': self.server_conf,
+                   'exceptions': exceptions}
+        )
+
+    def on_serverConf_changed(self, entry):
+        if not self.update_server_conf:
+            return
+        self.server_conf.set_organization(self.txtOrganization.get_text())
+        self.server_conf.get_ldap_conf().set_url(self.txtUrlLDAP.get_text())
+        self.server_conf.get_ldap_conf().set_basedn(self.txtBaseDN.get_text())
+        self.server_conf.get_ldap_conf().set_binddn(self.txtBindDN.get_text())
+        self.server_conf.get_ldap_conf().set_password(self.txtPassword.get_text())
+        self.server_conf.get_chef_conf().set_url(self.txtUrlChef.get_text())
+        self.server_conf.get_chef_conf().set_pem_url(self.txtUrlChefCert.get_text())
 
     def show_status(self, status=None, exception=None):
 
