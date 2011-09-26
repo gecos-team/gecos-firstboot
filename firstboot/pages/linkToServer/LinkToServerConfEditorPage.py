@@ -108,6 +108,8 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
         self.txtUrlChefCert = self.builder.get_object('txtUrlChefCert')
         self.btnCancel = self.builder.get_object('btnCancel')
         self.btnApply = self.builder.get_object('btnApply')
+        self.chkLDAP = self.builder.get_object('chkLDAP')
+        self.chkChef = self.builder.get_object('chkChef')
 
         self.translate()
 
@@ -157,20 +159,32 @@ server. If you want to unlink it click on "Unlink".')
 
         self.builder.get_object('lblVersion').set_label(_('Version'))
         self.builder.get_object('lblOrganization').set_label(_('Organization'))
-        self.builder.get_object('lblLDAPInfo').set_markup(self._bold(_('LDAP Information')))
         self.builder.get_object('lblUrlLDAP').set_label('URL')
         self.builder.get_object('lblBaseDN').set_label('Base DN')
         self.builder.get_object('lblBindDN').set_label('Bind DN')
         self.builder.get_object('lblPassword').set_label(_('Password'))
-        self.builder.get_object('lblChefInfo').set_markup(self._bold(_('Chef information')))
         self.builder.get_object('lblUrlChef').set_label('URL')
         self.builder.get_object('lblUrlChefCert').set_label(_('Certificate URL'))
-
         self.builder.get_object('btnCancel').set_label(_('Cancel'))
         self.builder.get_object('btnApply').set_label(_('Apply'))
 
+        self.chkLDAP.get_child().set_markup(self._bold(_('Configure LDAP')))
+        self.chkChef.get_child().set_markup(self._bold(_('Configure Chef')))
+
     def get_widget(self):
         return self.page
+
+    def on_chkLDAP_toggle(self, button):
+        active = self.chkLDAP.get_active()
+        self.txtUrlLDAP.set_sensitive(active)
+        self.txtBaseDN.set_sensitive(active)
+        self.txtBindDN.set_sensitive(active)
+        self.txtPassword.set_sensitive(active)
+
+    def on_chkChef_toggle(self, button):
+        active = self.chkChef.get_active()
+        self.txtUrlChef.set_sensitive(active)
+        self.txtUrlChefCert.set_sensitive(active)
 
     def on_btnCancel_Clicked(self, button):
         self.emit('page-changed', 'linkToServer', {})
