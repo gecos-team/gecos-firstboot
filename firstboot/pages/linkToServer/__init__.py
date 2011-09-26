@@ -28,10 +28,10 @@ import shlex
 import urllib
 import urllib2
 import json
-import urlparse
 import gobject
 
 import ServerConf
+from ServerConf import LinkToServerException
 from firstboot_lib import PageWindow, FirstbootEntry
 
 import gettext
@@ -154,17 +154,6 @@ server. If you want to unlink it click on "Unlink".')
     def get_widget(self):
         return self.page
 
-    def get_url(self):
-        url = self.txtUrl.get_text()
-        parsed_url = list(urlparse.urlparse(url))
-        if parsed_url[0] in ('http', 'https'):
-            query = urlparse.parse_qsl(parsed_url[4])
-            query.append(('v', ServerConf.__CONFIG_FILE_VERSION__))
-            query = urllib.urlencode(query)
-            parsed_url[4] = query
-        url = urlparse.urlunparse(parsed_url)
-        return url
-
     def on_radioUnlink_toggled(self, button):
         self.lblUrl.set_visible(False)
         self.txtUrl.set_visible(False)
@@ -208,7 +197,7 @@ server. If you want to unlink it click on "Unlink".')
         elif self.radioAuto.get_active():
 
             try:
-                url = self.get_url()
+                url = self.txtUrl.get_text()
                 server_conf = ServerConf.get_server_conf(url)
                 #self.show_status(__STATUS_TEST_PASSED__)
                 self.emit('page-changed', 'linkToServer',
@@ -251,8 +240,3 @@ server. If you want to unlink it click on "Unlink".')
             self.imgStatus.set_visible(True)
             self.lblStatus.set_label(_('Trying to connect...'))
             self.lblStatus.set_visible(True)
-
-class LinkToServerException(Exception):
-
-    def __init__(self, msg):
-        Exception.__init__(self, msg)
