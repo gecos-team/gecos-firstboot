@@ -29,6 +29,7 @@ import urllib
 import urllib2
 import json
 import urlparse
+import gobject
 
 import ServerConf
 from firstboot_lib import PageWindow, FirstbootEntry
@@ -61,6 +62,14 @@ def get_page(options=None):
 class LinkToServerConfEditorPage(PageWindow.PageWindow):
     __gtype_name__ = "LinkToServerConfEditorPage"
 
+    __gsignals__ = {
+        'page-changed': (
+            gobject.SIGNAL_RUN_LAST,
+            gobject.TYPE_NONE,
+            (gobject.TYPE_STRING, gobject.TYPE_STRING, gobject.TYPE_PYOBJECT)
+        )
+    }
+
     # To construct a new instance of this method, the following notable 
     # methods are called in this order:
     # __new__(cls)
@@ -92,6 +101,8 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
         self.txtPassword = self.builder.get_object('txtPassword')
         self.txtUrlChef = self.builder.get_object('txtUrlChef')
         self.txtUrlChefCert = self.builder.get_object('txtUrlChefCert')
+        self.btnCancel = self.builder.get_object('btnCancel')
+        self.btnApply = self.builder.get_object('btnApply')
 
         self.translate()
 
@@ -107,7 +118,6 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
         if 'server_conf' in params:
             self.server_conf = params['server_conf']
             if not self.server_conf is None:
-                print self.server_conf
                 self.lblVersionValue.set_label(self.server_conf.get_version())
                 self.txtOrganization.set_text(self.server_conf.get_organization())
                 self.txtUrlLDAP.set_text(self.server_conf.get_ldap_conf().get_url())
@@ -157,35 +167,10 @@ server. If you want to unlink it click on "Unlink".')
     def get_widget(self):
         return self.page
 
-    def on_txtUrl_changed(self, entry):
-        pass
+    def on_btnCancel_Clicked(self, button):
+        self.emit('page-changed', 'linkToServer', 'LinkToServer', {})
 
-    def get_url(self):
-        url = self.txtUrl.get_text()
-        parsed_url = list(urlparse.urlparse(url))
-        if parsed_url[0] in ('http', 'https'):
-            query = urlparse.parse_qsl(parsed_url[4])
-            query.append(('v', __CONFIG_FILE_VERSION__))
-            query = urllib.urlencode(query)
-            parsed_url[4] = query
-        url = urlparse.urlunparse(parsed_url)
-        return url
-
-    def on_btnTest_Clicked(self, button):
-
-        self.show_status()
-
-        try:
-            conf = self.get_conf_from_server()
-            self.show_status(__STATUS_TEST_PASSED__)
-
-        except LinkToServerException as e:
-            self.show_status(__STATUS_ERROR__, e)
-
-        except Exception as e:
-            print e
-
-    def on_btnLinkToServer_Clicked(self, button):
+    def on_btnApply_Clicked(self, button):
 
         self.show_status()
 
@@ -194,95 +179,6 @@ server. If you want to unlink it click on "Unlink".')
 
         else:
             self.link_to_server()
-
-
-    def link_to_server(self):
-
-        try:
-
-            conf = self.get_conf_from_server()
-
-            script = os.path.join('/usr/local/bin', __LDAP_CONF_SCRIPT__)
-            if not os.path.exists(script):
-                raise LinkToServerException("The file could not be found: " + script)
-
-            cmd = 'gksu "%s %s %s %s"' % (script, str(conf['uri']), str(conf['port']), str(conf['base']))
-            args = shlex.split(cmd)
-
-            process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            exit_code = os.waitpid(process.pid, 0)
-            output = process.communicate()[0]
-
-            if exit_code[1] == 0:
-                self.show_status(__STATUS_CONFIG_CHANGED__)
-
-            else:
-                self.show_status(__STATUS_ERROR__, Exception(_('An error has occurred') + ': ' + output))
-
-        except LinkToServerException as e:
-            self.show_status(__STATUS_ERROR__, e)
-
-        except Exception as e:
-            self.show_status(__STATUS_ERROR__, Exception(_('An error has occurred')))
-            print e
-
-        self.translate()
-
-    def unlink_from_server(self):
-
-        try:
-
-            script = os.path.join('/usr/local/bin', __LDAP_CONF_SCRIPT__)
-            if not os.path.exists(script):
-                raise LinkToServerException("The file could not be found: " + script)
-
-            cmd = 'gksu "%s --restore"' % (script,)
-            args = shlex.split(cmd)
-
-            process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            exit_code = os.waitpid(process.pid, 0)
-            output = process.communicate()[0]
-
-            if exit_code[1] == 0:
-                self.show_status(__STATUS_CONFIG_CHANGED__)
-
-            else:
-                self.show_status(__STATUS_ERROR__, Exception(_('An error has occurred') + ': ' + output))
-
-        except Exception as e:
-            self.show_status(__STATUS_ERROR__, Exception(_('An error has occurred')))
-            print e
-
-        self.translate()
-
-    def get_conf_from_server(self):
-
-        self.show_status(__STATUS_CONNECTING__)
-
-        try:
-
-            fp = urllib2.urlopen(self.get_url(), timeout=__URLOPEN_TIMEOUT__)
-            #print fp.url(), fp.info()
-            content = fp.read()
-            conf = json.loads(content)
-
-            if 'version' in conf and 'uri' in conf and 'port' in conf and 'base' in conf:
-                version = conf['version']
-                if version != __CONFIG_FILE_VERSION__:
-                    raise Exception(_('Incorrect version of the configuration file.'))
-
-                return conf
-
-            raise ValueError()
-
-        except urllib2.URLError as e:
-            raise LinkToServerException(e.args[0])
-
-        except ValueError as e:
-            raise LinkToServerException(_('Configuration file is not valid.'))
-
-        except Exception as e:
-            raise Exception(e.args[0])
 
     def show_status(self, status=None, exception=None):
 
@@ -315,9 +211,3 @@ server. If you want to unlink it click on "Unlink".')
             self.imgStatus.set_visible(True)
             self.lblStatus.set_label(_('Trying to connect...'))
             self.lblStatus.set_visible(True)
-
-
-class LinkToServerException(Exception):
-
-    def __init__(self, msg):
-        Exception.__init__(self, msg)
