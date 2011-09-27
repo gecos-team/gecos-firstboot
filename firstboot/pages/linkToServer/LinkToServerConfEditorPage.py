@@ -34,12 +34,6 @@ __REQUIRED__ = False
 
 __TITLE__ = _('Link workstation to a server')
 
-__CONFIG_FILE_VERSION__ = '1.0'
-
-__URLOPEN_TIMEOUT__ = 5
-__LDAP_BAK_FILE__ = '/etc/ldap.conf.firstboot.bak'
-__LDAP_CONF_SCRIPT__ = 'firstboot-ldapconf.sh'
-
 
 def get_page(options=None):
 
