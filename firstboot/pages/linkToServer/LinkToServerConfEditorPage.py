@@ -171,11 +171,13 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
         self.txtBaseDN.set_sensitive(active)
         self.txtBindDN.set_sensitive(active)
         self.txtPassword.set_sensitive(active)
+        self.btnApply.set_sensitive(active | self.chkChef.get_active())
 
     def on_chkChef_toggle(self, button):
         active = self.chkChef.get_active()
         self.txtUrlChef.set_sensitive(active)
         self.txtUrlChefCert.set_sensitive(active)
+        self.btnApply.set_sensitive(active | self.chkLDAP.get_active())
 
     def on_btnCancel_Clicked(self, button):
         self.emit('page-changed', 'linkToServer', {})
