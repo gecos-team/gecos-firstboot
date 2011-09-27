@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-17 13:04+0200\n"
+"POT-Creation-Date: 2011-09-27 17:18+0200\n"
 "PO-Revision-Date: 2011-08-08 13:38+0200\n"
 "Last-Translator: AHernandez <ahernandez@emergya.com>\n"
 "Language-Team: Spanish\n"
@@ -17,39 +17,97 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: firstboot/__init__.py:42
-msgid "Show debug messages (-vv debugs firstboot_lib also)"
-msgstr "Muestra mensaje de depuración (-vv también depura firstboot_lib)"
+#: firstboot/FirstbootWindow.py:76
+msgid "First Boot Assistant"
+msgstr "Asistente de Primer Arranque"
 
-#: firstboot/__init__.py:46
-msgid "Debug mode. Force run the application after the first start"
-msgstr "Modo de depuración. Fuerza la ejecución de la aplicación después del primer inicio"
+#: firstboot/FirstbootWindow.py:79
+msgid "Previous"
+msgstr "Anterior"
 
-#: firstboot/__init__.py:50
-msgid "Use this URL by default in the \"Link to Server\" page."
-msgstr "Usa esta URL por defecto en la página \"Enlazar a Servidor\"."
+#: firstboot/FirstbootWindow.py:80
+msgid "Next"
+msgstr "Siguiente"
 
-#: firstboot/pages/localUsers/__init__.py:34
-#: firstboot/pages/localUsers/__init__.py:76
-msgid "Create local users"
-msgstr "Crear usuarios locales"
+#: firstboot/pages/pcLabel/__init__.py:36
+msgid "Describe this workstation"
+msgstr "Describir este puesto"
 
-#: firstboot/pages/localUsers/__init__.py:77
+#: firstboot/pages/pcLabel/__init__.py:92
 msgid ""
-"If you need to manage local users on this workstation click the button "
-"below. Note that if this workstation is linked to a GECOS server, it's "
-"likely you don't need to create local users."
+"You can type a description for this workstation, it will be shown in the "
+"GECOS Server admin interface and will help you to find out the workstation "
+"later."
 msgstr ""
-"Si necesita gestionar usuarios locales en este puesto de trabajo haga click "
-"en el botón de abajo. Tenga en cuenta que si este puesto de trabajo está "
-"vinculado a un servidor GECOS, lo más probable es que no necesite crear "
-"usuarios locales."
+"Puede escribir una descripción para este puesto, ésta será mostrada en "
+"la interfaz de administración de GECOS Server y le ayudará a encontrar este "
+"puesto más adelante."
 
-#: firstboot/pages/linkToServer/__init__.py:40
+#: firstboot/pages/pcLabel/__init__.py:97
+msgid "Label"
+msgstr "Etiqueta"
+
+#: firstboot/pages/pcLabel/__init__.py:98
+msgid "Accept"
+msgstr "Aceptar"
+
+#: firstboot/pages/pcLabel/__init__.py:107
+msgid "The label has been updated correctly."
+msgstr "La etiqueta se ha actualizado correctamente."
+
+#: firstboot/pages/linkToServer/ServerConf.py:71
+msgid "Incorrect version of the configuration file."
+msgstr "Versión incorrecta del fichero de configuración."
+
+#: firstboot/pages/linkToServer/ServerConf.py:82
+msgid "Configuration file is not valid."
+msgstr "El fichero de configuración no es válido."
+
+#: firstboot/pages/linkToServer/ServerConf.py:96
+msgid "The LDAP URL cannot be empty."
+msgstr "La URL del LDAP no puede estar vacía."
+
+#: firstboot/pages/linkToServer/ServerConf.py:99
+msgid "The LDAP BaseDN cannot be empty."
+msgstr "El BaseDN del LDAP no puede estar vacío."
+
+#: firstboot/pages/linkToServer/ServerConf.py:102
+msgid "The LDAP BindDN cannot be empty."
+msgstr "El BindDN del LDAP no puede estar vacío."
+
+#: firstboot/pages/linkToServer/ServerConf.py:111
+msgid "The LDAP configuration script couldn't be found"
+msgstr "No se pudo encontrar el script de configuración del LDAP"
+
+#: firstboot/pages/linkToServer/ServerConf.py:126
+msgid "LDAP setup error"
+msgstr "Error en la configuración del LDAP"
+
+#: firstboot/pages/linkToServer/ServerConf.py:155
+msgid "An error has occurred"
+msgstr "Ha ocurrido un error"
+
+#: firstboot/pages/linkToServer/ServerConf.py:158
+msgid "An error has occurred."
+msgstr "Ha ocurrido un error."
+
+#: firstboot/pages/linkToServer/ServerConf.py:170
+msgid "The Chef URL cannot be empty."
+msgstr "LA URL de Chef no puede quedar vacía."
+
+#: firstboot/pages/linkToServer/ServerConf.py:173
+msgid "The Chef certificate URL cannot be empty."
+msgstr "La URL del certificado de Chef no puede quedar vacía."
+
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:43
+#: firstboot/pages/linkToServer/LinkToServerResultsPage.py:44
+#: firstboot/pages/linkToServer/__init__.py:44
 msgid "Link workstation to a server"
 msgstr "Enlazar puesto a un servidor"
 
-#: firstboot/pages/linkToServer/__init__.py:119
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:151
+#: firstboot/pages/linkToServer/LinkToServerResultsPage.py:118
+#: firstboot/pages/linkToServer/__init__.py:141
 msgid ""
 "When a workstation is linked to a GECOS server it can be managed remotely "
 "and existing users in the server can login into the workstation.\n"
@@ -60,11 +118,9 @@ msgstr ""
 "iniciar sesión en el puesto de trabajo.\n"
 "\n"
 
-#: firstboot/pages/linkToServer/__init__.py:124
-msgid "Link"
-msgstr "Vincular"
-
-#: firstboot/pages/linkToServer/__init__.py:125
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:156
+#: firstboot/pages/linkToServer/LinkToServerResultsPage.py:123
+#: firstboot/pages/linkToServer/__init__.py:147
 msgid ""
 "For linking this workstation, type the URL where the configuration resides "
 "and click on \"Link\"."
@@ -72,11 +128,9 @@ msgstr ""
 "Para vincular este puesto de trabajo, escriba la URL donde se encuentra la "
 "configuración y haga click en \"Vincular\"."
 
-#: firstboot/pages/linkToServer/__init__.py:128
-msgid "Unlink"
-msgstr "Desvincular"
-
-#: firstboot/pages/linkToServer/__init__.py:129
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:159
+#: firstboot/pages/linkToServer/LinkToServerResultsPage.py:126
+#: firstboot/pages/linkToServer/__init__.py:151
 msgid ""
 "This workstation is currently linked to a GECOS server. If you want to "
 "unlink it click on \"Unlink\"."
@@ -84,45 +138,86 @@ msgstr ""
 "Este puesto de trabajo está actualmente vinculado a un servidor GECOS. Si "
 "desea desvincularlo haga click en \"Desvincular\"."
 
-#: firstboot/pages/linkToServer/__init__.py:133
-msgid "Test"
-msgstr "Probar"
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:164
+msgid "Version"
+msgstr "Versión"
 
-#: firstboot/pages/linkToServer/__init__.py:198
-#: firstboot/pages/linkToServer/__init__.py:204
-#: firstboot/pages/linkToServer/__init__.py:225
-#: firstboot/pages/linkToServer/__init__.py:228
-msgid "An error has occurred"
-msgstr "Ha ocurrido un error"
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:165
+msgid "Organization"
+msgstr "Organización"
 
-#: firstboot/pages/linkToServer/__init__.py:247
-msgid "Incorrect version of the configuration file."
-msgstr "Versión incorrecta del fichero de configuración."
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:169
+msgid "Password"
+msgstr "Contraseña"
 
-#: firstboot/pages/linkToServer/__init__.py:257
-msgid "Configuration file is not valid."
-msgstr "El fichero de configuración no es válido."
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:171
+msgid "Certificate URL"
+msgstr "URL del certificado"
 
-#: firstboot/pages/linkToServer/__init__.py:273
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:172
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:173
+msgid "Apply"
+msgstr "Aplicar"
+
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:175
+msgid "Configure LDAP"
+msgstr "Configurar LDAP"
+
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:176
+msgid "Configure Chef"
+msgstr "Configurar Chef"
+
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:206
+msgid "The LDAP has been configured successfully."
+msgstr "El LDAP se ha configurado correctamente."
+
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:216
+msgid "The Chef client has been configured successfully."
+msgstr "El cliente de Chef se ha configurado correctamente."
+
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:250
+#: firstboot/pages/linkToServer/__init__.py:211
 msgid "The configuration file is valid"
 msgstr "El fichero de configuración es válido"
 
-#: firstboot/pages/linkToServer/__init__.py:279
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:256
+#: firstboot/pages/linkToServer/__init__.py:217
 msgid "The configuration was updated successfully"
 msgstr "La configuración se actualizó correctamente"
 
-#: firstboot/pages/linkToServer/__init__.py:291
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:268
+#: firstboot/pages/linkToServer/__init__.py:229
 msgid "Trying to connect..."
 msgstr "Intentando conectar..."
 
-#: firstboot/pages/installSoftware/__init__.py:34
-#: firstboot/pages/installSoftware/__init__.py:76
-msgid "Install software"
-msgstr "Instalar software"
+#: firstboot/pages/linkToServer/LinkToServerResultsPage.py:154
+#: firstboot/pages/linkToServer/LinkToServerResultsPage.py:159
+msgid "Finalize"
+msgstr "Finalizar"
 
-#: firstboot/pages/installSoftware/__init__.py:77
-msgid "From this window you can install software and manage packages."
-msgstr "Desde esta venta puede instalar software y gestionar paquetes."
+#: firstboot/pages/linkToServer/LinkToServerResultsPage.py:158
+msgid "Back"
+msgstr "Volver"
+
+#: firstboot/pages/linkToServer/__init__.py:146
+msgid "Configure"
+msgstr "Configurar"
+
+#: firstboot/pages/linkToServer/__init__.py:150
+#: firstboot/pages/linkToServer/__init__.py:155
+msgid "Unlink"
+msgstr "Desvincular"
+
+#: firstboot/pages/linkToServer/__init__.py:156
+msgid "Manual"
+msgstr "Manual"
+
+#: firstboot/pages/linkToServer/__init__.py:157
+msgid "Automatic"
+msgstr "Automático"
 
 #: firstboot/pages/network/__init__.py:37
 #: firstboot/pages/network/__init__.py:90
@@ -145,18 +240,45 @@ msgstr "Nombre"
 msgid "IP"
 msgstr "IP"
 
+#: firstboot/pages/localUsers/__init__.py:34
+#: firstboot/pages/localUsers/__init__.py:76
+msgid "Create local users"
+msgstr "Crear usuarios locales"
+
+#: firstboot/pages/localUsers/__init__.py:77
+msgid ""
+"If you need to manage local users on this workstation click the button "
+"below. Note that if this workstation is linked to a GECOS server, it's "
+"likely you don't need to create local users."
+msgstr ""
+"Si necesita gestionar usuarios locales en este puesto de trabajo haga click "
+"en el botón de abajo. Tenga en cuenta que si este puesto de trabajo está "
+"vinculado a un servidor GECOS, lo más probable es que no necesite crear "
+"usuarios locales."
+
 #: firstboot/pages/runApplications/__init__.py:36
 msgid "Run applications"
 msgstr "Ejecutar aplicaciones"
 
-#: firstboot/FirstbootWindow.py:76
-msgid "First Boot Assistant"
-msgstr "Asistente de Primer Arranque"
+#: firstboot/pages/installSoftware/__init__.py:34
+#: firstboot/pages/installSoftware/__init__.py:76
+msgid "Install software"
+msgstr "Instalar software"
 
-#: firstboot/FirstbootWindow.py:79
-msgid "Previous"
-msgstr "Anterior"
+#: firstboot/pages/installSoftware/__init__.py:77
+msgid "From this window you can install software and manage packages."
+msgstr "Desde esta ventana puede instalar software y gestionar paquetes."
 
-#: firstboot/FirstbootWindow.py:80
-msgid "Next"
-msgstr "Siguiente"
+#: firstboot/__init__.py:42
+msgid "Show debug messages (-vv debugs firstboot_lib also)"
+msgstr "Muestra mensaje de depuración (-vv también depura firstboot_lib)"
+
+#: firstboot/__init__.py:46
+msgid "Debug mode. Force run the application after the first start"
+msgstr ""
+"Modo de depuración. Fuerza la ejecución de la aplicación después del primer "
+"inicio"
+
+#: firstboot/__init__.py:50
+msgid "Use this URL by default in the \"Link to Server\" page."
+msgstr "Usa esta URL por defecto en la página \"Enlazar a Servidor\"."

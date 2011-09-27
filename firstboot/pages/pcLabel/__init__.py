@@ -23,12 +23,6 @@ __license__ = "GPL-2"
 
 import os
 import gtk
-import subprocess
-import shlex
-import urllib
-import urllib2
-import json
-import gobject
 
 from firstboot_lib import PageWindow, FirstbootEntry
 
@@ -39,7 +33,7 @@ gettext.textdomain('firstboot')
 
 __REQUIRED__ = False
 
-__TITLE__ = _('Describe this PC')
+__TITLE__ = _('Describe this workstation')
 
 __LABEL_FILE__ = '/etc/pclabel'
 
@@ -79,6 +73,7 @@ class PCLabelPage(PageWindow.PageWindow):
         self.lblStatus = builder.get_object('lblStatus')
         self.lblLabel = builder.get_object('lblLabel')
         self.txtLabel = builder.get_object('txtLabel')
+        self.btnAccept = builder.get_object('btnAccept')
 
         container = builder.get_object('ContainerWindow')
         page = builder.get_object('PCLabelPage')
@@ -94,12 +89,13 @@ class PCLabelPage(PageWindow.PageWindow):
         self.fbe = FirstbootEntry.FirstbootEntry()
 
     def translate(self):
-        desc = _('When a workstation is linked to a GECOS server it can be \
-managed remotely and existing users in the server can login into \
-the workstation.\n\n')
+        desc = _('You can type a description for this workstation, it will be \
+shown in the GECOS Server admin interface and will help you to find out the \
+workstation later.')
 
         self.lblDescription.set_text(desc)
         self.lblLabel.set_label(_('Label'))
+        self.btnAccept.set_label(_('Accept'))
 
     def get_widget(self):
         return self.page
