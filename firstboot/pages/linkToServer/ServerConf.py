@@ -86,6 +86,7 @@ def get_server_conf(url):
 
 def update_organization(server_conf):
     print server_conf.get_organization()
+    return True
 
 def link_to_ldap(ldap_conf):
 
@@ -93,21 +94,25 @@ def link_to_ldap(ldap_conf):
     basedn = ldap_conf.get_basedn()
     binddn = ldap_conf.get_binddn()
     password = ldap_conf.get_password()
+    errors = []
 
     if len(url) == 0:
-        raise LinkToLDAPException(_('The LDAP URL cannot be empty'))
+        errors.append(_('The LDAP URL cannot be empty.'))
 
     if len(basedn) == 0:
-        raise LinkToLDAPException(_('The LDAP BaseDN cannot be empty'))
+        errors.append(_('The LDAP BaseDN cannot be empty.'))
 
     if len(binddn) == 0:
-        raise LinkToLDAPException(_('The LDAP BindDN cannot be empty'))
+        errors.append(_('The LDAP BindDN cannot be empty.'))
+
+    if len(errors) > 0:
+        return errors
 
     try:
 
         script = os.path.join('/usr/local/bin', __LDAP_CONF_SCRIPT__)
         if not os.path.exists(script):
-            raise LinkToLDAPException(_('The LDAP configuration script could not be found') + ': ' + script)
+            raise LinkToLDAPException(_("The LDAP configuration script couldn't be found") + ': ' + script)
 
         cmd = 'gksu "%s %s %s %s %s"' % (script, url, basedn, binddn, password)
         args = shlex.split(cmd)
@@ -154,7 +159,7 @@ def unlink_from_ldap():
             self.show_status(__STATUS_ERROR__, Exception(_('An error has occurred') + ': ' + output))
 
     except Exception as e:
-        self.show_status(__STATUS_ERROR__, Exception(_('An error has occurred')))
+        self.show_status(__STATUS_ERROR__, Exception(_('An error has occurred.')))
         print e
 
     self.translate()
@@ -163,12 +168,16 @@ def link_to_chef(chef_conf):
 
     url = chef_conf.get_url()
     pemurl = chef_conf.get_pem_url()
+    errors = []
 
     if len(url) == 0:
-        raise LinkToChefException(_('The Chef URL cannot be empty'))
+        errors.append(_('The Chef URL cannot be empty.'))
 
     if len(pemurl) == 0:
-        raise LinkToChefException(_('The Chef certificate URL cannot be empty'))
+        errors.append(_('The Chef certificate URL cannot be empty.'))
+
+    if len(errors) > 0:
+        return errors
 
     try:
         pass
