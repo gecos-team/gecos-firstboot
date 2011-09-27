@@ -84,10 +84,6 @@ def get_server_conf(url):
     except Exception as e:
         raise Exception(e.args[0])
 
-def update_organization(server_conf):
-    print server_conf.get_organization()
-    return True
-
 def link_to_ldap(ldap_conf):
 
     url = ldap_conf.get_url()
@@ -203,6 +199,7 @@ class ServerConf():
             self._data = {}
             self._data['version'] = __CONFIG_FILE_VERSION__
             self._data['organization'] = ''
+            self._data['notes'] = ''
             self._data['pamldap'] = None
             self._data['chef'] = None
 
@@ -218,6 +215,13 @@ class ServerConf():
 
     def set_organization(self, organization):
         self._data['organization'] = organization
+        return self
+
+    def get_notes(self):
+        return str(self._data['notes'])
+
+    def set_notes(self, notes):
+        self._data['notes'] = notes
         return self
 
     def get_ldap_conf(self):
