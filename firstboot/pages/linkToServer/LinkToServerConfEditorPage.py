@@ -79,8 +79,8 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
 
         self.translate()
 
-        container = builder.get_object('ContainerWindow')
-        page = builder.get_object('LinkToServerConfEditorPage')
+        container = builder.get_object(self.__page_container__)
+        page = builder.get_object(self.__gtype_name__)
         container.remove(page)
         self.page = page
 

@@ -64,8 +64,8 @@ class RunApplicationsPage(PageWindow.PageWindow):
         self.builder = builder
         self.ui = builder.get_ui(self, True)
 
-        container = builder.get_object('ContainerWindow')
-        page = builder.get_object('RunApplicationsPage')
+        container = builder.get_object(self.__page_container__)
+        page = builder.get_object(self.__gtype_name__)
         container.remove(page)
         self.page = page
 

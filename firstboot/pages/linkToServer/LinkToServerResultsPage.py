@@ -74,8 +74,8 @@ class LinkToServerResultsPage(PageWindow.PageWindow):
         self.btnBack = builder.get_object('btnBack')
         self.btnAccept = builder.get_object('btnAccept')
 
-        container = builder.get_object('ContainerWindow')
-        page = builder.get_object('LinkToServerResultsPage')
+        container = builder.get_object(self.__page_container__)
+        page = builder.get_object(self.__gtype_name__)
         container.remove(page)
         self.page = page
 

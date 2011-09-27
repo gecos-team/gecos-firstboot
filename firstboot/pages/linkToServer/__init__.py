@@ -85,8 +85,8 @@ class LinkToServerPage(PageWindow.PageWindow):
 
         self.show_status()
 
-        container = builder.get_object('ContainerWindow')
-        page = builder.get_object('LinkToServerPage')
+        container = builder.get_object(self.__page_container__)
+        page = builder.get_object(self.__gtype_name__)
         container.remove(page)
         self.page = page
 

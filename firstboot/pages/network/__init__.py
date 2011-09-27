@@ -71,8 +71,8 @@ class NetworkPage(PageWindow.PageWindow):
 
         self.cmd_options = options
 
-        container = builder.get_object('ContainerWindow')
-        page = builder.get_object('NetworkPage')
+        container = builder.get_object(self.__page_container__)
+        page = builder.get_object(self.__gtype_name__)
         container.remove(page)
         self.page = page
 
