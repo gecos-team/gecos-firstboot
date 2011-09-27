@@ -22,7 +22,6 @@ __license__ = "GPL-2"
 
 
 import gtk
-import gobject
 
 import ServerConf
 from ServerConf import ServerConfException, LinkToLDAPException, LinkToChefException
@@ -45,19 +44,6 @@ def get_page(options=None):
 
 class LinkToServerResultsPage(PageWindow.PageWindow):
     __gtype_name__ = "LinkToServerResultsPage"
-
-    __gsignals__ = {
-        'page-changed': (
-            gobject.SIGNAL_RUN_LAST,
-            gobject.TYPE_NONE,
-            (gobject.TYPE_STRING, gobject.TYPE_PYOBJECT)
-        ),
-        'subpage-changed': (
-            gobject.SIGNAL_RUN_LAST,
-            gobject.TYPE_NONE,
-            (gobject.TYPE_STRING, gobject.TYPE_STRING, gobject.TYPE_PYOBJECT)
-        )
-    }
 
     # To construct a new instance of this method, the following notable 
     # methods are called in this order:
