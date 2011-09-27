@@ -93,11 +93,11 @@ class LinkToServerResultsPage(PageWindow.PageWindow):
         self.ui = builder.get_ui(self, True)
 
         self.lblDescription = builder.get_object('lblDescription')
+        self.boxMessageContainer = builder.get_object('boxMessageContainer')
         self.imgStatus = builder.get_object('imgStatus')
         self.lblStatus = builder.get_object('lblStatus')
+        self.btnBack = builder.get_object('btnBack')
         self.btnAccept = builder.get_object('btnAccept')
-
-        self.show_status()
 
         container = builder.get_object('ContainerWindow')
         page = builder.get_object('LinkToServerResultsPage')
@@ -108,6 +108,8 @@ class LinkToServerResultsPage(PageWindow.PageWindow):
 
         self.cmd_options = options
         self.fbe = FirstbootEntry.FirstbootEntry()
+
+        self.result = False
 
     def is_associated(self):
         return os.path.exists(ServerConf.__LDAP_BAK_FILE__)
@@ -130,44 +132,49 @@ server. If you want to unlink it click on "Unlink".')
         return self.page
 
     def set_params(self, params):
-        if 'result' in params:
-            print params['result']
 
-        if 'exceptions' in params:
-            for e in params['exceptions']:
-                print e
+        if 'server_conf' in params:
+            self.server_conf = params['server_conf']
+
+        if 'result' in params:
+            self.result = params['result']
+
+        if 'errors' in params:
+            for e in params['errors']:
+                box = self.new_message(e, gtk.STOCK_DIALOG_ERROR)
+                self.boxMessageContainer.pack_start(box, False, False)
+
+        if 'messages' in params:
+            for m in params['messages']:
+                box = self.new_message(m, gtk.STOCK_YES)
+                self.boxMessageContainer.pack_start(box, False, False)
+
+        if self.result == True:
+            self.btnBack.set_visible(False)
+            self.btnAccept.set_label(_('Finalize'))
+
+        else:
+            self.btnBack.set_visible(True)
+            self.btnBack.set_label(_('Back'))
+            self.btnAccept.set_label(_('Finalize'))
+
+    def new_message(self, message, icon):
+        box = gtk.HBox()
+        img = gtk.Image()
+        img.set_from_stock(icon, gtk.ICON_SIZE_MENU)
+        img.show()
+        lbl = gtk.Label()
+        lbl.set_text(message)
+        lbl.show()
+        box.pack_start(img, False, True)
+        box.pack_start(lbl, False, True)
+        box.set_spacing(10)
+        box.show()
+        return box
+
+    def on_btnBack_Clicked(self, button):
+        self.emit('subpage-changed', 'linkToServer',
+                  'LinkToServerConfEditorPage', {'server_conf': self.server_conf})
 
     def on_btnAccept_Clicked(self, button):
         self.emit('page-changed', 'linkToServer', {})
-
-    def show_status(self, status=None, exception=None):
-
-        icon_size = gtk.ICON_SIZE_BUTTON
-
-        if status == None:
-            self.imgStatus.set_visible(False)
-            self.lblStatus.set_visible(False)
-
-        elif status == __STATUS_TEST_PASSED__:
-            self.imgStatus.set_from_stock(gtk.STOCK_APPLY, icon_size)
-            self.imgStatus.set_visible(True)
-            self.lblStatus.set_label(_('The configuration file is valid'))
-            self.lblStatus.set_visible(True)
-
-        elif status == __STATUS_CONFIG_CHANGED__:
-            self.imgStatus.set_from_stock(gtk.STOCK_APPLY, icon_size)
-            self.imgStatus.set_visible(True)
-            self.lblStatus.set_label(_('The configuration was updated successfully'))
-            self.lblStatus.set_visible(True)
-
-        elif status == __STATUS_ERROR__:
-            self.imgStatus.set_from_stock(gtk.STOCK_DIALOG_ERROR, icon_size)
-            self.imgStatus.set_visible(True)
-            self.lblStatus.set_label(str(exception.args[0]))
-            self.lblStatus.set_visible(True)
-
-        elif status == __STATUS_CONNECTING__:
-            self.imgStatus.set_from_stock(gtk.STOCK_CONNECT, icon_size)
-            self.imgStatus.set_visible(True)
-            self.lblStatus.set_label(_('Trying to connect...'))
-            self.lblStatus.set_visible(True)
