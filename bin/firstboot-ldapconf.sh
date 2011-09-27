@@ -1,26 +1,47 @@
 #!/bin/bash
 
+if [ 0 != `id -u` ]; then
+    echo "You must be root to run this script."
+    exit 1
+fi
+
 uri=$1
-port=$2
-base=$3
+basedn=$2
+binddn=$3
+passwd=$4
 
 ldapconf=/etc/ldap.conf
-tmpconf=/etc/ldap.conf.tmp
-bakconf=/etc/ldap.conf.firstboot.bak
+bakconf=/etc/ldap.conf.gecos-firststart.bak
+tmpconf=/tmp/ldap.conf.tmp
+
 
 # Check prerequisites
-if [ 0 != `id -u` ]; then
-    echo "You must be root"
-    exit 1
-fi
+check_prerequisites() {
+    
+    if [ ! -f $ldapconf ]; then
+        echo "File not found: "$ldapconf
+        exit 1
+    fi
+    
+    if [ "" == "$uri" ]; then
+        echo "URI couldn't be empty."
+        exit 1
+    fi
 
-if [ ! -f $ldapconf ]; then
-    echo "File not found: "$ldapconf
-    exit 1
-fi
+    if [ "" == "$basedn" ]; then
+        echo "Base DN couldn't be empty."
+        exit 1
+    fi
+
+    if [ "" == "$binddn" ]; then
+        echo "Bind DN couldn't be empty."
+        exit 1
+    fi
+
+}
 
 # Restore the configuration
-if [ "$uri" == "--restore" -o "$uri" == "-r" ]; then
+restore() {
 
     if [ ! -f $bakconf ]; then
         echo "File not found: "$bakconf
@@ -31,58 +52,63 @@ if [ "$uri" == "--restore" -o "$uri" == "-r" ]; then
     mv $bakconf $ldapconf
     
     exit 0
-fi
-
-# Check prerequisites
-if [ "" == "$uri" ]; then
-    echo "URI is empty"
-    exit 1
-fi
-
-if [ "" == "$port" ]; then
-    echo "PORT is empty"
-    exit 1
-fi
-
-if [ "" == "$base" ]; then
-    echo "BASE is empty"
-    exit 1
-fi
-
+}
 
 # Make a backup
-if [ ! -f $bakconf ]; then
-    cp $ldapconf $bakconf
-fi
+backup() {
+    if [ ! -f $bakconf ]; then
+        cp $ldapconf $bakconf
+    fi
+}
 
 
-# Replace the configuration parameters
-sed -e s@"^uri .*"@"uri $uri"@g \
-    -e s/"^port .*"/"port $port"/g \
-    -e s/"^base .*"/"base $base"/g \
-    $ldapconf > $tmpconf
+# Update the configuration
+update_conf() {
 
-ret=`egrep "^port [0-9]+" $tmpconf`
-
-if [ "" == "$ret" ]; then
-    sed -e s/"#port .*"/"port $port"/g $tmpconf > $tmpconf"_2"
-    mv $tmpconf"_2" $tmpconf
-fi
-
+    check_prerequisites    
+    backup
+    
+    sed -e s@"^uri .*"@"uri $uri"@g \
+        -e s/"^base .*"/"base $basedn"/g \
+        -e s/"^bind .*"/"bind $binddn"/g \
+        -e s/"^pass .*"/"pass $passwd"/g \
+        $ldapconf > $tmpconf
+    
+    # It's posible that some options are commented,
+    # be sure to decomment them.
+    sed -e s@"^#uri .*"@"uri $uri"@g \
+        -e s/"^#base .*"/"base $basedn"/g \
+        -e s/"^#bind .*"/"bind $binddn"/g \
+        -e s/"^#pass .*"/"pass $passwd"/g \
+        $tmpconf > $tmpconf".2"
+    
+    mv $tmpconf".2" $tmpconf
+    
+    check_configuration
+    
+    mv $tmpconf $ldapconf
+    echo "The configuration was updated successfully."
+    
+    exit 0
+}
 
 # Check the changes are valid
-r_uri=`egrep "^uri $uri" $tmpconf`
-r_port=`egrep "^port $port" $tmpconf`
-r_base=`egrep "^base $base" $tmpconf`
+check_configuration() {
+    r_uri=`egrep "^uri $uri" $tmpconf`
+    r_base=`egrep "^base $basedn" $tmpconf`
+    r_bind=`egrep "^bind $binddn" $tmpconf`
+    r_pass=`egrep "^pass $passwd" $tmpconf`
 
-if [ "" == $r_uri -o "" == $r_port -o "" == $r_base ]; then
-    echo "The configuration could not be changed"
-    exit 1
+    if [ "" == $r_uri -o "" == $r_base -o "" == $r_bind -o "" == $r_pass ]; then
+        echo "The configuration couldn't be updated correctly."
+        exit 1
+    fi
+}
+
+# Restore or update the LDAP configuration
+if [ "$uri" == "--restore" -o "$uri" == "-r" ]; then
+    restore
+else
+    update_conf
 fi
-
-mv $tmpconf $ldapconf
-echo "The configuration was updated successfully"
-#cat $ldapconf
-
-exit 0
 
