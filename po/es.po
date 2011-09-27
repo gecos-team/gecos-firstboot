@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-27 17:18+0200\n"
+"POT-Creation-Date: 2011-09-27 18:01+0200\n"
 "PO-Revision-Date: 2011-08-08 13:38+0200\n"
 "Last-Translator: AHernandez <ahernandez@emergya.com>\n"
 "Language-Team: Spanish\n"
@@ -39,9 +39,9 @@ msgid ""
 "GECOS Server admin interface and will help you to find out the workstation "
 "later."
 msgstr ""
-"Puede escribir una descripción para este puesto, ésta será mostrada en "
-"la interfaz de administración de GECOS Server y le ayudará a encontrar este "
-"puesto más adelante."
+"Puede escribir una descripción para este puesto de trabajo, ésta será "
+"mostrada en la interfaz de administración de GECOS Server y le ayudará a "
+"encontrar este equipo más adelante."
 
 #: firstboot/pages/pcLabel/__init__.py:97
 msgid "Label"
@@ -105,111 +105,102 @@ msgstr "La URL del certificado de Chef no puede quedar vacía."
 msgid "Link workstation to a server"
 msgstr "Enlazar puesto a un servidor"
 
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:146
+msgid "Remember you can disable the sections you don't want to configure."
+msgstr "Recuerde que puede deshabilitar la sección que no quiera configurar."
+
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:150
+msgid "Version"
+msgstr "Versión"
+
 #: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:151
-#: firstboot/pages/linkToServer/LinkToServerResultsPage.py:118
+msgid "Organization"
+msgstr "Organización"
+
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:152
+msgid "Notes"
+msgstr "Notas"
+
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:156
+msgid "Password"
+msgstr "Contraseña"
+
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:158
+msgid "Certificate URL"
+msgstr "URL del certificado"
+
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:159
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:160
+msgid "Apply"
+msgstr "Aplicar"
+
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:162
+msgid "Configure LDAP"
+msgstr "Configurar LDAP"
+
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:163
+msgid "Configure Chef"
+msgstr "Configurar Chef"
+
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:192
+msgid "The LDAP has been configured successfully."
+msgstr "El LDAP se ha configurado correctamente."
+
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:202
+msgid "The Chef client has been configured successfully."
+msgstr "El cliente de Chef se ha configurado correctamente."
+
+#: firstboot/pages/linkToServer/LinkToServerResultsPage.py:137
+msgid "This workstation has been linked to a GECOS server."
+msgstr "Este puesto de trabajo se ha vinculado a un servidor GECOS."
+
+#: firstboot/pages/linkToServer/LinkToServerResultsPage.py:140
+#: firstboot/pages/linkToServer/LinkToServerResultsPage.py:146
+msgid "Finalize"
+msgstr "Finalizar"
+
+#: firstboot/pages/linkToServer/LinkToServerResultsPage.py:143
+msgid "There are some errors you may fix."
+msgstr "Se han producido algunos errores que debería corregir."
+
+#: firstboot/pages/linkToServer/LinkToServerResultsPage.py:145
+msgid "Back"
+msgstr "Volver"
+
 #: firstboot/pages/linkToServer/__init__.py:141
 msgid ""
 "When a workstation is linked to a GECOS server it can be managed remotely "
-"and existing users in the server can login into the workstation.\n"
+"and existing users in the server can login into this workstation.\n"
 "\n"
 msgstr ""
 "Cuando un puesto de trabajo está vinculado a un servidor GECOS este puede "
 "ser gestionado remotamente y los usuarios existentes en el servidor pueden "
-"iniciar sesión en el puesto de trabajo.\n"
+"iniciar sesión en este puesto de trabajo.\n"
 "\n"
-
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:156
-#: firstboot/pages/linkToServer/LinkToServerResultsPage.py:123
-#: firstboot/pages/linkToServer/__init__.py:147
-msgid ""
-"For linking this workstation, type the URL where the configuration resides "
-"and click on \"Link\"."
-msgstr ""
-"Para vincular este puesto de trabajo, escriba la URL donde se encuentra la "
-"configuración y haga click en \"Vincular\"."
-
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:159
-#: firstboot/pages/linkToServer/LinkToServerResultsPage.py:126
-#: firstboot/pages/linkToServer/__init__.py:151
-msgid ""
-"This workstation is currently linked to a GECOS server. If you want to "
-"unlink it click on \"Unlink\"."
-msgstr ""
-"Este puesto de trabajo está actualmente vinculado a un servidor GECOS. Si "
-"desea desvincularlo haga click en \"Desvincular\"."
-
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:164
-msgid "Version"
-msgstr "Versión"
-
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:165
-msgid "Organization"
-msgstr "Organización"
-
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:169
-msgid "Password"
-msgstr "Contraseña"
-
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:171
-msgid "Certificate URL"
-msgstr "URL del certificado"
-
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:172
-msgid "Cancel"
-msgstr "Cancelar"
-
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:173
-msgid "Apply"
-msgstr "Aplicar"
-
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:175
-msgid "Configure LDAP"
-msgstr "Configurar LDAP"
-
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:176
-msgid "Configure Chef"
-msgstr "Configurar Chef"
-
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:206
-msgid "The LDAP has been configured successfully."
-msgstr "El LDAP se ha configurado correctamente."
-
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:216
-msgid "The Chef client has been configured successfully."
-msgstr "El cliente de Chef se ha configurado correctamente."
-
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:250
-#: firstboot/pages/linkToServer/__init__.py:211
-msgid "The configuration file is valid"
-msgstr "El fichero de configuración es válido"
-
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:256
-#: firstboot/pages/linkToServer/__init__.py:217
-msgid "The configuration was updated successfully"
-msgstr "La configuración se actualizó correctamente"
-
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:268
-#: firstboot/pages/linkToServer/__init__.py:229
-msgid "Trying to connect..."
-msgstr "Intentando conectar..."
-
-#: firstboot/pages/linkToServer/LinkToServerResultsPage.py:154
-#: firstboot/pages/linkToServer/LinkToServerResultsPage.py:159
-msgid "Finalize"
-msgstr "Finalizar"
-
-#: firstboot/pages/linkToServer/LinkToServerResultsPage.py:158
-msgid "Back"
-msgstr "Volver"
 
 #: firstboot/pages/linkToServer/__init__.py:146
 msgid "Configure"
 msgstr "Configurar"
 
+#: firstboot/pages/linkToServer/__init__.py:147
+msgid ""
+"You can type the options manually or download a default configuration from "
+"the server."
+msgstr ""
+"Puede escribir las opciones manualmente o descargar una configuración por "
+"defecto desde el servidor."
+
 #: firstboot/pages/linkToServer/__init__.py:150
 #: firstboot/pages/linkToServer/__init__.py:155
 msgid "Unlink"
 msgstr "Desvincular"
+
+#: firstboot/pages/linkToServer/__init__.py:151
+msgid "This workstation is currently linked to a GECOS server."
+msgstr "Este puesto de trabajo está actualmente vinculado a un servidor GECOS."
 
 #: firstboot/pages/linkToServer/__init__.py:156
 msgid "Manual"
@@ -218,6 +209,18 @@ msgstr "Manual"
 #: firstboot/pages/linkToServer/__init__.py:157
 msgid "Automatic"
 msgstr "Automático"
+
+#: firstboot/pages/linkToServer/__init__.py:211
+msgid "The configuration file is valid."
+msgstr "El fichero de configuración es válido."
+
+#: firstboot/pages/linkToServer/__init__.py:217
+msgid "The configuration was updated successfully."
+msgstr "La configuración se actualizó correctamente."
+
+#: firstboot/pages/linkToServer/__init__.py:229
+msgid "Trying to connect..."
+msgstr "Intentando conectar..."
 
 #: firstboot/pages/network/__init__.py:37
 #: firstboot/pages/network/__init__.py:90

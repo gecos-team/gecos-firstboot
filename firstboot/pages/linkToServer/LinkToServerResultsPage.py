@@ -43,11 +43,6 @@ __REQUIRED__ = False
 
 __TITLE__ = _('Link workstation to a server')
 
-__STATUS_TEST_PASSED__ = 0
-__STATUS_CONFIG_CHANGED__ = 1
-__STATUS_CONNECTING__ = 2
-__STATUS_ERROR__ = 3
-
 
 def get_page(options=None):
 
@@ -115,18 +110,7 @@ class LinkToServerResultsPage(PageWindow.PageWindow):
         return os.path.exists(ServerConf.__LDAP_BAK_FILE__)
 
     def translate(self):
-        desc = _('When a workstation is linked to a GECOS server it can be \
-managed remotely and existing users in the server can login into \
-the workstation.\n\n')
-
-        if not self.is_associated():
-            desc_detail = _('For linking this workstation, type the URL where the \
-configuration resides and click on "Link".')
-        else:
-            desc_detail = _('This workstation is currently linked to a GECOS \
-server. If you want to unlink it click on "Unlink".')
-
-        self.lblDescription.set_text(desc + desc_detail)
+        self.lblDescription.set_text('')
 
     def get_widget(self):
         return self.page
@@ -150,10 +134,13 @@ server. If you want to unlink it click on "Unlink".')
                 self.boxMessageContainer.pack_start(box, False, False)
 
         if self.result == True:
+            self.lblDescription.set_text(_('This workstation has been linked \
+to a GECOS server.'))
             self.btnBack.set_visible(False)
             self.btnAccept.set_label(_('Finalize'))
 
         else:
+            self.lblDescription.set_text(_('There are some errors you may fix.'))
             self.btnBack.set_visible(True)
             self.btnBack.set_label(_('Back'))
             self.btnAccept.set_label(_('Finalize'))

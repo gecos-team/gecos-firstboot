@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-27 17:18+0200\n"
+"POT-Creation-Date: 2011-09-27 18:01+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -102,102 +102,95 @@ msgstr ""
 msgid "Link workstation to a server"
 msgstr ""
 
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:151
-#: firstboot/pages/linkToServer/LinkToServerResultsPage.py:118
-#: firstboot/pages/linkToServer/__init__.py:141
-msgid ""
-"When a workstation is linked to a GECOS server it can be managed remotely "
-"and existing users in the server can login into the workstation.\n"
-"\n"
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:146
+msgid "Remember you can disable the sections you don't want to configure."
 msgstr ""
 
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:156
-#: firstboot/pages/linkToServer/LinkToServerResultsPage.py:123
-#: firstboot/pages/linkToServer/__init__.py:147
-msgid ""
-"For linking this workstation, type the URL where the configuration resides "
-"and click on \"Link\"."
-msgstr ""
-
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:159
-#: firstboot/pages/linkToServer/LinkToServerResultsPage.py:126
-#: firstboot/pages/linkToServer/__init__.py:151
-msgid ""
-"This workstation is currently linked to a GECOS server. If you want to "
-"unlink it click on \"Unlink\"."
-msgstr ""
-
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:164
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:150
 msgid "Version"
 msgstr ""
 
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:165
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:151
 msgid "Organization"
 msgstr ""
 
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:169
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:152
+msgid "Notes"
+msgstr ""
+
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:156
 msgid "Password"
 msgstr ""
 
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:171
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:158
 msgid "Certificate URL"
 msgstr ""
 
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:172
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:159
 msgid "Cancel"
 msgstr ""
 
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:173
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:160
 msgid "Apply"
 msgstr ""
 
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:175
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:162
 msgid "Configure LDAP"
 msgstr ""
 
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:176
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:163
 msgid "Configure Chef"
 msgstr ""
 
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:206
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:192
 msgid "The LDAP has been configured successfully."
 msgstr ""
 
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:216
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:202
 msgid "The Chef client has been configured successfully."
 msgstr ""
 
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:250
-#: firstboot/pages/linkToServer/__init__.py:211
-msgid "The configuration file is valid"
+#: firstboot/pages/linkToServer/LinkToServerResultsPage.py:137
+msgid "This workstation has been linked to a GECOS server."
 msgstr ""
 
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:256
-#: firstboot/pages/linkToServer/__init__.py:217
-msgid "The configuration was updated successfully"
-msgstr ""
-
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:268
-#: firstboot/pages/linkToServer/__init__.py:229
-msgid "Trying to connect..."
-msgstr ""
-
-#: firstboot/pages/linkToServer/LinkToServerResultsPage.py:154
-#: firstboot/pages/linkToServer/LinkToServerResultsPage.py:159
+#: firstboot/pages/linkToServer/LinkToServerResultsPage.py:140
+#: firstboot/pages/linkToServer/LinkToServerResultsPage.py:146
 msgid "Finalize"
 msgstr ""
 
-#: firstboot/pages/linkToServer/LinkToServerResultsPage.py:158
+#: firstboot/pages/linkToServer/LinkToServerResultsPage.py:143
+msgid "There are some errors you may fix."
+msgstr ""
+
+#: firstboot/pages/linkToServer/LinkToServerResultsPage.py:145
 msgid "Back"
+msgstr ""
+
+#: firstboot/pages/linkToServer/__init__.py:141
+msgid ""
+"When a workstation is linked to a GECOS server it can be managed remotely "
+"and existing users in the server can login into this workstation.\n"
+"\n"
 msgstr ""
 
 #: firstboot/pages/linkToServer/__init__.py:146
 msgid "Configure"
 msgstr ""
 
+#: firstboot/pages/linkToServer/__init__.py:147
+msgid ""
+"You can type the options manually or download a default configuration from "
+"the server."
+msgstr ""
+
 #: firstboot/pages/linkToServer/__init__.py:150
 #: firstboot/pages/linkToServer/__init__.py:155
 msgid "Unlink"
+msgstr ""
+
+#: firstboot/pages/linkToServer/__init__.py:151
+msgid "This workstation is currently linked to a GECOS server."
 msgstr ""
 
 #: firstboot/pages/linkToServer/__init__.py:156
@@ -206,6 +199,18 @@ msgstr ""
 
 #: firstboot/pages/linkToServer/__init__.py:157
 msgid "Automatic"
+msgstr ""
+
+#: firstboot/pages/linkToServer/__init__.py:211
+msgid "The configuration file is valid."
+msgstr ""
+
+#: firstboot/pages/linkToServer/__init__.py:217
+msgid "The configuration was updated successfully."
+msgstr ""
+
+#: firstboot/pages/linkToServer/__init__.py:229
+msgid "Trying to connect..."
 msgstr ""
 
 #: firstboot/pages/network/__init__.py:37

@@ -48,11 +48,6 @@ __URLOPEN_TIMEOUT__ = 5
 __LDAP_BAK_FILE__ = '/etc/ldap.conf.firstboot.bak'
 __LDAP_CONF_SCRIPT__ = 'firstboot-ldapconf.sh'
 
-__STATUS_TEST_PASSED__ = 0
-__STATUS_CONFIG_CHANGED__ = 1
-__STATUS_CONNECTING__ = 2
-__STATUS_ERROR__ = 3
-
 
 def get_page(options=None):
 
@@ -148,21 +143,13 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
         return '<b>%s</b>' % str
 
     def translate(self):
-        desc = _('When a workstation is linked to a GECOS server it can be \
-managed remotely and existing users in the server can login into \
-the workstation.\n\n')
+        desc = _('Remember you can disable the sections you don\'t want to configure.')
 
-        if not self.is_associated():
-            desc_detail = _('For linking this workstation, type the URL where the \
-configuration resides and click on "Link".')
-        else:
-            desc_detail = _('This workstation is currently linked to a GECOS \
-server. If you want to unlink it click on "Unlink".')
-
-        self.builder.get_object('lblDescription').set_text(desc + desc_detail)
+        self.builder.get_object('lblDescription').set_text(desc)
 
         self.builder.get_object('lblVersion').set_label(_('Version'))
         self.builder.get_object('lblOrganization').set_label(_('Organization'))
+        self.builder.get_object('lblNotes').set_label(_('Notes'))
         self.builder.get_object('lblUrlLDAP').set_label('URL')
         self.builder.get_object('lblBaseDN').set_label('Base DN')
         self.builder.get_object('lblBindDN').set_label('Bind DN')
@@ -195,7 +182,6 @@ server. If you want to unlink it click on "Unlink".')
 
     def on_btnApply_Clicked(self, button):
 
-        #self.show_status()
         errors = []
         messages = []
 
@@ -235,35 +221,3 @@ server. If you want to unlink it click on "Unlink".')
         self.server_conf.get_ldap_conf().set_password(self.txtPassword.get_text())
         self.server_conf.get_chef_conf().set_url(self.txtUrlChef.get_text())
         self.server_conf.get_chef_conf().set_pem_url(self.txtUrlChefCert.get_text())
-
-    def show_status(self, status=None, exception=None):
-
-        icon_size = gtk.ICON_SIZE_BUTTON
-
-        if status == None:
-            self.imgStatus.set_visible(False)
-            self.lblStatus.set_visible(False)
-
-        elif status == __STATUS_TEST_PASSED__:
-            self.imgStatus.set_from_stock(gtk.STOCK_APPLY, icon_size)
-            self.imgStatus.set_visible(True)
-            self.lblStatus.set_label(_('The configuration file is valid'))
-            self.lblStatus.set_visible(True)
-
-        elif status == __STATUS_CONFIG_CHANGED__:
-            self.imgStatus.set_from_stock(gtk.STOCK_APPLY, icon_size)
-            self.imgStatus.set_visible(True)
-            self.lblStatus.set_label(_('The configuration was updated successfully'))
-            self.lblStatus.set_visible(True)
-
-        elif status == __STATUS_ERROR__:
-            self.imgStatus.set_from_stock(gtk.STOCK_DIALOG_ERROR, icon_size)
-            self.imgStatus.set_visible(True)
-            self.lblStatus.set_label(str(exception.args[0]))
-            self.lblStatus.set_visible(True)
-
-        elif status == __STATUS_CONNECTING__:
-            self.imgStatus.set_from_stock(gtk.STOCK_CONNECT, icon_size)
-            self.imgStatus.set_visible(True)
-            self.lblStatus.set_label(_('Trying to connect...'))
-            self.lblStatus.set_visible(True)

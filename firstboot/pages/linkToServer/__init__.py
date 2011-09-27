@@ -140,16 +140,16 @@ class LinkToServerPage(PageWindow.PageWindow):
     def translate(self):
         desc = _('When a workstation is linked to a GECOS server it can be \
 managed remotely and existing users in the server can login into \
-the workstation.\n\n')
+this workstation.\n\n')
 
         if not self.is_associated():
             self.btnLinkToServer.set_label(_('Configure'))
-            desc_detail = _('For linking this workstation, type the URL where the \
-configuration resides and click on "Link".')
+            desc_detail = _('You can type the options manually or download \
+a default configuration from the server.')
         else:
             self.btnLinkToServer.set_label(_('Unlink'))
             desc_detail = _('This workstation is currently linked to a GECOS \
-server. If you want to unlink it click on "Unlink".')
+server.')
 
         self.lblDescription.set_text(desc + desc_detail)
         self.radioUnlink.set_label(_('Unlink'))
@@ -208,13 +208,13 @@ server. If you want to unlink it click on "Unlink".')
         elif status == __STATUS_TEST_PASSED__:
             self.imgStatus.set_from_stock(gtk.STOCK_APPLY, icon_size)
             self.imgStatus.set_visible(True)
-            self.lblStatus.set_label(_('The configuration file is valid'))
+            self.lblStatus.set_label(_('The configuration file is valid.'))
             self.lblStatus.set_visible(True)
 
         elif status == __STATUS_CONFIG_CHANGED__:
             self.imgStatus.set_from_stock(gtk.STOCK_APPLY, icon_size)
             self.imgStatus.set_visible(True)
-            self.lblStatus.set_label(_('The configuration was updated successfully'))
+            self.lblStatus.set_label(_('The configuration was updated successfully.'))
             self.lblStatus.set_visible(True)
 
         elif status == __STATUS_ERROR__:
