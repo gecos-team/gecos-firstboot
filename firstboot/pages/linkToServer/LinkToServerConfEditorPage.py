@@ -99,7 +99,7 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
 
         self.lblDescription = self.builder.get_object('lblDescription')
         self.lblVersionValue = self.builder.get_object('lblVersionValue')
-        self.txtOrganization = self.builder.get_object('txtOrganization')
+        self.lblOrganizationValue = self.builder.get_object('lblOrganizationValue')
         self.txtUrlLDAP = self.builder.get_object('txtUrlLDAP')
         self.txtBaseDN = self.builder.get_object('txtBaseDN')
         self.txtBindDN = self.builder.get_object('txtBindDN')
@@ -128,7 +128,7 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
             self.server_conf = params['server_conf']
             if not self.server_conf is None:
                 self.lblVersionValue.set_label(self.server_conf.get_version())
-                self.txtOrganization.set_text(self.server_conf.get_organization())
+                self.lblOrganizationValue.set_label(self.server_conf.get_organization())
                 self.txtUrlLDAP.set_text(self.server_conf.get_ldap_conf().get_url())
                 self.txtBaseDN.set_text(self.server_conf.get_ldap_conf().get_basedn())
                 self.txtBindDN.set_text(self.server_conf.get_ldap_conf().get_binddn())
@@ -200,12 +200,6 @@ server. If you want to unlink it click on "Unlink".')
         errors = []
         messages = []
 
-        ret = ServerConf.update_organization(self.server_conf)
-        if ret == True:
-            messages.append(_('The organization has been configured successfully.'))
-        else:
-            errors += ret
-
         if self.chkLDAP.get_active():
             try:
                 ret = ServerConf.link_to_ldap(self.server_conf.get_ldap_conf())
@@ -236,7 +230,6 @@ server. If you want to unlink it click on "Unlink".')
     def on_serverConf_changed(self, entry):
         if not self.update_server_conf:
             return
-        self.server_conf.set_organization(self.txtOrganization.get_text())
         self.server_conf.get_ldap_conf().set_url(self.txtUrlLDAP.get_text())
         self.server_conf.get_ldap_conf().set_basedn(self.txtBaseDN.get_text())
         self.server_conf.get_ldap_conf().set_binddn(self.txtBindDN.get_text())
