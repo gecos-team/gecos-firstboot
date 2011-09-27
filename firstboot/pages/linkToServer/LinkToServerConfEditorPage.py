@@ -138,7 +138,6 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
 
         if self.server_conf is None:
             self.server_conf = ServerConf.ServerConf()
-            print self.server_conf
 
         self.update_server_conf = True
 
