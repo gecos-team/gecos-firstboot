@@ -197,28 +197,40 @@ server. If you want to unlink it click on "Unlink".')
     def on_btnApply_Clicked(self, button):
 
         #self.show_status()
-        exceptions = []
+        errors = []
+        messages = []
 
-        print self.server_conf
-        ServerConf.update_organization(self.server_conf)
+        ret = ServerConf.update_organization(self.server_conf)
+        if ret == True:
+            messages.append(_('The organization has been configured successfully.'))
+        else:
+            errors += ret
 
         if self.chkLDAP.get_active():
             try:
-                ServerConf.link_to_ldap(self.server_conf.get_ldap_conf())
+                ret = ServerConf.link_to_ldap(self.server_conf.get_ldap_conf())
+                if ret == True:
+                    messages.append(_('The LDAP has been configured successfully.'))
+                else:
+                    errors += ret
             except Exception as e:
-                exceptions.append(e)
+                errors.append(str(e))
 
         if self.chkChef.get_active():
             try:
-                ServerConf.link_to_chef(self.server_conf.get_chef_conf())
+                ret = ServerConf.link_to_chef(self.server_conf.get_chef_conf())
+                if ret == True:
+                    messages.append(_('The Chef client has been configured successfully.'))
+                else:
+                    errors += ret
             except Exception as e:
-                exceptions.append(e)
+                errors.append(str(e))
 
-        result = not bool(len(exceptions))
+        result = not bool(len(errors))
         self.emit('subpage-changed', 'linkToServer',
                   'LinkToServerResultsPage',
                   {'result': result, 'server_conf': self.server_conf,
-                   'exceptions': exceptions}
+                   'errors': errors, 'messages': messages}
         )
 
     def on_serverConf_changed(self, entry):
