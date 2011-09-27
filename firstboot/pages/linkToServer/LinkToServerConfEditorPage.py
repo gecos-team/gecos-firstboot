@@ -21,14 +21,6 @@ __copyright__ = "Copyright (C) 2011, Junta de Andalucía <devmaster@guadalinex.o
 __license__ = "GPL-2"
 
 
-import os
-import gtk
-import subprocess
-import shlex
-import urllib
-import urllib2
-import json
-import urlparse
 import gobject
 
 import ServerConf
@@ -135,9 +127,6 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
             self.server_conf = ServerConf.ServerConf()
 
         self.update_server_conf = True
-
-    def is_associated(self):
-        return os.path.exists(__LDAP_BAK_FILE__)
 
     def _bold(self, str):
         return '<b>%s</b>' % str

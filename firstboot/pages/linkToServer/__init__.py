@@ -23,11 +23,6 @@ __license__ = "GPL-2"
 
 import os
 import gtk
-import subprocess
-import shlex
-import urllib
-import urllib2
-import json
 import gobject
 
 import ServerConf

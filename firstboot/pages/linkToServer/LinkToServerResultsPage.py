@@ -21,13 +21,7 @@ __copyright__ = "Copyright (C) 2011, Junta de Andalucía <devmaster@guadalinex.o
 __license__ = "GPL-2"
 
 
-import os
 import gtk
-import subprocess
-import shlex
-import urllib
-import urllib2
-import json
 import gobject
 
 import ServerConf
@@ -105,9 +99,6 @@ class LinkToServerResultsPage(PageWindow.PageWindow):
         self.fbe = FirstbootEntry.FirstbootEntry()
 
         self.result = False
-
-    def is_associated(self):
-        return os.path.exists(ServerConf.__LDAP_BAK_FILE__)
 
     def translate(self):
         self.lblDescription.set_text('')

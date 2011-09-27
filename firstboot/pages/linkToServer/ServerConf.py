@@ -22,14 +22,14 @@ __license__ = "GPL-2"
 
 
 import os
-import gtk
+#import gtk
 import subprocess
 import shlex
 import urllib
 import urllib2
 import json
 import urlparse
-import gobject
+#import gobject
 
 import gettext
 from gettext import gettext as _
