@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
-  <object class="GtkWindow" id="ContainerWindow">
+  <object class="LinkToServerConfEditorPage" id="ContainerWindow">
     <property name="can_focus">False</property>
     <child>
       <object class="GtkVBox" id="LinkToServerConfEditorPage">
