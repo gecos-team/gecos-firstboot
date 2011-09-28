@@ -40,6 +40,16 @@ check_prerequisites() {
 
 }
 
+# Check if LDAP is currently configured
+check_configured() {
+    if [ -f $bakconf ]; then
+        echo 1
+    else
+        echo 0
+    fi
+    exit 0
+}
+
 # Restore the configuration
 restore() {
 
@@ -106,8 +116,14 @@ check_configuration() {
 }
 
 # Restore or update the LDAP configuration
-if [ "$uri" == "--restore" -o "$uri" == "-r" ]; then
-    restore
-else
-    update_conf
-fi
+case $uri in
+    --restore | -r)
+        restore
+        ;;
+    --query | -q)
+        check_configured
+        ;;
+    *)
+        update_conf
+        ;;
+esac
