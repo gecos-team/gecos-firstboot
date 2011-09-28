@@ -293,21 +293,21 @@ class ChefConf():
     def _validate(self):
         if self._data is None:
             self._data = {}
-            self._data['url'] = ''
-            self._data['pemurl'] = ''
+            self._data['chef_server_url'] = ''
+            self._data['chef_validation_url'] = ''
 
     def get_url(self):
-        return str(self._data['url'])
+        return str(self._data['chef_server_url'])
 
     def set_url(self, url):
-        self._data['url'] = url
+        self._data['chef_server_url'] = url
         return self
 
     def get_pem_url(self):
-        return str(self._data['pemurl'])
+        return str(self._data['chef_validation_url'])
 
     def set_pem_url(self, pem_url):
-        self._data['pemurl'] = pem_url
+        self._data['chef_validation_url'] = pem_url
         return self
 
 
