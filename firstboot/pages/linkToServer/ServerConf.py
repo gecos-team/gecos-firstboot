@@ -82,6 +82,32 @@ def get_server_conf(url):
     except Exception as e:
         raise Exception(e.args[0])
 
+def ldap_is_configured():
+    try:
+
+        script = os.path.join('/usr/local/bin', __LDAP_CONF_SCRIPT__)
+        if not os.path.exists(script):
+            raise LinkToLDAPException(_("The LDAP configuration script couldn't be found") + ': ' + script)
+
+        cmd = '%s --query' % (script,)
+        args = shlex.split(cmd)
+
+        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        exit_code = os.waitpid(process.pid, 0)
+        output = process.communicate()[0]
+        output = output.strip()
+
+        if exit_code[1] == 0:
+            ret = bool(int(output))
+            return ret
+
+        else:
+            raise LinkToLDAPException(_('LDAP setup error') + ': ' + output)
+
+
+    except Exception as e:
+        raise e
+
 def link_to_ldap(ldap_conf):
 
     url = ldap_conf.get_url()
@@ -115,21 +141,13 @@ def link_to_ldap(ldap_conf):
         exit_code = os.waitpid(process.pid, 0)
         output = process.communicate()[0]
 
-        if exit_code[1] == 0:
-            #self.show_status(__STATUS_CONFIG_CHANGED__)
-            pass
-
-        else:
-            #self.show_status(__STATUS_ERROR__, Exception(_('An error has occurred') + ': ' + output))
+        if exit_code[1] != 0:
             raise LinkToLDAPException(_('LDAP setup error') + ': ' + output)
 
-
     except Exception as e:
-        #self.show_status(__STATUS_ERROR__, Exception(_('An error has occurred')))
         raise e
 
     return True
-    #self.translate()
 
 def unlink_from_ldap():
 
@@ -146,17 +164,13 @@ def unlink_from_ldap():
         exit_code = os.waitpid(process.pid, 0)
         output = process.communicate()[0]
 
-        if exit_code[1] == 0:
-            self.show_status(__STATUS_CONFIG_CHANGED__)
-
-        else:
-            self.show_status(__STATUS_ERROR__, Exception(_('An error has occurred') + ': ' + output))
+        if exit_code[1] != 0:
+            raise LinkToLDAPException(_('An error has ocurred unlinking from LDAP') + ': ' + output)
 
     except Exception as e:
-        self.show_status(__STATUS_ERROR__, Exception(_('An error has occurred.')))
-        print e
+        raise e
 
-    self.translate()
+    return True
 
 def link_to_chef(chef_conf):
 
@@ -182,7 +196,7 @@ def link_to_chef(chef_conf):
     return True
 
 def unlink_from_chef():
-    pass
+    return True
 
 class ServerConf():
 
