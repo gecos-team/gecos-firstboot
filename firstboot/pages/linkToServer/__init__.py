@@ -51,7 +51,7 @@ def get_page(options=None):
 class LinkToServerPage(PageWindow.PageWindow):
     __gtype_name__ = "LinkToServerPage"
 
-    # To construct a new instance of this method, the following notable 
+    # To construct a new instance of this method, the following notable
     # methods are called in this order:
     # __new__(cls)
     # __init__(self)
@@ -74,7 +74,8 @@ class LinkToServerPage(PageWindow.PageWindow):
         self.ui = builder.get_ui(self, True)
 
         self.lblDescription = builder.get_object('lblDescription')
-        self.radioUnlink = builder.get_object('radioUnlink')
+        self.chkUnlinkLDAP = builder.get_object('chkUnlinkLDAP')
+        self.chkUnlinkChef = builder.get_object('chkUnlinkChef')
         self.radioManual = builder.get_object('radioManual')
         self.radioAuto = builder.get_object('radioAuto')
         self.lblUrl = builder.get_object('lblUrl')
@@ -90,15 +91,26 @@ class LinkToServerPage(PageWindow.PageWindow):
         container.remove(page)
         self.page = page
 
+        self.ldap_is_configured = ServerConf.ldap_is_configured()
         self.translate()
 
-        if not self.is_associated():
-            self.radioUnlink.set_visible(False)
+        if not self.ldap_is_configured:
+            self.chkUnlinkLDAP.set_visible(False)
+            self.chkUnlinkChef.set_visible(False)
+            self.radioManual.set_visible(True)
+            self.radioAuto.set_visible(True)
+            self.lblUrl.set_visible(True)
+            self.txtUrl.set_visible(True)
+            self.btnLinkToServer.set_sensitive(True)
 
         else:
-            self.radioUnlink.set_active(True)
+            self.chkUnlinkLDAP.set_visible(True)
+            self.chkUnlinkChef.set_visible(True)
             self.radioManual.set_visible(False)
             self.radioAuto.set_visible(False)
+            self.lblUrl.set_visible(False)
+            self.txtUrl.set_visible(False)
+            self.btnLinkToServer.set_sensitive(False)
 
 
         self.cmd_options = options
@@ -115,15 +127,12 @@ class LinkToServerPage(PageWindow.PageWindow):
 
         self.txtUrl.set_text(url)
 
-    def is_associated(self):
-        return os.path.exists(ServerConf.__LDAP_BAK_FILE__)
-
     def translate(self):
         desc = _('When a workstation is linked to a GECOS server it can be \
 managed remotely and existing users in the server can login into \
 this workstation.\n\n')
 
-        if not self.is_associated():
+        if not self.ldap_is_configured:
             self.btnLinkToServer.set_label(_('Configure'))
             desc_detail = _('You can type the options manually or download \
 a default configuration from the server.')
@@ -133,16 +142,21 @@ a default configuration from the server.')
 server.')
 
         self.lblDescription.set_text(desc + desc_detail)
-        self.radioUnlink.set_label(_('Unlink'))
+        self.chkUnlinkLDAP.set_label(_('Unlink from LDAP'))
+        self.chkUnlinkChef.set_label(_('Unlink from Chef'))
         self.radioManual.set_label(_('Manual'))
         self.radioAuto.set_label(_('Automatic'))
 
     def get_widget(self):
         return self.page
 
-    def on_radioUnlink_toggled(self, button):
-        self.lblUrl.set_visible(False)
-        self.txtUrl.set_visible(False)
+    def on_chkUnlinkLDAP_toggle(self, button):
+        active = button.get_active() | self.chkUnlinkChef.get_active()
+        self.btnLinkToServer.set_sensitive(active)
+
+    def on_chkUnlinkChef_toggle(self, button):
+        active = button.get_active() | self.chkUnlinkLDAP.get_active()
+        self.btnLinkToServer.set_sensitive(active)
 
     def on_radioManual_toggled(self, button):
         self.lblUrl.set_visible(False)
@@ -156,7 +170,7 @@ server.')
 
         self.show_status()
 
-        if self.radioUnlink.get_active() and self.is_associated():
+        if self.ldap_is_configured:
             self.unlink_from_server()
 
         elif self.radioManual.get_active():
@@ -177,6 +191,38 @@ server.')
 
             except Exception as e:
                 print e
+
+    def unlink_from_server(self):
+
+        errors = []
+        messages = []
+
+        if self.chkUnlinkLDAP.get_active():
+            try:
+                ret = ServerConf.unlink_from_ldap()
+                if ret == True:
+                    messages.append(_('Workstation has been unlinked from LDAP.'))
+                else:
+                    errors += ret
+            except Exception as e:
+                errors.append(str(e))
+
+        if self.chkUnlinkChef.get_active():
+            try:
+                ret = ServerConf.unlink_from_chef()
+                if ret == True:
+                    messages.append(_('Workstation has been unlinked from Chef.'))
+                else:
+                    errors += ret
+            except Exception as e:
+                errors.append(str(e))
+
+        result = not bool(len(errors))
+        self.emit('subpage-changed', 'linkToServer',
+            'LinkToServerResultsPage',
+            {'result': result, 'server_conf': None,
+            'errors': errors, 'messages': messages}
+        )
 
     def show_status(self, status=None, exception=None):
 
