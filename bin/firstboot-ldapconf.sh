@@ -81,7 +81,7 @@ update_conf() {
     check_prerequisites
     backup
 
-    sed -e s@"^uri .*"@"uri $uri"@g \
+    sed -e s@"^uri .*"@"uri $uri"@ \
         -e s/"^base .*"/"base $basedn"/g \
         -e s/"^binddn .*"/"binddn $binddn"/g \
         -e s/"^bindpw .*"/"bindpw $bindpw"/g \
@@ -89,8 +89,7 @@ update_conf() {
 
     # It's posible that some options are commented,
     # be sure to decomment them.
-    sed -e s@"^#uri .*"@"uri $uri"@g \
-        -e s/"^#base .*"/"base $basedn"/g \
+    sed -e s/"^#base .*"/"base $basedn"/g \
         -e s/"^#binddn .*"/"binddn $binddn"/g \
         -e s/"^#bindpw .*"/"bindpw $bindpw"/g \
         $tmpconf > $tmpconf".2"
