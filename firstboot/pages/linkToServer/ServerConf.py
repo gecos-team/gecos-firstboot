@@ -108,7 +108,7 @@ def link_to_ldap(ldap_conf):
         if not os.path.exists(script):
             raise LinkToLDAPException(_("The LDAP configuration script couldn't be found") + ': ' + script)
 
-        cmd = 'gksu "%s %s %s %s %s"' % (script, url, basedn, binddn, password)
+        cmd = 'gksu "%s" "%s" "%s" "%s" "%s"' % (script, url, basedn, binddn, password)
         args = shlex.split(cmd)
 
         process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
