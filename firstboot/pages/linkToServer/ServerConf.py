@@ -45,7 +45,7 @@ def parse_url(url):
     parsed_url = list(urlparse.urlparse(url))
     if parsed_url[0] in ('http', 'https'):
         query = urlparse.parse_qsl(parsed_url[4])
-        query.append(('v', ServerConf.__CONFIG_FILE_VERSION__))
+        query.append(('v', __CONFIG_FILE_VERSION__))
         query = urllib.urlencode(query)
         parsed_url[4] = query
     url = urlparse.urlunparse(parsed_url)
@@ -60,6 +60,7 @@ def get_server_conf(url):
         fp = urllib2.urlopen(url, timeout=__URLOPEN_TIMEOUT__)
         #print fp.url(), fp.info()
         content = fp.read()
+        #print content
         conf = json.loads(content)
         #print conf
 
