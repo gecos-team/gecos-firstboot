@@ -37,8 +37,8 @@ gettext.textdomain('firstboot')
 __CONFIG_FILE_VERSION__ = '1.1'
 
 __URLOPEN_TIMEOUT__ = 5
-__LDAP_BAK_FILE__ = '/etc/ldap.conf.firstboot.bak'
 __LDAP_CONF_SCRIPT__ = 'firstboot-ldapconf.sh'
+__CHEF_CONF_SCRIPT__ = 'firstboot-chef.sh'
 
 
 def parse_url(url):
@@ -188,7 +188,20 @@ def link_to_chef(chef_conf):
         return errors
 
     try:
-        pass
+
+        script = os.path.join('/usr/local/bin', __CHEF_CONF_SCRIPT__)
+        if not os.path.exists(script):
+            raise LinkToChefException(_("The Chef configuration script couldn't be found") + ': ' + script)
+
+        cmd = 'gksu "%s" "%s" "%s" "%s" "%s"' % (script, url, pemurl, 'user', 'passwd')
+        args = shlex.split(cmd)
+
+        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        exit_code = os.waitpid(process.pid, 0)
+        output = process.communicate()[0]
+
+        if exit_code[1] != 0:
+            raise LinkToChefException(_('Chef setup error') + ': ' + output)
 
     except Exception as e:
         raise e
@@ -196,6 +209,26 @@ def link_to_chef(chef_conf):
     return True
 
 def unlink_from_chef():
+
+    try:
+
+        script = os.path.join('/usr/local/bin', __CHEF_CONF_SCRIPT__)
+        if not os.path.exists(script):
+            raise LinkToChefException("The file could not be found: " + script)
+
+        cmd = 'gksu "%s --restore"' % (script,)
+        args = shlex.split(cmd)
+
+        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        exit_code = os.waitpid(process.pid, 0)
+        output = process.communicate()[0]
+
+        if exit_code[1] != 0:
+            raise LinkToChefException(_('An error has ocurred unlinking from Chef') + ': ' + output)
+
+    except Exception as e:
+        raise e
+
     return True
 
 class ServerConf():
