@@ -237,23 +237,23 @@ class LdapConf():
     def _validate(self):
         if self._data is None:
             self._data = {}
-            self._data['url'] = ''
-            self._data['basedn'] = ''
+            self._data['uri'] = ''
+            self._data['base'] = ''
             self._data['binddn'] = ''
-            self._data['password'] = ''
+            self._data['bindpw'] = ''
 
     def get_url(self):
-        return str(self._data['url'])
+        return str(self._data['uri'])
 
     def set_url(self, url):
-        self._data['url'] = url
+        self._data['uri'] = url
         return self
 
     def get_basedn(self):
-        return str(self._data['basedn'])
+        return str(self._data['base'])
 
     def set_basedn(self, basedn):
-        self._data['basedn'] = basedn
+        self._data['base'] = basedn
         return self
 
     def get_binddn(self):
@@ -264,10 +264,10 @@ class LdapConf():
         return self
 
     def get_password(self):
-        return str(self._data['password'])
+        return str(self._data['bindpw'])
 
     def set_password(self, password):
-        self._data['password'] = password
+        self._data['bindpw'] = password
         return self
 
 class ChefConf():
@@ -307,7 +307,7 @@ class ServerConfException(Exception):
 
 class LinkToLDAPException(Exception):
     '''
-    Raised when there are errors trying to link the client to a LDAP server. 
+    Raised when there are errors trying to link the client to a LDAP server.
     '''
 
     def __init__(self, msg):
@@ -315,7 +315,7 @@ class LinkToLDAPException(Exception):
 
 class LinkToChefException(Exception):
     '''
-    Raised when there are errors trying to link the client to a Chef server. 
+    Raised when there are errors trying to link the client to a Chef server.
     '''
 
     def __init__(self, msg):

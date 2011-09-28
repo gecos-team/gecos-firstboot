@@ -3,10 +3,10 @@
     "organization": "My Organization",
     "notes": "Notes",
     "pamldap": {
-        "url": "ldap://192.168.1.1:389/",
-        "basedn": "dn=foo,dc=bar",
+        "uri": "ldap://192.168.1.1:389/",
+        "base": "dn=foo,dc=bar",
         "binddn": "dn=john doe,dc=foobar",
-        "password": "12345"
+        "bindpw": "12345"
     },
     "chef": {
         "url": "http://192.168.1.1",
