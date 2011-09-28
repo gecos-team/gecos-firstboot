@@ -255,7 +255,7 @@ class FirstbootWindow(Window):
 
     def show_applications(self):
 
-        filter = ['firefox', 'gnome-terminal']
+        filter = ['firefox', 'firefox-firma', 'gnome-terminal']
         app_list = gio.app_info_get_all()
 
         for app in app_list:
@@ -266,7 +266,7 @@ class FirstbootWindow(Window):
 
                 try:
                     if isinstance(icon, gio.FileIcon):
-                        pixbuf = gtk.gdk.Pixbuf.from_file(icon).get_file().get_path()
+                        pixbuf = gtk.gdk.pixbuf_new_from_file(icon.get_file().get_path())
 
                     elif isinstance(icon, gio.ThemedIcon):
                         theme = gtk.icon_theme_get_default()
