@@ -37,7 +37,9 @@ class FirstbootEntry(IniFile):
             fd.close()
 
     def get_firststart(self):
-        return self.get('firststart')
+        fs = self.get('firststart').strip()
+        fs = bool(int(fs))
+        return fs
 
     def set_firststart(self, value):
         self.set('firststart', value)
@@ -50,7 +52,7 @@ class FirstbootEntry(IniFile):
         self.set('url', value, group='LinkToServer')
         self.write()
 
-#=============================================================================== 
+#===============================================================================
 #    def new(self, filename):
 #        self.content = dict()
 #        self.addGroup(self.default_group)
