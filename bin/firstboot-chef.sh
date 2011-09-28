@@ -1,7 +1,132 @@
 #!/bin/bash
 
-if [ 0 != `id -u` ]; then
-    echo "You must be root to run this script."
-    exit 1
-fi
+chef_server_url=$1
+chef_validation_url=$2
+user=$3
+passwd=$4
 
+chefdir=/etc/chef
+chefconf=$chefdir/client.rb
+valpem=$chefdir/validation.pem
+bakconf=$chefdir/client.rb.gecos-firststart.bak
+tmpconf=/tmp/client.rb.tmp
+
+
+# Need root user
+need_root() {
+    if [ 0 != `id -u` ]; then
+        echo "You must be root to run this script."
+        exit 1
+    fi
+}
+
+# Check prerequisites
+check_prerequisites() {
+
+    if [ ! -f $chefconf ]; then
+        echo "File not found: "$chefconf
+        exit 1
+    fi
+
+    if [ "" == "$chef_server_url" ]; then
+        echo "URI couldn't be empty."
+        exit 1
+    fi
+}
+
+# Check if Chef is currently configured
+check_configured() {
+    if [ -f $bakconf ]; then
+        echo 1
+    else
+        echo 0
+    fi
+    exit 0
+}
+
+# Restore the configuration
+restore() {
+
+    if [ ! -f $bakconf ]; then
+        echo "File not found: "$bakconf
+        exit 1
+    fi
+
+    mv $chefconf $chefconf".bak"
+    mv $bakconf $chefconf
+
+    exit 0
+}
+
+# Make a backup
+backup() {
+    if [ ! -f $bakconf ]; then
+        cp $chefconf $bakconf
+    fi
+}
+
+
+# Update the configuration
+update_conf() {
+
+    check_prerequisites
+    backup
+
+    sed -e s@"^chef_server_url .*"@"chef_server_url \"$chef_server_url\""@g \
+        $chefconf > $tmpconf
+
+    # It's posible that some options are commented,
+    # be sure to decomment them.
+    sed -e s@"^#chef_server_url .*"@"chef_server_url \"$chef_server_url\""@g \
+        $tmpconf > $tmpconf".2"
+
+    mv $tmpconf".2" $tmpconf
+
+    /usr/bin/wget --http-user=$user --http-password=$passwd $chef_validation_url
+    r_validation=$?
+
+    mv validation.pem $valpem
+
+    check_configuration
+
+    mv $tmpconf $chefconf
+    echo "The configuration was updated successfully."
+
+    exit 0
+}
+
+# Check the changes are valid
+check_configuration() {
+
+    r_chef_server_url=`egrep "^chef_server_url $chef_server_url" $tmpconf`
+
+    if [ "" == $r_chef_server_url ]; then
+        echo "The configuration couldn't be updated correctly."
+        exit 1
+    fi
+
+    if [ $r_validation != 0 ]; then
+        echo "The validation.pem file couldn't be downloaded correctly."
+        exit 1
+    fi
+
+    if [ ! -f $valpem ]; then
+        echo "The validation.pem file couldn't be moved to $chefdir."
+        exit 1
+    fi
+}
+
+# Restore or update the Chef configuration
+case $chef_server_url in
+    --restore | -r)
+        need_root
+        restore
+        ;;
+    --query | -q)
+        check_configured
+        ;;
+    *)
+        need_root
+        update_conf
+        ;;
+esac
