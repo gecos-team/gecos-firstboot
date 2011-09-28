@@ -1,10 +1,5 @@
 #!/bin/bash
 
-if [ 0 != `id -u` ]; then
-    echo "You must be root to run this script."
-    exit 1
-fi
-
 uri=$1
 basedn=$2
 binddn=$3
@@ -14,6 +9,14 @@ ldapconf=/etc/ldap.conf
 bakconf=/etc/ldap.conf.gecos-firststart.bak
 tmpconf=/tmp/ldap.conf.tmp
 
+
+# Need root user
+need_root() {
+    if [ 0 != `id -u` ]; then
+        echo "You must be root to run this script."
+        exit 1
+    fi
+}
 
 # Check prerequisites
 check_prerequisites() {
@@ -118,12 +121,14 @@ check_configuration() {
 # Restore or update the LDAP configuration
 case $uri in
     --restore | -r)
+        need_root
         restore
         ;;
     --query | -q)
         check_configured
         ;;
     *)
+        need_root
         update_conf
         ;;
 esac
