@@ -4,6 +4,7 @@ chef_server_url=$1
 chef_validation_url=$2
 user=$3
 passwd=$4
+node_name=""
 
 chefdir=/etc/chef
 chefconf=$chefdir/client.rb
@@ -65,19 +66,30 @@ backup() {
     fi
 }
 
+# Get the pc description
+get_pclabel() {
+    if [ -f /etc/pclabel ]; then
+        node_name=`cat /etc/pclabel`
+    else
+        node_name=`cat /etc/hostname`
+    fi
+}
 
 # Update the configuration
 update_conf() {
 
     check_prerequisites
     backup
+    get_pclabel
 
     sed -e s@"^chef_server_url .*"@"chef_server_url \"$chef_server_url\""@g \
+        -e s/"^node_name .*"/"node_name $node_name"/g \
         $chefconf > $tmpconf
 
     # It's posible that some options are commented,
     # be sure to decomment them.
     sed -e s@"^#chef_server_url .*"@"chef_server_url \"$chef_server_url\""@g \
+        -e s/"^#node_name .*"/"node_name $node_name"/g \
         $tmpconf > $tmpconf".2"
 
     mv $tmpconf".2" $tmpconf
