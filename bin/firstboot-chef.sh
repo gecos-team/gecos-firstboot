@@ -11,6 +11,7 @@ chefconf=$chefdir/client.rb
 valpem=$chefdir/validation.pem
 bakconf=$chefdir/client.rb.gecos-firststart.bak
 tmpconf=/tmp/client.rb.tmp
+chefclient=`which chef-client`
 
 
 # Need root user
@@ -97,13 +98,20 @@ update_conf() {
     /usr/bin/wget --http-user=$user --http-password=$passwd $chef_validation_url
     r_validation=$?
 
-    mv validation.pem $valpem
+    if [ -f validation.pem ]; then
+        mv validation.pem $valpem
+    fi
 
     check_configuration
 
     mv $tmpconf $chefconf
-    echo "The configuration was updated successfully."
 
+    # Run chef-client in daemon mode
+    if [ -f $chefclient ]; then
+        $chefclient -d
+    fi
+
+    echo "The configuration was updated successfully."
     exit 0
 }
 
