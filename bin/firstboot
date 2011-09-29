@@ -29,6 +29,12 @@ import gettext
 from gettext import gettext as _
 gettext.bindtextdomain('firstboot', '/usr/local/share/locale')
 
+if __name__ == '__main__':
+    if os.getuid() != 0:
+        sys.stdout.write(_('You need to be root to run this program.'))
+        sys.stdout.flush()
+        sys.exit(1)
+
 # Add project root directory (enable symlink and trunk execution)
 PROJECT_ROOT_DIRECTORY = os.path.abspath(
     os.path.dirname(os.path.dirname(os.path.realpath(sys.argv[0]))))
