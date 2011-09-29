@@ -131,6 +131,7 @@ DistUtilsExtra.auto.setup(
         'firstboot.pages.linkToServer',
         'firstboot.pages.localUsers',
         'firstboot.pages.network',
+        'firstboot.pages.pcLabel',
     ],
 
     package_dir={
@@ -141,6 +142,7 @@ DistUtilsExtra.auto.setup(
         'firstboot.pages.linkToServer': 'firstboot/pages/linkToServer',
         'firstboot.pages.localUsers': 'firstboot/pages/localUsers',
         'firstboot.pages.network': 'firstboot/pages/network',
+        'firstboot.pages.pcLabel': 'firstboot/pages/pcLabel',
         },
 
     scripts=['bin/firstboot'],
@@ -159,4 +161,3 @@ DistUtilsExtra.auto.setup(
 
     }
 )
-
