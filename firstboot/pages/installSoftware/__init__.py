@@ -81,7 +81,7 @@ software and manage packages.'))
         return self.page
 
     def on_btnInstallSoftware_Clicked(self, button):
-        #cmd = 'gksu /usr/sbin/synaptic'
-        cmd = 'gksu'
+        cmd = '/usr/sbin/synaptic'
         param = '/usr/sbin/synaptic'
-        os.spawnlp(os.P_NOWAIT, cmd, cmd, param)
+        os.spawnlp(os.P_NOWAIT, cmd, cmd)
+

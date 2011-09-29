@@ -90,7 +90,7 @@ def ldap_is_configured():
         if not os.path.exists(script):
             raise LinkToLDAPException(_("The LDAP configuration script couldn't be found") + ': ' + script)
 
-        cmd = '%s --query' % (script,)
+        cmd = '"%s" "--query"' % (script,)
         args = shlex.split(cmd)
 
         process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -135,7 +135,7 @@ def link_to_ldap(ldap_conf):
         if not os.path.exists(script):
             raise LinkToLDAPException(_("The LDAP configuration script couldn't be found") + ': ' + script)
 
-        cmd = 'gksu "%s" "%s" "%s" "%s" "%s"' % (script, url, basedn, binddn, password)
+        cmd = '"%s" "%s" "%s" "%s" "%s"' % (script, url, basedn, binddn, password)
         args = shlex.split(cmd)
 
         process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -158,7 +158,7 @@ def unlink_from_ldap():
         if not os.path.exists(script):
             raise LinkToLDAPException("The file could not be found: " + script)
 
-        cmd = 'gksu "%s --restore"' % (script,)
+        cmd = '"%s" "--restore"' % (script,)
         args = shlex.split(cmd)
 
         process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -194,7 +194,7 @@ def link_to_chef(chef_conf):
         if not os.path.exists(script):
             raise LinkToChefException(_("The Chef configuration script couldn't be found") + ': ' + script)
 
-        cmd = 'gksu "%s" "%s" "%s" "%s" "%s"' % (script, url, pemurl, 'user', 'passwd')
+        cmd = '"%s" "%s" "%s" "%s" "%s"' % (script, url, pemurl, 'user', 'passwd')
         args = shlex.split(cmd)
 
         process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -217,7 +217,7 @@ def unlink_from_chef():
         if not os.path.exists(script):
             raise LinkToChefException("The file could not be found: " + script)
 
-        cmd = 'gksu "%s --restore"' % (script,)
+        cmd = '"%s" "--restore"' % (script,)
         args = shlex.split(cmd)
 
         process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
