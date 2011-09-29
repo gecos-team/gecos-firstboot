@@ -95,7 +95,7 @@ update_conf() {
 
     mv $tmpconf".2" $tmpconf
 
-    /usr/bin/wget --http-user=$user --http-password=$passwd $chef_validation_url
+    /usr/bin/wget -q --http-user=$user --http-password=$passwd $chef_validation_url
     r_validation=$?
 
     if [ -f validation.pem ]; then
@@ -108,7 +108,7 @@ update_conf() {
 
     # Run chef-client in daemon mode
     if [ -f $chefclient ]; then
-        $chefclient -d
+        $chefclient -d 2&>/dev/null
     fi
 
     echo "The configuration was updated successfully."
@@ -118,9 +118,15 @@ update_conf() {
 # Check the changes are valid
 check_configuration() {
 
-    r_chef_server_url=`egrep "^chef_server_url $chef_server_url" $tmpconf`
+    r_chef_server_url=`egrep "^chef_server_url \"$chef_server_url\"" $tmpconf`
+    r_node_name=`egrep "^node_name \"$node_name\"" $tmpconf`
 
-    if [ "" == $r_chef_server_url ]; then
+    if [ "" == "$r_node_name" ]; then
+        echo "" >> $tmpconf
+        echo "node_name \"$node_name\"" >> $tmpconf
+    fi
+
+    if [ "" == "$r_chef_server_url" ]; then
         echo "The configuration couldn't be updated correctly."
         exit 1
     fi
