@@ -1,5 +1,6 @@
 .project
 .pydevproject
 .settings
+.geanyprj
 *.pyc
 *.ignore.*
