@@ -108,7 +108,8 @@ update_conf() {
 
     # Run chef-client in daemon mode
     if [ -f $chefclient ]; then
-        $chefclient -d 2&>/dev/null
+        #$chefclient -d 2&>/dev/null
+        service chef-client restart
     fi
 
     echo "The configuration was updated successfully."
