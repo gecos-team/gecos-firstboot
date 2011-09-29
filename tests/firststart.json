@@ -9,7 +9,7 @@
         "bindpw": "12345"
     },
     "chef": {
-        "chef_server_url": "http://10.240.194.217",
+        "chef_server_url": "http://10.240.194.218:4000",
         "chef_validation_url": "http://10.240.194.217/validation.pem"
     }
 }
