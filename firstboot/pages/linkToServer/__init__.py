@@ -92,25 +92,20 @@ class LinkToServerPage(PageWindow.PageWindow):
         self.page = page
 
         self.ldap_is_configured = ServerConf.ldap_is_configured()
+        self.chef_is_configured = ServerConf.chef_is_configured()
         self.translate()
 
-        if not self.ldap_is_configured:
-            self.chkUnlinkLDAP.set_visible(False)
-            self.chkUnlinkChef.set_visible(False)
-            self.radioManual.set_visible(True)
-            self.radioAuto.set_visible(True)
-            self.lblUrl.set_visible(True)
-            self.txtUrl.set_visible(True)
-            self.btnLinkToServer.set_sensitive(True)
 
-        else:
-            self.chkUnlinkLDAP.set_visible(True)
-            self.chkUnlinkChef.set_visible(True)
+        show_conf_fields = not (self.ldap_is_configured & self.chef_is_configured)
+        if not show_conf_fields:
             self.radioManual.set_visible(False)
             self.radioAuto.set_visible(False)
             self.lblUrl.set_visible(False)
             self.txtUrl.set_visible(False)
-            self.btnLinkToServer.set_sensitive(False)
+            #~ self.btnLinkToServer.set_sensitive(True)
+
+        self.chkUnlinkLDAP.set_visible(self.ldap_is_configured)
+        self.chkUnlinkChef.set_visible(self.chef_is_configured)
 
 
         self.cmd_options = options
@@ -132,31 +127,34 @@ class LinkToServerPage(PageWindow.PageWindow):
 managed remotely and existing users in the server can login into \
 this workstation.\n\n')
 
-        if not self.ldap_is_configured:
-            self.btnLinkToServer.set_label(_('Configure'))
+        desc_detail = ''
+        if not self.ldap_is_configured and not self.chef_is_configured:
+            #self.btnLinkToServer.set_label(_('Configure'))
             desc_detail = _('You can type the options manually or download \
 a default configuration from the server.')
-        else:
-            self.btnLinkToServer.set_label(_('Unlink'))
-            desc_detail = _('This workstation is currently linked to a GECOS \
-server.')
+
+#        else:
+#            self.btnLinkToServer.set_label(_('Unlink'))
+#            desc_detail = _('This workstation is currently linked to a GECOS \
+#server.')
 
         self.lblDescription.set_text(desc + desc_detail)
         self.chkUnlinkLDAP.set_label(_('Unlink from LDAP'))
         self.chkUnlinkChef.set_label(_('Unlink from Chef'))
         self.radioManual.set_label(_('Manual'))
         self.radioAuto.set_label(_('Automatic'))
+        self.btnLinkToServer.set_label(_('Configure'))
 
     def get_widget(self):
         return self.page
 
     def on_chkUnlinkLDAP_toggle(self, button):
         active = button.get_active() | self.chkUnlinkChef.get_active()
-        self.btnLinkToServer.set_sensitive(active)
+        #self.btnLinkToServer.set_sensitive(active)
 
     def on_chkUnlinkChef_toggle(self, button):
         active = button.get_active() | self.chkUnlinkLDAP.get_active()
-        self.btnLinkToServer.set_sensitive(active)
+        #self.btnLinkToServer.set_sensitive(active)
 
     def on_radioManual_toggled(self, button):
         self.lblUrl.set_visible(False)
@@ -170,59 +168,30 @@ server.')
 
         self.show_status()
 
-        if self.ldap_is_configured:
-            self.unlink_from_server()
+        server_conf = None
+        if self.radioAuto.get_active():
+            url = self.txtUrl.get_text()
+            server_conf = ServerConf.get_server_conf(url)
 
-        elif self.radioManual.get_active():
-            self.emit('subpage-changed', 'linkToServer',
-                      'LinkToServerConfEditorPage', {'server_conf': None})
+        try:
+            self.emit(
+                'subpage-changed',
+                'linkToServer',
+                'LinkToServerConfEditorPage',
+                {
+                    'server_conf': server_conf,
+                    'ldap_is_configured': self.ldap_is_configured,
+                    'unlink_from_ldap': self.chkUnlinkLDAP.get_active(),
+                    'chef_is_configured': self.chef_is_configured,
+                    'unlink_from_chef': self.chkUnlinkChef.get_active()
+                }
+            )
 
-        elif self.radioAuto.get_active():
+        except ServerConfException as e:
+            self.show_status(__STATUS_ERROR__, e)
 
-            try:
-                url = self.txtUrl.get_text()
-                server_conf = ServerConf.get_server_conf(url)
-                #self.show_status(__STATUS_TEST_PASSED__)
-                self.emit('subpage-changed', 'linkToServer',
-                          'LinkToServerConfEditorPage', {'server_conf': server_conf})
-
-            except ServerConfException as e:
-                self.show_status(__STATUS_ERROR__, e)
-
-            except Exception as e:
-                print e
-
-    def unlink_from_server(self):
-
-        errors = []
-        messages = []
-
-        if self.chkUnlinkLDAP.get_active():
-            try:
-                ret = ServerConf.unlink_from_ldap()
-                if ret == True:
-                    messages.append(_('Workstation has been unlinked from LDAP.'))
-                else:
-                    errors += ret
-            except Exception as e:
-                errors.append(str(e))
-
-        if self.chkUnlinkChef.get_active():
-            try:
-                ret = ServerConf.unlink_from_chef()
-                if ret == True:
-                    messages.append(_('Workstation has been unlinked from Chef.'))
-                else:
-                    errors += ret
-            except Exception as e:
-                errors.append(str(e))
-
-        result = not bool(len(errors))
-        self.emit('subpage-changed', 'linkToServer',
-            'LinkToServerResultsPage',
-            {'result': result, 'server_conf': None,
-            'errors': errors, 'messages': messages}
-        )
+        except Exception as e:
+            print e
 
     def show_status(self, status=None, exception=None):
 

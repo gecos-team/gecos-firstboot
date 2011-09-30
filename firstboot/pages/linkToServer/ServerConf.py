@@ -109,6 +109,32 @@ def ldap_is_configured():
     except Exception as e:
         raise e
 
+def chef_is_configured():
+    try:
+
+        script = os.path.join('/usr/local/bin', __CHEF_CONF_SCRIPT__)
+        if not os.path.exists(script):
+            raise LinkToChefException(_("The Chef configuration script couldn't be found") + ': ' + script)
+
+        cmd = '"%s" "--query"' % (script,)
+        args = shlex.split(cmd)
+
+        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        exit_code = os.waitpid(process.pid, 0)
+        output = process.communicate()[0]
+        output = output.strip()
+
+        if exit_code[1] == 0:
+            ret = bool(int(output))
+            return ret
+
+        else:
+            raise LinkToChefException(_('Chef setup error') + ': ' + output)
+
+
+    except Exception as e:
+        raise e
+
 def link_to_ldap(ldap_conf):
 
     url = ldap_conf.get_url()

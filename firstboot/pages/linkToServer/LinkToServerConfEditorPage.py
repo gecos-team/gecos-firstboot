@@ -41,7 +41,7 @@ def get_page(options=None):
 class LinkToServerConfEditorPage(PageWindow.PageWindow):
     __gtype_name__ = "LinkToServerConfEditorPage"
 
-    # To construct a new instance of this method, the following notable 
+    # To construct a new instance of this method, the following notable
     # methods are called in this order:
     # __new__(cls)
     # __init__(self)
@@ -88,6 +88,8 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
         self.fbe = FirstbootEntry.FirstbootEntry()
 
         self.update_server_conf = False
+        self.unlink_from_ldap = False
+        self.unlink_from_chef = False
 
     def set_params(self, params):
         if 'server_conf' in params:
@@ -106,6 +108,24 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
             self.server_conf = ServerConf.ServerConf()
 
         self.update_server_conf = True
+
+        self.unlink_from_ldap = params['unlink_from_ldap']
+        if params['ldap_is_configured']:
+            self.chkLDAP.set_active(False)
+            self.chkLDAP.set_sensitive(False)
+
+        self.unlink_from_chef = params['unlink_from_chef']
+        if params['chef_is_configured']:
+            self.chkChef.set_active(False)
+            self.chkChef.set_sensitive(False)
+
+        if self.unlink_from_ldap:
+            self.chkLDAP.get_child().set_markup(self._bold(_('This \
+workstation is going to be unlinked from the LDAP server.')))
+
+        if self.unlink_from_chef:
+            self.chkChef.get_child().set_markup(self._bold(_('This \
+workstation is going to be unlinked from the Chef server.')))
 
     def _bold(self, str):
         return '<b>%s</b>' % str
@@ -135,17 +155,31 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
 
     def on_chkLDAP_toggle(self, button):
         active = self.chkLDAP.get_active()
+
         self.txtUrlLDAP.set_sensitive(active)
         self.txtBaseDN.set_sensitive(active)
         self.txtBindDN.set_sensitive(active)
         self.txtPassword.set_sensitive(active)
-        self.btnApply.set_sensitive(active | self.chkChef.get_active())
+
+        active = active \
+            | self.chkChef.get_active() \
+            | self.unlink_from_ldap \
+            | self.unlink_from_chef
+
+        self.btnApply.set_sensitive(active)
 
     def on_chkChef_toggle(self, button):
         active = self.chkChef.get_active()
+
         self.txtUrlChef.set_sensitive(active)
         self.txtUrlChefCert.set_sensitive(active)
-        self.btnApply.set_sensitive(active | self.chkLDAP.get_active())
+
+        active = active \
+            | self.chkLDAP.get_active() \
+            | self.unlink_from_ldap \
+            | self.unlink_from_chef
+
+        self.btnApply.set_sensitive(active)
 
     def on_btnCancel_Clicked(self, button):
         self.emit('page-changed', 'linkToServer', {})
@@ -180,6 +214,38 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
                   'LinkToServerResultsPage',
                   {'result': result, 'server_conf': self.server_conf,
                    'errors': errors, 'messages': messages}
+        )
+
+    def unlink_from_server(self):
+
+        errors = []
+        messages = []
+
+        if self.chkUnlinkLDAP.get_active():
+            try:
+                ret = ServerConf.unlink_from_ldap()
+                if ret == True:
+                    messages.append(_('Workstation has been unlinked from LDAP.'))
+                else:
+                    errors += ret
+            except Exception as e:
+                errors.append(str(e))
+
+        if self.chkUnlinkChef.get_active():
+            try:
+                ret = ServerConf.unlink_from_chef()
+                if ret == True:
+                    messages.append(_('Workstation has been unlinked from Chef.'))
+                else:
+                    errors += ret
+            except Exception as e:
+                errors.append(str(e))
+
+        result = not bool(len(errors))
+        self.emit('subpage-changed', 'linkToServer',
+            'LinkToServerResultsPage',
+            {'result': result, 'server_conf': None,
+            'errors': errors, 'messages': messages}
         )
 
     def on_serverConf_changed(self, entry):
