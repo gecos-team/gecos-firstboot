@@ -110,11 +110,12 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
         self.update_server_conf = True
 
         self.unlink_from_ldap = params['unlink_from_ldap']
+        self.unlink_from_chef = params['unlink_from_chef']
+
         if params['ldap_is_configured']:
             self.chkLDAP.set_active(False)
             self.chkLDAP.set_sensitive(False)
 
-        self.unlink_from_chef = params['unlink_from_chef']
         if params['chef_is_configured']:
             self.chkChef.set_active(False)
             self.chkChef.set_sensitive(False)
@@ -189,7 +190,17 @@ workstation is going to be unlinked from the Chef server.')))
         errors = []
         messages = []
 
-        if self.chkLDAP.get_active():
+        if self.unlink_from_ldap:
+            try:
+                ret = ServerConf.unlink_from_ldap()
+                if ret == True:
+                    messages.append(_('Workstation has been unlinked from LDAP.'))
+                else:
+                    errors += ret
+            except Exception as e:
+                errors.append(str(e))
+
+        elif self.chkLDAP.get_active():
             try:
                 ret = ServerConf.link_to_ldap(self.server_conf.get_ldap_conf())
                 if ret == True:
@@ -199,7 +210,17 @@ workstation is going to be unlinked from the Chef server.')))
             except Exception as e:
                 errors.append(str(e))
 
-        if self.chkChef.get_active():
+        if self.unlink_from_chef:
+            try:
+                ret = ServerConf.unlink_from_chef()
+                if ret == True:
+                    messages.append(_('Workstation has been unlinked from Chef.'))
+                else:
+                    errors += ret
+            except Exception as e:
+                errors.append(str(e))
+
+        elif self.chkChef.get_active():
             try:
                 ret = ServerConf.link_to_chef(self.server_conf.get_chef_conf())
                 if ret == True:
@@ -214,38 +235,6 @@ workstation is going to be unlinked from the Chef server.')))
                   'LinkToServerResultsPage',
                   {'result': result, 'server_conf': self.server_conf,
                    'errors': errors, 'messages': messages}
-        )
-
-    def unlink_from_server(self):
-
-        errors = []
-        messages = []
-
-        if self.chkUnlinkLDAP.get_active():
-            try:
-                ret = ServerConf.unlink_from_ldap()
-                if ret == True:
-                    messages.append(_('Workstation has been unlinked from LDAP.'))
-                else:
-                    errors += ret
-            except Exception as e:
-                errors.append(str(e))
-
-        if self.chkUnlinkChef.get_active():
-            try:
-                ret = ServerConf.unlink_from_chef()
-                if ret == True:
-                    messages.append(_('Workstation has been unlinked from Chef.'))
-                else:
-                    errors += ret
-            except Exception as e:
-                errors.append(str(e))
-
-        result = not bool(len(errors))
-        self.emit('subpage-changed', 'linkToServer',
-            'LinkToServerResultsPage',
-            {'result': result, 'server_conf': None,
-            'errors': errors, 'messages': messages}
         )
 
     def on_serverConf_changed(self, entry):
