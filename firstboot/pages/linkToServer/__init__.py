@@ -93,6 +93,10 @@ class LinkToServerPage(PageWindow.PageWindow):
 
         self.ldap_is_configured = ServerConf.ldap_is_configured()
         self.chef_is_configured = ServerConf.chef_is_configured()
+
+        if self.ldap_is_configured and self.chef_is_configured:
+            self.btnLinkToServer.set_sensitive(False)
+
         self.translate()
 
 
@@ -129,14 +133,12 @@ this workstation.\n\n')
 
         desc_detail = ''
         if not self.ldap_is_configured and not self.chef_is_configured:
-            #self.btnLinkToServer.set_label(_('Configure'))
             desc_detail = _('You can type the options manually or download \
 a default configuration from the server.')
 
-#        else:
-#            self.btnLinkToServer.set_label(_('Unlink'))
-#            desc_detail = _('This workstation is currently linked to a GECOS \
-#server.')
+        elif self.ldap_is_configured and self.chef_is_configured:
+            desc_detail = _('This workstation is currently linked to a GECOS \
+server.')
 
         self.lblDescription.set_text(desc + desc_detail)
         self.chkUnlinkLDAP.set_label(_('Unlink from LDAP'))
@@ -149,12 +151,14 @@ a default configuration from the server.')
         return self.page
 
     def on_chkUnlinkLDAP_toggle(self, button):
-        active = button.get_active() | self.chkUnlinkChef.get_active()
-        #self.btnLinkToServer.set_sensitive(active)
+        if self.ldap_is_configured & self.chef_is_configured:
+            active = button.get_active() | self.chkUnlinkChef.get_active()
+            self.btnLinkToServer.set_sensitive(active)
 
     def on_chkUnlinkChef_toggle(self, button):
-        active = button.get_active() | self.chkUnlinkLDAP.get_active()
-        #self.btnLinkToServer.set_sensitive(active)
+        if self.ldap_is_configured & self.chef_is_configured:
+            active = button.get_active() | self.chkUnlinkLDAP.get_active()
+            self.btnLinkToServer.set_sensitive(active)
 
     def on_radioManual_toggled(self, button):
         self.lblUrl.set_visible(False)
