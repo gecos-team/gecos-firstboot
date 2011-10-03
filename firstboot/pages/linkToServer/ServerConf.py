@@ -28,6 +28,7 @@ import urllib
 import urllib2
 import json
 import urlparse
+import tempfile
 
 import gettext
 from gettext import gettext as _
@@ -36,7 +37,7 @@ gettext.textdomain('firstboot')
 
 __CONFIG_FILE_VERSION__ = '1.1'
 
-__URLOPEN_TIMEOUT__ = 5
+__URLOPEN_TIMEOUT__ = 15
 __LDAP_CONF_SCRIPT__ = 'firstboot-ldapconf.sh'
 __CHEF_CONF_SCRIPT__ = 'firstboot-chef.sh'
 
@@ -79,6 +80,31 @@ def get_server_conf(url):
 
     except ValueError as e:
         raise ServerConfException(_('Configuration file is not valid.'))
+
+    except Exception as e:
+        raise Exception(e.args[0])
+
+def get_chef_pem(url):
+
+    try:
+
+        url = parse_url(url)
+        #print url
+        fp = urllib2.urlopen(url, timeout=__URLOPEN_TIMEOUT__)
+        #print fp.url(), fp.info()
+        content = fp.read()
+        #print content
+
+        (fd, filepath) = tempfile.mkstemp(dir='/tmp') # [suffix=''[, prefix='tmp'[, dir=None[, text=False]]]])
+        fp = os.fdopen(fd, "w+b")
+        if fp:
+            fp.write(content)
+            fp.close()
+
+        return filepath
+
+    except urllib2.URLError as e:
+        raise ServerConfException(e.args[0])
 
     except Exception as e:
         raise Exception(e.args[0])
@@ -139,10 +165,17 @@ def chef_is_configured():
 def setup_server(server_conf, link_ldap=False, unlink_ldap=False,
                 link_chef=False, unlink_chef=False):
 
+    #~ print '=============='
+    #~ print 'link_ldap: '+str(link_ldap)
+    #~ print 'unlink_ldap: '+str(unlink_ldap)
+    #~ print 'link_chef: '+str(link_chef)
+    #~ print 'unlink_chef: '+str(unlink_chef)
+    #~ print '==============\n\n'
+
     result = True
     messages = []
 
-    if unlink_ldap:
+    if unlink_ldap == True:
         try:
             ret = unlink_from_ldap()
             if ret == True:
@@ -150,37 +183,37 @@ def setup_server(server_conf, link_ldap=False, unlink_ldap=False,
             else:
                 messages += ret
         except Exception as e:
-            errors.append({'type': 'error', 'message': str(e)})
+            messages.append({'type': 'error', 'message': str(e)})
 
-    elif link_ldap:
+    elif link_ldap == True:
         try:
             ret = link_to_ldap(server_conf.get_ldap_conf())
             if ret == True:
                 messages.append({'type': 'info', 'message': _('The LDAP has been configured successfully.')})
             else:
-                errors += ret
+                messages += ret
         except Exception as e:
-            errors.append({'type': 'error', 'message': str(e)})
+            messages.append({'type': 'error', 'message': str(e)})
 
-    if unlink_chef:
+    if unlink_chef == True:
         try:
             ret = unlink_from_chef()
             if ret == True:
                 messages.append({'type': 'info', 'message': _('Workstation has been unlinked from Chef.')})
             else:
-                errors += ret
+                messages += ret
         except Exception as e:
-            errors.append({'type': 'error', 'message': str(e)})
+            messages.append({'type': 'error', 'message': str(e)})
 
-    elif link_chef:
+    elif link_chef == True:
         try:
             ret = link_to_chef(server_conf.get_chef_conf())
             if ret == True:
                 messages.append({'type': 'info', 'message': _('The Chef client has been configured successfully.')})
             else:
-                errors += ret
+                messages += ret
         except Exception as e:
-            errors.append({'type': 'error', 'message': str(e)})
+            messages.append({'type': 'error', 'message': str(e)})
 
     for msg in messages:
         if msg['type'] == 'error':
@@ -257,6 +290,7 @@ def link_to_chef(chef_conf):
 
     url = chef_conf.get_url()
     pemurl = chef_conf.get_pem_url()
+    hostname = chef_conf.get_hostname()
     errors = []
 
     if len(url) == 0:
@@ -264,6 +298,9 @@ def link_to_chef(chef_conf):
 
     if len(pemurl) == 0:
         errors.append({'type': 'error', 'message': _('The Chef certificate URL cannot be empty.')})
+
+    if len(hostname) == 0:
+        errors.append({'type': 'error', 'message': _('The Chef host name cannot be empty.')})
 
     if len(errors) > 0:
         return errors
@@ -274,7 +311,7 @@ def link_to_chef(chef_conf):
         if not os.path.exists(script):
             raise LinkToChefException(_("The Chef configuration script couldn't be found") + ': ' + script)
 
-        cmd = '"%s" "%s" "%s" "%s" "%s"' % (script, url, pemurl, 'user', 'passwd')
+        cmd = '"%s" "%s" "%s" "%s" "%s" "%s"' % (script, url, pemurl, hostname, 'user', 'passwd')
         args = shlex.split(cmd)
 
         process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)

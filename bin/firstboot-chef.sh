@@ -2,9 +2,9 @@
 
 chef_server_url=$1
 chef_validation_url=$2
-user=$3
-passwd=$4
-node_name=""
+chef_node_name=$3
+user=$4
+passwd=$5
 
 chefdir=/etc/chef
 chefconf=$chefdir/client.rb
@@ -81,16 +81,16 @@ update_conf() {
 
     check_prerequisites
     backup
-    get_pclabel
+    #get_pclabel
 
     sed -e s@"^chef_server_url .*"@"chef_server_url \"$chef_server_url\""@g \
-        -e s/"^node_name .*"/"node_name $node_name"/g \
+        -e s/"^node_name .*"/"node_name $chef_node_name"/g \
         $chefconf > $tmpconf
 
     # It's posible that some options are commented,
     # be sure to decomment them.
     sed -e s@"^#chef_server_url .*"@"chef_server_url \"$chef_server_url\""@g \
-        -e s/"^#node_name .*"/"node_name $node_name"/g \
+        -e s/"^#node_name .*"/"node_name $chef_node_name"/g \
         $tmpconf > $tmpconf".2"
 
     mv $tmpconf".2" $tmpconf
@@ -120,11 +120,11 @@ update_conf() {
 check_configuration() {
 
     r_chef_server_url=`egrep "^chef_server_url \"$chef_server_url\"" $tmpconf`
-    r_node_name=`egrep "^node_name \"$node_name\"" $tmpconf`
+    r_node_name=`egrep "^node_name \"$chef_node_name\"" $tmpconf`
 
     if [ "" == "$r_node_name" ]; then
         echo "" >> $tmpconf
-        echo "node_name \"$node_name\"" >> $tmpconf
+        echo "node_name \"$chef_node_name\"" >> $tmpconf
     fi
 
     if [ "" == "$r_chef_server_url" ]; then

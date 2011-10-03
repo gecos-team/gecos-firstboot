@@ -187,19 +187,30 @@ workstation is going to be unlinked from the Chef server.')))
 
     def on_btnApply_Clicked(self, button):
 
-        result, messages = ServerConf.setup_server(
-            server_conf=self.server_conf,
-            link_ldap=self.chkLDAP.get_active(),
-            unlink_ldap=self.unlink_from_ldap,
-            link_chef=self.chkChef.get_active(),
-            unlink_chef=self.unlink_from_chef
-        )
+        if not self.unlink_from_chef and self.chkChef.get_active():
+            # The unique host name for Chef is mandatory, so we need
+            # to ask for it before the setup.
 
-        self.emit('subpage-changed', 'linkToServer',
-                  'LinkToServerResultsPage',
-                  {'result': result, 'server_conf': self.server_conf,
-                   'messages': messages}
-        )
+            self.emit('subpage-changed', 'linkToServer', 'LinkToServerHostnamePage',
+                {'server_conf': self.server_conf,
+                'link_ldap': self.chkLDAP.get_active(),
+                'unlink_ldap': self.unlink_from_ldap,
+                'link_chef': self.chkChef.get_active(),
+                'unlink_chef': self.unlink_from_chef})
+
+        else:
+            result, messages = ServerConf.setup_server(
+                server_conf=self.server_conf,
+                link_ldap=self.chkLDAP.get_active(),
+                unlink_ldap=self.unlink_from_ldap,
+                link_chef=self.chkChef.get_active(),
+                unlink_chef=self.unlink_from_chef
+            )
+
+            self.emit('subpage-changed', 'linkToServer',
+                      'LinkToServerResultsPage',
+                      {'result': result, 'server_conf': self.server_conf,
+                       'messages': messages})
 
     def on_serverConf_changed(self, entry):
         if not self.update_server_conf:
