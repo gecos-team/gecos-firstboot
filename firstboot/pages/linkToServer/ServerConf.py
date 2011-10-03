@@ -135,6 +135,60 @@ def chef_is_configured():
     except Exception as e:
         raise e
 
+
+def setup_server(server_conf, link_ldap=False, unlink_ldap=False,
+                link_chef=False, unlink_chef=False):
+
+    result = True
+    messages = []
+
+    if unlink_ldap:
+        try:
+            ret = unlink_from_ldap()
+            if ret == True:
+                messages.append({'type': 'info', 'message': _('Workstation has been unlinked from LDAP.')})
+            else:
+                messages += ret
+        except Exception as e:
+            errors.append({'type': 'error', 'message': str(e)})
+
+    elif link_ldap:
+        try:
+            ret = link_to_ldap(server_conf.get_ldap_conf())
+            if ret == True:
+                messages.append({'type': 'info', 'message': _('The LDAP has been configured successfully.')})
+            else:
+                errors += ret
+        except Exception as e:
+            errors.append({'type': 'error', 'message': str(e)})
+
+    if unlink_chef:
+        try:
+            ret = unlink_from_chef()
+            if ret == True:
+                messages.append({'type': 'info', 'message': _('Workstation has been unlinked from Chef.')})
+            else:
+                errors += ret
+        except Exception as e:
+            errors.append({'type': 'error', 'message': str(e)})
+
+    elif link_chef:
+        try:
+            ret = link_to_chef(server_conf.get_chef_conf())
+            if ret == True:
+                messages.append({'type': 'info', 'message': _('The Chef client has been configured successfully.')})
+            else:
+                errors += ret
+        except Exception as e:
+            errors.append({'type': 'error', 'message': str(e)})
+
+    for msg in messages:
+        if msg['type'] == 'error':
+            result = False
+            break
+
+    return result, messages
+
 def link_to_ldap(ldap_conf):
 
     url = ldap_conf.get_url()
@@ -144,13 +198,13 @@ def link_to_ldap(ldap_conf):
     errors = []
 
     if len(url) == 0:
-        errors.append(_('The LDAP URL cannot be empty.'))
+        errors.append({'type': 'error', 'message': _('The LDAP URL cannot be empty.')})
 
     if len(basedn) == 0:
-        errors.append(_('The LDAP BaseDN cannot be empty.'))
+        errors.append({'type': 'error', 'message': _('The LDAP BaseDN cannot be empty.')})
 
     if len(binddn) == 0:
-        errors.append(_('The LDAP BindDN cannot be empty.'))
+        errors.append({'type': 'error', 'message': _('The LDAP BindDN cannot be empty.')})
 
     if len(errors) > 0:
         return errors
@@ -206,10 +260,10 @@ def link_to_chef(chef_conf):
     errors = []
 
     if len(url) == 0:
-        errors.append(_('The Chef URL cannot be empty.'))
+        errors.append({'type': 'error', 'message': _('The Chef URL cannot be empty.')})
 
     if len(pemurl) == 0:
-        errors.append(_('The Chef certificate URL cannot be empty.'))
+        errors.append({'type': 'error', 'message': _('The Chef certificate URL cannot be empty.')})
 
     if len(errors) > 0:
         return errors
@@ -368,6 +422,15 @@ class ChefConf():
 
     def set_pem_url(self, pem_url):
         self._data['chef_validation_url'] = pem_url
+        return self
+
+    def get_hostname(self):
+        if not 'hostname' in self._data:
+            self._data['hostname'] = ''
+        return self._data['hostname']
+
+    def set_hostname(self, hostname):
+        self._data['hostname'] = hostname
         return self
 
 

@@ -187,54 +187,18 @@ workstation is going to be unlinked from the Chef server.')))
 
     def on_btnApply_Clicked(self, button):
 
-        errors = []
-        messages = []
+        result, messages = ServerConf.setup_server(
+            server_conf=self.server_conf,
+            link_ldap=self.chkLDAP.get_active(),
+            unlink_ldap=self.unlink_from_ldap,
+            link_chef=self.chkChef.get_active(),
+            unlink_chef=self.unlink_from_chef
+        )
 
-        if self.unlink_from_ldap:
-            try:
-                ret = ServerConf.unlink_from_ldap()
-                if ret == True:
-                    messages.append(_('Workstation has been unlinked from LDAP.'))
-                else:
-                    errors += ret
-            except Exception as e:
-                errors.append(str(e))
-
-        elif self.chkLDAP.get_active():
-            try:
-                ret = ServerConf.link_to_ldap(self.server_conf.get_ldap_conf())
-                if ret == True:
-                    messages.append(_('The LDAP has been configured successfully.'))
-                else:
-                    errors += ret
-            except Exception as e:
-                errors.append(str(e))
-
-        if self.unlink_from_chef:
-            try:
-                ret = ServerConf.unlink_from_chef()
-                if ret == True:
-                    messages.append(_('Workstation has been unlinked from Chef.'))
-                else:
-                    errors += ret
-            except Exception as e:
-                errors.append(str(e))
-
-        elif self.chkChef.get_active():
-            try:
-                ret = ServerConf.link_to_chef(self.server_conf.get_chef_conf())
-                if ret == True:
-                    messages.append(_('The Chef client has been configured successfully.'))
-                else:
-                    errors += ret
-            except Exception as e:
-                errors.append(str(e))
-
-        result = not bool(len(errors))
         self.emit('subpage-changed', 'linkToServer',
                   'LinkToServerResultsPage',
                   {'result': result, 'server_conf': self.server_conf,
-                   'errors': errors, 'messages': messages}
+                   'messages': messages}
         )
 
     def on_serverConf_changed(self, entry):

@@ -45,7 +45,7 @@ def get_page(options=None):
 class LinkToServerResultsPage(PageWindow.PageWindow):
     __gtype_name__ = "LinkToServerResultsPage"
 
-    # To construct a new instance of this method, the following notable 
+    # To construct a new instance of this method, the following notable
     # methods are called in this order:
     # __new__(cls)
     # __init__(self)
@@ -100,14 +100,13 @@ class LinkToServerResultsPage(PageWindow.PageWindow):
         if 'result' in params:
             self.result = params['result']
 
-        if 'errors' in params:
-            for e in params['errors']:
-                box = self.new_message(e, gtk.STOCK_DIALOG_ERROR)
-                self.boxMessageContainer.pack_start(box, False, False)
-
         if 'messages' in params:
             for m in params['messages']:
-                box = self.new_message(m, gtk.STOCK_YES)
+                if m['type'] == 'error':
+                    icon = gtk.STOCK_DIALOG_ERROR
+                else:
+                    icon = gtk.STOCK_YES
+                box = self.new_message(m['message'], icon)
                 self.boxMessageContainer.pack_start(box, False, False)
 
         if self.result == True:
