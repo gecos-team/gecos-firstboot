@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-27 18:01+0200\n"
+"POT-Creation-Date: 2011-10-03 17:20+0200\n"
 "PO-Revision-Date: 2011-08-08 13:38+0200\n"
 "Last-Translator: AHernandez <ahernandez@emergya.com>\n"
 "Language-Team: Spanish\n"
@@ -30,6 +30,7 @@ msgid "Next"
 msgstr "Siguiente"
 
 #: firstboot/pages/pcLabel/__init__.py:36
+#: firstboot/pages/linkToServer/LinkToServerHostnamePage.py:40
 msgid "Describe this workstation"
 msgstr "Describir este puesto"
 
@@ -48,6 +49,7 @@ msgid "Label"
 msgstr "Etiqueta"
 
 #: firstboot/pages/pcLabel/__init__.py:98
+#: firstboot/pages/linkToServer/LinkToServerHostnamePage.py:103
 msgid "Accept"
 msgstr "Aceptar"
 
@@ -63,114 +65,182 @@ msgstr "Versión incorrecta del fichero de configuración."
 msgid "Configuration file is not valid."
 msgstr "El fichero de configuración no es válido."
 
-#: firstboot/pages/linkToServer/ServerConf.py:96
-msgid "The LDAP URL cannot be empty."
-msgstr "La URL del LDAP no puede estar vacía."
-
-#: firstboot/pages/linkToServer/ServerConf.py:99
-msgid "The LDAP BaseDN cannot be empty."
-msgstr "El BaseDN del LDAP no puede estar vacío."
-
-#: firstboot/pages/linkToServer/ServerConf.py:102
-msgid "The LDAP BindDN cannot be empty."
-msgstr "El BindDN del LDAP no puede estar vacío."
-
-#: firstboot/pages/linkToServer/ServerConf.py:111
+#: firstboot/pages/linkToServer/ServerConf.py:117
+#: firstboot/pages/linkToServer/ServerConf.py:249
 msgid "The LDAP configuration script couldn't be found"
 msgstr "No se pudo encontrar el script de configuración del LDAP"
 
-#: firstboot/pages/linkToServer/ServerConf.py:126
+#: firstboot/pages/linkToServer/ServerConf.py:132
+#: firstboot/pages/linkToServer/ServerConf.py:259
 msgid "LDAP setup error"
 msgstr "Error en la configuración del LDAP"
 
-#: firstboot/pages/linkToServer/ServerConf.py:155
-msgid "An error has occurred"
-msgstr "Ha ocurrido un error"
+#: firstboot/pages/linkToServer/ServerConf.py:143
+#: firstboot/pages/linkToServer/ServerConf.py:312
+msgid "The Chef configuration script couldn't be found"
+msgstr "No se pudo encontrar el script de configuración de Chef"
 
 #: firstboot/pages/linkToServer/ServerConf.py:158
-msgid "An error has occurred."
-msgstr "Ha ocurrido un error."
+#: firstboot/pages/linkToServer/ServerConf.py:322
+msgid "Chef setup error"
+msgstr "Error en la configuración de Chef"
 
-#: firstboot/pages/linkToServer/ServerConf.py:170
-msgid "The Chef URL cannot be empty."
-msgstr "LA URL de Chef no puede quedar vacía."
+#: firstboot/pages/linkToServer/ServerConf.py:182
+msgid "Workstation has been unlinked from LDAP."
+msgstr "Este puesto de trabajo se ha desvinculado del LDAP."
 
-#: firstboot/pages/linkToServer/ServerConf.py:173
-msgid "The Chef certificate URL cannot be empty."
-msgstr "La URL del certificado de Chef no puede quedar vacía."
-
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:43
-#: firstboot/pages/linkToServer/LinkToServerResultsPage.py:44
-#: firstboot/pages/linkToServer/__init__.py:44
-msgid "Link workstation to a server"
-msgstr "Enlazar puesto a un servidor"
-
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:146
-msgid "Remember you can disable the sections you don't want to configure."
-msgstr "Recuerde que puede deshabilitar la sección que no quiera configurar."
-
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:150
-msgid "Version"
-msgstr "Versión"
-
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:151
-msgid "Organization"
-msgstr "Organización"
-
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:152
-msgid "Notes"
-msgstr "Notas"
-
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:156
-msgid "Password"
-msgstr "Contraseña"
-
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:158
-msgid "Certificate URL"
-msgstr "URL del certificado"
-
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:159
-msgid "Cancel"
-msgstr "Cancelar"
-
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:160
-msgid "Apply"
-msgstr "Aplicar"
-
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:162
-msgid "Configure LDAP"
-msgstr "Configurar LDAP"
-
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:163
-msgid "Configure Chef"
-msgstr "Configurar Chef"
-
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:192
+#: firstboot/pages/linkToServer/ServerConf.py:192
 msgid "The LDAP has been configured successfully."
 msgstr "El LDAP se ha configurado correctamente."
 
-#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:202
+#: firstboot/pages/linkToServer/ServerConf.py:202
+msgid "Workstation has been unlinked from Chef."
+msgstr "Este puesto de trabajo se ha desvinculado de Chef."
+
+#: firstboot/pages/linkToServer/ServerConf.py:212
 msgid "The Chef client has been configured successfully."
 msgstr "El cliente de Chef se ha configurado correctamente."
 
-#: firstboot/pages/linkToServer/LinkToServerResultsPage.py:137
+#: firstboot/pages/linkToServer/ServerConf.py:234
+msgid "The LDAP URL cannot be empty."
+msgstr "La URL del LDAP no puede estar vacía."
+
+#: firstboot/pages/linkToServer/ServerConf.py:237
+msgid "The LDAP BaseDN cannot be empty."
+msgstr "El BaseDN del LDAP no puede estar vacío."
+
+#: firstboot/pages/linkToServer/ServerConf.py:240
+msgid "The LDAP BindDN cannot be empty."
+msgstr "El BindDN del LDAP no puede estar vacío."
+
+#: firstboot/pages/linkToServer/ServerConf.py:282
+msgid "An error has ocurred unlinking from LDAP"
+msgstr "Ha ocurrido un error desvinculándose del LDAP"
+
+#: firstboot/pages/linkToServer/ServerConf.py:297
+msgid "The Chef URL cannot be empty."
+msgstr "LA URL de Chef no puede quedar vacía."
+
+#: firstboot/pages/linkToServer/ServerConf.py:300
+msgid "The Chef certificate URL cannot be empty."
+msgstr "La URL del certificado de Chef no puede quedar vacía."
+
+#: firstboot/pages/linkToServer/ServerConf.py:303
+msgid "The Chef host name cannot be empty."
+msgstr "El nombre de host para Chef no puede quedar vacío."
+
+#: firstboot/pages/linkToServer/ServerConf.py:345
+msgid "An error has ocurred unlinking from Chef"
+msgstr "Ha ocurrido un error desvinculándose de Chef"
+
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:33
+#: firstboot/pages/linkToServer/LinkToServerResultsPage.py:37
+#: firstboot/pages/linkToServer/__init__.py:38
+msgid "Link workstation to a server"
+msgstr "Enlazar puesto a un servidor"
+
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:124
+msgid "This workstation is going to be unlinked from the LDAP server."
+msgstr "Este puesto de trabajo se va a desvincular del servidor LDAP."
+
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:128
+msgid "This workstation is going to be unlinked from the Chef server."
+msgstr "Este puesto de trabajo se va a desvincular del servidor Chef."
+
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:135
+msgid "Remember you can disable the sections you don't want to configure."
+msgstr "Recuerde que puede deshabilitar la sección que no quiera configurar."
+
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:139
+msgid "Version"
+msgstr "Versión"
+
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:140
+msgid "Organization"
+msgstr "Organización"
+
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:141
+msgid "Notes"
+msgstr "Notas"
+
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:145
+msgid "Password"
+msgstr "Contraseña"
+
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:147
+msgid "Certificate URL"
+msgstr "URL del certificado"
+
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:148
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:149
+msgid "Apply"
+msgstr "Aplicar"
+
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:151
+msgid "Configure LDAP"
+msgstr "Configurar LDAP"
+
+#: firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:152
+msgid "Configure Chef"
+msgstr "Configurar Chef"
+
+#: firstboot/pages/linkToServer/LinkToServerHostnamePage.py:96
+msgid ""
+"This workstation is going to be linked to a Chef server, therefore it must "
+"be given a host name. The host name will be used for uniquely identify this "
+"workstation.\n"
+"\n"
+" The list below shows the current host names found in the Chef server, you "
+"must avoid to use any of them."
+msgstr ""
+"Este puesto de trabajo se va a vincular a un servidor Chef, así pues es "
+"necesario darle un nombre de host. El nombre de host será usado para identificar "
+"unívocamente a este puesto de trabajo.\n"
+"\n"
+"La lista inferior muestra los nombres que se han encontrado en el servidor Chef, "
+"usted debe evitar usar cualquiera de ellos."
+
+#: firstboot/pages/linkToServer/LinkToServerHostnamePage.py:102
+msgid "Hostname"
+msgstr "Hostname"
+
+#: firstboot/pages/linkToServer/LinkToServerHostnamePage.py:129
+msgid "The Chef certificate couldn't be found."
+msgstr "No se ha encontrado el certificado de Chef."
+
+#: firstboot/pages/linkToServer/LinkToServerHostnamePage.py:142
+msgid "The host name cannot be empty."
+msgstr "El nombre de host no puede quedar vacio."
+
+#: firstboot/pages/linkToServer/LinkToServerHostnamePage.py:146
+msgid "The host name already exists in the Chef server."
+msgstr "El nombre de host ya existe en el servidor Chef."
+
+#: firstboot/pages/linkToServer/LinkToServerHostnamePage.py:166
+msgid "Host names in use"
+msgstr "Nombres de host en uso"
+
+#: firstboot/pages/linkToServer/LinkToServerResultsPage.py:113
 msgid "This workstation has been linked to a GECOS server."
 msgstr "Este puesto de trabajo se ha vinculado a un servidor GECOS."
 
-#: firstboot/pages/linkToServer/LinkToServerResultsPage.py:140
-#: firstboot/pages/linkToServer/LinkToServerResultsPage.py:146
+#: firstboot/pages/linkToServer/LinkToServerResultsPage.py:116
+#: firstboot/pages/linkToServer/LinkToServerResultsPage.py:122
 msgid "Finalize"
 msgstr "Finalizar"
 
-#: firstboot/pages/linkToServer/LinkToServerResultsPage.py:143
+#: firstboot/pages/linkToServer/LinkToServerResultsPage.py:119
 msgid "There are some errors you may fix."
 msgstr "Se han producido algunos errores que debería corregir."
 
-#: firstboot/pages/linkToServer/LinkToServerResultsPage.py:145
+#: firstboot/pages/linkToServer/LinkToServerResultsPage.py:121
 msgid "Back"
 msgstr "Volver"
 
-#: firstboot/pages/linkToServer/__init__.py:141
+#: firstboot/pages/linkToServer/__init__.py:130
 msgid ""
 "When a workstation is linked to a GECOS server it can be managed remotely "
 "and existing users in the server can login into this workstation.\n"
@@ -181,11 +251,7 @@ msgstr ""
 "iniciar sesión en este puesto de trabajo.\n"
 "\n"
 
-#: firstboot/pages/linkToServer/__init__.py:146
-msgid "Configure"
-msgstr "Configurar"
-
-#: firstboot/pages/linkToServer/__init__.py:147
+#: firstboot/pages/linkToServer/__init__.py:136
 msgid ""
 "You can type the options manually or download a default configuration from "
 "the server."
@@ -193,22 +259,29 @@ msgstr ""
 "Puede escribir las opciones manualmente o descargar una configuración por "
 "defecto desde el servidor."
 
-#: firstboot/pages/linkToServer/__init__.py:150
-#: firstboot/pages/linkToServer/__init__.py:155
-msgid "Unlink"
-msgstr "Desvincular"
-
-#: firstboot/pages/linkToServer/__init__.py:151
+#: firstboot/pages/linkToServer/__init__.py:140
 msgid "This workstation is currently linked to a GECOS server."
 msgstr "Este puesto de trabajo está actualmente vinculado a un servidor GECOS."
 
-#: firstboot/pages/linkToServer/__init__.py:156
+#: firstboot/pages/linkToServer/__init__.py:144
+msgid "Unlink from LDAP"
+msgstr "Desvincular del LDAP"
+
+#: firstboot/pages/linkToServer/__init__.py:145
+msgid "Unlink from Chef"
+msgstr "Desvincular de Chef"
+
+#: firstboot/pages/linkToServer/__init__.py:146
 msgid "Manual"
 msgstr "Manual"
 
-#: firstboot/pages/linkToServer/__init__.py:157
+#: firstboot/pages/linkToServer/__init__.py:147
 msgid "Automatic"
 msgstr "Automático"
+
+#: firstboot/pages/linkToServer/__init__.py:148
+msgid "Configure"
+msgstr "Configurar"
 
 #: firstboot/pages/linkToServer/__init__.py:211
 msgid "The configuration file is valid."

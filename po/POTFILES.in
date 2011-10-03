@@ -2,6 +2,7 @@
 ./firstboot/pages/pcLabel/__init__.py
 ./firstboot/pages/linkToServer/ServerConf.py
 ./firstboot/pages/linkToServer/LinkToServerConfEditorPage.py
+./firstboot/pages/linkToServer/LinkToServerHostnamePage.py
 ./firstboot/pages/linkToServer/LinkToServerResultsPage.py
 ./firstboot/pages/linkToServer/__init__.py
 ./firstboot/pages/network/__init__.py
