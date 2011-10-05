@@ -90,6 +90,7 @@ class LinkToServerHostnamePage(PageWindow.PageWindow):
         self.cmd_options = options
         self.fbe = FirstbootEntry.FirstbootEntry()
 
+        self.hostnames = []
         self._init_treeview()
 
     def translate(self):
@@ -191,11 +192,17 @@ host names found in the Chef server, you must avoid to use any of them.')
 
             names = []
             if exit_code[1] == 0:
-                names = json.loads(output)
+                try:
+                    names = json.loads(output)
+                except ValueError as e:
+                    names = output.split('\n')
 
             self.hostnames = []
             model = self.tvNames.get_model()
             for name in names:
+                name = name.strip()
+                if name.startswith('WARNING') or name.startswith('ERROR'):
+                    continue
                 self.hostnames.append(name)
                 model.append([name])
 
