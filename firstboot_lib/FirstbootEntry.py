@@ -17,7 +17,7 @@ class FirstbootEntry(IniFile):
         self.config_file = os.path.join(self.config_path, 'firstboot.conf')
 
         if not os.path.exists(self.config_path):
-            os.mkdir(self.config_path)
+            os.makedirs(self.config_path)
 
         if not os.path.exists(self.config_file):
             self._create_config_file()
