@@ -220,7 +220,7 @@ server.')
         elif status == __STATUS_ERROR__:
             self.imgStatus.set_from_stock(gtk.STOCK_DIALOG_ERROR, icon_size)
             self.imgStatus.set_visible(True)
-            self.lblStatus.set_label(str(exception.args[0]))
+            self.lblStatus.set_label(str(exception))
             self.lblStatus.set_visible(True)
 
         elif status == __STATUS_CONNECTING__:
