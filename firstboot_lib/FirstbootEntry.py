@@ -13,7 +13,7 @@ class FirstbootEntry(IniFile):
 
         self.content = dict()
 
-        self.config_path = os.path.join(os.getenv('HOME'), '.config/firstboot')
+        self.config_path = '/var/lib/firstboot'
         self.config_file = os.path.join(self.config_path, 'firstboot.conf')
 
         if not os.path.exists(self.config_path):
