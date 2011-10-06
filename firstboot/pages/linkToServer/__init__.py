@@ -172,12 +172,12 @@ server.')
 
         self.show_status()
 
-        server_conf = None
-        if self.radioAuto.get_active():
-            url = self.txtUrl.get_text()
-            server_conf = ServerConf.get_server_conf(url)
-
         try:
+            server_conf = None
+            if self.radioAuto.get_active():
+                url = self.txtUrl.get_text()
+                server_conf = ServerConf.get_server_conf(url)
+
             self.emit(
                 'subpage-changed',
                 'linkToServer',
@@ -195,7 +195,7 @@ server.')
             self.show_status(__STATUS_ERROR__, e)
 
         except Exception as e:
-            print e
+            self.show_status(__STATUS_ERROR__, e)
 
     def show_status(self, status=None, exception=None):
 
