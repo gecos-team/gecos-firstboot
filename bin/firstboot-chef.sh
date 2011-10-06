@@ -84,13 +84,13 @@ update_conf() {
     #get_pclabel
 
     sed -e s@"^chef_server_url .*"@"chef_server_url \"$chef_server_url\""@g \
-        -e s/"^node_name .*"/"node_name $chef_node_name"/g \
+        -e 's/^node_name .*/node_name "'$chef_node_name'"/g' \
         $chefconf > $tmpconf
 
     # It's posible that some options are commented,
     # be sure to decomment them.
     sed -e s@"^#chef_server_url .*"@"chef_server_url \"$chef_server_url\""@g \
-        -e s/"^#node_name .*"/"node_name $chef_node_name"/g \
+        -e s/"^#node_name .*"/"node_name \"$chef_node_name\""/g \
         $tmpconf > $tmpconf".2"
 
     mv $tmpconf".2" $tmpconf
