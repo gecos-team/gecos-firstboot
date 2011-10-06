@@ -57,13 +57,9 @@ def get_server_conf(url):
     try:
 
         url = parse_url(url)
-        #print url
         fp = urllib2.urlopen(url, timeout=__URLOPEN_TIMEOUT__)
-        #print fp.url(), fp.info()
         content = fp.read()
-        #print content
         conf = json.loads(content)
-        #print conf
 
         if 'version' in conf:
             version = conf['version']
@@ -76,7 +72,7 @@ def get_server_conf(url):
         raise ValueError()
 
     except urllib2.URLError as e:
-        raise ServerConfException(e.args[0])
+        raise ServerConfException(e)
 
     except ValueError as e:
         raise ServerConfException(_('Configuration file is not valid.'))
@@ -112,7 +108,7 @@ def get_chef_pem(url):
 def ldap_is_configured():
     try:
 
-        script = os.path.join('/usr/local/bin', __LDAP_CONF_SCRIPT__)
+        script = os.path.join('/usr/bin', __LDAP_CONF_SCRIPT__)
         if not os.path.exists(script):
             raise LinkToLDAPException(_("The LDAP configuration script couldn't be found") + ': ' + script)
 
@@ -138,7 +134,7 @@ def ldap_is_configured():
 def chef_is_configured():
     try:
 
-        script = os.path.join('/usr/local/bin', __CHEF_CONF_SCRIPT__)
+        script = os.path.join('/usr/bin', __CHEF_CONF_SCRIPT__)
         if not os.path.exists(script):
             raise LinkToChefException(_("The Chef configuration script couldn't be found") + ': ' + script)
 
@@ -244,7 +240,7 @@ def link_to_ldap(ldap_conf):
 
     try:
 
-        script = os.path.join('/usr/local/bin', __LDAP_CONF_SCRIPT__)
+        script = os.path.join('/usr/bin', __LDAP_CONF_SCRIPT__)
         if not os.path.exists(script):
             raise LinkToLDAPException(_("The LDAP configuration script couldn't be found") + ': ' + script)
 
@@ -267,7 +263,7 @@ def unlink_from_ldap():
 
     try:
 
-        script = os.path.join('/usr/local/bin', __LDAP_CONF_SCRIPT__)
+        script = os.path.join('/usr/bin', __LDAP_CONF_SCRIPT__)
         if not os.path.exists(script):
             raise LinkToLDAPException("The file could not be found: " + script)
 
@@ -307,7 +303,7 @@ def link_to_chef(chef_conf):
 
     try:
 
-        script = os.path.join('/usr/local/bin', __CHEF_CONF_SCRIPT__)
+        script = os.path.join('/usr/bin', __CHEF_CONF_SCRIPT__)
         if not os.path.exists(script):
             raise LinkToChefException(_("The Chef configuration script couldn't be found") + ': ' + script)
 
@@ -330,7 +326,7 @@ def unlink_from_chef():
 
     try:
 
-        script = os.path.join('/usr/local/bin', __CHEF_CONF_SCRIPT__)
+        script = os.path.join('/usr/bin', __CHEF_CONF_SCRIPT__)
         if not os.path.exists(script):
             raise LinkToChefException("The file could not be found: " + script)
 
