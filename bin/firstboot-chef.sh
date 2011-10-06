@@ -95,7 +95,7 @@ update_conf() {
 
     mv $tmpconf".2" $tmpconf
 
-    /usr/bin/wget -q --http-user=$user --http-password=$passwd $chef_validation_url
+    /usr/bin/wget -q --no-check-certificate --http-user=$user --http-password=$passwd $chef_validation_url -O validation.pem
     r_validation=$?
 
     if [ -f validation.pem ]; then
