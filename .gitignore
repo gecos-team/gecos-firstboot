@@ -3,4 +3,5 @@
 .settings
 .geanyprj
 *.pyc
+*.mo
 *.ignore.*
