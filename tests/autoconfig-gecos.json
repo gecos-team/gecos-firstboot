@@ -3,13 +3,13 @@
     "organization": "My Organization",
     "notes": "Notes",
     "pamldap": {
-        "uri": "ldap://192.168.1.1:389/",
-        "base": "dn=foo,dc=bar",
-        "binddn": "dn=john doe,dc=foobar",
-        "bindpw": "12345"
+        "uri": "ldap://10.240.194.218:389/",
+        "base": "dc=dev,dc=guadalinex,dc=org",
+        "binddn": "cn=admin,dc=dev,dc=guadalinex,dc=org",
+        "bindpw": "test"
     },
     "chef": {
-        "chef_server_url": "http://10.240.194.218:4000",
+        "chef_server_url": "https://10.240.194.220",
         "chef_validation_url": "http://10.240.194.217/validation.pem"
     }
 }
