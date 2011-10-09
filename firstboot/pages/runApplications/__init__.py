@@ -22,9 +22,9 @@ __license__ = "GPL-2"
 
 
 import os
-import gtk
-import gio
-import pango
+from gi.repository import Gtk
+from gi.repository import Gio
+from gi.repository import Pango
 from firstboot_lib import PageWindow
 
 import gettext
@@ -78,13 +78,13 @@ class RunApplicationsPage(PageWindow.PageWindow):
 
     def load_iconview(self):
 
-        self.ivApplications.set_selection_mode(gtk.SELECTION_SINGLE)
+        self.ivApplications.set_selection_mode(Gtk.SelectionMode.SINGLE)
 
         store = self.ivApplications.get_model()
         store.clear()
 
         filter = ['firefox', 'gnome-terminal']
-        app_list = gio.app_info_get_all()
+        app_list = Gio.app_info_get_all()
 
         for app in app_list:
             if app.get_executable() in filter:
@@ -93,19 +93,19 @@ class RunApplicationsPage(PageWindow.PageWindow):
                 pixbuf = None
 
                 try:
-                    if isinstance(icon, gio.FileIcon):
-                        pixbuf = gtk.gdk.Pixbuf.from_file(icon).get_file().get_path()
+                    if isinstance(icon, Gio.FileIcon):
+                        pixbuf = GdkPixbuf.Pixbuf.from_file(icon).get_file().get_path()
 
-                    elif isinstance(icon, gio.ThemedIcon):
-                        theme = gtk.icon_theme_get_default()
-                        pixbuf = theme.load_icon(icon.get_names()[0], 96, gtk.ICON_LOOKUP_USE_BUILTIN)
+                    elif isinstance(icon, Gio.ThemedIcon):
+                        theme = Gtk.IconTheme.get_default()
+                        pixbuf = theme.load_icon(icon.get_names()[0], 96, Gtk.IconLookupFlags.USE_BUILTIN)
 
                 except Exception, e:
                     print "Error loading icon pixbuf: " + e.message;
 
                 store.append([
                     pixbuf, app.get_name(),
-                    pango.ALIGN_CENTER, 140, pango.WRAP_WORD,
+                    Pango.ALIGN_CENTER, 140, Pango.WrapMode.WORD,
                     app
                 ])
 

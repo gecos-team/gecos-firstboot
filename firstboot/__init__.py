@@ -22,7 +22,7 @@ __license__ = "GPL-2"
 
 
 import os
-import gtk
+from gi.repository import Gtk
 import optparse
 
 import gettext
@@ -76,4 +76,4 @@ def main():
     # Run the application.    
     window = FirstbootWindow.FirstbootWindow(options)
     window.show()
-    gtk.main()
+    Gtk.main()

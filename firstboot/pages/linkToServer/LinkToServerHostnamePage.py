@@ -22,7 +22,7 @@ __license__ = "GPL-2"
 
 
 import os
-import gtk
+from gi.repository import Gtk
 import subprocess
 import shlex
 import json
@@ -164,9 +164,9 @@ host names found in the Chef server, you must avoid to use any of them.')
 
     def _init_treeview(self):
 
-        tvcolumn = gtk.TreeViewColumn(_('Host names in use'))
+        tvcolumn = Gtk.TreeViewColumn(_('Host names in use'))
 
-        cell = gtk.CellRendererText()
+        cell = Gtk.CellRendererText()
         tvcolumn.set_sort_column_id(0)
         tvcolumn.pack_start(cell, True)
         tvcolumn.set_cell_data_func(cell, self._render_column_text)
@@ -228,7 +228,7 @@ host names found in the Chef server, you must avoid to use any of them.')
         #~ self.txtHostname.set_text(hostname)
 
     def show_error(self, message):
-        self.imgStatus.set_from_stock(gtk.STOCK_DIALOG_ERROR, gtk.ICON_SIZE_BUTTON)
+        self.imgStatus.set_from_stock(Gtk.STOCK_DIALOG_ERROR, Gtk.IconSize.BUTTON)
         self.lblStatus.set_label(message)
         self.imgStatus.set_visible(True)
         self.lblStatus.set_visible(True)

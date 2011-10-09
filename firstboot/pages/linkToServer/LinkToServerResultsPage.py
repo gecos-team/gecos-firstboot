@@ -21,7 +21,7 @@ __copyright__ = "Copyright (C) 2011, Junta de Andalucía <devmaster@guadalinex.o
 __license__ = "GPL-2"
 
 
-import gtk
+from gi.repository import Gtk
 
 import ServerConf
 from ServerConf import ServerConfException, LinkToLDAPException, LinkToChefException
@@ -103,9 +103,9 @@ class LinkToServerResultsPage(PageWindow.PageWindow):
         if 'messages' in params:
             for m in params['messages']:
                 if m['type'] == 'error':
-                    icon = gtk.STOCK_DIALOG_ERROR
+                    icon = Gtk.STOCK_DIALOG_ERROR
                 else:
-                    icon = gtk.STOCK_YES
+                    icon = Gtk.STOCK_YES
                 box = self.new_message(m['message'], icon)
                 self.boxMessageContainer.pack_start(box, False, False)
 
@@ -122,11 +122,11 @@ to a GECOS server.'))
             self.btnAccept.set_label(_('Finalize'))
 
     def new_message(self, message, icon):
-        box = gtk.HBox()
-        img = gtk.Image()
-        img.set_from_stock(icon, gtk.ICON_SIZE_MENU)
+        box = Gtk.HBox()
+        img = Gtk.Image()
+        img.set_from_stock(icon, Gtk.IconSize.MENU)
         img.show()
-        lbl = gtk.Label()
+        lbl = Gtk.Label()
         lbl.set_text(message)
         lbl.show()
         box.pack_start(img, False, True)

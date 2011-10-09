@@ -25,9 +25,9 @@ import gettext
 from gettext import gettext as _
 gettext.textdomain('firstboot')
 
-import gtk
-import pango
-import gio
+from gi.repository import Gtk
+from gi.repository import Pango
+from gi.repository import Gio
 import logging
 logger = logging.getLogger('firstboot')
 
@@ -140,12 +140,12 @@ class FirstbootWindow(Window):
             try:
                 module = __import__('firstboot.pages.%s' % page_name, fromlist=['firstboot.pages'])
 
-                button = gtk.Button()
-                button.set_relief(gtk.RELIEF_NONE)
+                button = Gtk.Button()
+                button.set_relief(Gtk.ReliefStyle.NONE)
                 button.set_property('focus-on-click', False)
                 button.set_property('xalign', 0)
 
-                label = gtk.Label()
+                label = Gtk.Label()
                 label.set_text(module.__TITLE__)
                 label.show()
                 button.add(label)
@@ -256,7 +256,7 @@ class FirstbootWindow(Window):
     def show_applications(self):
 
         filter = ['firefox', 'firefox-firma', 'gnome-terminal']
-        app_list = gio.app_info_get_all()
+        app_list = Gio.app_info_get_all()
 
         for app in app_list:
             if app.get_executable() in filter:
@@ -265,29 +265,29 @@ class FirstbootWindow(Window):
                 pixbuf = None
 
                 try:
-                    if isinstance(icon, gio.FileIcon):
-                        pixbuf = gtk.gdk.pixbuf_new_from_file(icon.get_file().get_path())
+                    if isinstance(icon, Gio.FileIcon):
+                        pixbuf = GdkPixbuf.Pixbuf.new_from_file(icon.get_file().get_path())
 
-                    elif isinstance(icon, gio.ThemedIcon):
-                        theme = gtk.icon_theme_get_default()
-                        pixbuf = theme.load_icon(icon.get_names()[0], 24, gtk.ICON_LOOKUP_USE_BUILTIN)
+                    elif isinstance(icon, Gio.ThemedIcon):
+                        theme = Gtk.IconTheme.get_default()
+                        pixbuf = theme.load_icon(icon.get_names()[0], 24, Gtk.IconLookupFlags.USE_BUILTIN)
 
-                    pixbuf = pixbuf.scale_simple(24, 24, gtk.gdk.INTERP_BILINEAR)
+                    pixbuf = pixbuf.scale_simple(24, 24, GdkPixbuf.InterpType.BILINEAR)
 
                 except Exception, e:
                     print "Error loading icon pixbuf: " + e.message;
 
-                btn = gtk.Button()
-                btn.set_relief(gtk.RELIEF_NONE)
+                btn = Gtk.Button()
+                btn.set_relief(Gtk.ReliefStyle.NONE)
                 btn.set_property('focus-on-click', False)
                 btn.set_property('xalign', 0)
 
-                img = gtk.image_new_from_pixbuf(pixbuf)
+                img = Gtk.image_new_from_pixbuf(pixbuf)
 
-                lbl = gtk.Label()
+                lbl = Gtk.Label()
                 lbl.set_text(app.get_name())
 
-                box = gtk.HBox()
+                box = Gtk.HBox()
                 box.set_spacing(10)
                 box.pack_start(img, False)
                 box.pack_start(lbl, False)

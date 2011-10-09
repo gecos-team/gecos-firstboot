@@ -22,8 +22,8 @@ __license__ = "GPL-2"
 
 
 import os
-import gtk
-import gobject
+from gi.repository import Gtk
+from gi.repository import GObject
 from firstboot_lib import PageWindow
 
 import gettext
@@ -45,7 +45,7 @@ class NetworkPage(PageWindow.PageWindow):
     __gtype_name__ = "NetworkPage"
 
     __gsignals__ = {
-        'link-status': (gobject.SIGNAL_ACTION, gobject.TYPE_NONE, (gobject.TYPE_BOOLEAN,))
+        'link-status': (GObject.SignalFlags.ACTION, None, (GObject.TYPE_BOOLEAN,))
     }
 
     # To construct a new instance of this method, the following notable 
@@ -93,7 +93,7 @@ for linking this workstation to a GECOS server and for installing software.'))
 
     def load_page(self, assistant):
         self.timer_ret = True
-        gobject.timeout_add_seconds(1, self.load_treeviewInterfaces)
+        GObject.timeout_add_seconds(1, self.load_treeviewInterfaces)
 
     def unload_page(self):
         self.timer_ret = False
@@ -125,20 +125,20 @@ for linking this workstation to a GECOS server and for installing software.'))
 
     def init_treeviewInterfaces(self):
 
-        tvcolumn = gtk.TreeViewColumn(_('Name'))
-        cell = gtk.CellRendererText()
+        tvcolumn = Gtk.TreeViewColumn(_('Name'))
+        cell = Gtk.CellRendererText()
         tvcolumn.pack_start(cell, True)
         tvcolumn.set_cell_data_func(cell, self._render_column_name)
         self.treeviewInterfaces.append_column(tvcolumn)
 
-        tvcolumn = gtk.TreeViewColumn(_('IP'))
-        cell = gtk.CellRendererText()
+        tvcolumn = Gtk.TreeViewColumn(_('IP'))
+        cell = Gtk.CellRendererText()
         tvcolumn.pack_start(cell, True)
         tvcolumn.set_cell_data_func(cell, self._render_column_ip)
         self.treeviewInterfaces.append_column(tvcolumn)
 
         selection = self.treeviewInterfaces.get_selection()
-        selection.set_mode(gtk.SELECTION_NONE)
+        selection.set_mode(Gtk.SelectionMode.NONE)
 
         self.load_treeviewInterfaces()
 

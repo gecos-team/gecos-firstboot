@@ -22,7 +22,7 @@ __license__ = "GPL-2"
 
 
 import os
-import gtk
+from gi.repository import Gtk
 
 from firstboot_lib import PageWindow, FirstbootEntry
 
@@ -103,11 +103,11 @@ workstation later.')
     def on_btnAccept_Clicked(self, button):
         try:
             self.set_label(self.txtLabel.get_text())
-            self.imgStatus.set_from_stock(gtk.STOCK_YES, gtk.ICON_SIZE_MENU)
+            self.imgStatus.set_from_stock(Gtk.STOCK_YES, Gtk.IconSize.MENU)
             self.lblStatus.set_label(_('The label has been updated correctly.'))
 
         except Exception as e:
-            self.imgStatus.set_from_stock(gtk.STOCK_DIALOG_ERROR, gtk.ICON_SIZE_MENU)
+            self.imgStatus.set_from_stock(Gtk.STOCK_DIALOG_ERROR, Gtk.IconSize.MENU)
             self.lblStatus.set_label(str(e))
 
         self.imgStatus.set_visible(True)

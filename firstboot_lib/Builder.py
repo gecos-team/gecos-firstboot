@@ -25,7 +25,7 @@ __license__ = "GPL-2"
 
 from gi.repository import GObject  # pylint: disable=E0611
 
-import gtk
+from gi.repository import Gtk
 import inspect
 import functools
 import logging
@@ -41,8 +41,8 @@ from xml.etree.cElementTree import ElementTree
 
 
 # pylint: disable=R0904
-# the many public methods is a feature of gtk.Builder
-class Builder(gtk.Builder):
+# the many public methods is a feature of Gtk.Builder
+class Builder(Gtk.Builder):
     ''' extra features
     connects glade defined handler to default_handler if necessary
     auto connects widget to handler with matching name or alias
@@ -52,7 +52,7 @@ class Builder(gtk.Builder):
     '''
 
     def __init__(self):
-        gtk.Builder.__init__(self)
+        GObject.GObject.__init__(self)
         self.widgets = {}
         self.glade_handler_dict = {}
         self.connections = []
@@ -68,7 +68,7 @@ class Builder(gtk.Builder):
     An apprentice guru might wonder which signal does what he wants,
     now he can define any likely candidates in glade and notice which
     ones get triggered when he plays with the project.
-    this method does not appear in gtk.Builder'''
+    this method does not appear in Gtk.Builder'''
         logger.debug('''tried to call non-existent function:%s()
         expected in %s
         args:%s
@@ -78,12 +78,12 @@ class Builder(gtk.Builder):
     def get_name(self, widget):
         ''' allows a handler to get the name (id) of a widget
 
-        this method does not appear in gtk.Builder'''
+        this method does not appear in Gtk.Builder'''
         return self._reverse_widget_dict.get(widget)
 
     def add_from_file(self, filename):
         '''parses xml file and stores wanted details'''
-        gtk.Builder.add_from_file(self, filename)
+        Gtk.Builder.add_from_file(self, filename)
 
         # extract data for the extra interfaces
         tree = ElementTree()
@@ -139,7 +139,7 @@ class Builder(gtk.Builder):
                  item[0], filename)
 
         # connect glade define handlers
-        gtk.Builder.connect_signals(self, connection_dict)
+        Gtk.Builder.connect_signals(self, connection_dict)
 
         # let's tell the user how we applied the glade design
         for connection in self.connections:
@@ -151,7 +151,7 @@ class Builder(gtk.Builder):
         '''Creates the ui object with widgets as attributes
 
         connects signals by 2 methods
-        this method does not appear in gtk.Builder'''
+        this method does not appear in Gtk.Builder'''
 
         result = UiFactory(self.widgets)
 
@@ -216,6 +216,8 @@ def make_pyname(name):
 
 def dict_from_callback_obj(callback_obj):
     '''a dictionary interface to callback_obj'''
+    print inspect.ismethod
+    print callback_obj
     methods = inspect.getmembers(callback_obj, inspect.ismethod)
 
     aliased_methods = [x[1] for x in methods if hasattr(x[1], 'aliases')]

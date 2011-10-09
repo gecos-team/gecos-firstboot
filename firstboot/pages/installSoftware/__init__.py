@@ -22,7 +22,7 @@ __license__ = "GPL-2"
 
 
 import os
-import gtk
+from gi.repository import Gtk
 from firstboot_lib import PageWindow
 
 import gettext

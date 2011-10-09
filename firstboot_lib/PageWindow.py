@@ -21,8 +21,8 @@ __copyright__ = "Copyright (C) 2011, Junta de Andalucía <devmaster@guadalinex.o
 __license__ = "GPL-2"
 
 
-import gobject
-import gtk
+from gi.repository import GObject
+from gi.repository import Gtk
 import logging
 logger = logging.getLogger('firstboot_lib')
 
@@ -30,20 +30,20 @@ from . helpers import get_builder, show_uri, get_help_uri
 
 # This class is meant to be subclassed by FirstbootWindow.  It provides
 # common functions and some boilerplate.
-class PageWindow(gtk.Window):
+class PageWindow(Gtk.Window):
     __gtype_name__ = 'PageWindow'
     __page_container__ = 'ContainerWindow'
 
     __gsignals__ = {
         'page-changed': (
-            gobject.SIGNAL_RUN_LAST,
-            gobject.TYPE_NONE,
-            (gobject.TYPE_STRING, gobject.TYPE_PYOBJECT)
+            GObject.SignalFlags.RUN_LAST,
+            None,
+            (GObject.TYPE_STRING, GObject.TYPE_PYOBJECT)
         ),
         'subpage-changed': (
-            gobject.SIGNAL_RUN_LAST,
-            gobject.TYPE_NONE,
-            (gobject.TYPE_STRING, gobject.TYPE_STRING, gobject.TYPE_PYOBJECT)
+            GObject.SignalFlags.RUN_LAST,
+            None,
+            (GObject.TYPE_STRING, GObject.TYPE_STRING, GObject.TYPE_PYOBJECT)
         )
     }
 
@@ -58,7 +58,7 @@ class PageWindow(gtk.Window):
     # your initialization code in finish_initializing
 
     def __init__(self, options=None):
-        gtk.Window.__init__(self)
+        GObject.GObject.__init__(self)
 
     def __new__(cls, options=None):
         """Special static method that's automatically called by Python when 
@@ -88,4 +88,4 @@ class PageWindow(gtk.Window):
     def on_destroy(self, widget, data=None):
         """Called when the FirstbootWindow is closed."""
         # Clean up code for saving application state should be added here.
-        gtk.main_quit()
+        Gtk.main_quit()

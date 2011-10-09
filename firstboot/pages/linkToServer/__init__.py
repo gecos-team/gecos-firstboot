@@ -22,7 +22,7 @@ __license__ = "GPL-2"
 
 
 import os
-import gtk
+from gi.repository import Gtk
 
 import ServerConf
 from ServerConf import ServerConfException, LinkToLDAPException, LinkToChefException
@@ -199,32 +199,32 @@ server.')
 
     def show_status(self, status=None, exception=None):
 
-        icon_size = gtk.ICON_SIZE_BUTTON
+        icon_size = Gtk.IconSize.BUTTON
 
         if status == None:
             self.imgStatus.set_visible(False)
             self.lblStatus.set_visible(False)
 
         elif status == __STATUS_TEST_PASSED__:
-            self.imgStatus.set_from_stock(gtk.STOCK_APPLY, icon_size)
+            self.imgStatus.set_from_stock(Gtk.STOCK_APPLY, icon_size)
             self.imgStatus.set_visible(True)
             self.lblStatus.set_label(_('The configuration file is valid.'))
             self.lblStatus.set_visible(True)
 
         elif status == __STATUS_CONFIG_CHANGED__:
-            self.imgStatus.set_from_stock(gtk.STOCK_APPLY, icon_size)
+            self.imgStatus.set_from_stock(Gtk.STOCK_APPLY, icon_size)
             self.imgStatus.set_visible(True)
             self.lblStatus.set_label(_('The configuration was updated successfully.'))
             self.lblStatus.set_visible(True)
 
         elif status == __STATUS_ERROR__:
-            self.imgStatus.set_from_stock(gtk.STOCK_DIALOG_ERROR, icon_size)
+            self.imgStatus.set_from_stock(Gtk.STOCK_DIALOG_ERROR, icon_size)
             self.imgStatus.set_visible(True)
             self.lblStatus.set_label(str(exception))
             self.lblStatus.set_visible(True)
 
         elif status == __STATUS_CONNECTING__:
-            self.imgStatus.set_from_stock(gtk.STOCK_CONNECT, icon_size)
+            self.imgStatus.set_from_stock(Gtk.STOCK_CONNECT, icon_size)
             self.imgStatus.set_visible(True)
             self.lblStatus.set_label(_('Trying to connect...'))
             self.lblStatus.set_visible(True)
