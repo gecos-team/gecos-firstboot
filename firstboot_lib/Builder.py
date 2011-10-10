@@ -213,12 +213,27 @@ def make_pyname(name):
             pyname += '_'
     return pyname
 
+def getmembers(object, predicate=None):
+    """Return all members of an object as (name, value) pairs sorted by name.
+    Optionally, only return members that satisfy a given predicate."""
+    results = []
+    for key in dir(object):
+        try:
+            value = getattr(object, key)
+        except AttributeError, RuntimeError:
+            continue
+        except Exception:
+            continue
+        if not predicate or predicate(value):
+            results.append((key, value))
+    results.sort()
+    return results
 
 def dict_from_callback_obj(callback_obj):
     '''a dictionary interface to callback_obj'''
-    print inspect.ismethod
-    print callback_obj
-    methods = inspect.getmembers(callback_obj, inspect.ismethod)
+
+    #methods = inspect.getmembers(callback_obj, inspect.ismethod)
+    methods = getmembers(callback_obj, inspect.ismethod)
 
     aliased_methods = [x[1] for x in methods if hasattr(x[1], 'aliases')]
 
