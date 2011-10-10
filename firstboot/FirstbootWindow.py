@@ -40,6 +40,9 @@ import pages
 class FirstbootWindow(Window):
     __gtype_name__ = "FirstbootWindow"
 
+    def __init__(self, option=None):
+        self.connect("delete_event", self.on_delete_event)
+
     def finish_initializing(self, builder, options=None): # pylint: disable=E1002
         """Set up the main window"""
         super(FirstbootWindow, self).finish_initializing(builder)
@@ -82,6 +85,24 @@ class FirstbootWindow(Window):
 
     def on_btnClose_Clicked(self, button):
         self.destroy()
+
+    def on_delete_event(self,widget,data=None):
+        dialog = Gtk.MessageDialog(self, Gtk.DIALOG_DESTROY_WITH_PARENT,Gtk.MESSAGE_INFO,Gtk.BUTTONS_YES_NO, _("Are you sure you have fully configured this workstation?"))
+        result=dialog.run()
+        retval=True
+        if result == Gtk.RESPONSE_YES:
+            
+            cmd = 'mv /etc/xdg/autostart/firstboot.desktop /tmp/'
+            args = shlex.split(cmd)
+
+            process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            exit_code = os.waitpid(process.pid, 0)
+            
+            self.destroy()
+        
+        dialog.destroy()
+        return retval
+
 
     def on_btnIndex_Clicked(self, button, page_name, module):
         self.set_current_page(page_name)
@@ -270,7 +291,7 @@ class FirstbootWindow(Window):
                         pixbuf = GdkPixbuf.Pixbuf.new_from_file(icon.get_file().get_path())
 
                     elif isinstance(icon, Gio.ThemedIcon):
-                        theme = Gtk.IconTheme.get_default()
+                        theme = ()
                         pixbuf = theme.load_icon(icon.get_names()[0], 24, Gtk.IconLookupFlags.USE_BUILTIN)
 
                     pixbuf = pixbuf.scale_simple(24, 24, GdkPixbuf.InterpType.BILINEAR)

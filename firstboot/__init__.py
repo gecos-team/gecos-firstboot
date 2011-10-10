@@ -64,14 +64,14 @@ def is_first_start(debug):
 
     fbe.set_firststart(1)
 
-    return True
+    return 
 
 def main():
     'constructor for your class instances'
     options = parse_options()
 
-    if not is_first_start(options.debug):
-        return
+   # if not is_first_start(options.debug):
+   #     return
 
     # Run the application.    
     window = FirstbootWindow.FirstbootWindow(options)
