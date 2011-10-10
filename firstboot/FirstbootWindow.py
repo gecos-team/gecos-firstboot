@@ -39,16 +39,16 @@ from firstboot_lib import Window, firstbootconfig, FirstbootEntry
 
 import pages
 
+__DESKTOP_FILE__ = '/etc/xdg/autostart/firstboot.desktop'
+
 # See firstboot_lib.Window.py for more details about how this class works
 class FirstbootWindow(Window):
     __gtype_name__ = "FirstbootWindow"
 
-    def __init__(self, option=None):
-        self.connect("delete_event", self.on_delete_event)
-
     def finish_initializing(self, builder, options=None): # pylint: disable=E1002
         """Set up the main window"""
         super(FirstbootWindow, self).finish_initializing(builder)
+        self.connect("delete_event", self.on_delete_event)
 
         self.cmd_options = options
         self.fbe = FirstbootEntry.FirstbootEntry()
@@ -89,7 +89,7 @@ class FirstbootWindow(Window):
     def on_btnClose_Clicked(self, button):
         self.destroy()
 
-    def on_delete_event(self,widget,data=None):
+    def on_delete_event(self, widget, data=None):
 
         dialog = Gtk.MessageDialog(self,
             Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
@@ -97,18 +97,16 @@ class FirstbootWindow(Window):
             _("Are you sure you have fully configured this workstation?"))
 
         result = dialog.run()
+        dialog.destroy()
         retval = True
+
         if result == Gtk.ResponseType.YES:
 
-            cmd = 'mv /etc/xdg/autostart/firstboot.desktop /tmp/'
-            args = shlex.split(cmd)
+            if os.path.exists(__DESKTOP_FILE__):
+                os.rename(__DESKTOP_FILE__, '/tmp/firstboot.desktop');
 
-            process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            exit_code = os.waitpid(process.pid, 0)
+            retval = False
 
-            self.destroy()
-
-        dialog.destroy()
         return retval
 
 
