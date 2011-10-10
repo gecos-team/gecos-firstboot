@@ -36,9 +36,10 @@ __all__ = [
 # files). By default, this is ../data, relative your trunk layout
 __firstboot_data_directory__ = '../data/'
 __license__ = ''
-__version__ = '0.2.1'
+__version__ = '0.2.4'
 
 import os
+import sys
 
 import gettext
 from gettext import gettext as _
@@ -47,6 +48,10 @@ gettext.textdomain('firstboot')
 class project_path_not_found(Exception):
     """Raised when we can't find the project directory."""
 
+
+def get_bin_path():
+    file_path = sys.argv[0]
+    return os.path.dirname(file_path)
 
 def get_data_file(*path_segments):
     """Get the full path to a data file.

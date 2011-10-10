@@ -112,14 +112,14 @@ class Clean(Command):
 ##################################################################################
 
 DistUtilsExtra.auto.setup(
-    name='firstboot',
-    version='0.2.1',
+    name='gecos-firstboot',
+    version='0.2.4',
     license='GPL-2',
     author='Antonio Hernández',
     author_email='ahernandez@emergya.com',
     #description='UI for managing …',
     #long_description='Here a longer description',
-    url='https://launchpad.net/firstboot',
+    url='https://github.com/ahdiaz/gecos-firstboot',
 
     keywords=['python', 'gnome'],
 
@@ -145,10 +145,10 @@ DistUtilsExtra.auto.setup(
         'firstboot.pages.pcLabel': 'firstboot/pages/pcLabel',
         },
 
-    scripts=['bin/firstboot'],
+    scripts=['bin/firstboot', 'bin/firstboot-ldapconf.sh', 'bin/firstboot-chef.sh'],
 
     data_files=[
-       ('bin', ['bin/firstboot']),
+       ('bin', ['bin/firstboot', 'bin/firstboot-ldapconf.sh', 'bin/firstboot-chef.sh']),
        ('share/firstboot/media', glob.glob('data/media/*')),
        ('share/firstboot/ui', glob.glob('data/ui/*')),
     ],
