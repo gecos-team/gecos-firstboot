@@ -107,7 +107,7 @@ class LinkToServerResultsPage(PageWindow.PageWindow):
                 else:
                     icon = Gtk.STOCK_YES
                 box = self.new_message(m['message'], icon)
-                self.boxMessageContainer.pack_start(box, False, False)
+                self.boxMessageContainer.pack_start(box, False, False, 0)
 
         if self.result == True:
             self.lblDescription.set_text(_('This workstation has been linked \
@@ -129,8 +129,8 @@ to a GECOS server.'))
         lbl = Gtk.Label()
         lbl.set_text(message)
         lbl.show()
-        box.pack_start(img, False, True)
-        box.pack_start(lbl, False, True)
+        box.pack_start(img, False, True, 0)
+        box.pack_start(lbl, False, True, 0)
         box.set_spacing(10)
         box.show()
         return box

@@ -28,6 +28,7 @@ gettext.textdomain('firstboot')
 from gi.repository import Gtk
 from gi.repository import Pango
 from gi.repository import Gio
+from gi.repository import GdkPixbuf
 import logging
 logger = logging.getLogger('firstboot')
 
@@ -150,7 +151,7 @@ class FirstbootWindow(Window):
                 label.show()
                 button.add(label)
 
-                self.boxIndex.pack_start(button, False, True)
+                self.boxIndex.pack_start(button, False, True, 0)
                 button.connect('clicked', self.on_btnIndex_Clicked, page_name, module)
                 button.show()
 
@@ -282,15 +283,15 @@ class FirstbootWindow(Window):
                 btn.set_property('focus-on-click', False)
                 btn.set_property('xalign', 0)
 
-                img = Gtk.image_new_from_pixbuf(pixbuf)
+                img = Gtk.Image.new_from_pixbuf(pixbuf)
 
                 lbl = Gtk.Label()
                 lbl.set_text(app.get_name())
 
                 box = Gtk.HBox()
                 box.set_spacing(10)
-                box.pack_start(img, False)
-                box.pack_start(lbl, False)
+                box.pack_start(img, False, True, 0)
+                box.pack_start(lbl, False, True, 0)
                 btn.add(box)
 
                 self.boxApplications.add(btn)

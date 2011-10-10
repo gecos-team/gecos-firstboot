@@ -26,6 +26,7 @@ from gi.repository import Gtk
 from gi.repository import Gio
 from gi.repository import Pango
 from firstboot_lib import PageWindow
+from gi.repository import GdkPixbuf
 
 import gettext
 from gettext import gettext as _
@@ -43,7 +44,7 @@ def get_page(options=None):
 class RunApplicationsPage(PageWindow.PageWindow):
     __gtype_name__ = "RunApplicationsPage"
 
-    # To construct a new instance of this method, the following notable 
+    # To construct a new instance of this method, the following notable
     # methods are called in this order:
     # __new__(cls)
     # __init__(self)
