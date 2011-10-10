@@ -168,7 +168,7 @@ host names found in the Chef server, you must avoid to use any of them.')
 
         cell = Gtk.CellRendererText()
         tvcolumn.set_sort_column_id(0)
-        tvcolumn.pack_start(cell, True, True, 0)
+        tvcolumn.pack_start(cell, True)
         tvcolumn.set_cell_data_func(cell, self._render_column_text)
 
         self.tvNames.append_column(tvcolumn)
