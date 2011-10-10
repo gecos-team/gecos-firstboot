@@ -25,6 +25,9 @@ import gettext
 from gettext import gettext as _
 gettext.textdomain('firstboot')
 
+import shlex
+import subprocess
+import os
 from gi.repository import Gtk
 from gi.repository import Pango
 from gi.repository import Gio
@@ -87,19 +90,24 @@ class FirstbootWindow(Window):
         self.destroy()
 
     def on_delete_event(self,widget,data=None):
-        dialog = Gtk.MessageDialog(self, Gtk.DIALOG_DESTROY_WITH_PARENT,Gtk.MESSAGE_INFO,Gtk.BUTTONS_YES_NO, _("Are you sure you have fully configured this workstation?"))
-        result=dialog.run()
-        retval=True
-        if result == Gtk.RESPONSE_YES:
-            
+
+        dialog = Gtk.MessageDialog(self,
+            Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
+            Gtk.MessageType.INFO, Gtk.ButtonsType.YES_NO,
+            _("Are you sure you have fully configured this workstation?"))
+
+        result = dialog.run()
+        retval = True
+        if result == Gtk.ResponseType.YES:
+
             cmd = 'mv /etc/xdg/autostart/firstboot.desktop /tmp/'
             args = shlex.split(cmd)
 
             process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             exit_code = os.waitpid(process.pid, 0)
-            
+
             self.destroy()
-        
+
         dialog.destroy()
         return retval
 
@@ -291,7 +299,7 @@ class FirstbootWindow(Window):
                         pixbuf = GdkPixbuf.Pixbuf.new_from_file(icon.get_file().get_path())
 
                     elif isinstance(icon, Gio.ThemedIcon):
-                        theme = ()
+                        theme = Gtk.IconTheme.get_default()
                         pixbuf = theme.load_icon(icon.get_names()[0], 24, Gtk.IconLookupFlags.USE_BUILTIN)
 
                     pixbuf = pixbuf.scale_simple(24, 24, GdkPixbuf.InterpType.BILINEAR)
