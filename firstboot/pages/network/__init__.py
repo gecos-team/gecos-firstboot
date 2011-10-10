@@ -48,7 +48,7 @@ class NetworkPage(PageWindow.PageWindow):
         'link-status': (GObject.SignalFlags.ACTION, None, (GObject.TYPE_BOOLEAN,))
     }
 
-    # To construct a new instance of this method, the following notable 
+    # To construct a new instance of this method, the following notable
     # methods are called in this order:
     # __new__(cls)
     # __init__(self)
@@ -162,15 +162,14 @@ for linking this workstation to a GECOS server and for installing software.'))
 
         return self.timer_ret
 
-    def _render_column_name(self, column, cell, model, iter):
+    def _render_column_name(self, column, cell, model, iter, user_param):
 
         value = model.get_value(iter, 0)
         text = '<b>%s</b>' % (value,)
         cell.set_property('markup', text)
         cell.set_property('width', 80)
 
-    def _render_column_ip(self, column, cell, model, iter):
+    def _render_column_ip(self, column, cell, model, iter, user_param):
 
         value = model.get_value(iter, 1)
         cell.set_property('text', value)
-
