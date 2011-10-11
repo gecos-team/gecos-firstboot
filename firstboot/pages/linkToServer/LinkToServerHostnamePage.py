@@ -22,7 +22,7 @@ __license__ = "GPL-2"
 
 
 import os
-from gi.repository import Gtk
+from gi.repository import Gtk, Gdk
 import subprocess
 import shlex
 import json
@@ -76,7 +76,6 @@ class LinkToServerHostnamePage(PageWindow.PageWindow):
         self.lblHostname = builder.get_object('lblHostname')
         self.txtHostname = builder.get_object('txtHostname')
         self.btnAccept = builder.get_object('btnAccept')
-        self.tvNames = builder.get_object('tvNames')
 
         container = builder.get_object(self.__page_container__)
         page = builder.get_object(self.__gtype_name__)
@@ -91,13 +90,11 @@ class LinkToServerHostnamePage(PageWindow.PageWindow):
         self.fbe = FirstbootEntry.FirstbootEntry()
 
         self.hostnames = []
-        self._init_treeview()
 
     def translate(self):
         desc = _('This workstation is going to be linked to a Chef server, \
-therefore it must be given a host name. The host name will be used for \
-uniquely identify this workstation.\n\n The list below shows the current \
-host names found in the Chef server, you must avoid to use any of them.')
+therefore it must be given a host name. That name will be used for \
+uniquely identify this workstation.')
 
         self.lblDescription.set_text(desc)
         self.lblHostname.set_label(_('Hostname'))
@@ -127,13 +124,26 @@ host names found in the Chef server, you must avoid to use any of them.')
         try:
             self.pem_file_path = ServerConf.get_chef_pem(pem_url)
         except Exception as e:
-            self.show_error(_('The Chef certificate couldn\'t be found.'))
+            #self.show_error(_('The Chef certificate couldn\'t be found.'))
+            self.show_error(str(e))
             return
 
         self._load_hostnames()
 
     def get_widget(self):
         return self.page
+
+    def on_txtHostname_changed(self, entry):
+        text = self.txtHostname.get_text()
+        for name in self.hostnames:
+            if name == text:
+                #self.txtHostname.modify_text(Gtk.StateFlags.NORMAL, Gdk.Color(255, 0, 0))
+                self.show_error(_('The host name is in use.'))
+                self.btnAccept.set_sensitive(False)
+                return
+
+        self.show_error()
+        self.btnAccept.set_sensitive(True)
 
     def on_btnAccept_Clicked(self, button):
 
@@ -162,19 +172,6 @@ host names found in the Chef server, you must avoid to use any of them.')
                   {'result': result, 'server_conf': self.server_conf,
                    'messages': messages})
 
-    def _init_treeview(self):
-
-        tvcolumn = Gtk.TreeViewColumn(_('Host names in use'))
-
-        cell = Gtk.CellRendererText()
-        tvcolumn.set_sort_column_id(0)
-        tvcolumn.pack_start(cell, True)
-        tvcolumn.set_cell_data_func(cell, self._render_column_text)
-
-        self.tvNames.append_column(tvcolumn)
-        self.tvNames.set_enable_search(True)
-        self.tvNames.set_search_column(0)
-
     def _load_hostnames(self):
 
         try:
@@ -198,36 +195,26 @@ host names found in the Chef server, you must avoid to use any of them.')
                     names = output.split('\n')
 
             self.hostnames = []
-            model = self.tvNames.get_model()
             for name in names:
                 name = name.strip()
                 if name.startswith('WARNING') or name.startswith('ERROR'):
                     continue
                 self.hostnames.append(name)
-                model.append([name])
 
             os.remove(self.pem_file_path)
             self.pem_file_path = None
 
+            #print self.hostnames
+
         except Exception as e:
             self.show_error(str(e))
 
-    def _render_column_text(self, column, cell, model, iter):
+    def show_error(self, message=None):
+        if message is None:
+            self.imgStatus.set_visible(False)
+            self.lblStatus.set_visible(False)
+            return
 
-        hostname = model.get_value(iter, 0)
-        cell.set_property('text', hostname)
-
-    def on_tvNames_row_activated(self, treeview, path, view_column):
-        pass
-
-    def on_tvNames_cursor_changed(self, treeview):
-        pass
-        #~ selection = self.tvNames.get_selection()
-        #~ (model, iter) = selection.get_selected()
-        #~ hostname = model.get_value(iter, 0)
-        #~ self.txtHostname.set_text(hostname)
-
-    def show_error(self, message):
         self.imgStatus.set_from_stock(Gtk.STOCK_DIALOG_ERROR, Gtk.IconSize.BUTTON)
         self.lblStatus.set_label(message)
         self.imgStatus.set_visible(True)
