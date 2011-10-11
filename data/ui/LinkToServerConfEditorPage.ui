@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk+" version="2.24"/>
   <!-- interface-requires LinkToServerConfEditorPage_ctl 1.0 -->
+  <requires lib="gtk+" version="2.24"/>
   <object class="LinkToServerConfEditorPage" id="ContainerWindow">
     <property name="can_focus">False</property>
     <child>
@@ -9,7 +9,7 @@
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="border_width">10</property>
-        <property name="spacing">50</property>
+        <property name="spacing">20</property>
         <child>
           <object class="GtkLabel" id="lblDescription">
             <property name="visible">True</property>
@@ -22,6 +22,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
+            <property name="padding">5</property>
             <property name="position">0</property>
           </packing>
         </child>
@@ -29,7 +30,9 @@
           <object class="GtkVBox" id="box3">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="spacing">10</property>
+            <property name="margin_left">60</property>
+            <property name="margin_right">60</property>
+            <property name="spacing">4</property>
             <child>
               <object class="GtkHBox" id="box7">
                 <property name="visible">True</property>
@@ -160,6 +163,9 @@
           <object class="GtkVBox" id="box2">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="margin_left">60</property>
+            <property name="margin_right">60</property>
+            <property name="spacing">4</property>
             <child>
               <object class="GtkCheckButton" id="chkLDAP">
                 <property name="label" translatable="yes">Configure LDAP</property>
@@ -173,7 +179,7 @@
                 <signal name="toggled" handler="on_chkLDAP_toggle" swapped="no"/>
               </object>
               <packing>
-                <property name="expand">True</property>
+                <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="position">0</property>
               </packing>
@@ -341,7 +347,7 @@
             </child>
           </object>
           <packing>
-            <property name="expand">True</property>
+            <property name="expand">False</property>
             <property name="fill">True</property>
             <property name="padding">5</property>
             <property name="position">2</property>
@@ -351,6 +357,9 @@
           <object class="GtkVBox" id="box5">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="margin_left">60</property>
+            <property name="margin_right">60</property>
+            <property name="spacing">4</property>
             <child>
               <object class="GtkCheckButton" id="chkChef">
                 <property name="label" translatable="yes">Configure Chef</property>
@@ -364,7 +373,7 @@
                 <signal name="toggled" handler="on_chkChef_toggle" swapped="no"/>
               </object>
               <packing>
-                <property name="expand">True</property>
+                <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="position">0</property>
               </packing>
@@ -452,7 +461,7 @@
             </child>
           </object>
           <packing>
-            <property name="expand">True</property>
+            <property name="expand">False</property>
             <property name="fill">True</property>
             <property name="padding">5</property>
             <property name="position">3</property>
@@ -497,6 +506,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
+            <property name="pack_type">end</property>
             <property name="position">4</property>
           </packing>
         </child>
