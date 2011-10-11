@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk+" version="2.24"/>
   <!-- interface-requires LinkToServerPage_ctl 1.0 -->
+  <requires lib="gtk+" version="2.24"/>
   <object class="LinkToServerPage" id="ContainerWindow">
     <property name="can_focus">False</property>
     <child>
@@ -9,7 +9,6 @@
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="border_width">10</property>
-        <property name="spacing">50</property>
         <child>
           <object class="GtkLabel" id="lblDescription">
             <property name="visible">True</property>
@@ -22,6 +21,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
+            <property name="padding">10</property>
             <property name="position">0</property>
           </packing>
         </child>
@@ -29,7 +29,8 @@
           <object class="GtkVBox" id="box3">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="spacing">10</property>
+            <property name="spacing">8</property>
+            <property name="homogeneous">True</property>
             <child>
               <object class="GtkCheckButton" id="chkUnlinkLDAP">
                 <property name="label" translatable="yes">Unlink from LDAP</property>
@@ -42,7 +43,7 @@
                 <signal name="toggled" handler="on_chkUnlinkLDAP_toggle" swapped="no"/>
               </object>
               <packing>
-                <property name="expand">True</property>
+                <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="position">0</property>
               </packing>
@@ -59,7 +60,7 @@
                 <signal name="toggled" handler="on_chkUnlinkChef_toggle" swapped="no"/>
               </object>
               <packing>
-                <property name="expand">True</property>
+                <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="position">1</property>
               </packing>
@@ -78,7 +79,7 @@
                 <signal name="toggled" handler="on_radioManual_toggled" swapped="no"/>
               </object>
               <packing>
-                <property name="expand">True</property>
+                <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="position">2</property>
               </packing>
@@ -96,7 +97,7 @@
                 <signal name="toggled" handler="on_radioAutomatic_toggled" swapped="no"/>
               </object>
               <packing>
-                <property name="expand">True</property>
+                <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="position">3</property>
               </packing>
@@ -124,6 +125,7 @@
                   <object class="GtkEntry" id="txtUrl">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="margin_right">40</property>
                     <property name="invisible_char">•</property>
                   </object>
                   <packing>
@@ -139,18 +141,6 @@
                 <property name="position">4</property>
               </packing>
             </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="padding">5</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkVBox" id="box2">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
             <child>
               <object class="GtkHBox" id="box4">
                 <property name="visible">True</property>
@@ -187,15 +177,15 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">0</property>
+                <property name="position">5</property>
               </packing>
             </child>
           </object>
           <packing>
-            <property name="expand">True</property>
+            <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="padding">5</property>
-            <property name="position">2</property>
+            <property name="padding">50</property>
+            <property name="position">1</property>
           </packing>
         </child>
         <child>
@@ -223,6 +213,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
+            <property name="pack_type">end</property>
             <property name="position">3</property>
           </packing>
         </child>

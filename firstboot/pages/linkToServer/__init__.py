@@ -163,10 +163,12 @@ server.')
     def on_radioManual_toggled(self, button):
         self.lblUrl.set_visible(False)
         self.txtUrl.set_visible(False)
+        self.show_status()
 
     def on_radioAutomatic_toggled(self, button):
         self.lblUrl.set_visible(True)
         self.txtUrl.set_visible(True)
+        self.show_status()
 
     def on_btnLinkToServer_Clicked(self, button):
 
