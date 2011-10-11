@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk+" version="2.24"/>
   <!-- interface-requires PCLabelPage_ctl 1.0 -->
+  <requires lib="gtk+" version="2.24"/>
   <object class="PCLabelPage" id="ContainerWindow">
     <property name="can_focus">False</property>
     <child>
@@ -22,6 +22,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
+            <property name="padding">5</property>
             <property name="position">0</property>
           </packing>
         </child>
@@ -48,8 +49,10 @@
               <object class="GtkEntry" id="txtLabel">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="margin_right">80</property>
                 <property name="invisible_char">•</property>
                 <property name="invisible_char_set">True</property>
+                <signal name="changed" handler="on_txtLabel_changed" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -102,34 +105,6 @@
             <property name="expand">False</property>
             <property name="fill">True</property>
             <property name="position">2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkHButtonBox" id="buttonbox1">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="homogeneous">True</property>
-            <property name="layout_style">end</property>
-            <child>
-              <object class="GtkButton" id="btnAccept">
-                <property name="label" translatable="yes">Accept</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
-                <signal name="clicked" handler="on_btnAccept_Clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">3</property>
           </packing>
         </child>
       </object>

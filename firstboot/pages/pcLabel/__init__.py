@@ -46,7 +46,7 @@ def get_page(options=None):
 class PCLabelPage(PageWindow.PageWindow):
     __gtype_name__ = "PCLabelPage"
 
-    # To construct a new instance of this method, the following notable 
+    # To construct a new instance of this method, the following notable
     # methods are called in this order:
     # __new__(cls)
     # __init__(self)
@@ -73,7 +73,6 @@ class PCLabelPage(PageWindow.PageWindow):
         self.lblStatus = builder.get_object('lblStatus')
         self.lblLabel = builder.get_object('lblLabel')
         self.txtLabel = builder.get_object('txtLabel')
-        self.btnAccept = builder.get_object('btnAccept')
 
         container = builder.get_object(self.__page_container__)
         page = builder.get_object(self.__gtype_name__)
@@ -95,12 +94,11 @@ workstation later.')
 
         self.lblDescription.set_text(desc)
         self.lblLabel.set_label(_('Label'))
-        self.btnAccept.set_label(_('Accept'))
 
     def get_widget(self):
         return self.page
 
-    def on_btnAccept_Clicked(self, button):
+    def on_txtLabel_changed(self, entry):
         try:
             self.set_label(self.txtLabel.get_text())
             self.imgStatus.set_from_stock(Gtk.STOCK_YES, Gtk.IconSize.MENU)
