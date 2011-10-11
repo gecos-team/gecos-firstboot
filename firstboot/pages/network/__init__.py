@@ -76,9 +76,6 @@ class NetworkPage(PageWindow.PageWindow):
         container.remove(page)
         self.page = page
 
-        self.btnNetworkDialog = builder.get_object('btnNetworkDialog')
-
-        self.lblDescription = builder.get_object('lblDescription')
         self.treeviewInterfaces = builder.get_object('treeviewInterfaces')
 
         self.timer_ret = True
@@ -87,9 +84,11 @@ class NetworkPage(PageWindow.PageWindow):
         self.init_treeviewInterfaces()
 
     def translate(self):
-        self.btnNetworkDialog.set_label(_('Configure the network'))
-        self.lblDescription.set_text(_('You need to be connected to the network \
+        self.builder.get_object('btnNetworkDialog').set_label(_('Configure the network'))
+        self.builder.get_object('lblDescription').set_text(_('You need to be connected to the network \
 for linking this workstation to a GECOS server and for installing software.'))
+        self.builder.get_object('lblDescription1').set_text(_('Below are shown the current \
+detected interfaces.'))
 
     def load_page(self, assistant):
         self.timer_ret = True
@@ -104,24 +103,6 @@ for linking this workstation to a GECOS server and for installing software.'))
     def on_btnNetworkDialog_Clicked(self, button):
         cmd = 'nm-connection-editor'
         os.spawnlp(os.P_NOWAIT, cmd, cmd)
-
-    def show_ifs_information(self):
-
-        def _format_text(info):
-            return '<b>%s</b>:\t%s\n' % info
-
-        text = ''
-        ifs = localifs()
-
-        for _if in ifs:
-            if _if[0] != 'lo':
-                text += _format_text(_if)
-
-        print text
-        self.lblDescription.set_markup(text)
-
-        connected = internet_on()
-        print connected
 
     def init_treeviewInterfaces(self):
 
