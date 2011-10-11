@@ -330,4 +330,4 @@ class FirstbootWindow(Window):
                 btn.connect('clicked', self.on_btnApplication_Clicked, app)
 
     def on_btnApplication_Clicked(self, button, app):
-        app.launch()
+        app.launch([], None)
