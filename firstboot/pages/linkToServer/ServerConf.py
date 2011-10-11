@@ -363,21 +363,21 @@ class ServerConf():
             self._data['chef'] = None
 
     def get_version(self):
-        return str(self._data['version'])
+        return self._data['version'].encode('utf-8')
 
     def set_version(self, version):
         self._data['version'] = version
         return self
 
     def get_organization(self):
-        return str(self._data['organization'])
+        return self._data['organization'].encode('utf-8')
 
     def set_organization(self, organization):
         self._data['organization'] = organization
         return self
 
     def get_notes(self):
-        return str(self._data['notes'])
+        return self._data['notes'].encode('utf-8')
 
     def set_notes(self, notes):
         self._data['notes'] = notes
@@ -404,28 +404,28 @@ class LdapConf():
             self._data['bindpw'] = ''
 
     def get_url(self):
-        return str(self._data['uri'])
+        return self._data['uri'].encode('utf-8')
 
     def set_url(self, url):
         self._data['uri'] = url
         return self
 
     def get_basedn(self):
-        return str(self._data['base'])
+        return self._data['base'].encode('utf-8')
 
     def set_basedn(self, basedn):
         self._data['base'] = basedn
         return self
 
     def get_binddn(self):
-        return str(self._data['binddn'])
+        return self._data['binddn'].encode('utf-8')
 
     def set_binddn(self, binddn):
         self._data['binddn'] = binddn
         return self
 
     def get_password(self):
-        return str(self._data['bindpw'])
+        return self._data['bindpw'].encode('utf-8')
 
     def set_password(self, password):
         self._data['bindpw'] = password
@@ -444,14 +444,14 @@ class ChefConf():
             self._data['chef_validation_url'] = ''
 
     def get_url(self):
-        return str(self._data['chef_server_url'])
+        return self._data['chef_server_url'].encode('utf-8')
 
     def set_url(self, url):
         self._data['chef_server_url'] = url
         return self
 
     def get_pem_url(self):
-        return str(self._data['chef_validation_url'])
+        return self._data['chef_validation_url'].encode('utf-8')
 
     def set_pem_url(self, pem_url):
         self._data['chef_validation_url'] = pem_url
@@ -460,7 +460,7 @@ class ChefConf():
     def get_hostname(self):
         if not 'hostname' in self._data:
             self._data['hostname'] = ''
-        return self._data['hostname']
+        return self._data['hostname'].encode('utf-8')
 
     def set_hostname(self, hostname):
         self._data['hostname'] = hostname
