@@ -117,8 +117,8 @@ DistUtilsExtra.auto.setup(
     license='GPL-2',
     author='Antonio Hernández',
     author_email='ahernandez@emergya.com',
-    #description='UI for managing …',
-    #long_description='Here a longer description',
+    description='First start assistant for helping to connect a GECOS \
+workstation to different services',
     url='https://github.com/ahdiaz/gecos-firstboot',
 
     keywords=['python', 'gnome'],
@@ -145,10 +145,16 @@ DistUtilsExtra.auto.setup(
         'firstboot.pages.pcLabel': 'firstboot/pages/pcLabel',
         },
 
-    scripts=['bin/firstboot', 'bin/firstboot-ldapconf.sh', 'bin/firstboot-chef.sh'],
+    scripts=[
+        'bin/firstboot',
+        'bin/firstboot-launcher',
+        'bin/firstboot-ldapconf.sh',
+        'bin/firstboot-chef.sh'
+    ],
 
     data_files=[
-       ('bin', ['bin/firstboot', 'bin/firstboot-ldapconf.sh', 'bin/firstboot-chef.sh']),
+       ('bin', ['bin/firstboot', 'bin/firstboot-launcher',
+            'bin/firstboot-ldapconf.sh', 'bin/firstboot-chef.sh']),
        ('share/firstboot/media', glob.glob('data/media/*')),
        ('share/firstboot/ui', glob.glob('data/ui/*')),
     ],
@@ -158,6 +164,5 @@ DistUtilsExtra.auto.setup(
         "build" : build_extra.build_extra,
         "build_i18n" :  build_i18n.build_i18n,
         "clean": [clean_i18n.clean_i18n, Clean],
-
     }
 )
