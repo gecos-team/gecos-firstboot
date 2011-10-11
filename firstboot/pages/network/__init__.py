@@ -106,7 +106,7 @@ detected interfaces.'))
 
     def init_treeviewInterfaces(self):
 
-        tvcolumn = Gtk.TreeViewColumn(_('Name'))
+        tvcolumn = Gtk.TreeViewColumn(_('Interface'))
         cell = Gtk.CellRendererText()
         tvcolumn.pack_start(cell, True)
         tvcolumn.set_cell_data_func(cell, self._render_column_name)
