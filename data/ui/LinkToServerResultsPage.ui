@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.24"/>
-  <!-- interface-naming-policy toplevel-contextual -->
+  <!-- interface-requires LinkToServerResultsPage_ctl 1.0 -->
   <object class="LinkToServerResultsPage" id="ContainerWindow">
     <property name="can_focus">False</property>
     <child>

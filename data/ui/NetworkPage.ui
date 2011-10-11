@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.24"/>
-  <!-- interface-naming-policy toplevel-contextual -->
-  <object class="InstallSoftwarePage" id="ContainerWindow">
+  <!-- interface-requires NetworkPage_ctl 1.0 -->
+  <object class="NetworkPage" id="ContainerWindow">
     <property name="can_focus">False</property>
     <child>
-      <object class="GtkVBox" id="InstallSoftwarePage">
+      <object class="GtkVBox" id="NetworkPage">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="border_width">10</property>
@@ -26,17 +26,34 @@
           </packing>
         </child>
         <child>
+          <object class="GtkTreeView" id="treeviewInterfaces">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="model">liststore1</property>
+            <property name="headers_visible">False</property>
+            <property name="headers_clickable">False</property>
+            <child internal-child="selection">
+              <object class="GtkTreeSelection" id="treeview-selection1"/>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
           <object class="GtkHButtonBox" id="buttonbox1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkButton" id="btnInstallSoftware">
+              <object class="GtkButton" id="btnNetworkDialog">
                 <property name="label" translatable="yes">Network Dialog</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_action_appearance">False</property>
-                <signal name="clicked" handler="on_btnInstallSoftware_Clicked" swapped="no"/>
+                <signal name="clicked" handler="on_btnNetworkDialog_Clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -48,10 +65,18 @@
           <packing>
             <property name="expand">True</property>
             <property name="fill">True</property>
-            <property name="position">1</property>
+            <property name="position">2</property>
           </packing>
         </child>
       </object>
     </child>
+  </object>
+  <object class="GtkListStore" id="liststore1">
+    <columns>
+      <!-- column-name name -->
+      <column type="gchararray"/>
+      <!-- column-name ip -->
+      <column type="gchararray"/>
+    </columns>
   </object>
 </interface>
