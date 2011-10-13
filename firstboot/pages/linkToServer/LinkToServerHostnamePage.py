@@ -114,21 +114,9 @@ uniquely identify this workstation.')
         self.link_chef = self.link_chef[0]
         self.unlink_chef = params['unlink_chef']
         #self.unlink_chef = self.unlink_chef[0]
+        self.hostnames = params['used_hostnames']
 
         self.server_conf = params['server_conf']
-        self.pem_file_path = None
-
-        chef_conf = self.server_conf.get_chef_conf()
-        pem_url = chef_conf.get_pem_url()
-
-        try:
-            self.pem_file_path = ServerConf.get_chef_pem(pem_url)
-        except Exception as e:
-            #self.show_error(_('The Chef certificate couldn\'t be found.'))
-            self.show_error(str(e))
-            return
-
-        self._load_hostnames()
 
     def get_widget(self):
         return self.page
@@ -171,43 +159,6 @@ uniquely identify this workstation.')
                   'LinkToServerResultsPage',
                   {'result': result, 'server_conf': self.server_conf,
                    'messages': messages})
-
-    def _load_hostnames(self):
-
-        try:
-
-            chef_conf = self.server_conf.get_chef_conf()
-            chef_url = chef_conf.get_url()
-
-            cmd = 'knife node list -u chef-validator -k %s -s %s' % (self.pem_file_path, chef_url)
-            args = shlex.split(cmd)
-
-            process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            exit_code = os.waitpid(process.pid, 0)
-            output = process.communicate()[0]
-            output = output.strip()
-
-            names = []
-            if exit_code[1] == 0:
-                try:
-                    names = json.loads(output)
-                except ValueError as e:
-                    names = output.split('\n')
-
-            self.hostnames = []
-            for name in names:
-                name = name.strip()
-                if name.startswith('WARNING') or name.startswith('ERROR'):
-                    continue
-                self.hostnames.append(name)
-
-            os.remove(self.pem_file_path)
-            self.pem_file_path = None
-
-            #print self.hostnames
-
-        except Exception as e:
-            self.show_error(str(e))
 
     def show_error(self, message=None):
         if message is None:
