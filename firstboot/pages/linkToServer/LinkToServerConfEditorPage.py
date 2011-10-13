@@ -193,7 +193,7 @@ workstation is going to be unlinked from the Chef server.')))
 
             try:
                 used_hostnames = ServerConf.get_chef_hostnames(self.server_conf.get_chef_conf())
-                print used_hostnames
+                #print used_hostnames
 
                 self.emit('subpage-changed', 'linkToServer', 'LinkToServerHostnamePage',
                     {'server_conf': self.server_conf,

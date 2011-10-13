@@ -88,6 +88,8 @@ class LinkToServerResultsPage(PageWindow.PageWindow):
 
     def translate(self):
         self.lblDescription.set_text('')
+        self.btnBack.set_label(_('Back'))
+        self.btnAccept.set_label(_('Aceptar'))
 
     def get_widget(self):
         return self.page

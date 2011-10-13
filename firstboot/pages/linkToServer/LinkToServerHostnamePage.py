@@ -75,6 +75,7 @@ class LinkToServerHostnamePage(PageWindow.PageWindow):
         self.lblStatus = builder.get_object('lblStatus')
         self.lblHostname = builder.get_object('lblHostname')
         self.txtHostname = builder.get_object('txtHostname')
+        self.btnBack = builder.get_object('btnBack')
         self.btnAccept = builder.get_object('btnAccept')
 
         container = builder.get_object(self.__page_container__)
@@ -98,7 +99,8 @@ uniquely identify this workstation.')
 
         self.lblDescription.set_text(desc)
         self.lblHostname.set_label(_('Hostname'))
-        self.btnAccept.set_label(_('Accept'))
+        self.btnBack.set_label(_('Back'))
+        self.btnAccept.set_label(_('Aceptar'))
 
     def set_params(self, params):
 
@@ -159,6 +161,10 @@ uniquely identify this workstation.')
                   'LinkToServerResultsPage',
                   {'result': result, 'server_conf': self.server_conf,
                    'messages': messages})
+
+    def on_btnBack_clicked(self, button):
+        self.emit('subpage-changed', 'linkToServer',
+                  'LinkToServerConfEditorPage', {'server_conf': self.server_conf})
 
     def show_error(self, message=None):
         if message is None:
