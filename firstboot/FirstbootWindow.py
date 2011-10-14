@@ -116,52 +116,10 @@ class FirstbootWindow(Window):
         self.set_current_page(page_name)
 
     def on_btnPrev_Clicked(self, button):
-
         self.current_page.previous_page(self.set_current_page)
-        return
-
-        index = pages.pages.index(self.current_page['id'])
-
-        if index <= 0:
-            index = 0
-            return
-
-        enabled = False
-        while not enabled and index >= 0:
-            try:
-                index -= 1
-                prev_page_name = pages.pages[index]
-                enabled = self.pages[prev_page_name]['enabled']
-
-            except IndexError:
-                pass
-
-        if enabled:
-            self.set_current_page(prev_page_name)
 
     def on_btnNext_Clicked(self, button):
-
         self.current_page.next_page(self.set_current_page)
-        return
-
-        index = pages.pages.index(self.current_page['id'])
-
-        if index >= len(pages.pages) - 1:
-            index = len(pages.pages) - 1
-            return
-
-        enabled = False
-        while not enabled and index < len(pages.pages):
-            try:
-                index += 1
-                next_page_name = pages.pages[index]
-                enabled = self.pages[next_page_name]['enabled']
-
-            except IndexError:
-                pass
-
-        if enabled:
-            self.set_current_page(next_page_name)
 
     def build_index(self):
 
@@ -214,8 +172,6 @@ class FirstbootWindow(Window):
         except Exception as e:
             pass
 
-        #print module.__name__.split('.')[-1]
-
         self.current_page = module.get_page(self.cmd_options)
 
         try:
@@ -225,11 +181,6 @@ class FirstbootWindow(Window):
 
         try:
             self.current_page.connect('link-status', self.on_link_status)
-        except Exception as e:
-            pass
-
-        try:
-            self.current_page.connect('subpage-changed', self.on_subpage_changed)
         except Exception as e:
             pass
 
@@ -249,36 +200,8 @@ class FirstbootWindow(Window):
 
         self.swContent.add_with_viewport(self.current_page.get_widget())
 
-    def on_page_changed(self, sender, page_name, params):
-        self.set_current_page(page_name)
-
-    def on_subpage_changed(self, sender, module, params):
-        try:
-
-            page = module.get_page(self.cmd_options)
-
-            try:
-                page.connect('subpage-changed', self.on_subpage_changed)
-            except Exception as e:
-                pass
-
-            try:
-                page.connect('page-changed', self.on_page_changed)
-            except Exception as e:
-                pass
-
-            try:
-                page.set_params(params)
-            except Exception as e:
-                print e
-
-            for child in self.swContent.get_children():
-                self.swContent.remove(child)
-
-            self.swContent.add_with_viewport(page.get_widget())
-
-        except ImportError as e:
-            print e
+    def on_page_changed(self, sender, module, params):
+        self.set_current_page(module, params)
 
     def button_set_active(self, button):
         label = button.get_children()[0]

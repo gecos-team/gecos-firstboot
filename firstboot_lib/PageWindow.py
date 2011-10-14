@@ -39,11 +39,6 @@ class PageWindow(Gtk.Window):
         'page-changed': (
             GObject.SignalFlags.RUN_LAST,
             None,
-            (GObject.TYPE_STRING, GObject.TYPE_PYOBJECT)
-        ),
-        'subpage-changed': (
-            GObject.SignalFlags.RUN_LAST,
-            None,
             (GObject.TYPE_PYOBJECT, GObject.TYPE_PYOBJECT)
         )
     }
