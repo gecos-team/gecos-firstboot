@@ -34,17 +34,17 @@ __REQUIRED__ = False
 
 __TITLE__ = _('Install software')
 
-def get_page(options=None):
+def get_page(main_window):
 
-    page = InstallSoftwarePage(options)
+    page = InstallSoftwarePage(main_window)
     return page
 
 class InstallSoftwarePage(PageWindow.PageWindow):
     __gtype_name__ = "InstallSoftwarePage"
 
-    def finish_initializing(self, builder, options=None):
-        self.btnInstallSoftware = builder.get_object('btnInstallSoftware')
-        self.lblDescription = builder.get_object('lblDescription')
+    def finish_initializing(self):
+        self.btnInstallSoftware = self.builder.get_object('btnInstallSoftware')
+        self.lblDescription = self.builder.get_object('lblDescription')
 
     def translate(self):
         self.btnInstallSoftware.set_label(_('Install software'))

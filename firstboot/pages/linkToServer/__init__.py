@@ -43,24 +43,24 @@ __STATUS_CONNECTING__ = 2
 __STATUS_ERROR__ = 3
 
 
-def get_page(options=None):
+def get_page(main_window):
 
-    page = LinkToServerPage(options)
+    page = LinkToServerPage(main_window)
     return page
 
 class LinkToServerPage(PageWindow.PageWindow):
     __gtype_name__ = "LinkToServerPage"
 
-    def finish_initializing(self, builder, options=None):
-        self.lblDescription = builder.get_object('lblDescription')
-        self.chkUnlinkLDAP = builder.get_object('chkUnlinkLDAP')
-        self.chkUnlinkChef = builder.get_object('chkUnlinkChef')
-        self.radioManual = builder.get_object('radioManual')
-        self.radioAuto = builder.get_object('radioAuto')
-        self.lblUrl = builder.get_object('lblUrl')
-        self.txtUrl = builder.get_object('txtUrl')
-        self.imgStatus = builder.get_object('imgStatus')
-        self.lblStatus = builder.get_object('lblStatus')
+    def finish_initializing(self):
+        self.lblDescription = self.builder.get_object('lblDescription')
+        self.chkUnlinkLDAP = self.builder.get_object('chkUnlinkLDAP')
+        self.chkUnlinkChef = self.builder.get_object('chkUnlinkChef')
+        self.radioManual = self.builder.get_object('radioManual')
+        self.radioAuto = self.builder.get_object('radioAuto')
+        self.lblUrl = self.builder.get_object('lblUrl')
+        self.txtUrl = self.builder.get_object('txtUrl')
+        self.imgStatus = self.builder.get_object('imgStatus')
+        self.lblStatus = self.builder.get_object('lblStatus')
 
         self.show_status()
 
@@ -110,6 +110,7 @@ server.')
         self.lblDescription.set_text(desc + desc_detail)
         self.chkUnlinkLDAP.set_label(_('Unlink from LDAP'))
         self.chkUnlinkChef.set_label(_('Unlink from Chef'))
+        self.ui.radioOmit.set_label(_('Omit'))
         self.radioManual.set_label(_('Manual'))
         self.radioAuto.set_label(_('Automatic'))
 

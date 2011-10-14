@@ -36,9 +36,9 @@ __REQUIRED__ = True
 
 __TITLE__ = _('Configure the network')
 
-def get_page(options=None):
+def get_page(main_window):
 
-    page = NetworkPage(options)
+    page = NetworkPage(main_window)
     return page
 
 class NetworkPage(PageWindow.PageWindow):
@@ -48,8 +48,8 @@ class NetworkPage(PageWindow.PageWindow):
         'link-status': (GObject.SignalFlags.ACTION, None, (GObject.TYPE_BOOLEAN,))
     }
 
-    def finish_initializing(self, builder, options=None):
-        self.treeviewInterfaces = builder.get_object('treeviewInterfaces')
+    def finish_initializing(self):
+        self.treeviewInterfaces = self.builder.get_object('treeviewInterfaces')
         self.timer_ret = True
         self.init_treeviewInterfaces()
 
@@ -60,11 +60,11 @@ for linking this workstation to a GECOS server and for installing software.'))
         self.builder.get_object('lblDescription1').set_text(_('Below are shown the current \
 detected interfaces.'))
 
-    def load_page(self, main_window):
+    def load_page(self, params=None):
         self.timer_ret = True
         GObject.timeout_add_seconds(1, self.load_treeviewInterfaces)
 
-    def unload_page(self, main_window):
+    def unload_page(self, params=None):
         self.timer_ret = False
 
     def on_btnNetworkDialog_Clicked(self, button):

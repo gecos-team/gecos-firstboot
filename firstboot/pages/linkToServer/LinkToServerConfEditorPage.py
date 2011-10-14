@@ -34,15 +34,15 @@ __REQUIRED__ = False
 __TITLE__ = _('Link workstation to a server')
 
 
-def get_page(options=None):
+def get_page(main_window):
 
-    page = LinkToServerConfEditorPage(options)
+    page = LinkToServerConfEditorPage(main_window)
     return page
 
 class LinkToServerConfEditorPage(PageWindow.PageWindow):
     __gtype_name__ = "LinkToServerConfEditorPage"
 
-    def finish_initializing(self, builder, options=None):
+    def finish_initializing(self):
         self.lblDescription = self.builder.get_object('lblDescription')
         self.lblVersionValue = self.builder.get_object('lblVersionValue')
         self.lblOrganizationValue = self.builder.get_object('lblOrganizationValue')
@@ -59,7 +59,7 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
         self.unlink_from_ldap = False
         self.unlink_from_chef = False
 
-    def load_page(self, main_window, params=None):
+    def load_page(self, params=None):
 
         if 'server_conf' in params:
             self.server_conf = params['server_conf']

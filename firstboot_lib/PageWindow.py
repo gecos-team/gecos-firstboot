@@ -53,22 +53,24 @@ class PageWindow(Gtk.Window):
     # For this reason, it's recommended you leave __init__ empty and put
     # your initialization code in finish_initializing
 
-    def __init__(self, options=None):
+    def __init__(self, main_window):
         GObject.GObject.__init__(self)
 
-    def __new__(cls, options=None):
+    def __new__(cls, main_window):
         """Special static method that's automatically called by Python when
         constructing a new instance of this class.
 
         Returns a fully instantiated BaseFirstbootWindow object.
         """
+        print 1
         builder = get_builder(cls.__gtype_name__)
+        print 2
         new_object = builder.get_object(cls.__page_container__)
-        new_object._finish_initializing(builder, options)
+        new_object._finish_initializing(builder, main_window)
 
         return new_object
 
-    def _finish_initializing(self, builder, options=None):
+    def _finish_initializing(self, builder, main_window):
         """Called while initializing this instance in __new__
 
         finish_initializing should be called after parsing the UI definition
@@ -76,17 +78,19 @@ class PageWindow(Gtk.Window):
         initializing the start of the new FirstbootWindow instance.
         """
 
-        self.cmd_options = options
+        self.main_window = main_window
+        self.cmd_options = main_window.cmd_options
         self.fbe = FirstbootEntry.FirstbootEntry()
         self.builder = builder
         self.ui = builder.get_ui(self, True)
+        print dir(self.ui)
 
         self.page = builder.get_object(self.__gtype_name__)
         container = builder.get_object(self.__page_container__)
         container.remove(self.page)
 
         # Call the page specific initialization stuff
-        self.finish_initializing(builder, options)
+        self.finish_initializing()
         self.translate()
 
     def on_destroy(self, widget, data=None):
@@ -94,7 +98,7 @@ class PageWindow(Gtk.Window):
         # Clean up code for saving application state should be added here.
         Gtk.main_quit()
 
-    def finish_initializing(self, builder, options=None):
+    def finish_initializing(self):
         pass
 
     def translate(self):
@@ -104,10 +108,10 @@ class PageWindow(Gtk.Window):
         return self.page
 
     # ~= set_params() ???
-    def load_page(self, main_window, params=None):
+    def load_page(self, params=None):
         pass
 
-    def unload_page(self, main_window, params=None):
+    def unload_page(self, params=None):
         pass
 
     def previous_page(self, load_page_callback):

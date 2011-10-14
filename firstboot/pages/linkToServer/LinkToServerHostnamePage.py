@@ -41,20 +41,20 @@ __REQUIRED__ = False
 __TITLE__ = _('Describe this workstation')
 
 
-def get_page(options=None):
+def get_page(main_window):
 
-    page = LinkToServerHostnamePage(options)
+    page = LinkToServerHostnamePage(main_window)
     return page
 
 class LinkToServerHostnamePage(PageWindow.PageWindow):
     __gtype_name__ = "LinkToServerHostnamePage"
 
-    def finish_initializing(self, builder, options=None):
-        self.lblDescription = builder.get_object('lblDescription')
-        self.imgStatus = builder.get_object('imgStatus')
-        self.lblStatus = builder.get_object('lblStatus')
-        self.lblHostname = builder.get_object('lblHostname')
-        self.txtHostname = builder.get_object('txtHostname')
+    def finish_initializing(self):
+        self.lblDescription = self.builder.get_object('lblDescription')
+        self.imgStatus = self.builder.get_object('imgStatus')
+        self.lblStatus = self.builder.get_object('lblStatus')
+        self.lblHostname = self.builder.get_object('lblHostname')
+        self.txtHostname = self.builder.get_object('txtHostname')
 
         self.imgStatus.set_visible(False)
         self.lblStatus.set_visible(False)
@@ -69,7 +69,7 @@ uniquely identify this workstation.')
         self.lblDescription.set_text(desc)
         self.lblHostname.set_label(_('Hostname'))
 
-    def load_page(self, main_window, params=None):
+    def load_page(self, params=None):
 
         # NOTE: The boolean values in the dict object become tuples
         # after the assignment ???

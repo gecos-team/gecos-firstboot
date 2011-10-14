@@ -34,17 +34,17 @@ __REQUIRED__ = False
 
 __TITLE__ = _('Create local users')
 
-def get_page(options=None):
+def get_page(main_window):
 
-    page = LocalUsersPage(options)
+    page = LocalUsersPage(main_window)
     return page
 
 class LocalUsersPage(PageWindow.PageWindow):
     __gtype_name__ = "LocalUsersPage"
 
-    def finish_initializing(self, builder, options=None):
-        self.btnLocalUsers = builder.get_object('btnLocalUsers')
-        self.lblDescription = builder.get_object('lblDescription')
+    def finish_initializing(self):
+        self.btnLocalUsers = self.builder.get_object('btnLocalUsers')
+        self.lblDescription = self.builder.get_object('lblDescription')
 
     def translate(self):
         self.btnLocalUsers.set_label(_('Create local users'))

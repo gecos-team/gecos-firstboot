@@ -39,20 +39,20 @@ __TITLE__ = _('Describe this workstation')
 __LABEL_FILE__ = '/etc/pclabel'
 
 
-def get_page(options=None):
+def get_page(main_window):
 
-    page = PCLabelPage(options)
+    page = PCLabelPage(main_window)
     return page
 
 class PCLabelPage(PageWindow.PageWindow):
     __gtype_name__ = "PCLabelPage"
 
-    def finish_initializing(self, builder, options=None):
-        self.lblDescription = builder.get_object('lblDescription')
-        self.imgStatus = builder.get_object('imgStatus')
-        self.lblStatus = builder.get_object('lblStatus')
-        self.lblLabel = builder.get_object('lblLabel')
-        self.txtLabel = builder.get_object('txtLabel')
+    def finish_initializing(self):
+        self.lblDescription = self.builder.get_object('lblDescription')
+        self.imgStatus = self.builder.get_object('imgStatus')
+        self.lblStatus = self.builder.get_object('lblStatus')
+        self.lblLabel = self.builder.get_object('lblLabel')
+        self.txtLabel = self.builder.get_object('txtLabel')
 
         self.txtLabel.set_text(self.get_label())
         self.imgStatus.set_visible(False)

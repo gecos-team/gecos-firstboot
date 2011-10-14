@@ -168,14 +168,14 @@ class FirstbootWindow(Window):
     def set_current_page(self, module, params=None):
 
         try:
-            self.current_page.unload_page(self, params)
+            self.current_page.unload_page(params)
         except Exception as e:
             pass
 
-        self.current_page = module.get_page(self.cmd_options)
+        self.current_page = module.get_page(self)
 
         try:
-            self.current_page.load_page(self, params)
+            self.current_page.load_page(params)
         except Exception as e:
             pass
 
