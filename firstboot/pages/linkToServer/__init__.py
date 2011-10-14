@@ -24,7 +24,8 @@ __license__ = "GPL-2"
 import os
 from gi.repository import Gtk
 
-import ServerConf
+import firstboot.pages
+import ServerConf, LinkToServerConfEditorPage
 from firstboot_lib import PageWindow
 
 import gettext
@@ -60,15 +61,14 @@ class LinkToServerPage(PageWindow.PageWindow):
         self.txtUrl = builder.get_object('txtUrl')
         self.imgStatus = builder.get_object('imgStatus')
         self.lblStatus = builder.get_object('lblStatus')
-        self.btnLinkToServer = builder.get_object('btnLinkToServer')
 
         self.show_status()
 
         self.ldap_is_configured = ServerConf.ldap_is_configured()
         self.chef_is_configured = ServerConf.chef_is_configured()
 
-        if self.ldap_is_configured and self.chef_is_configured:
-            self.btnLinkToServer.set_sensitive(False)
+        #~ if self.ldap_is_configured and self.chef_is_configured:
+            #~ self.btnLinkToServer.set_sensitive(False)
 
 
         show_conf_fields = not (self.ldap_is_configured & self.chef_is_configured)
@@ -112,17 +112,16 @@ server.')
         self.chkUnlinkChef.set_label(_('Unlink from Chef'))
         self.radioManual.set_label(_('Manual'))
         self.radioAuto.set_label(_('Automatic'))
-        self.btnLinkToServer.set_label(_('Configure'))
 
     def on_chkUnlinkLDAP_toggle(self, button):
         if self.ldap_is_configured & self.chef_is_configured:
             active = button.get_active() | self.chkUnlinkChef.get_active()
-            self.btnLinkToServer.set_sensitive(active)
+            #~ self.btnLinkToServer.set_sensitive(active)
 
     def on_chkUnlinkChef_toggle(self, button):
         if self.ldap_is_configured & self.chef_is_configured:
             active = button.get_active() | self.chkUnlinkLDAP.get_active()
-            self.btnLinkToServer.set_sensitive(active)
+            #~ self.btnLinkToServer.set_sensitive(active)
 
     def on_radioManual_toggled(self, button):
         self.lblUrl.set_visible(False)
@@ -133,35 +132,6 @@ server.')
         self.lblUrl.set_visible(True)
         self.txtUrl.set_visible(True)
         self.show_status()
-
-    def on_btnLinkToServer_Clicked(self, button):
-
-        self.show_status()
-
-        try:
-            server_conf = None
-            if self.radioAuto.get_active():
-                url = self.txtUrl.get_text()
-                server_conf = ServerConf.get_server_conf(url)
-
-            self.emit(
-                'subpage-changed',
-                'linkToServer',
-                'LinkToServerConfEditorPage',
-                {
-                    'server_conf': server_conf,
-                    'ldap_is_configured': self.ldap_is_configured,
-                    'unlink_from_ldap': self.chkUnlinkLDAP.get_active(),
-                    'chef_is_configured': self.chef_is_configured,
-                    'unlink_from_chef': self.chkUnlinkChef.get_active()
-                }
-            )
-
-        except ServerConf.ServerConfException as e:
-            self.show_status(__STATUS_ERROR__, e)
-
-        except Exception as e:
-            self.show_status(__STATUS_ERROR__, e)
 
     def show_status(self, status=None, exception=None):
 
@@ -194,3 +164,42 @@ server.')
             self.imgStatus.set_visible(True)
             self.lblStatus.set_label(_('Trying to connect...'))
             self.lblStatus.set_visible(True)
+
+    def previous_page(self, load_page_callback):
+        load_page_callback(firstboot.pages.pcLabel)
+
+    def next_page(self, load_page_callback):
+
+        self.show_status()
+
+        try:
+            server_conf = None
+            if self.radioAuto.get_active():
+                url = self.txtUrl.get_text()
+                server_conf = ServerConf.get_server_conf(url)
+
+            load_page_callback(LinkToServerConfEditorPage, {
+                'server_conf': server_conf,
+                'ldap_is_configured': self.ldap_is_configured,
+                'unlink_from_ldap': self.chkUnlinkLDAP.get_active(),
+                'chef_is_configured': self.chef_is_configured,
+                'unlink_from_chef': self.chkUnlinkChef.get_active()
+            })
+
+            #~ self.emit(
+                #~ 'subpage-changed',
+                #~ LinkToServerConfEditorPage,
+                #~ {
+                    #~ 'server_conf': server_conf,
+                    #~ 'ldap_is_configured': self.ldap_is_configured,
+                    #~ 'unlink_from_ldap': self.chkUnlinkLDAP.get_active(),
+                    #~ 'chef_is_configured': self.chef_is_configured,
+                    #~ 'unlink_from_chef': self.chkUnlinkChef.get_active()
+                #~ }
+            #~ )
+
+        except ServerConf.ServerConfException as e:
+            self.show_status(__STATUS_ERROR__, e)
+
+        except Exception as e:
+            self.show_status(__STATUS_ERROR__, e)

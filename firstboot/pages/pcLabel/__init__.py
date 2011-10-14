@@ -23,12 +23,13 @@ __license__ = "GPL-2"
 
 import os
 from gi.repository import Gtk
-
 from firstboot_lib import PageWindow
 
 import gettext
 from gettext import gettext as _
 gettext.textdomain('firstboot')
+
+import firstboot.pages
 
 
 __REQUIRED__ = False
@@ -95,3 +96,9 @@ workstation later.')
         if fd != None:
             fd.write(label)
             fd.close()
+
+    def previous_page(self, load_page_callback):
+        load_page_callback(firstboot.pages.network)
+
+    def next_page(self, load_page_callback):
+        load_page_callback(firstboot.pages.linkToServer)

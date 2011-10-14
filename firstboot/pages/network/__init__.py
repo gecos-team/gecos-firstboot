@@ -29,6 +29,7 @@ import gettext
 from gettext import gettext as _
 gettext.textdomain('firstboot')
 
+import firstboot.pages
 from interface import localifs, internet_on
 
 __REQUIRED__ = True
@@ -120,3 +121,6 @@ detected interfaces.'))
 
         value = model.get_value(iter, 1)
         cell.set_property('text', value)
+
+    def next_page(self, load_page_callback):
+        load_page_callback(firstboot.pages.pcLabel)

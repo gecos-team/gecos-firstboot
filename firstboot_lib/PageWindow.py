@@ -44,7 +44,7 @@ class PageWindow(Gtk.Window):
         'subpage-changed': (
             GObject.SignalFlags.RUN_LAST,
             None,
-            (GObject.TYPE_STRING, GObject.TYPE_STRING, GObject.TYPE_PYOBJECT)
+            (GObject.TYPE_PYOBJECT, GObject.TYPE_PYOBJECT)
         )
     }
 
@@ -109,14 +109,14 @@ class PageWindow(Gtk.Window):
         return self.page
 
     # ~= set_params() ???
-    def load_page(self, main_window):
+    def load_page(self, main_window, params=None):
         pass
 
-    def unload_page(self, main_window):
+    def unload_page(self, main_window, params=None):
         pass
 
-    def page_previous(self):
-        return None
+    def previous_page(self, load_page_callback):
+        pass
 
-    def page_next(self):
-        return None
+    def next_page(self, load_page_callback):
+        pass

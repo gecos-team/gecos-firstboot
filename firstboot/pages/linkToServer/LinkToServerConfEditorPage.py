@@ -21,7 +21,8 @@ __copyright__ = "Copyright (C) 2011, Junta de Andalucía <devmaster@guadalinex.o
 __license__ = "GPL-2"
 
 
-import ServerConf
+import ServerConf, LinkToServerHostnamePage, LinkToServerResultsPage
+import firstboot.pages.linkToServer
 from firstboot_lib import PageWindow
 
 import gettext
@@ -51,8 +52,6 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
         self.txtPassword = self.builder.get_object('txtPassword')
         self.txtUrlChef = self.builder.get_object('txtUrlChef')
         self.txtUrlChefCert = self.builder.get_object('txtUrlChefCert')
-        self.btnCancel = self.builder.get_object('btnCancel')
-        self.btnApply = self.builder.get_object('btnApply')
         self.chkLDAP = self.builder.get_object('chkLDAP')
         self.chkChef = self.builder.get_object('chkChef')
 
@@ -60,7 +59,8 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
         self.unlink_from_ldap = False
         self.unlink_from_chef = False
 
-    def set_params(self, params):
+    def load_page(self, main_window, params=None):
+
         if 'server_conf' in params:
             self.server_conf = params['server_conf']
             if not self.server_conf is None:
@@ -114,8 +114,6 @@ workstation is going to be unlinked from the Chef server.')))
         self.builder.get_object('lblPassword').set_label(_('Password'))
         self.builder.get_object('lblUrlChef').set_label('URL')
         self.builder.get_object('lblUrlChefCert').set_label(_('Certificate URL'))
-        self.builder.get_object('btnCancel').set_label(_('Cancel'))
-        self.builder.get_object('btnApply').set_label(_('Apply'))
 
         self.chkLDAP.get_child().set_markup(self._bold(_('Configure LDAP')))
         self.chkChef.get_child().set_markup(self._bold(_('Configure Chef')))
@@ -133,7 +131,7 @@ workstation is going to be unlinked from the Chef server.')))
             | self.unlink_from_ldap \
             | self.unlink_from_chef
 
-        self.btnApply.set_sensitive(active)
+        #~ self.btnApply.set_sensitive(active)
 
     def on_chkChef_toggle(self, button):
         active = self.chkChef.get_active()
@@ -146,12 +144,12 @@ workstation is going to be unlinked from the Chef server.')))
             | self.unlink_from_ldap \
             | self.unlink_from_chef
 
-        self.btnApply.set_sensitive(active)
+        #~ self.btnApply.set_sensitive(active)
 
-    def on_btnCancel_Clicked(self, button):
-        self.emit('page-changed', 'linkToServer', {})
+    def previous_page(self, load_page_callback):
+        load_page_callback(firstboot.pages.linkToServer)
 
-    def on_btnApply_Clicked(self, button):
+    def next_page(self, load_page_callback):
 
         if not self.unlink_from_chef and self.chkChef.get_active():
             # The unique host name for Chef is mandatory, so we need
@@ -161,20 +159,36 @@ workstation is going to be unlinked from the Chef server.')))
                 used_hostnames = ServerConf.get_chef_hostnames(self.server_conf.get_chef_conf())
                 #print used_hostnames
 
-                self.emit('subpage-changed', 'linkToServer', 'LinkToServerHostnamePage',
-                    {'server_conf': self.server_conf,
+                load_page_callback(LinkToServerHostnamePage, {
+                    'server_conf': self.server_conf,
                     'link_ldap': self.chkLDAP.get_active(),
                     'unlink_ldap': self.unlink_from_ldap,
                     'link_chef': self.chkChef.get_active(),
                     'unlink_chef': self.unlink_from_chef,
-                    'used_hostnames': used_hostnames})
+                    'used_hostnames': used_hostnames
+                })
+
+                #~ self.emit('subpage-changed', 'linkToServer', 'LinkToServerHostnamePage',
+                    #~ {'server_conf': self.server_conf,
+                    #~ 'link_ldap': self.chkLDAP.get_active(),
+                    #~ 'unlink_ldap': self.unlink_from_ldap,
+                    #~ 'link_chef': self.chkChef.get_active(),
+                    #~ 'unlink_chef': self.unlink_from_chef,
+                    #~ 'used_hostnames': used_hostnames})
 
             except ServerConf.ServerConfException as e:
                 messages = [{'type': 'error', 'message': str(e)}]
-                self.emit('subpage-changed', 'linkToServer',
-                          'LinkToServerResultsPage',
-                          {'result': False, 'server_conf': self.server_conf,
-                           'messages': messages})
+
+                load_page_callback(LinkToServerResultsPage, {
+                    'result': False,
+                    'server_conf': self.server_conf,
+                    'messages': messages
+                })
+
+                #~ self.emit('subpage-changed', 'linkToServer',
+                          #~ 'LinkToServerResultsPage',
+                          #~ {'result': False, 'server_conf': self.server_conf,
+                           #~ 'messages': messages})
 
         else:
             result, messages = ServerConf.setup_server(
@@ -185,10 +199,16 @@ workstation is going to be unlinked from the Chef server.')))
                 unlink_chef=self.unlink_from_chef
             )
 
-            self.emit('subpage-changed', 'linkToServer',
-                      'LinkToServerResultsPage',
-                      {'result': result, 'server_conf': self.server_conf,
-                       'messages': messages})
+            load_page_callback(LinkToServerResultsPage, {
+                'result': result,
+                'server_conf': self.server_conf,
+                'messages': messages
+            })
+
+            #~ self.emit('subpage-changed', 'linkToServer',
+                      #~ 'LinkToServerResultsPage',
+                      #~ {'result': result, 'server_conf': self.server_conf,
+                       #~ 'messages': messages})
 
     def on_serverConf_changed(self, entry):
         if not self.update_server_conf:

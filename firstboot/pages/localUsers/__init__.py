@@ -23,6 +23,7 @@ __license__ = "GPL-2"
 
 import os
 from gi.repository import Gtk
+import firstboot.pages
 from firstboot_lib import PageWindow
 
 import gettext
@@ -56,3 +57,9 @@ local users.'))
         cmd = 'gnome-control-center'
         param = 'user-accounts'
         os.spawnlp(os.P_NOWAIT, cmd, cmd, param)
+
+    def previous_page(self, load_page_callback):
+        load_page_callback(firstboot.pages.linkToServer)
+
+    def next_page(self, load_page_callback):
+        load_page_callback(firstboot.pages.installSoftware)

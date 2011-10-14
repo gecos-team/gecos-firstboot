@@ -23,6 +23,7 @@ __license__ = "GPL-2"
 
 from gi.repository import Gtk
 
+import firstboot.pages
 from firstboot_lib import PageWindow
 
 import gettext
@@ -48,17 +49,13 @@ class LinkToServerResultsPage(PageWindow.PageWindow):
         self.boxMessageContainer = builder.get_object('boxMessageContainer')
         self.imgStatus = builder.get_object('imgStatus')
         self.lblStatus = builder.get_object('lblStatus')
-        self.btnBack = builder.get_object('btnBack')
-        self.btnAccept = builder.get_object('btnAccept')
 
         self.result = False
 
     def translate(self):
         self.lblDescription.set_text('')
-        self.btnBack.set_label(_('Back'))
-        self.btnAccept.set_label(_('Aceptar'))
 
-    def set_params(self, params):
+    def load_page(self, main_window, params=None):
 
         if 'server_conf' in params:
             self.server_conf = params['server_conf']
@@ -78,14 +75,14 @@ class LinkToServerResultsPage(PageWindow.PageWindow):
         if self.result == True:
             self.lblDescription.set_text(_('This workstation has been linked \
 to a GECOS server.'))
-            self.btnBack.set_visible(False)
-            self.btnAccept.set_label(_('Finalize'))
+            #~ self.btnBack.set_visible(False)
+            #~ self.btnAccept.set_label(_('Finalize'))
 
         else:
             self.lblDescription.set_text(_('There are some errors you may fix.'))
-            self.btnBack.set_visible(True)
-            self.btnBack.set_label(_('Back'))
-            self.btnAccept.set_label(_('Finalize'))
+            #~ self.btnBack.set_visible(True)
+            #~ self.btnBack.set_label(_('Back'))
+            #~ self.btnAccept.set_label(_('Finalize'))
 
     def new_message(self, message, icon):
         box = Gtk.HBox()
@@ -107,3 +104,9 @@ to a GECOS server.'))
 
     def on_btnAccept_Clicked(self, button):
         self.emit('page-changed', 'linkToServer', {})
+
+    def previous_page(self, load_page_callback):
+        load_page_callback(firstboot.pages.linkToServer)
+
+    def next_page(self, load_page_callback):
+        load_page_callback(firstboot.pages.localUsers)

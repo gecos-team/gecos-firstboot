@@ -28,6 +28,7 @@ import shlex
 import json
 import ServerConf
 
+import LinkToServerConfEditorPage, LinkToServerResultsPage
 from firstboot_lib import PageWindow
 
 import gettext
@@ -54,8 +55,6 @@ class LinkToServerHostnamePage(PageWindow.PageWindow):
         self.lblStatus = builder.get_object('lblStatus')
         self.lblHostname = builder.get_object('lblHostname')
         self.txtHostname = builder.get_object('txtHostname')
-        self.btnBack = builder.get_object('btnBack')
-        self.btnAccept = builder.get_object('btnAccept')
 
         self.imgStatus.set_visible(False)
         self.lblStatus.set_visible(False)
@@ -69,10 +68,8 @@ uniquely identify this workstation.')
 
         self.lblDescription.set_text(desc)
         self.lblHostname.set_label(_('Hostname'))
-        self.btnBack.set_label(_('Back'))
-        self.btnAccept.set_label(_('Aceptar'))
 
-    def set_params(self, params):
+    def load_page(self, main_window, params=None):
 
         # NOTE: The boolean values in the dict object become tuples
         # after the assignment ???
@@ -96,13 +93,20 @@ uniquely identify this workstation.')
             if name == text:
                 #self.txtHostname.modify_text(Gtk.StateFlags.NORMAL, Gdk.Color(255, 0, 0))
                 self.show_error(_('The host name is in use.'))
-                self.btnAccept.set_sensitive(False)
+                #~ self.btnAccept.set_sensitive(False)
                 return
 
         self.show_error()
-        self.btnAccept.set_sensitive(True)
+        #~ self.btnAccept.set_sensitive(True)
 
-    def on_btnAccept_Clicked(self, button):
+    def previous_page(self, load_page_callback):
+        load_page_callback(LinkToServerConfEditorPage, {
+            'server_conf': self.server_conf
+        })
+        #~ self.emit('subpage-changed', 'linkToServer',
+                  #~ 'LinkToServerConfEditorPage', {'server_conf': self.server_conf})
+
+    def next_page(self, load_page_callback):
 
         hostname = self.txtHostname.get_text()
 
@@ -124,14 +128,16 @@ uniquely identify this workstation.')
             unlink_chef=self.unlink_chef
         )
 
-        self.emit('subpage-changed', 'linkToServer',
-                  'LinkToServerResultsPage',
-                  {'result': result, 'server_conf': self.server_conf,
-                   'messages': messages})
+        load_page_callback(LinkToServerResultsPage, {
+            'server_conf': self.server_conf,
+            'result': result,
+            'messages': messages
+        })
 
-    def on_btnBack_clicked(self, button):
-        self.emit('subpage-changed', 'linkToServer',
-                  'LinkToServerConfEditorPage', {'server_conf': self.server_conf})
+        #~ self.emit('subpage-changed', 'linkToServer',
+                  #~ 'LinkToServerResultsPage',
+                  #~ {'result': result, 'server_conf': self.server_conf,
+                   #~ 'messages': messages})
 
     def show_error(self, message=None):
         if message is None:
