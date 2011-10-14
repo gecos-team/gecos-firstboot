@@ -47,7 +47,7 @@ class PageWindow(Gtk.Window):
         )
     }
 
-    # To construct a new instance of this method, the following notable 
+    # To construct a new instance of this method, the following notable
     # methods are called in this order:
     # __new__(cls)
     # __init__(self)
@@ -61,31 +61,61 @@ class PageWindow(Gtk.Window):
         GObject.GObject.__init__(self)
 
     def __new__(cls, options=None):
-        """Special static method that's automatically called by Python when 
+        """Special static method that's automatically called by Python when
         constructing a new instance of this class.
-        
+
         Returns a fully instantiated BaseFirstbootWindow object.
         """
         builder = get_builder(cls.__gtype_name__)
         new_object = builder.get_object(cls.__page_container__)
-        new_object.finish_initializing(builder, options)
+        new_object._finish_initializing(builder, options)
 
         return new_object
 
-    def finish_initializing(self, builder, options):
+    def _finish_initializing(self, builder, options=None):
         """Called while initializing this instance in __new__
 
         finish_initializing should be called after parsing the UI definition
         and creating a FirstbootWindow object with it in order to finish
         initializing the start of the new FirstbootWindow instance.
         """
-        # Get a reference to the builder and set up the signals.
+
+        self.cmd_options = options
+        self.fbe = FirstbootEntry.FirstbootEntry()
         self.builder = builder
         self.ui = builder.get_ui(self, True)
 
-        self.cmd_options = options
+        self.page = builder.get_object(self.__gtype_name__)
+        container = builder.get_object(self.__page_container__)
+        container.remove(page)
+
+        # Call the page specific initialization stuff
+        self.finish_initializing(builder, options)
+        self.translate()
 
     def on_destroy(self, widget, data=None):
         """Called when the FirstbootWindow is closed."""
         # Clean up code for saving application state should be added here.
         Gtk.main_quit()
+
+    def finish_initializing(self, builder, options=None):
+        pass
+
+    def translate(self):
+        pass
+
+    def get_widget(self):
+        return self.page
+
+    # ~= set_params() ???
+    def load_page(self, main_window):
+        pass
+
+    def unload_page(self, main_window):
+        pass
+
+    def page_previous(self):
+        return None
+
+    def page_next(self):
+        return None

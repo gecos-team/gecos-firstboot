@@ -45,28 +45,7 @@ def get_page(options=None):
 class LinkToServerResultsPage(PageWindow.PageWindow):
     __gtype_name__ = "LinkToServerResultsPage"
 
-    # To construct a new instance of this method, the following notable
-    # methods are called in this order:
-    # __new__(cls)
-    # __init__(self)
-    # finish_initializing(self, builder)
-    # __init__(self)
-    #
-    # For this reason, it's recommended you leave __init__ empty and put
-    # your initialization code in finish_initializing
-
     def finish_initializing(self, builder, options=None):
-        """Called while initializing this instance in __new__
-
-        finish_initializing should be called after parsing the UI definition
-        and creating a FirstbootWindow object with it in order to finish
-        initializing the start of the new FirstbootWindow instance.
-        """
-
-        # Get a reference to the builder and set up the signals.
-        self.builder = builder
-        self.ui = builder.get_ui(self, True)
-
         self.lblDescription = builder.get_object('lblDescription')
         self.boxMessageContainer = builder.get_object('boxMessageContainer')
         self.imgStatus = builder.get_object('imgStatus')
@@ -74,25 +53,12 @@ class LinkToServerResultsPage(PageWindow.PageWindow):
         self.btnBack = builder.get_object('btnBack')
         self.btnAccept = builder.get_object('btnAccept')
 
-        container = builder.get_object(self.__page_container__)
-        page = builder.get_object(self.__gtype_name__)
-        container.remove(page)
-        self.page = page
-
-        self.translate()
-
-        self.cmd_options = options
-        self.fbe = FirstbootEntry.FirstbootEntry()
-
         self.result = False
 
     def translate(self):
         self.lblDescription.set_text('')
         self.btnBack.set_label(_('Back'))
         self.btnAccept.set_label(_('Aceptar'))
-
-    def get_widget(self):
-        return self.page
 
     def set_params(self, params):
 

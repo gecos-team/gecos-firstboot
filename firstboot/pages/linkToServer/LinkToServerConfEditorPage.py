@@ -41,28 +41,7 @@ def get_page(options=None):
 class LinkToServerConfEditorPage(PageWindow.PageWindow):
     __gtype_name__ = "LinkToServerConfEditorPage"
 
-    # To construct a new instance of this method, the following notable
-    # methods are called in this order:
-    # __new__(cls)
-    # __init__(self)
-    # finish_initializing(self, builder)
-    # __init__(self)
-    #
-    # For this reason, it's recommended you leave __init__ empty and put
-    # your initialization code in finish_initializing
-
     def finish_initializing(self, builder, options=None):
-        """Called while initializing this instance in __new__
-
-        finish_initializing should be called after parsing the UI definition
-        and creating a FirstbootWindow object with it in order to finish
-        initializing the start of the new FirstbootWindow instance.
-        """
-
-        # Get a reference to the builder and set up the signals.
-        self.builder = builder
-        self.ui = builder.get_ui(self, True)
-
         self.lblDescription = self.builder.get_object('lblDescription')
         self.lblVersionValue = self.builder.get_object('lblVersionValue')
         self.lblOrganizationValue = self.builder.get_object('lblOrganizationValue')
@@ -76,16 +55,6 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
         self.btnApply = self.builder.get_object('btnApply')
         self.chkLDAP = self.builder.get_object('chkLDAP')
         self.chkChef = self.builder.get_object('chkChef')
-
-        self.translate()
-
-        container = builder.get_object(self.__page_container__)
-        page = builder.get_object(self.__gtype_name__)
-        container.remove(page)
-        self.page = page
-
-        self.cmd_options = options
-        self.fbe = FirstbootEntry.FirstbootEntry()
 
         self.update_server_conf = False
         self.unlink_from_ldap = False
@@ -150,9 +119,6 @@ workstation is going to be unlinked from the Chef server.')))
 
         self.chkLDAP.get_child().set_markup(self._bold(_('Configure LDAP')))
         self.chkChef.get_child().set_markup(self._bold(_('Configure Chef')))
-
-    def get_widget(self):
-        return self.page
 
     def on_chkLDAP_toggle(self, button):
         active = self.chkLDAP.get_active()

@@ -48,39 +48,9 @@ class NetworkPage(PageWindow.PageWindow):
         'link-status': (GObject.SignalFlags.ACTION, None, (GObject.TYPE_BOOLEAN,))
     }
 
-    # To construct a new instance of this method, the following notable
-    # methods are called in this order:
-    # __new__(cls)
-    # __init__(self)
-    # finish_initializing(self, builder)
-    # __init__(self)
-    #
-    # For this reason, it's recommended you leave __init__ empty and put
-    # your initialization code in finish_initializing
-
     def finish_initializing(self, builder, options=None):
-        """Called while initializing this instance in __new__
-
-        finish_initializing should be called after parsing the UI definition
-        and creating a FirstbootWindow object with it in order to finish
-        initializing the start of the new FirstbootWindow instance.
-        """
-        # Get a reference to the builder and set up the signals.
-        self.builder = builder
-        self.ui = builder.get_ui(self, True)
-
-        self.cmd_options = options
-
-        container = builder.get_object(self.__page_container__)
-        page = builder.get_object(self.__gtype_name__)
-        container.remove(page)
-        self.page = page
-
         self.treeviewInterfaces = builder.get_object('treeviewInterfaces')
-
         self.timer_ret = True
-
-        self.translate()
         self.init_treeviewInterfaces()
 
     def translate(self):
@@ -90,15 +60,12 @@ for linking this workstation to a GECOS server and for installing software.'))
         self.builder.get_object('lblDescription1').set_text(_('Below are shown the current \
 detected interfaces.'))
 
-    def load_page(self, assistant):
+    def load_page(self, main_window):
         self.timer_ret = True
         GObject.timeout_add_seconds(1, self.load_treeviewInterfaces)
 
-    def unload_page(self):
+    def unload_page(self, main_window):
         self.timer_ret = False
-
-    def get_widget(self):
-        return self.page
 
     def on_btnNetworkDialog_Clicked(self, button):
         cmd = 'nm-connection-editor'
