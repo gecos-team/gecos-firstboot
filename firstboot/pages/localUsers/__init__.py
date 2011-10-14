@@ -42,13 +42,9 @@ def get_page(main_window):
 class LocalUsersPage(PageWindow.PageWindow):
     __gtype_name__ = "LocalUsersPage"
 
-    def finish_initializing(self):
-        self.btnLocalUsers = self.builder.get_object('btnLocalUsers')
-        self.lblDescription = self.builder.get_object('lblDescription')
-
     def translate(self):
-        self.btnLocalUsers.set_label(_('Create local users'))
-        self.lblDescription.set_text(_('If you need to manage local users on this \
+        self.ui.btnLocalUsers.set_label(_('Create local users'))
+        self.ui.lblDescription.set_text(_('If you need to manage local users on this \
 workstation click the button below. Note that if this workstation \
 is linked to a GECOS server, it\'s likely you don\'t need to create \
 local users.'))

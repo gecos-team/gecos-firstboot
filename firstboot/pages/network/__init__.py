@@ -49,15 +49,14 @@ class NetworkPage(PageWindow.PageWindow):
     }
 
     def finish_initializing(self):
-        self.treeviewInterfaces = self.builder.get_object('treeviewInterfaces')
         self.timer_ret = True
         self.init_treeviewInterfaces()
 
     def translate(self):
-        self.builder.get_object('btnNetworkDialog').set_label(_('Configure the network'))
-        self.builder.get_object('lblDescription').set_text(_('You need to be connected to the network \
+        self.ui.btnNetworkDialog.set_label(_('Configure the network'))
+        self.ui.lblDescription.set_text(_('You need to be connected to the network \
 for linking this workstation to a GECOS server and for installing software.'))
-        self.builder.get_object('lblDescription1').set_text(_('Below are shown the current \
+        self.ui.lblDescription1.set_text(_('Below are shown the current \
 detected interfaces.'))
 
     def load_page(self, params=None):
@@ -77,15 +76,15 @@ detected interfaces.'))
         cell = Gtk.CellRendererText()
         tvcolumn.pack_start(cell, True)
         tvcolumn.set_cell_data_func(cell, self._render_column_name)
-        self.treeviewInterfaces.append_column(tvcolumn)
+        self.ui.treeviewInterfaces.append_column(tvcolumn)
 
         tvcolumn = Gtk.TreeViewColumn(_('IP'))
         cell = Gtk.CellRendererText()
         tvcolumn.pack_start(cell, True)
         tvcolumn.set_cell_data_func(cell, self._render_column_ip)
-        self.treeviewInterfaces.append_column(tvcolumn)
+        self.ui.treeviewInterfaces.append_column(tvcolumn)
 
-        selection = self.treeviewInterfaces.get_selection()
+        selection = self.ui.treeviewInterfaces.get_selection()
         selection.set_mode(Gtk.SelectionMode.NONE)
 
         self.load_treeviewInterfaces()
@@ -94,7 +93,7 @@ detected interfaces.'))
 
         n_ifaces = 0
 
-        store = self.treeviewInterfaces.get_model()
+        store = self.ui.treeviewInterfaces.get_model()
         store.clear()
 
         ifs = localifs()
@@ -106,7 +105,7 @@ detected interfaces.'))
                 n_ifaces += 1
 
         self.emit('link-status', n_ifaces > 0)
-        self.treeviewInterfaces.set_model(store)
+        self.ui.treeviewInterfaces.set_model(store)
 
         return self.timer_ret
 

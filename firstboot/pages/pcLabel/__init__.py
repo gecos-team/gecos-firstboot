@@ -48,36 +48,30 @@ class PCLabelPage(PageWindow.PageWindow):
     __gtype_name__ = "PCLabelPage"
 
     def finish_initializing(self):
-        self.lblDescription = self.builder.get_object('lblDescription')
-        self.imgStatus = self.builder.get_object('imgStatus')
-        self.lblStatus = self.builder.get_object('lblStatus')
-        self.lblLabel = self.builder.get_object('lblLabel')
-        self.txtLabel = self.builder.get_object('txtLabel')
-
-        self.txtLabel.set_text(self.get_label())
-        self.imgStatus.set_visible(False)
-        self.lblStatus.set_visible(False)
+        self.ui.txtLabel.set_text(self.get_label())
+        self.ui.imgStatus.set_visible(False)
+        self.ui.lblStatus.set_visible(False)
 
     def translate(self):
         desc = _('You can type a description for this workstation, it will be \
 shown in the GECOS Server admin interface and will help you to find out the \
 workstation later.')
 
-        self.lblDescription.set_text(desc)
-        self.lblLabel.set_label(_('Label'))
+        self.ui.lblDescription.set_text(desc)
+        self.ui.lblLabel.set_label(_('Label'))
 
     def on_txtLabel_changed(self, entry):
         try:
             self.set_label(self.txtLabel.get_text())
-            self.imgStatus.set_from_stock(Gtk.STOCK_YES, Gtk.IconSize.MENU)
-            self.lblStatus.set_label(_('The label has been updated correctly.'))
+            self.ui.imgStatus.set_from_stock(Gtk.STOCK_YES, Gtk.IconSize.MENU)
+            self.ui.lblStatus.set_label(_('The label has been updated correctly.'))
 
         except Exception as e:
-            self.imgStatus.set_from_stock(Gtk.STOCK_DIALOG_ERROR, Gtk.IconSize.MENU)
-            self.lblStatus.set_label(str(e))
+            self.ui.imgStatus.set_from_stock(Gtk.STOCK_DIALOG_ERROR, Gtk.IconSize.MENU)
+            self.ui.lblStatus.set_label(str(e))
 
-        self.imgStatus.set_visible(True)
-        self.lblStatus.set_visible(True)
+        self.ui.imgStatus.set_visible(True)
+        self.ui.lblStatus.set_visible(True)
 
     def get_label(self):
 

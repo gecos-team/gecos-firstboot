@@ -42,13 +42,9 @@ def get_page(main_window):
 class InstallSoftwarePage(PageWindow.PageWindow):
     __gtype_name__ = "InstallSoftwarePage"
 
-    def finish_initializing(self):
-        self.btnInstallSoftware = self.builder.get_object('btnInstallSoftware')
-        self.lblDescription = self.builder.get_object('lblDescription')
-
     def translate(self):
-        self.btnInstallSoftware.set_label(_('Install software'))
-        self.lblDescription.set_text(_('From this window you can install \
+        self.ui.btnInstallSoftware.set_label(_('Install software'))
+        self.ui.lblDescription.set_text(_('From this window you can install \
 software and manage packages.'))
 
     def on_btnInstallSoftware_Clicked(self, button):
