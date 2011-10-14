@@ -25,8 +25,7 @@ import os
 from gi.repository import Gtk
 
 import ServerConf
-from ServerConf import ServerConfException, LinkToLDAPException, LinkToChefException
-from firstboot_lib import PageWindow, FirstbootEntry
+from firstboot_lib import PageWindow
 
 import gettext
 from gettext import gettext as _
@@ -158,7 +157,7 @@ server.')
                 }
             )
 
-        except ServerConfException as e:
+        except ServerConf.ServerConfException as e:
             self.show_status(__STATUS_ERROR__, e)
 
         except Exception as e:

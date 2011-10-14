@@ -28,7 +28,7 @@ import shlex
 import json
 import ServerConf
 
-from firstboot_lib import PageWindow, FirstbootEntry
+from firstboot_lib import PageWindow
 
 import gettext
 from gettext import gettext as _

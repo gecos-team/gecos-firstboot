@@ -21,11 +21,12 @@ __copyright__ = "Copyright (C) 2011, Junta de Andalucía <devmaster@guadalinex.o
 __license__ = "GPL-2"
 
 
-from gi.repository import GObject
-from gi.repository import Gtk
+from gi.repository import GObject, Gtk
+
 import logging
 logger = logging.getLogger('firstboot_lib')
 
+import FirstbootEntry
 from . helpers import get_builder, show_uri, get_help_uri
 
 # This class is meant to be subclassed by FirstbootWindow.  It provides
@@ -87,7 +88,7 @@ class PageWindow(Gtk.Window):
 
         self.page = builder.get_object(self.__gtype_name__)
         container = builder.get_object(self.__page_container__)
-        container.remove(page)
+        container.remove(self.page)
 
         # Call the page specific initialization stuff
         self.finish_initializing(builder, options)

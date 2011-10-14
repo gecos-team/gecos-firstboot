@@ -23,9 +23,7 @@ __license__ = "GPL-2"
 
 from gi.repository import Gtk
 
-import ServerConf
-from ServerConf import ServerConfException, LinkToLDAPException, LinkToChefException
-from firstboot_lib import PageWindow, FirstbootEntry
+from firstboot_lib import PageWindow
 
 import gettext
 from gettext import gettext as _

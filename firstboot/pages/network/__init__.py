@@ -22,8 +22,7 @@ __license__ = "GPL-2"
 
 
 import os
-from gi.repository import Gtk
-from gi.repository import GObject
+from gi.repository import GObject, Gtk
 from firstboot_lib import PageWindow
 
 import gettext
