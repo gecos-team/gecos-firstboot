@@ -50,14 +50,9 @@ class LinkToServerHostnamePage(PageWindow.PageWindow):
     __gtype_name__ = "LinkToServerHostnamePage"
 
     def finish_initializing(self):
-        self.lblDescription = self.builder.get_object('lblDescription')
-        self.imgStatus = self.builder.get_object('imgStatus')
-        self.lblStatus = self.builder.get_object('lblStatus')
-        self.lblHostname = self.builder.get_object('lblHostname')
-        self.txtHostname = self.builder.get_object('txtHostname')
-
-        self.imgStatus.set_visible(False)
-        self.lblStatus.set_visible(False)
+        self.ui.imgStatus.set_visible(False)
+        self.ui.lblStatus.set_visible(False)
+        self.main_window.btnNext.set_sensitive(False)
 
         self.hostnames = []
 
@@ -66,8 +61,8 @@ class LinkToServerHostnamePage(PageWindow.PageWindow):
 therefore it must be given a host name. That name will be used for \
 uniquely identify this workstation.')
 
-        self.lblDescription.set_text(desc)
-        self.lblHostname.set_label(_('Hostname'))
+        self.ui.lblDescription.set_text(desc)
+        self.ui.lblHostname.set_label(_('Hostname'))
 
     def load_page(self, params=None):
 
@@ -88,16 +83,16 @@ uniquely identify this workstation.')
         self.server_conf = params['server_conf']
 
     def on_txtHostname_changed(self, entry):
-        text = self.txtHostname.get_text()
+        text = self.ui.txtHostname.get_text()
         for name in self.hostnames:
             if name == text:
                 #self.txtHostname.modify_text(Gtk.StateFlags.NORMAL, Gdk.Color(255, 0, 0))
                 self.show_error(_('The host name is in use.'))
-                #~ self.btnAccept.set_sensitive(False)
+                self.main_window.btnNext.set_sensitive(False)
                 return
 
         self.show_error()
-        #~ self.btnAccept.set_sensitive(True)
+        self.main_window.btnNext.set_sensitive(True)
 
     def previous_page(self, load_page_callback):
         load_page_callback(LinkToServerConfEditorPage, {
@@ -108,7 +103,7 @@ uniquely identify this workstation.')
 
     def next_page(self, load_page_callback):
 
-        hostname = self.txtHostname.get_text()
+        hostname = self.ui.txtHostname.get_text()
 
         if len(hostname) == 0:
             self.show_error(_('The host name cannot be empty.'))
@@ -141,11 +136,11 @@ uniquely identify this workstation.')
 
     def show_error(self, message=None):
         if message is None:
-            self.imgStatus.set_visible(False)
-            self.lblStatus.set_visible(False)
+            self.ui.imgStatus.set_visible(False)
+            self.ui.lblStatus.set_visible(False)
             return
 
-        self.imgStatus.set_from_stock(Gtk.STOCK_DIALOG_ERROR, Gtk.IconSize.BUTTON)
-        self.lblStatus.set_label(message)
-        self.imgStatus.set_visible(True)
-        self.lblStatus.set_visible(True)
+        self.ui.imgStatus.set_from_stock(Gtk.STOCK_DIALOG_ERROR, Gtk.IconSize.BUTTON)
+        self.ui.lblStatus.set_label(message)
+        self.ui.imgStatus.set_visible(True)
+        self.ui.lblStatus.set_visible(True)

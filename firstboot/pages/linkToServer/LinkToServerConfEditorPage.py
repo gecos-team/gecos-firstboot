@@ -140,7 +140,7 @@ workstation is going to be unlinked from the Chef server.')))
 
     def next_page(self, load_page_callback):
 
-        if not self.unlink_from_chef and self.chkChef.get_active():
+        if not self.unlink_from_chef and self.ui.chkChef.get_active():
             # The unique host name for Chef is mandatory, so we need
             # to ask for it before the setup.
 
