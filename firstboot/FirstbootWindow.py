@@ -167,6 +167,9 @@ class FirstbootWindow(Window):
 
     def set_current_page(self, module, params=None):
 
+        self.ui.btnPrev.set_sensitive(True)
+        self.ui.btnNext.set_sensitive(True)
+
         try:
             self.current_page.unload_page(params)
         except Exception as e:
