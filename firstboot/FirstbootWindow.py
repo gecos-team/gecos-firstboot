@@ -50,21 +50,14 @@ class FirstbootWindow(Window):
         super(FirstbootWindow, self).finish_initializing(builder)
         self.connect("delete_event", self.on_delete_event)
 
+        self.btnPrev = self.ui.btnPrev
+        self.btnNext = self.ui.btnNext
+
         self.cmd_options = options
         self.fbe = FirstbootEntry.FirstbootEntry()
 
         iconfile = firstbootconfig.get_data_file('media', '%s' % ('wizard1.png',))
         self.set_icon_from_file(iconfile)
-
-
-        self.lblDescription = builder.get_object('lblDescription')
-        self.boxContent = builder.get_object('boxContent')
-        self.swContent = builder.get_object('swContent')
-        self.boxIndex = builder.get_object('boxIndex')
-        self.boxApplications = builder.get_object('boxApplications')
-        #self.btnClose = builder.get_object('btnClose')
-        self.btnPrev = builder.get_object('btnPrev')
-        self.btnNext = builder.get_object('btnNext')
 
         self.pages = {}
         self.buttons = {}
@@ -77,14 +70,13 @@ class FirstbootWindow(Window):
         self.on_link_status(None, False)
         self.show_applications()
 
-        self.set_focus(self.btnNext)
+        self.set_focus(self.ui.btnNext)
 
     def translate(self):
         self.set_title(_('First Boot Assistant'))
-        self.lblDescription.set_text('')
-        #self.btnClose.set_label(_('Close'))
-        self.btnPrev.set_label(_('Previous'))
-        self.btnNext.set_label(_('Next'))
+        self.ui.lblDescription.set_text('')
+        self.ui.btnPrev.set_label(_('Previous'))
+        self.ui.btnNext.set_label(_('Next'))
 
     def on_btnClose_Clicked(self, button):
         self.destroy()
@@ -126,9 +118,9 @@ class FirstbootWindow(Window):
         self.pages = {}
         self.buttons = {}
 
-        children = self.boxIndex.get_children()
+        children = self.ui.boxIndex.get_children()
         for child in children:
-            self.boxIndex.remove(child)
+            self.ui.boxIndex.remove(child)
 
         for page_name in pages.pages:
             try:
@@ -158,7 +150,7 @@ class FirstbootWindow(Window):
         label.show()
         button.add(label)
 
-        self.boxIndex.pack_start(button, False, True, 0)
+        self.ui.boxIndex.pack_start(button, False, True, 0)
         button.connect('clicked', self.on_btnIndex_Clicked, page_name, module)
         button.show()
 
@@ -198,10 +190,10 @@ class FirstbootWindow(Window):
 
         #self.button_set_active(button)
 
-        for child in self.swContent.get_children():
-            self.swContent.remove(child)
+        for child in self.ui.swContent.get_children():
+            self.ui.swContent.remove(child)
 
-        self.swContent.add_with_viewport(self.current_page.get_widget())
+        self.ui.swContent.add_with_viewport(self.current_page.get_widget())
 
     def on_page_changed(self, sender, module, params):
         self.set_current_page(module, params)
@@ -260,7 +252,7 @@ class FirstbootWindow(Window):
                 box.pack_start(lbl, False, True, 0)
                 btn.add(box)
 
-                self.boxApplications.add(btn)
+                self.ui.boxApplications.add(btn)
                 box.show()
                 btn.show()
                 img.show()
