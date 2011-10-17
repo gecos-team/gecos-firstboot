@@ -62,13 +62,15 @@ workstation later.')
 
     def on_txtLabel_changed(self, entry):
         try:
-            self.set_label(self.txtLabel.get_text())
+            self.set_label(self.ui.txtLabel.get_text())
             self.ui.imgStatus.set_from_stock(Gtk.STOCK_YES, Gtk.IconSize.MENU)
             self.ui.lblStatus.set_label(_('The label has been updated correctly.'))
+            self.emit('status-changed', 'pcLabel', True)
 
         except Exception as e:
             self.ui.imgStatus.set_from_stock(Gtk.STOCK_DIALOG_ERROR, Gtk.IconSize.MENU)
             self.ui.lblStatus.set_label(str(e))
+            self.emit('status-changed', 'pcLabel', False)
 
         self.ui.imgStatus.set_visible(True)
         self.ui.lblStatus.set_visible(True)
