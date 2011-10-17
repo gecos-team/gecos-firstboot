@@ -33,7 +33,7 @@ from gettext import gettext as _
 gettext.textdomain('firstboot')
 
 
-__REQUIRED__ = False
+__REQUIRED__ = True
 
 __TITLE__ = _('Link workstation to a server')
 
@@ -169,6 +169,7 @@ server.')
     def next_page(self, load_page_callback):
 
         if self.ui.radioOmit.get_active():
+            self.emit('status-changed', 'linkToServer', True)
             load_page_callback(firstboot.pages.localUsers)
             return
 

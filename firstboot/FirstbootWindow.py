@@ -132,7 +132,8 @@ class FirstbootWindow(Window):
                     'button': button,
                     'module': module,
                     'enabled': True,
-                    'instance': None
+                    'instance': None,
+                    'configured': not module.__REQUIRED__
                 }
                 self.buttons[page_name] = button
 
@@ -145,12 +146,26 @@ class FirstbootWindow(Window):
         button.set_relief(Gtk.ReliefStyle.NONE)
         button.set_property('focus-on-click', False)
         button.set_property('xalign', 0)
-        button.set_data('page_name', page_name)
+
+        image_file = firstbootconfig.get_data_file('media', '%s' % ('arrow_right_32.png',))
+        pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(image_file, 8, 8)
+        image = Gtk.Image.new_from_pixbuf(pixbuf)
+        image.hide()
+
+        #~ image = Gtk.Arrow()
+        #~ image.set(Gtk.ArrowType.RIGHT, Gtk.ShadowType.NONE)
 
         label = Gtk.Label()
         label.set_text(page_title)
         label.show()
-        button.add(label)
+
+        hbox = Gtk.HBox()
+        hbox.set_spacing(3)
+        hbox.pack_start(image, False, True, 0)
+        hbox.pack_start(label, False, True, 0)
+        hbox.show()
+
+        button.add(hbox)
 
         self.ui.boxIndex.pack_start(button, False, True, 0)
         button.connect('clicked', self.on_btnIndex_Clicked, page_name)
@@ -172,17 +187,22 @@ class FirstbootWindow(Window):
         self.current_page = module.get_page(self)
 
         try:
-            self.current_page.load_page(params)
-        except Exception as e:
-            pass
-
-        try:
             self.current_page.connect('link-status', self.on_link_status)
         except Exception as e:
             pass
 
         try:
             self.current_page.connect('page-changed', self.on_page_changed)
+        except Exception as e:
+            pass
+
+        try:
+            self.current_page.connect('status-changed', self.on_page_status_changed)
+        except Exception as e:
+            pass
+
+        try:
+            self.current_page.load_page(params)
         except Exception as e:
             pass
 
@@ -202,12 +222,34 @@ class FirstbootWindow(Window):
     def on_page_changed(self, sender, module, params):
         self.set_current_page(module, params)
 
+    def on_page_status_changed(self, sender, page_name, configured):
+        if page_name in self.pages:
+            self.pages[page_name]['configured'] = configured
+        self.check_fully_configured()
+
+    def check_fully_configured(self):
+        configured = True
+        for page in self.pages:
+            if self.pages[page]['configured'] == False:
+                configured = False
+                break
+
+        return configured
+
     def button_set_active(self, button):
-        label = button.get_children()[0]
+        hbox = button.get_children()[0]
+        image = hbox.get_children()[0]
+        image.show()
+        label = hbox.get_children()[1]
+        label.set_padding(0, 0)
         label.set_markup('<b>%s</b>' % (label.get_text(),))
 
     def button_set_inactive(self, button):
-        label = button.get_children()[0]
+        hbox = button.get_children()[0]
+        image = hbox.get_children()[0]
+        image.hide()
+        label = hbox.get_children()[1]
+        label.set_padding(10, 0)
         label.set_markup(label.get_text())
 
     def on_link_status(self, sender, status):

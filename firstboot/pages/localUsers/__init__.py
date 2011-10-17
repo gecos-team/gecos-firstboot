@@ -42,6 +42,9 @@ def get_page(main_window):
 class LocalUsersPage(PageWindow.PageWindow):
     __gtype_name__ = "LocalUsersPage"
 
+    def load_page(self, params=None):
+        self.emit('status-changed', 'localUsers', not __REQUIRED__)
+
     def translate(self):
         self.ui.btnLocalUsers.set_label(_('Create local users'))
         self.ui.lblDescription.set_text(_('If you need to manage local users on this \

@@ -40,6 +40,11 @@ class PageWindow(Gtk.Window):
             GObject.SignalFlags.RUN_LAST,
             None,
             (GObject.TYPE_PYOBJECT, GObject.TYPE_PYOBJECT)
+        ),
+        'status-changed': (
+            GObject.SignalFlags.RUN_LAST,
+            None,
+            (GObject.TYPE_STRING, GObject.TYPE_BOOLEAN)
         )
     }
 

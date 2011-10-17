@@ -52,6 +52,9 @@ class PCLabelPage(PageWindow.PageWindow):
         self.ui.imgStatus.set_visible(False)
         self.ui.lblStatus.set_visible(False)
 
+    def load_page(self, params=None):
+        self.emit('status-changed', 'pcLabel', not __REQUIRED__)
+
     def translate(self):
         desc = _('You can type a description for this workstation, it will be \
 shown in the GECOS Server admin interface and will help you to find out the \
@@ -65,12 +68,10 @@ workstation later.')
             self.set_label(self.ui.txtLabel.get_text())
             self.ui.imgStatus.set_from_stock(Gtk.STOCK_YES, Gtk.IconSize.MENU)
             self.ui.lblStatus.set_label(_('The label has been updated correctly.'))
-            self.emit('status-changed', 'pcLabel', True)
 
         except Exception as e:
             self.ui.imgStatus.set_from_stock(Gtk.STOCK_DIALOG_ERROR, Gtk.IconSize.MENU)
             self.ui.lblStatus.set_label(str(e))
-            self.emit('status-changed', 'pcLabel', False)
 
         self.ui.imgStatus.set_visible(True)
         self.ui.lblStatus.set_visible(True)

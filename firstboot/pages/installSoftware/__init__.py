@@ -42,6 +42,9 @@ def get_page(main_window):
 class InstallSoftwarePage(PageWindow.PageWindow):
     __gtype_name__ = "InstallSoftwarePage"
 
+    def load_page(self, params=None):
+        self.emit('status-changed', 'localUsers', not __REQUIRED__)
+
     def translate(self):
         self.ui.btnInstallSoftware.set_label(_('Install software'))
         self.ui.lblDescription.set_text(_('From this window you can install \

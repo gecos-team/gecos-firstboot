@@ -69,6 +69,7 @@ detected interfaces.'))
     def on_btnNetworkDialog_Clicked(self, button):
         cmd = 'nm-connection-editor'
         os.spawnlp(os.P_NOWAIT, cmd, cmd)
+        self.emit('status-changed', 'network', True)
 
     def init_treeviewInterfaces(self):
 
@@ -105,6 +106,7 @@ detected interfaces.'))
                 n_ifaces += 1
 
         self.emit('link-status', n_ifaces > 0)
+        self.emit('status-changed', 'network', bool(n_ifaces > 0))
         self.ui.treeviewInterfaces.set_model(store)
 
         return self.timer_ret

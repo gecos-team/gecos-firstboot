@@ -70,9 +70,11 @@ class LinkToServerResultsPage(PageWindow.PageWindow):
         if self.result == True:
             self.ui.lblDescription.set_text(_('The configuration was \
 updated successfully.'))
+            self.emit('status-changed', 'linkToServer', True)
 
         else:
             self.ui.lblDescription.set_text(_('There are some errors you may fix.'))
+            self.emit('status-changed', 'linkToServer', False)
 
     def new_message(self, message, icon):
         box = Gtk.HBox()
