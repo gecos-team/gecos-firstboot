@@ -45,15 +45,10 @@ class LinkToServerResultsPage(PageWindow.PageWindow):
     __gtype_name__ = "LinkToServerResultsPage"
 
     def finish_initializing(self):
-        self.lblDescription = self.builder.get_object('lblDescription')
-        self.boxMessageContainer = self.builder.get_object('boxMessageContainer')
-        self.imgStatus = self.builder.get_object('imgStatus')
-        self.lblStatus = self.builder.get_object('lblStatus')
-
         self.result = False
 
     def translate(self):
-        self.lblDescription.set_text('')
+        self.ui.lblDescription.set_text('')
 
     def load_page(self, params=None):
 
@@ -70,16 +65,16 @@ class LinkToServerResultsPage(PageWindow.PageWindow):
                 else:
                     icon = Gtk.STOCK_YES
                 box = self.new_message(m['message'], icon)
-                self.boxMessageContainer.pack_start(box, False, False, 0)
+                self.ui.boxMessageContainer.pack_start(box, False, False, 0)
 
         if self.result == True:
-            self.lblDescription.set_text(_('This workstation has been linked \
+            self.ui.lblDescription.set_text(_('This workstation has been linked \
 to a GECOS server.'))
             #~ self.btnBack.set_visible(False)
             #~ self.btnAccept.set_label(_('Finalize'))
 
         else:
-            self.lblDescription.set_text(_('There are some errors you may fix.'))
+            self.ui.lblDescription.set_text(_('There are some errors you may fix.'))
             #~ self.btnBack.set_visible(True)
             #~ self.btnBack.set_label(_('Back'))
             #~ self.btnAccept.set_label(_('Finalize'))
@@ -97,13 +92,6 @@ to a GECOS server.'))
         box.set_spacing(10)
         box.show()
         return box
-
-    def on_btnBack_Clicked(self, button):
-        self.emit('subpage-changed', 'linkToServer',
-                  'LinkToServerConfEditorPage', {'server_conf': self.server_conf})
-
-    def on_btnAccept_Clicked(self, button):
-        self.emit('page-changed', 'linkToServer', {})
 
     def previous_page(self, load_page_callback):
         load_page_callback(firstboot.pages.linkToServer)
