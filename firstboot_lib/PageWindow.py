@@ -53,7 +53,7 @@ class PageWindow(Gtk.Window):
     # For this reason, it's recommended you leave __init__ empty and put
     # your initialization code in finish_initializing
 
-    def __init__(self, main_window):
+    def __init__(self, main_window=None):
         GObject.GObject.__init__(self)
 
     def __new__(cls, main_window):
@@ -62,9 +62,7 @@ class PageWindow(Gtk.Window):
 
         Returns a fully instantiated BaseFirstbootWindow object.
         """
-        print 1
         builder = get_builder(cls.__gtype_name__)
-        print 2
         new_object = builder.get_object(cls.__page_container__)
         new_object._finish_initializing(builder, main_window)
 
@@ -83,7 +81,6 @@ class PageWindow(Gtk.Window):
         self.fbe = FirstbootEntry.FirstbootEntry()
         self.builder = builder
         self.ui = builder.get_ui(self, True)
-        print dir(self.ui)
 
         self.page = builder.get_object(self.__gtype_name__)
         container = builder.get_object(self.__page_container__)
