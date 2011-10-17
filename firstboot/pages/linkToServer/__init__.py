@@ -64,11 +64,12 @@ class LinkToServerPage(PageWindow.PageWindow):
 
         show_conf_fields = not (self.ldap_is_configured & self.chef_is_configured)
         if not show_conf_fields:
+            self.ui.radioOmit.set_visible(False)
             self.ui.radioManual.set_visible(False)
             self.ui.radioAuto.set_visible(False)
             self.ui.lblUrl.set_visible(False)
             self.ui.txtUrl.set_visible(False)
-            #~ self.btnLinkToServer.set_sensitive(True)
+            self.main_window.btnNext.set_sensitive(False)
 
         self.ui.chkUnlinkLDAP.set_visible(self.ldap_is_configured)
         self.ui.chkUnlinkChef.set_visible(self.chef_is_configured)
@@ -108,12 +109,12 @@ server.')
     def on_chkUnlinkLDAP_toggle(self, button):
         if self.ldap_is_configured & self.chef_is_configured:
             active = button.get_active() | self.ui.chkUnlinkChef.get_active()
-            #~ self.btnLinkToServer.set_sensitive(active)
+            self.main_window.btnNext.set_sensitive(active)
 
     def on_chkUnlinkChef_toggle(self, button):
         if self.ldap_is_configured & self.chef_is_configured:
             active = button.get_active() | self.ui.chkUnlinkLDAP.get_active()
-            #~ self.btnLinkToServer.set_sensitive(active)
+            self.main_window.btnNext.set_sensitive(active)
 
     def on_radioOmit_toggled(self, button):
         self.ui.lblUrl.set_visible(False)
