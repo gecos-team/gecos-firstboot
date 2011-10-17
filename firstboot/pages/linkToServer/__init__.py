@@ -52,15 +52,6 @@ class LinkToServerPage(PageWindow.PageWindow):
     __gtype_name__ = "LinkToServerPage"
 
     def finish_initializing(self):
-        self.lblDescription = self.builder.get_object('lblDescription')
-        self.chkUnlinkLDAP = self.builder.get_object('chkUnlinkLDAP')
-        self.chkUnlinkChef = self.builder.get_object('chkUnlinkChef')
-        self.radioManual = self.builder.get_object('radioManual')
-        self.radioAuto = self.builder.get_object('radioAuto')
-        self.lblUrl = self.builder.get_object('lblUrl')
-        self.txtUrl = self.builder.get_object('txtUrl')
-        self.imgStatus = self.builder.get_object('imgStatus')
-        self.lblStatus = self.builder.get_object('lblStatus')
 
         self.show_status()
 
@@ -73,14 +64,14 @@ class LinkToServerPage(PageWindow.PageWindow):
 
         show_conf_fields = not (self.ldap_is_configured & self.chef_is_configured)
         if not show_conf_fields:
-            self.radioManual.set_visible(False)
-            self.radioAuto.set_visible(False)
-            self.lblUrl.set_visible(False)
-            self.txtUrl.set_visible(False)
+            self.ui.radioManual.set_visible(False)
+            self.ui.radioAuto.set_visible(False)
+            self.ui.lblUrl.set_visible(False)
+            self.ui.txtUrl.set_visible(False)
             #~ self.btnLinkToServer.set_sensitive(True)
 
-        self.chkUnlinkLDAP.set_visible(self.ldap_is_configured)
-        self.chkUnlinkChef.set_visible(self.chef_is_configured)
+        self.ui.chkUnlinkLDAP.set_visible(self.ldap_is_configured)
+        self.ui.chkUnlinkChef.set_visible(self.chef_is_configured)
 
         url_config = self.fbe.get_url()
         url = self.cmd_options.url
@@ -91,7 +82,7 @@ class LinkToServerPage(PageWindow.PageWindow):
         if url == None or len(url) == 0:
             url = ''
 
-        self.txtUrl.set_text(url)
+        self.ui.txtUrl.set_text(url)
 
     def translate(self):
         desc = _('When a workstation is linked to a GECOS server it can be \
@@ -107,31 +98,36 @@ a default configuration from the server.')
             desc_detail = _('This workstation is currently linked to a GECOS \
 server.')
 
-        self.lblDescription.set_text(desc + desc_detail)
-        self.chkUnlinkLDAP.set_label(_('Unlink from LDAP'))
-        self.chkUnlinkChef.set_label(_('Unlink from Chef'))
+        self.ui.lblDescription.set_text(desc + desc_detail)
+        self.ui.chkUnlinkLDAP.set_label(_('Unlink from LDAP'))
+        self.ui.chkUnlinkChef.set_label(_('Unlink from Chef'))
         self.ui.radioOmit.set_label(_('Omit'))
-        self.radioManual.set_label(_('Manual'))
-        self.radioAuto.set_label(_('Automatic'))
+        self.ui.radioManual.set_label(_('Manual'))
+        self.ui.radioAuto.set_label(_('Automatic'))
 
     def on_chkUnlinkLDAP_toggle(self, button):
         if self.ldap_is_configured & self.chef_is_configured:
-            active = button.get_active() | self.chkUnlinkChef.get_active()
+            active = button.get_active() | self.ui.chkUnlinkChef.get_active()
             #~ self.btnLinkToServer.set_sensitive(active)
 
     def on_chkUnlinkChef_toggle(self, button):
         if self.ldap_is_configured & self.chef_is_configured:
-            active = button.get_active() | self.chkUnlinkLDAP.get_active()
+            active = button.get_active() | self.ui.chkUnlinkLDAP.get_active()
             #~ self.btnLinkToServer.set_sensitive(active)
 
+    def on_radioOmit_toggled(self, button):
+        self.ui.lblUrl.set_visible(False)
+        self.ui.txtUrl.set_visible(False)
+        self.show_status()
+
     def on_radioManual_toggled(self, button):
-        self.lblUrl.set_visible(False)
-        self.txtUrl.set_visible(False)
+        self.ui.lblUrl.set_visible(False)
+        self.ui.txtUrl.set_visible(False)
         self.show_status()
 
     def on_radioAutomatic_toggled(self, button):
-        self.lblUrl.set_visible(True)
-        self.txtUrl.set_visible(True)
+        self.ui.lblUrl.set_visible(True)
+        self.ui.txtUrl.set_visible(True)
         self.show_status()
 
     def show_status(self, status=None, exception=None):
@@ -139,52 +135,56 @@ server.')
         icon_size = Gtk.IconSize.BUTTON
 
         if status == None:
-            self.imgStatus.set_visible(False)
-            self.lblStatus.set_visible(False)
+            self.ui.imgStatus.set_visible(False)
+            self.ui.lblStatus.set_visible(False)
 
         elif status == __STATUS_TEST_PASSED__:
-            self.imgStatus.set_from_stock(Gtk.STOCK_APPLY, icon_size)
-            self.imgStatus.set_visible(True)
-            self.lblStatus.set_label(_('The configuration file is valid.'))
-            self.lblStatus.set_visible(True)
+            self.ui.imgStatus.set_from_stock(Gtk.STOCK_APPLY, icon_size)
+            self.ui.imgStatus.set_visible(True)
+            self.ui.lblStatus.set_label(_('The configuration file is valid.'))
+            self.ui.lblStatus.set_visible(True)
 
         elif status == __STATUS_CONFIG_CHANGED__:
-            self.imgStatus.set_from_stock(Gtk.STOCK_APPLY, icon_size)
-            self.imgStatus.set_visible(True)
-            self.lblStatus.set_label(_('The configuration was updated successfully.'))
-            self.lblStatus.set_visible(True)
+            self.ui.imgStatus.set_from_stock(Gtk.STOCK_APPLY, icon_size)
+            self.ui.imgStatus.set_visible(True)
+            self.ui.lblStatus.set_label(_('The configuration was updated successfully.'))
+            self.ui.lblStatus.set_visible(True)
 
         elif status == __STATUS_ERROR__:
-            self.imgStatus.set_from_stock(Gtk.STOCK_DIALOG_ERROR, icon_size)
-            self.imgStatus.set_visible(True)
-            self.lblStatus.set_label(str(exception))
-            self.lblStatus.set_visible(True)
+            self.ui.imgStatus.set_from_stock(Gtk.STOCK_DIALOG_ERROR, icon_size)
+            self.ui.imgStatus.set_visible(True)
+            self.ui.lblStatus.set_label(str(exception))
+            self.ui.lblStatus.set_visible(True)
 
         elif status == __STATUS_CONNECTING__:
-            self.imgStatus.set_from_stock(Gtk.STOCK_CONNECT, icon_size)
-            self.imgStatus.set_visible(True)
-            self.lblStatus.set_label(_('Trying to connect...'))
-            self.lblStatus.set_visible(True)
+            self.ui.imgStatus.set_from_stock(Gtk.STOCK_CONNECT, icon_size)
+            self.ui.imgStatus.set_visible(True)
+            self.ui.lblStatus.set_label(_('Trying to connect...'))
+            self.ui.lblStatus.set_visible(True)
 
     def previous_page(self, load_page_callback):
         load_page_callback(firstboot.pages.pcLabel)
 
     def next_page(self, load_page_callback):
 
+        if self.ui.radioOmit.get_active():
+            load_page_callback(firstboot.pages.localUsers)
+            return
+
         self.show_status()
 
         try:
             server_conf = None
-            if self.radioAuto.get_active():
-                url = self.txtUrl.get_text()
+            if self.ui.radioAuto.get_active():
+                url = self.ui.txtUrl.get_text()
                 server_conf = ServerConf.get_server_conf(url)
 
             load_page_callback(LinkToServerConfEditorPage, {
                 'server_conf': server_conf,
                 'ldap_is_configured': self.ldap_is_configured,
-                'unlink_from_ldap': self.chkUnlinkLDAP.get_active(),
+                'unlink_from_ldap': self.ui.chkUnlinkLDAP.get_active(),
                 'chef_is_configured': self.chef_is_configured,
-                'unlink_from_chef': self.chkUnlinkChef.get_active()
+                'unlink_from_chef': self.ui.chkUnlinkChef.get_active()
             })
 
             #~ self.emit(
