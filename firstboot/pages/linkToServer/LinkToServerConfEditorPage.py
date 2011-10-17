@@ -78,6 +78,9 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
             self.ui.chkChef.set_active(False)
             self.ui.chkChef.set_sensitive(False)
 
+        if params['ldap_is_configured'] and params['chef_is_configured']:
+            self.ui.lblDescription.set_visible(False)
+
         if self.unlink_from_ldap:
             self.ui.chkLDAP.get_child().set_markup(self._bold(_('This \
 workstation is going to be unlinked from the LDAP server.')))

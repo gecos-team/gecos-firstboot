@@ -68,16 +68,11 @@ class LinkToServerResultsPage(PageWindow.PageWindow):
                 self.ui.boxMessageContainer.pack_start(box, False, False, 0)
 
         if self.result == True:
-            self.ui.lblDescription.set_text(_('This workstation has been linked \
-to a GECOS server.'))
-            #~ self.btnBack.set_visible(False)
-            #~ self.btnAccept.set_label(_('Finalize'))
+            self.ui.lblDescription.set_text(_('The configuration was \
+updated successfully.'))
 
         else:
             self.ui.lblDescription.set_text(_('There are some errors you may fix.'))
-            #~ self.btnBack.set_visible(True)
-            #~ self.btnBack.set_label(_('Back'))
-            #~ self.btnAccept.set_label(_('Finalize'))
 
     def new_message(self, message, icon):
         box = Gtk.HBox()
