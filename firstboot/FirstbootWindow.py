@@ -66,7 +66,8 @@ class FirstbootWindow(Window):
         self.translate()
         self.build_index()
 
-        self.set_current_page(pages.get_first_page())
+        first_page = self.pages[pages.pages[0]]
+        self.set_current_page(first_page['module'])
         self.on_link_status(None, False)
         self.show_applications()
 
@@ -104,8 +105,8 @@ class FirstbootWindow(Window):
         return retval
 
 
-    def on_btnIndex_Clicked(self, button, page_name, module):
-        self.set_current_page(page_name)
+    def on_btnIndex_Clicked(self, button, page_name, module=None):
+        self.set_current_page(self.pages[page_name]['module'])
 
     def on_btnPrev_Clicked(self, button):
         self.current_page.previous_page(self.set_current_page)
@@ -125,7 +126,7 @@ class FirstbootWindow(Window):
         for page_name in pages.pages:
             try:
                 module = __import__('firstboot.pages.%s' % page_name, fromlist=['firstboot.pages'])
-                button = self.new_index_button(module.__TITLE__, page_name, module)
+                button = self.new_index_button(module.__TITLE__, page_name)
                 self.pages[page_name] = {
                     'id': page_name,
                     'button': button,
@@ -138,12 +139,13 @@ class FirstbootWindow(Window):
             except ImportError, e:
                 print e
 
-    def new_index_button(self, page_title, page_name, module):
+    def new_index_button(self, page_title, page_name):
 
         button = Gtk.Button()
         button.set_relief(Gtk.ReliefStyle.NONE)
         button.set_property('focus-on-click', False)
         button.set_property('xalign', 0)
+        button.set_data('page_name', page_name)
 
         label = Gtk.Label()
         label.set_text(page_title)
@@ -151,7 +153,7 @@ class FirstbootWindow(Window):
         button.add(label)
 
         self.ui.boxIndex.pack_start(button, False, True, 0)
-        button.connect('clicked', self.on_btnIndex_Clicked, page_name, module)
+        button.connect('clicked', self.on_btnIndex_Clicked, page_name)
         button.show()
 
         return button
@@ -185,10 +187,12 @@ class FirstbootWindow(Window):
             pass
 
 
-        for button_name in self.buttons:
-            self.button_set_inactive(self.buttons[button_name])
-
-        #self.button_set_active(button)
+        page_name = module.__name__.split('.')[-1]
+        if page_name in self.buttons:
+            for button_name in self.buttons:
+                self.button_set_inactive(self.buttons[button_name])
+            button = self.buttons[page_name]
+            self.button_set_active(button)
 
         for child in self.ui.swContent.get_children():
             self.ui.swContent.remove(child)

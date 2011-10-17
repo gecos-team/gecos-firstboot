@@ -24,6 +24,3 @@ __license__ = "GPL-2"
 import network, pcLabel, linkToServer, localUsers, installSoftware
 
 pages = ['network', 'pcLabel', 'linkToServer', 'localUsers', 'installSoftware']
-
-def get_first_page():
-    return network
