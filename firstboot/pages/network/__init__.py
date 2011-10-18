@@ -51,6 +51,7 @@ class NetworkPage(PageWindow.PageWindow):
     def finish_initializing(self):
         self.timer_ret = True
         self.init_treeviewInterfaces()
+        self.main_window.btnPrev.set_sensitive(False)
 
     def translate(self):
         self.ui.btnNetworkDialog.set_label(_('Configure the network'))

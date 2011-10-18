@@ -62,6 +62,8 @@ class FirstbootWindow(Window):
         self.pages = {}
         self.buttons = {}
         self.current_page = None
+        self.is_last_page = False
+        self.fully_configured = False
 
         self.translate()
         self.build_index()
@@ -83,8 +85,12 @@ class FirstbootWindow(Window):
         self.destroy()
 
     def on_delete_event(self, widget, data=None):
+        return self.confirm_exit()
 
-        return False
+    def confirm_exit(self):
+
+        if self.fully_configured == True:
+            return False
 
         dialog = Gtk.MessageDialog(self,
             Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
@@ -96,14 +102,11 @@ class FirstbootWindow(Window):
         retval = True
 
         if result == Gtk.ResponseType.YES:
-
             if os.path.exists(__DESKTOP_FILE__):
                 os.rename(__DESKTOP_FILE__, '/tmp/firstboot.desktop');
-
             retval = False
 
         return retval
-
 
     def on_btnIndex_Clicked(self, button, page_name, module=None):
         self.set_current_page(self.pages[page_name]['module'])
@@ -112,6 +115,10 @@ class FirstbootWindow(Window):
         self.current_page.previous_page(self.set_current_page)
 
     def on_btnNext_Clicked(self, button):
+        if self.is_last_page == True:
+            if not self.confirm_exit():
+                self.destroy()
+            return
         self.current_page.next_page(self.set_current_page)
 
     def build_index(self):
@@ -178,6 +185,7 @@ class FirstbootWindow(Window):
 
         self.ui.btnPrev.set_sensitive(True)
         self.ui.btnNext.set_sensitive(True)
+        self.translate()
 
         try:
             self.current_page.unload_page(params)
@@ -208,6 +216,8 @@ class FirstbootWindow(Window):
 
 
         page_name = module.__name__.split('.')[-1]
+        self.is_last_page = (page_name == pages.pages[-1])
+
         if page_name in self.buttons:
             for button_name in self.buttons:
                 self.button_set_inactive(self.buttons[button_name])
@@ -225,7 +235,7 @@ class FirstbootWindow(Window):
     def on_page_status_changed(self, sender, page_name, configured):
         if page_name in self.pages:
             self.pages[page_name]['configured'] = configured
-        self.check_fully_configured()
+        self.fully_configured = self.check_fully_configured()
 
     def check_fully_configured(self):
         configured = True
@@ -233,7 +243,6 @@ class FirstbootWindow(Window):
             if self.pages[page]['configured'] == False:
                 configured = False
                 break
-
         return configured
 
     def button_set_active(self, button):
