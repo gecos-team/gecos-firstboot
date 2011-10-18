@@ -99,7 +99,6 @@ detected interfaces.'))
         store.clear()
 
         ifs = localifs()
-        #print ifs
 
         for _if in ifs:
             store.append([_if[0], _if[1]])

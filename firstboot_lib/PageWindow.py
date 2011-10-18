@@ -109,7 +109,6 @@ class PageWindow(Gtk.Window):
     def get_widget(self):
         return self.page
 
-    # ~= set_params() ???
     def load_page(self, params=None):
         pass
 

@@ -98,8 +98,6 @@ uniquely identify this workstation.')
         load_page_callback(LinkToServerConfEditorPage, {
             'server_conf': self.server_conf
         })
-        #~ self.emit('subpage-changed', 'linkToServer',
-                  #~ 'LinkToServerConfEditorPage', {'server_conf': self.server_conf})
 
     def next_page(self, load_page_callback):
 
@@ -128,11 +126,6 @@ uniquely identify this workstation.')
             'result': result,
             'messages': messages
         })
-
-        #~ self.emit('subpage-changed', 'linkToServer',
-                  #~ 'LinkToServerResultsPage',
-                  #~ {'result': result, 'server_conf': self.server_conf,
-                   #~ 'messages': messages})
 
     def show_error(self, message=None):
         if message is None:

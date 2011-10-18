@@ -149,7 +149,6 @@ workstation is going to be unlinked from the Chef server.')))
 
             try:
                 used_hostnames = ServerConf.get_chef_hostnames(self.server_conf.get_chef_conf())
-                #print used_hostnames
 
                 load_page_callback(LinkToServerHostnamePage, {
                     'server_conf': self.server_conf,
@@ -160,14 +159,6 @@ workstation is going to be unlinked from the Chef server.')))
                     'used_hostnames': used_hostnames
                 })
 
-                #~ self.emit('subpage-changed', 'linkToServer', 'LinkToServerHostnamePage',
-                    #~ {'server_conf': self.server_conf,
-                    #~ 'link_ldap': self.chkLDAP.get_active(),
-                    #~ 'unlink_ldap': self.unlink_from_ldap,
-                    #~ 'link_chef': self.chkChef.get_active(),
-                    #~ 'unlink_chef': self.unlink_from_chef,
-                    #~ 'used_hostnames': used_hostnames})
-
             except ServerConf.ServerConfException as e:
                 messages = [{'type': 'error', 'message': str(e)}]
 
@@ -176,11 +167,6 @@ workstation is going to be unlinked from the Chef server.')))
                     'server_conf': self.server_conf,
                     'messages': messages
                 })
-
-                #~ self.emit('subpage-changed', 'linkToServer',
-                          #~ 'LinkToServerResultsPage',
-                          #~ {'result': False, 'server_conf': self.server_conf,
-                           #~ 'messages': messages})
 
         else:
             result, messages = ServerConf.setup_server(
@@ -196,11 +182,6 @@ workstation is going to be unlinked from the Chef server.')))
                 'server_conf': self.server_conf,
                 'messages': messages
             })
-
-            #~ self.emit('subpage-changed', 'linkToServer',
-                      #~ 'LinkToServerResultsPage',
-                      #~ {'result': result, 'server_conf': self.server_conf,
-                       #~ 'messages': messages})
 
     def on_serverConf_changed(self, entry):
         if not self.update_server_conf:

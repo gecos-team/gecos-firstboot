@@ -58,10 +58,6 @@ class LinkToServerPage(PageWindow.PageWindow):
         self.ldap_is_configured = ServerConf.ldap_is_configured()
         self.chef_is_configured = ServerConf.chef_is_configured()
 
-        #~ if self.ldap_is_configured and self.chef_is_configured:
-            #~ self.btnLinkToServer.set_sensitive(False)
-
-
         show_conf_fields = not (self.ldap_is_configured & self.chef_is_configured)
         if not show_conf_fields:
             self.ui.radioOmit.set_visible(False)
@@ -188,18 +184,6 @@ server.')
                 'chef_is_configured': self.chef_is_configured,
                 'unlink_from_chef': self.ui.chkUnlinkChef.get_active()
             })
-
-            #~ self.emit(
-                #~ 'subpage-changed',
-                #~ LinkToServerConfEditorPage,
-                #~ {
-                    #~ 'server_conf': server_conf,
-                    #~ 'ldap_is_configured': self.ldap_is_configured,
-                    #~ 'unlink_from_ldap': self.chkUnlinkLDAP.get_active(),
-                    #~ 'chef_is_configured': self.chef_is_configured,
-                    #~ 'unlink_from_chef': self.chkUnlinkChef.get_active()
-                #~ }
-            #~ )
 
         except ServerConf.ServerConfException as e:
             self.show_status(__STATUS_ERROR__, e)

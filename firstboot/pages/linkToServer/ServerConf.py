@@ -80,9 +80,6 @@ def get_server_conf(url):
     except ValueError as e:
         raise ServerConfException(_('Configuration file is not valid.'))
 
-    #~ except Exception as e:
-        #~ raise Exception(e)
-
 def get_chef_pem(url):
 
     try:
@@ -101,9 +98,6 @@ def get_chef_pem(url):
 
     except urllib2.URLError as e:
         raise ServerConfException(e)
-
-    #~ except Exception as e:
-        #~ raise Exception(e)
 
 def get_chef_hostnames(chef_conf):
 
@@ -194,13 +188,6 @@ def chef_is_configured():
 
 def setup_server(server_conf, link_ldap=False, unlink_ldap=False,
                 link_chef=False, unlink_chef=False):
-
-    #~ print '=============='
-    #~ print 'link_ldap: '+str(link_ldap)
-    #~ print 'unlink_ldap: '+str(unlink_ldap)
-    #~ print 'link_chef: '+str(link_chef)
-    #~ print 'unlink_chef: '+str(unlink_chef)
-    #~ print '==============\n\n'
 
     result = True
     messages = []
