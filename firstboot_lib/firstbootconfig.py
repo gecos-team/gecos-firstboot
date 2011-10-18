@@ -36,7 +36,7 @@ __all__ = [
 # files). By default, this is ../data, relative your trunk layout
 __firstboot_data_directory__ = '../data/'
 __license__ = ''
-__version__ = '0.2.4'
+__version__ = '0.3'
 
 import os
 import sys
