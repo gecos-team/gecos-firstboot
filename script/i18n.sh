@@ -28,3 +28,5 @@ else
     mv $pofilemerged $pofile
 
 fi
+
+sed -i s@^../@@g $potfilesin
