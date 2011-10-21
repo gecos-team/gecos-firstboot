@@ -95,19 +95,23 @@ detected interfaces.'))
 
         n_ifaces = 0
 
-        store = self.ui.treeviewInterfaces.get_model()
-        store.clear()
+        try:
+            store = self.ui.treeviewInterfaces.get_model()
+            store.clear()
 
-        ifs = localifs()
+            ifs = localifs()
 
-        for _if in ifs:
-            store.append([_if[0], _if[1]])
-            if _if[0] != 'lo' and len(_if[1]) > 0:
-                n_ifaces += 1
+            for _if in ifs:
+                store.append([_if[0], _if[1]])
+                if _if[0] != 'lo' and len(_if[1]) > 0:
+                    n_ifaces += 1
 
-        self.emit('link-status', n_ifaces > 0)
-        self.emit('status-changed', 'network', bool(n_ifaces > 0))
-        self.ui.treeviewInterfaces.set_model(store)
+            self.emit('link-status', n_ifaces > 0)
+            self.emit('status-changed', 'network', bool(n_ifaces > 0))
+            self.ui.treeviewInterfaces.set_model(store)
+
+        except AttributeError as e:
+            pass
 
         return self.timer_ret
 
