@@ -115,7 +115,7 @@ def get_chef_hostnames(chef_conf):
 
     names = []
     if exit_code[1] != 0:
-        raise ServerConf.ServerConfException(_('Couldn\t retrieve the host names list') + ': ' + output)
+        raise ServerConfException(_('Couldn\t retrieve the host names list') + ': ' + output)
 
     else:
         try:
