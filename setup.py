@@ -112,7 +112,7 @@ class Clean(Command):
 ##################################################################################
 
 DistUtilsExtra.auto.setup(
-    name='gecos-firstboot',
+    name='firstboot',
     version='0.3',
     license='GPL-2',
     author='Antonio Hernández',
