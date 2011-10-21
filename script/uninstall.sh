@@ -8,7 +8,7 @@ fi
 
 updatedb
 
-for f in `locate firstboot | grep -v home`; do
+for f in `locate firstboot | grep -v home | grep -v common`; do
 
     if [ -f $f ]; then
         rm -f $f
