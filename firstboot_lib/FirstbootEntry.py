@@ -51,10 +51,3 @@ class FirstbootEntry(IniFile):
     def set_url(self, value):
         self.set('url', value, group='LinkToServer')
         self.write()
-
-#===============================================================================
-#    def new(self, filename):
-#        self.content = dict()
-#        self.addGroup(self.default_group)
-#        self.filename = os.path.join(utils.get_actions_path(), filename)
-#===============================================================================

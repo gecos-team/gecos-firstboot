@@ -50,46 +50,47 @@ class FirstbootWindow(Window):
         super(FirstbootWindow, self).finish_initializing(builder)
         self.connect("delete_event", self.on_delete_event)
 
+        self.btnPrev = self.ui.btnPrev
+        self.btnNext = self.ui.btnNext
+
         self.cmd_options = options
         self.fbe = FirstbootEntry.FirstbootEntry()
 
         iconfile = firstbootconfig.get_data_file('media', '%s' % ('wizard1.png',))
         self.set_icon_from_file(iconfile)
 
-
-        self.lblDescription = builder.get_object('lblDescription')
-        self.boxContent = builder.get_object('boxContent')
-        self.swContent = builder.get_object('swContent')
-        self.boxIndex = builder.get_object('boxIndex')
-        self.boxApplications = builder.get_object('boxApplications')
-        #self.btnClose = builder.get_object('btnClose')
-        self.btnPrev = builder.get_object('btnPrev')
-        self.btnNext = builder.get_object('btnNext')
-
         self.pages = {}
         self.buttons = {}
         self.current_page = None
+        self.is_last_page = False
+        self.fully_configured = False
 
         self.translate()
         self.build_index()
 
-        self.set_current_page(pages.pages[0])
+        first_page = self.pages[pages.pages[0]]
+        self.set_current_page(first_page['module'])
         self.on_link_status(None, False)
         self.show_applications()
 
-        self.set_focus(self.btnNext)
+        self.set_focus(self.ui.btnNext)
 
     def translate(self):
         self.set_title(_('First Boot Assistant'))
-        self.lblDescription.set_text('')
-        #self.btnClose.set_label(_('Close'))
-        self.btnPrev.set_label(_('Previous'))
-        self.btnNext.set_label(_('Next'))
+        self.ui.lblDescription.set_text('')
+        self.ui.btnPrev.set_label(_('Previous'))
+        self.ui.btnNext.set_label(_('Next'))
 
     def on_btnClose_Clicked(self, button):
         self.destroy()
 
     def on_delete_event(self, widget, data=None):
+        return self.confirm_exit()
+
+    def confirm_exit(self):
+
+        if self.fully_configured == True:
+            return False
 
         dialog = Gtk.MessageDialog(self,
             Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
@@ -101,178 +102,163 @@ class FirstbootWindow(Window):
         retval = True
 
         if result == Gtk.ResponseType.YES:
-
             if os.path.exists(__DESKTOP_FILE__):
                 os.rename(__DESKTOP_FILE__, '/tmp/firstboot.desktop');
-
             retval = False
 
         return retval
 
-
-    def on_btnIndex_Clicked(self, button, page_name, module):
-        self.set_current_page(page_name)
+    def on_btnIndex_Clicked(self, button, page_name, module=None):
+        self.set_current_page(self.pages[page_name]['module'])
 
     def on_btnPrev_Clicked(self, button):
-
-        index = pages.pages.index(self.current_page['id'])
-
-        if index <= 0:
-            index = 0
-            return
-
-        enabled = False
-        while not enabled and index >= 0:
-            try:
-                index -= 1
-                prev_page_name = pages.pages[index]
-                enabled = self.pages[prev_page_name]['enabled']
-
-            except IndexError:
-                pass
-
-        if enabled:
-            self.set_current_page(prev_page_name)
+        self.current_page.previous_page(self.set_current_page)
 
     def on_btnNext_Clicked(self, button):
-
-        index = pages.pages.index(self.current_page['id'])
-
-        if index >= len(pages.pages) - 1:
-            index = len(pages.pages) - 1
+        if self.is_last_page == True:
+            if not self.confirm_exit():
+                self.destroy()
             return
-
-        enabled = False
-        while not enabled and index < len(pages.pages):
-            try:
-                index += 1
-                next_page_name = pages.pages[index]
-                enabled = self.pages[next_page_name]['enabled']
-
-            except IndexError:
-                pass
-
-        if enabled:
-            self.set_current_page(next_page_name)
+        self.current_page.next_page(self.set_current_page)
 
     def build_index(self):
 
         self.pages = {}
         self.buttons = {}
 
-        children = self.boxIndex.get_children()
+        children = self.ui.boxIndex.get_children()
         for child in children:
-            self.boxIndex.remove(child)
+            self.ui.boxIndex.remove(child)
 
         for page_name in pages.pages:
             try:
                 module = __import__('firstboot.pages.%s' % page_name, fromlist=['firstboot.pages'])
-
-                button = Gtk.Button()
-                button.set_relief(Gtk.ReliefStyle.NONE)
-                button.set_property('focus-on-click', False)
-                button.set_property('xalign', 0)
-
-                label = Gtk.Label()
-                label.set_text(module.__TITLE__)
-                label.show()
-                button.add(label)
-
-                self.boxIndex.pack_start(button, False, True, 0)
-                button.connect('clicked', self.on_btnIndex_Clicked, page_name, module)
-                button.show()
-
-                self.pages[page_name] = {'id': page_name, 'button': button, 'module': module, 'enabled': True}
+                button = self.new_index_button(module.__TITLE__, page_name)
+                self.pages[page_name] = {
+                    'id': page_name,
+                    'button': button,
+                    'module': module,
+                    'enabled': True,
+                    'instance': None,
+                    'configured': not module.__REQUIRED__
+                }
                 self.buttons[page_name] = button
 
             except ImportError, e:
                 print e
 
-    def set_current_page(self, page_name):
+    def new_index_button(self, page_title, page_name):
+
+        button = Gtk.Button()
+        button.set_relief(Gtk.ReliefStyle.NONE)
+        button.set_property('focus-on-click', False)
+        button.set_property('xalign', 0)
+
+        image_file = firstbootconfig.get_data_file('media', '%s' % ('arrow_right_32.png',))
+        pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(image_file, 8, 8)
+        image = Gtk.Image.new_from_pixbuf(pixbuf)
+        image.hide()
+
+        #~ image = Gtk.Arrow()
+        #~ image.set(Gtk.ArrowType.RIGHT, Gtk.ShadowType.NONE)
+
+        label = Gtk.Label()
+        label.set_text(page_title)
+        label.show()
+
+        hbox = Gtk.HBox()
+        hbox.set_spacing(3)
+        hbox.pack_start(image, False, True, 0)
+        hbox.pack_start(label, False, True, 0)
+        hbox.show()
+
+        button.add(hbox)
+
+        self.ui.boxIndex.pack_start(button, False, True, 0)
+        button.connect('clicked', self.on_btnIndex_Clicked, page_name)
+        button.show()
+
+        return button
+
+
+    def set_current_page(self, module, params=None):
+
+        self.ui.btnPrev.set_sensitive(True)
+        self.ui.btnNext.set_sensitive(True)
+        self.translate()
 
         try:
-            self.current_page['page'].unload_page()
+            self.current_page.unload_page(params)
         except Exception as e:
             pass
 
-        self.current_page = self.pages[page_name]
-        button = self.pages[page_name]['button']
-        module = self.pages[page_name]['module']
-
-        self.current_page['page'] = module.get_page(self.cmd_options)
+        self.current_page = module.get_page(self)
 
         try:
-            self.current_page['page'].load_page(self)
+            self.current_page.connect('link-status', self.on_link_status)
         except Exception as e:
             pass
 
         try:
-            self.current_page['page'].connect('link-status', self.on_link_status)
+            self.current_page.connect('page-changed', self.on_page_changed)
         except Exception as e:
             pass
 
         try:
-            self.current_page['page'].connect('subpage-changed', self.on_subpage_changed)
+            self.current_page.connect('status-changed', self.on_page_status_changed)
         except Exception as e:
             pass
 
         try:
-            self.current_page['page'].connect('page-changed', self.on_page_changed)
+            self.current_page.load_page(params)
         except Exception as e:
             pass
 
 
-        for button_name in self.buttons:
-            self.button_set_inactive(self.buttons[button_name])
+        page_name = module.__name__.split('.')[-1]
+        self.is_last_page = (page_name == pages.pages[-1])
 
-        self.button_set_active(button)
+        if page_name in self.buttons:
+            for button_name in self.buttons:
+                self.button_set_inactive(self.buttons[button_name])
+            button = self.buttons[page_name]
+            self.button_set_active(button)
 
-        for child in self.swContent.get_children():
-            self.swContent.remove(child)
+        for child in self.ui.swContent.get_children():
+            self.ui.swContent.remove(child)
 
-        self.swContent.add_with_viewport(self.current_page['page'].get_widget())
+        self.ui.swContent.add_with_viewport(self.current_page.get_widget())
 
-    def on_page_changed(self, sender, page_name, params):
-        self.set_current_page(page_name)
+    def on_page_changed(self, sender, module, params):
+        self.set_current_page(module, params)
 
-    def on_subpage_changed(self, sender, module, page_name, params):
-        try:
-            module = __import__(
-                'firstboot.pages.%s.%s' % (module, page_name),
-                fromlist=['firstboot.pages']
-            )
+    def on_page_status_changed(self, sender, page_name, configured):
+        if page_name in self.pages:
+            self.pages[page_name]['configured'] = configured
+        self.fully_configured = self.check_fully_configured()
 
-            page = module.get_page(self.cmd_options)
-
-            try:
-                page.connect('subpage-changed', self.on_subpage_changed)
-            except Exception as e:
-                pass
-
-            try:
-                page.connect('page-changed', self.on_page_changed)
-            except Exception as e:
-                pass
-
-            try:
-                page.set_params(params)
-            except Exception as e:
-                print e
-
-            for child in self.swContent.get_children():
-                self.swContent.remove(child)
-
-            self.swContent.add_with_viewport(page.get_widget())
-
-        except ImportError as e:
-            print e
+    def check_fully_configured(self):
+        configured = True
+        for page in self.pages:
+            if self.pages[page]['configured'] == False:
+                configured = False
+                break
+        return configured
 
     def button_set_active(self, button):
-        label = button.get_children()[0]
+        hbox = button.get_children()[0]
+        image = hbox.get_children()[0]
+        image.show()
+        label = hbox.get_children()[1]
+        label.set_padding(0, 0)
         label.set_markup('<b>%s</b>' % (label.get_text(),))
 
     def button_set_inactive(self, button):
-        label = button.get_children()[0]
+        hbox = button.get_children()[0]
+        image = hbox.get_children()[0]
+        image.hide()
+        label = hbox.get_children()[1]
+        label.set_padding(10, 0)
         label.set_markup(label.get_text())
 
     def on_link_status(self, sender, status):
@@ -321,7 +307,7 @@ class FirstbootWindow(Window):
                 box.pack_start(lbl, False, True, 0)
                 btn.add(box)
 
-                self.boxApplications.add(btn)
+                self.ui.boxApplications.add(btn)
                 box.show()
                 btn.show()
                 img.show()

@@ -21,8 +21,9 @@ __copyright__ = "Copyright (C) 2011, Junta de Andalucía <devmaster@guadalinex.o
 __license__ = "GPL-2"
 
 
-import ServerConf
-from firstboot_lib import PageWindow, FirstbootEntry
+import ServerConf, LinkToServerHostnamePage, LinkToServerResultsPage
+import firstboot.pages.linkToServer
+from firstboot_lib import PageWindow
 
 import gettext
 from gettext import gettext as _
@@ -33,76 +34,33 @@ __REQUIRED__ = False
 __TITLE__ = _('Link workstation to a server')
 
 
-def get_page(options=None):
+def get_page(main_window):
 
-    page = LinkToServerConfEditorPage(options)
+    page = LinkToServerConfEditorPage(main_window)
     return page
 
 class LinkToServerConfEditorPage(PageWindow.PageWindow):
     __gtype_name__ = "LinkToServerConfEditorPage"
 
-    # To construct a new instance of this method, the following notable
-    # methods are called in this order:
-    # __new__(cls)
-    # __init__(self)
-    # finish_initializing(self, builder)
-    # __init__(self)
-    #
-    # For this reason, it's recommended you leave __init__ empty and put
-    # your initialization code in finish_initializing
-
-    def finish_initializing(self, builder, options=None):
-        """Called while initializing this instance in __new__
-
-        finish_initializing should be called after parsing the UI definition
-        and creating a FirstbootWindow object with it in order to finish
-        initializing the start of the new FirstbootWindow instance.
-        """
-
-        # Get a reference to the builder and set up the signals.
-        self.builder = builder
-        self.ui = builder.get_ui(self, True)
-
-        self.lblDescription = self.builder.get_object('lblDescription')
-        self.lblVersionValue = self.builder.get_object('lblVersionValue')
-        self.lblOrganizationValue = self.builder.get_object('lblOrganizationValue')
-        self.txtUrlLDAP = self.builder.get_object('txtUrlLDAP')
-        self.txtBaseDN = self.builder.get_object('txtBaseDN')
-        self.txtBindDN = self.builder.get_object('txtBindDN')
-        self.txtPassword = self.builder.get_object('txtPassword')
-        self.txtUrlChef = self.builder.get_object('txtUrlChef')
-        self.txtUrlChefCert = self.builder.get_object('txtUrlChefCert')
-        self.btnCancel = self.builder.get_object('btnCancel')
-        self.btnApply = self.builder.get_object('btnApply')
-        self.chkLDAP = self.builder.get_object('chkLDAP')
-        self.chkChef = self.builder.get_object('chkChef')
-
-        self.translate()
-
-        container = builder.get_object(self.__page_container__)
-        page = builder.get_object(self.__gtype_name__)
-        container.remove(page)
-        self.page = page
-
-        self.cmd_options = options
-        self.fbe = FirstbootEntry.FirstbootEntry()
+    def finish_initializing(self):
 
         self.update_server_conf = False
         self.unlink_from_ldap = False
         self.unlink_from_chef = False
 
-    def set_params(self, params):
+    def load_page(self, params=None):
+
         if 'server_conf' in params:
             self.server_conf = params['server_conf']
             if not self.server_conf is None:
-                self.lblVersionValue.set_label(self.server_conf.get_version())
-                self.lblOrganizationValue.set_label(self.server_conf.get_organization())
-                self.txtUrlLDAP.set_text(self.server_conf.get_ldap_conf().get_url())
-                self.txtBaseDN.set_text(self.server_conf.get_ldap_conf().get_basedn())
-                self.txtBindDN.set_text(self.server_conf.get_ldap_conf().get_binddn())
-                self.txtPassword.set_text(self.server_conf.get_ldap_conf().get_password())
-                self.txtUrlChef.set_text(self.server_conf.get_chef_conf().get_url())
-                self.txtUrlChefCert.set_text(self.server_conf.get_chef_conf().get_pem_url())
+                self.ui.lblVersionValue.set_label(self.server_conf.get_version())
+                self.ui.lblOrganizationValue.set_label(self.server_conf.get_organization())
+                self.ui.txtUrlLDAP.set_text(self.server_conf.get_ldap_conf().get_url())
+                self.ui.txtBaseDN.set_text(self.server_conf.get_ldap_conf().get_basedn())
+                self.ui.txtBindDN.set_text(self.server_conf.get_ldap_conf().get_binddn())
+                self.ui.txtPassword.set_text(self.server_conf.get_ldap_conf().get_password())
+                self.ui.txtUrlChef.set_text(self.server_conf.get_chef_conf().get_url())
+                self.ui.txtUrlChefCert.set_text(self.server_conf.get_chef_conf().get_pem_url())
 
         if self.server_conf is None:
             self.server_conf = ServerConf.ServerConf()
@@ -113,19 +71,22 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
         self.unlink_from_chef = params['unlink_from_chef']
 
         if params['ldap_is_configured']:
-            self.chkLDAP.set_active(False)
-            self.chkLDAP.set_sensitive(False)
+            self.ui.chkLDAP.set_active(False)
+            self.ui.chkLDAP.set_sensitive(False)
 
         if params['chef_is_configured']:
-            self.chkChef.set_active(False)
-            self.chkChef.set_sensitive(False)
+            self.ui.chkChef.set_active(False)
+            self.ui.chkChef.set_sensitive(False)
+
+        if params['ldap_is_configured'] and params['chef_is_configured']:
+            self.ui.lblDescription.set_visible(False)
 
         if self.unlink_from_ldap:
-            self.chkLDAP.get_child().set_markup(self._bold(_('This \
+            self.ui.chkLDAP.get_child().set_markup(self._bold(_('This \
 workstation is going to be unlinked from the LDAP server.')))
 
         if self.unlink_from_chef:
-            self.chkChef.get_child().set_markup(self._bold(_('This \
+            self.ui.chkChef.get_child().set_markup(self._bold(_('This \
 workstation is going to be unlinked from the Chef server.')))
 
     def _bold(self, str):
@@ -134,90 +95,100 @@ workstation is going to be unlinked from the Chef server.')))
     def translate(self):
         desc = _('Remember you can disable the sections you don\'t want to configure.')
 
-        self.builder.get_object('lblDescription').set_text(desc)
+        self.ui.lblDescription.set_text(desc)
 
-        self.builder.get_object('lblVersion').set_label(_('Version'))
-        self.builder.get_object('lblOrganization').set_label(_('Organization'))
-        self.builder.get_object('lblNotes').set_label(_('Notes'))
-        self.builder.get_object('lblUrlLDAP').set_label('URL')
-        self.builder.get_object('lblBaseDN').set_label('Base DN')
-        self.builder.get_object('lblBindDN').set_label('Bind DN')
-        self.builder.get_object('lblPassword').set_label(_('Password'))
-        self.builder.get_object('lblUrlChef').set_label('URL')
-        self.builder.get_object('lblUrlChefCert').set_label(_('Certificate URL'))
-        self.builder.get_object('btnCancel').set_label(_('Cancel'))
-        self.builder.get_object('btnApply').set_label(_('Apply'))
+        self.ui.lblVersion.set_label(_('Version'))
+        self.ui.lblOrganization.set_label(_('Organization'))
+        self.ui.lblNotes.set_label(_('Notes'))
+        self.ui.lblUrlLDAP.set_label('URL')
+        self.ui.lblBaseDN.set_label('Base DN')
+        self.ui.lblBindDN.set_label('Bind DN')
+        self.ui.lblPassword.set_label(_('Password'))
+        self.ui.lblUrlChef.set_label('URL')
+        self.ui.lblUrlChefCert.set_label(_('Certificate URL'))
 
-        self.chkLDAP.get_child().set_markup(self._bold(_('Configure LDAP')))
-        self.chkChef.get_child().set_markup(self._bold(_('Configure Chef')))
-
-    def get_widget(self):
-        return self.page
+        self.ui.chkLDAP.get_child().set_markup(self._bold(_('Configure LDAP')))
+        self.ui.chkChef.get_child().set_markup(self._bold(_('Configure Chef')))
 
     def on_chkLDAP_toggle(self, button):
-        active = self.chkLDAP.get_active()
+        active = self.ui.chkLDAP.get_active()
 
-        self.txtUrlLDAP.set_sensitive(active)
-        self.txtBaseDN.set_sensitive(active)
-        self.txtBindDN.set_sensitive(active)
-        self.txtPassword.set_sensitive(active)
+        self.ui.txtUrlLDAP.set_sensitive(active)
+        self.ui.txtBaseDN.set_sensitive(active)
+        self.ui.txtBindDN.set_sensitive(active)
+        self.ui.txtPassword.set_sensitive(active)
 
         active = active \
-            | self.chkChef.get_active() \
+            | self.ui.chkChef.get_active() \
             | self.unlink_from_ldap \
             | self.unlink_from_chef
 
-        self.btnApply.set_sensitive(active)
+        self.main_window.btnNext.set_sensitive(active)
 
     def on_chkChef_toggle(self, button):
-        active = self.chkChef.get_active()
+        active = self.ui.chkChef.get_active()
 
-        self.txtUrlChef.set_sensitive(active)
-        self.txtUrlChefCert.set_sensitive(active)
+        self.ui.txtUrlChef.set_sensitive(active)
+        self.ui.txtUrlChefCert.set_sensitive(active)
 
         active = active \
-            | self.chkLDAP.get_active() \
+            | self.ui.chkLDAP.get_active() \
             | self.unlink_from_ldap \
             | self.unlink_from_chef
 
-        self.btnApply.set_sensitive(active)
+        self.main_window.btnNext.set_sensitive(active)
 
-    def on_btnCancel_Clicked(self, button):
-        self.emit('page-changed', 'linkToServer', {})
+    def previous_page(self, load_page_callback):
+        load_page_callback(firstboot.pages.linkToServer)
 
-    def on_btnApply_Clicked(self, button):
+    def next_page(self, load_page_callback):
 
-        if not self.unlink_from_chef and self.chkChef.get_active():
+        if not self.unlink_from_chef and self.ui.chkChef.get_active():
             # The unique host name for Chef is mandatory, so we need
             # to ask for it before the setup.
 
-            self.emit('subpage-changed', 'linkToServer', 'LinkToServerHostnamePage',
-                {'server_conf': self.server_conf,
-                'link_ldap': self.chkLDAP.get_active(),
-                'unlink_ldap': self.unlink_from_ldap,
-                'link_chef': self.chkChef.get_active(),
-                'unlink_chef': self.unlink_from_chef})
+            try:
+                used_hostnames = ServerConf.get_chef_hostnames(self.server_conf.get_chef_conf())
+
+                load_page_callback(LinkToServerHostnamePage, {
+                    'server_conf': self.server_conf,
+                    'link_ldap': self.ui.chkLDAP.get_active(),
+                    'unlink_ldap': self.unlink_from_ldap,
+                    'link_chef': self.ui.chkChef.get_active(),
+                    'unlink_chef': self.unlink_from_chef,
+                    'used_hostnames': used_hostnames
+                })
+
+            except ServerConf.ServerConfException as e:
+                messages = [{'type': 'error', 'message': str(e)}]
+
+                load_page_callback(LinkToServerResultsPage, {
+                    'result': False,
+                    'server_conf': self.server_conf,
+                    'messages': messages
+                })
 
         else:
             result, messages = ServerConf.setup_server(
                 server_conf=self.server_conf,
-                link_ldap=self.chkLDAP.get_active(),
+                link_ldap=self.ui.chkLDAP.get_active(),
                 unlink_ldap=self.unlink_from_ldap,
-                link_chef=self.chkChef.get_active(),
+                link_chef=self.ui.chkChef.get_active(),
                 unlink_chef=self.unlink_from_chef
             )
 
-            self.emit('subpage-changed', 'linkToServer',
-                      'LinkToServerResultsPage',
-                      {'result': result, 'server_conf': self.server_conf,
-                       'messages': messages})
+            load_page_callback(LinkToServerResultsPage, {
+                'result': result,
+                'server_conf': self.server_conf,
+                'messages': messages
+            })
 
     def on_serverConf_changed(self, entry):
         if not self.update_server_conf:
             return
-        self.server_conf.get_ldap_conf().set_url(self.txtUrlLDAP.get_text())
-        self.server_conf.get_ldap_conf().set_basedn(self.txtBaseDN.get_text())
-        self.server_conf.get_ldap_conf().set_binddn(self.txtBindDN.get_text())
-        self.server_conf.get_ldap_conf().set_password(self.txtPassword.get_text())
-        self.server_conf.get_chef_conf().set_url(self.txtUrlChef.get_text())
-        self.server_conf.get_chef_conf().set_pem_url(self.txtUrlChefCert.get_text())
+        self.server_conf.get_ldap_conf().set_url(self.ui.txtUrlLDAP.get_text())
+        self.server_conf.get_ldap_conf().set_basedn(self.ui.txtBaseDN.get_text())
+        self.server_conf.get_ldap_conf().set_binddn(self.ui.txtBindDN.get_text())
+        self.server_conf.get_ldap_conf().set_password(self.ui.txtPassword.get_text())
+        self.server_conf.get_chef_conf().set_url(self.ui.txtUrlChef.get_text())
+        self.server_conf.get_chef_conf().set_pem_url(self.ui.txtUrlChefCert.get_text())

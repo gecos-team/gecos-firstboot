@@ -80,9 +80,6 @@ def get_server_conf(url):
     except ValueError as e:
         raise ServerConfException(_('Configuration file is not valid.'))
 
-    except Exception as e:
-        raise Exception(e)
-
 def get_chef_pem(url):
 
     try:
@@ -102,8 +99,39 @@ def get_chef_pem(url):
     except urllib2.URLError as e:
         raise ServerConfException(e)
 
-    except Exception as e:
-        raise Exception(e)
+def get_chef_hostnames(chef_conf):
+
+    chef_url = chef_conf.get_url()
+    pem_url = chef_conf.get_pem_url()
+    pem_file_path = get_chef_pem(pem_url)
+
+    cmd = 'knife node list -u chef-validator -k %s -s %s' % (pem_file_path, chef_url)
+    args = shlex.split(cmd)
+
+    process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    exit_code = os.waitpid(process.pid, 0)
+    output = process.communicate()[0]
+    output = output.strip()
+
+    names = []
+    if exit_code[1] != 0:
+        raise ServerConfException(_('Couldn\t retrieve the host names list') + ': ' + output)
+
+    else:
+        try:
+            names = json.loads(output)
+        except ValueError as e:
+            names = output.split('\n')
+
+    hostnames = []
+    for name in names:
+        name = name.strip()
+        if name.startswith('WARNING') or name.startswith('ERROR'):
+            continue
+        hostnames.append(name)
+
+    os.remove(pem_file_path)
+    return hostnames
 
 def ldap_is_configured():
     try:
@@ -160,13 +188,6 @@ def chef_is_configured():
 
 def setup_server(server_conf, link_ldap=False, unlink_ldap=False,
                 link_chef=False, unlink_chef=False):
-
-    #~ print '=============='
-    #~ print 'link_ldap: '+str(link_ldap)
-    #~ print 'unlink_ldap: '+str(unlink_ldap)
-    #~ print 'link_chef: '+str(link_chef)
-    #~ print 'unlink_chef: '+str(unlink_chef)
-    #~ print '==============\n\n'
 
     result = True
     messages = []

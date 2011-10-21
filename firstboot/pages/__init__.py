@@ -21,4 +21,6 @@ __copyright__ = "Copyright (C) 2011, Junta de Andalucía <devmaster@guadalinex.o
 __license__ = "GPL-2"
 
 
+import network, pcLabel, linkToServer, localUsers, installSoftware
+
 pages = ['network', 'pcLabel', 'linkToServer', 'localUsers', 'installSoftware']

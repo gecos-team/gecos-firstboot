@@ -28,7 +28,8 @@ import shlex
 import json
 import ServerConf
 
-from firstboot_lib import PageWindow, FirstbootEntry
+import LinkToServerConfEditorPage, LinkToServerResultsPage
+from firstboot_lib import PageWindow
 
 import gettext
 from gettext import gettext as _
@@ -40,54 +41,18 @@ __REQUIRED__ = False
 __TITLE__ = _('Describe this workstation')
 
 
-def get_page(options=None):
+def get_page(main_window):
 
-    page = LinkToServerHostnamePage(options)
+    page = LinkToServerHostnamePage(main_window)
     return page
 
 class LinkToServerHostnamePage(PageWindow.PageWindow):
     __gtype_name__ = "LinkToServerHostnamePage"
 
-    # To construct a new instance of this method, the following notable
-    # methods are called in this order:
-    # __new__(cls)
-    # __init__(self)
-    # finish_initializing(self, builder)
-    # __init__(self)
-    #
-    # For this reason, it's recommended you leave __init__ empty and put
-    # your initialization code in finish_initializing
-
-    def finish_initializing(self, builder, options=None):
-        """Called while initializing this instance in __new__
-
-        finish_initializing should be called after parsing the UI definition
-        and creating a FirstbootWindow object with it in order to finish
-        initializing the start of the new FirstbootWindow instance.
-        """
-
-        # Get a reference to the builder and set up the signals.
-        self.builder = builder
-        self.ui = builder.get_ui(self, True)
-
-        self.lblDescription = builder.get_object('lblDescription')
-        self.imgStatus = builder.get_object('imgStatus')
-        self.lblStatus = builder.get_object('lblStatus')
-        self.lblHostname = builder.get_object('lblHostname')
-        self.txtHostname = builder.get_object('txtHostname')
-        self.btnAccept = builder.get_object('btnAccept')
-
-        container = builder.get_object(self.__page_container__)
-        page = builder.get_object(self.__gtype_name__)
-        container.remove(page)
-        self.page = page
-
-        self.translate()
-        self.imgStatus.set_visible(False)
-        self.lblStatus.set_visible(False)
-
-        self.cmd_options = options
-        self.fbe = FirstbootEntry.FirstbootEntry()
+    def finish_initializing(self):
+        self.ui.imgStatus.set_visible(False)
+        self.ui.lblStatus.set_visible(False)
+        self.main_window.btnNext.set_sensitive(False)
 
         self.hostnames = []
 
@@ -96,11 +61,10 @@ class LinkToServerHostnamePage(PageWindow.PageWindow):
 therefore it must be given a host name. That name will be used for \
 uniquely identify this workstation.')
 
-        self.lblDescription.set_text(desc)
-        self.lblHostname.set_label(_('Hostname'))
-        self.btnAccept.set_label(_('Accept'))
+        self.ui.lblDescription.set_text(desc)
+        self.ui.lblHostname.set_label(_('Hostname'))
 
-    def set_params(self, params):
+    def load_page(self, params=None):
 
         # NOTE: The boolean values in the dict object become tuples
         # after the assignment ???
@@ -114,40 +78,30 @@ uniquely identify this workstation.')
         self.link_chef = self.link_chef[0]
         self.unlink_chef = params['unlink_chef']
         #self.unlink_chef = self.unlink_chef[0]
+        self.hostnames = params['used_hostnames']
 
         self.server_conf = params['server_conf']
-        self.pem_file_path = None
-
-        chef_conf = self.server_conf.get_chef_conf()
-        pem_url = chef_conf.get_pem_url()
-
-        try:
-            self.pem_file_path = ServerConf.get_chef_pem(pem_url)
-        except Exception as e:
-            #self.show_error(_('The Chef certificate couldn\'t be found.'))
-            self.show_error(str(e))
-            return
-
-        self._load_hostnames()
-
-    def get_widget(self):
-        return self.page
 
     def on_txtHostname_changed(self, entry):
-        text = self.txtHostname.get_text()
+        text = self.ui.txtHostname.get_text()
         for name in self.hostnames:
             if name == text:
                 #self.txtHostname.modify_text(Gtk.StateFlags.NORMAL, Gdk.Color(255, 0, 0))
                 self.show_error(_('The host name is in use.'))
-                self.btnAccept.set_sensitive(False)
+                self.main_window.btnNext.set_sensitive(False)
                 return
 
         self.show_error()
-        self.btnAccept.set_sensitive(True)
+        self.main_window.btnNext.set_sensitive(True)
 
-    def on_btnAccept_Clicked(self, button):
+    def previous_page(self, load_page_callback):
+        load_page_callback(LinkToServerConfEditorPage, {
+            'server_conf': self.server_conf
+        })
 
-        hostname = self.txtHostname.get_text()
+    def next_page(self, load_page_callback):
+
+        hostname = self.ui.txtHostname.get_text()
 
         if len(hostname) == 0:
             self.show_error(_('The host name cannot be empty.'))
@@ -167,55 +121,19 @@ uniquely identify this workstation.')
             unlink_chef=self.unlink_chef
         )
 
-        self.emit('subpage-changed', 'linkToServer',
-                  'LinkToServerResultsPage',
-                  {'result': result, 'server_conf': self.server_conf,
-                   'messages': messages})
-
-    def _load_hostnames(self):
-
-        try:
-
-            chef_conf = self.server_conf.get_chef_conf()
-            chef_url = chef_conf.get_url()
-
-            cmd = 'knife node list -u chef-validator -k %s -s %s' % (self.pem_file_path, chef_url)
-            args = shlex.split(cmd)
-
-            process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            exit_code = os.waitpid(process.pid, 0)
-            output = process.communicate()[0]
-            output = output.strip()
-
-            names = []
-            if exit_code[1] == 0:
-                try:
-                    names = json.loads(output)
-                except ValueError as e:
-                    names = output.split('\n')
-
-            self.hostnames = []
-            for name in names:
-                name = name.strip()
-                if name.startswith('WARNING') or name.startswith('ERROR'):
-                    continue
-                self.hostnames.append(name)
-
-            os.remove(self.pem_file_path)
-            self.pem_file_path = None
-
-            #print self.hostnames
-
-        except Exception as e:
-            self.show_error(str(e))
+        load_page_callback(LinkToServerResultsPage, {
+            'server_conf': self.server_conf,
+            'result': result,
+            'messages': messages
+        })
 
     def show_error(self, message=None):
         if message is None:
-            self.imgStatus.set_visible(False)
-            self.lblStatus.set_visible(False)
+            self.ui.imgStatus.set_visible(False)
+            self.ui.lblStatus.set_visible(False)
             return
 
-        self.imgStatus.set_from_stock(Gtk.STOCK_DIALOG_ERROR, Gtk.IconSize.BUTTON)
-        self.lblStatus.set_label(message)
-        self.imgStatus.set_visible(True)
-        self.lblStatus.set_visible(True)
+        self.ui.imgStatus.set_from_stock(Gtk.STOCK_DIALOG_ERROR, Gtk.IconSize.BUTTON)
+        self.ui.lblStatus.set_label(message)
+        self.ui.imgStatus.set_visible(True)
+        self.ui.lblStatus.set_visible(True)

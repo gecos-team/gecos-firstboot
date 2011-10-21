@@ -23,9 +23,8 @@ __license__ = "GPL-2"
 
 from gi.repository import Gtk
 
-import ServerConf
-from ServerConf import ServerConfException, LinkToLDAPException, LinkToChefException
-from firstboot_lib import PageWindow, FirstbootEntry
+import firstboot.pages
+from firstboot_lib import PageWindow
 
 import gettext
 from gettext import gettext as _
@@ -37,62 +36,21 @@ __REQUIRED__ = False
 __TITLE__ = _('Link workstation to a server')
 
 
-def get_page(options=None):
+def get_page(main_window):
 
-    page = LinkToServerResultsPage(options)
+    page = LinkToServerResultsPage(main_window)
     return page
 
 class LinkToServerResultsPage(PageWindow.PageWindow):
     __gtype_name__ = "LinkToServerResultsPage"
 
-    # To construct a new instance of this method, the following notable
-    # methods are called in this order:
-    # __new__(cls)
-    # __init__(self)
-    # finish_initializing(self, builder)
-    # __init__(self)
-    #
-    # For this reason, it's recommended you leave __init__ empty and put
-    # your initialization code in finish_initializing
-
-    def finish_initializing(self, builder, options=None):
-        """Called while initializing this instance in __new__
-
-        finish_initializing should be called after parsing the UI definition
-        and creating a FirstbootWindow object with it in order to finish
-        initializing the start of the new FirstbootWindow instance.
-        """
-
-        # Get a reference to the builder and set up the signals.
-        self.builder = builder
-        self.ui = builder.get_ui(self, True)
-
-        self.lblDescription = builder.get_object('lblDescription')
-        self.boxMessageContainer = builder.get_object('boxMessageContainer')
-        self.imgStatus = builder.get_object('imgStatus')
-        self.lblStatus = builder.get_object('lblStatus')
-        self.btnBack = builder.get_object('btnBack')
-        self.btnAccept = builder.get_object('btnAccept')
-
-        container = builder.get_object(self.__page_container__)
-        page = builder.get_object(self.__gtype_name__)
-        container.remove(page)
-        self.page = page
-
-        self.translate()
-
-        self.cmd_options = options
-        self.fbe = FirstbootEntry.FirstbootEntry()
-
+    def finish_initializing(self):
         self.result = False
 
     def translate(self):
-        self.lblDescription.set_text('')
+        self.ui.lblDescription.set_text('')
 
-    def get_widget(self):
-        return self.page
-
-    def set_params(self, params):
+    def load_page(self, params=None):
 
         if 'server_conf' in params:
             self.server_conf = params['server_conf']
@@ -107,19 +65,16 @@ class LinkToServerResultsPage(PageWindow.PageWindow):
                 else:
                     icon = Gtk.STOCK_YES
                 box = self.new_message(m['message'], icon)
-                self.boxMessageContainer.pack_start(box, False, False, 0)
+                self.ui.boxMessageContainer.pack_start(box, False, False, 0)
 
         if self.result == True:
-            self.lblDescription.set_text(_('This workstation has been linked \
-to a GECOS server.'))
-            self.btnBack.set_visible(False)
-            self.btnAccept.set_label(_('Finalize'))
+            self.ui.lblDescription.set_text(_('The configuration was \
+updated successfully.'))
+            self.emit('status-changed', 'linkToServer', True)
 
         else:
-            self.lblDescription.set_text(_('There are some errors you may fix.'))
-            self.btnBack.set_visible(True)
-            self.btnBack.set_label(_('Back'))
-            self.btnAccept.set_label(_('Finalize'))
+            self.ui.lblDescription.set_text(_('There are some errors you may fix.'))
+            self.emit('status-changed', 'linkToServer', False)
 
     def new_message(self, message, icon):
         box = Gtk.HBox()
@@ -135,9 +90,8 @@ to a GECOS server.'))
         box.show()
         return box
 
-    def on_btnBack_Clicked(self, button):
-        self.emit('subpage-changed', 'linkToServer',
-                  'LinkToServerConfEditorPage', {'server_conf': self.server_conf})
+    def previous_page(self, load_page_callback):
+        load_page_callback(firstboot.pages.linkToServer)
 
-    def on_btnAccept_Clicked(self, button):
-        self.emit('page-changed', 'linkToServer', {})
+    def next_page(self, load_page_callback):
+        load_page_callback(firstboot.pages.localUsers)

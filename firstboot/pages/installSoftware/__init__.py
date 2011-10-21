@@ -23,6 +23,7 @@ __license__ = "GPL-2"
 
 import os
 from gi.repository import Gtk
+import firstboot.pages
 from firstboot_lib import PageWindow
 
 import gettext
@@ -33,55 +34,27 @@ __REQUIRED__ = False
 
 __TITLE__ = _('Install software')
 
-def get_page(options=None):
+def get_page(main_window):
 
-    page = InstallSoftwarePage(options)
+    page = InstallSoftwarePage(main_window)
     return page
 
 class InstallSoftwarePage(PageWindow.PageWindow):
     __gtype_name__ = "InstallSoftwarePage"
 
-    # To construct a new instance of this method, the following notable 
-    # methods are called in this order:
-    # __new__(cls)
-    # __init__(self)
-    # finish_initializing(self, builder)
-    # __init__(self)
-    #
-    # For this reason, it's recommended you leave __init__ empty and put
-    # your initialization code in finish_initializing
-
-    def finish_initializing(self, builder, options=None):
-        """Called while initializing this instance in __new__
-
-        finish_initializing should be called after parsing the UI definition
-        and creating a FirstbootWindow object with it in order to finish
-        initializing the start of the new FirstbootWindow instance.
-        """
-        # Get a reference to the builder and set up the signals.
-        self.builder = builder
-        self.ui = builder.get_ui(self, True)
-
-        container = builder.get_object(self.__page_container__)
-        page = builder.get_object(self.__gtype_name__)
-        container.remove(page)
-        self.page = page
-
-        self.btnInstallSoftware = builder.get_object('btnInstallSoftware')
-        self.lblDescription = builder.get_object('lblDescription')
-
-        self.translate()
+    def load_page(self, params=None):
+        self.emit('status-changed', 'localUsers', not __REQUIRED__)
+        self.main_window.btnNext.set_label(_('Close'))
 
     def translate(self):
-        self.btnInstallSoftware.set_label(_('Install software'))
-        self.lblDescription.set_text(_('From this window you can install \
+        self.ui.btnInstallSoftware.set_label(_('Install software'))
+        self.ui.lblDescription.set_text(_('From this window you can install \
 software and manage packages.'))
-
-    def get_widget(self):
-        return self.page
 
     def on_btnInstallSoftware_Clicked(self, button):
         cmd = '/usr/sbin/synaptic'
         param = '/usr/sbin/synaptic'
         os.spawnlp(os.P_NOWAIT, cmd, cmd)
 
+    def previous_page(self, load_page_callback):
+        load_page_callback(firstboot.pages.localUsers)
