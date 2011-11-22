@@ -26,10 +26,10 @@ from gi.repository import Gtk, Gdk
 import subprocess
 import shlex
 import json
-import ServerConf
 
 import LinkToChefConfEditorPage, LinkToChefResultsPage
 from firstboot_lib import PageWindow
+from firstboot import serverconf
 
 import gettext
 from gettext import gettext as _
@@ -109,7 +109,7 @@ uniquely identify this workstation.')
 
         self.server_conf.get_chef_conf().set_hostname(hostname)
 
-        result, messages = ServerConf.setup_server(
+        result, messages = serverconf.setup_server(
             server_conf=self.server_conf,
             link_ldap=False,
             unlink_ldap=False,

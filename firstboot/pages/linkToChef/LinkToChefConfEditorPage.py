@@ -21,9 +21,10 @@ __copyright__ = "Copyright (C) 2011, Junta de Andalucía <devmaster@guadalinex.o
 __license__ = "GPL-2"
 
 
-import ServerConf, LinkToChefHostnamePage, LinkToChefResultsPage
+import LinkToChefHostnamePage, LinkToChefResultsPage
 import firstboot.pages.linkToServer
 from firstboot_lib import PageWindow
+from firstboot import serverconf
 
 import gettext
 from gettext import gettext as _
@@ -58,7 +59,7 @@ class LinkToChefConfEditorPage(PageWindow.PageWindow):
                 self.ui.txtUrlChefCert.set_text(self.server_conf.get_chef_conf().get_pem_url())
 
         if self.server_conf is None:
-            self.server_conf = ServerConf.ServerConf()
+            self.server_conf = serverconf.ServerConf()
 
         self.update_server_conf = True
 
@@ -94,9 +95,9 @@ workstation is going to be unlinked from the Chef server.')))
             try:
 
                 if not self.server_conf.get_chef_conf().validate():
-                    raise ServerConf.ServerConfException(_('The fields are mandatory.'))
+                    raise serverconf.ServerConfException(_('The fields are mandatory.'))
 
-                used_hostnames = ServerConf.get_chef_hostnames(self.server_conf.get_chef_conf())
+                used_hostnames = serverconf.get_chef_hostnames(self.server_conf.get_chef_conf())
 
                 load_page_callback(LinkToChefHostnamePage, {
                     'server_conf': self.server_conf,
@@ -105,7 +106,7 @@ workstation is going to be unlinked from the Chef server.')))
                     'used_hostnames': used_hostnames
                 })
 
-            except ServerConf.ServerConfException as e:
+            except serverconf.ServerConfException as e:
                 messages = [{'type': 'error', 'message': str(e)}]
 
                 load_page_callback(LinkToChefResultsPage, {
@@ -115,7 +116,7 @@ workstation is going to be unlinked from the Chef server.')))
                 })
 
         else:
-            result, messages = ServerConf.setup_server(
+            result, messages = serverconf.setup_server(
                 server_conf=self.server_conf,
                 link_chef=not self.unlink_from_chef,
                 unlink_chef=self.unlink_from_chef

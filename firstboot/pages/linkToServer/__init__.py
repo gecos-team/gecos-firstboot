@@ -24,9 +24,9 @@ __license__ = "GPL-2"
 import os
 from gi.repository import Gtk
 
-import firstboot.pages
-import ServerConf, LinkToServerConfEditorPage
+import firstboot.pages, LinkToServerConfEditorPage
 from firstboot_lib import PageWindow
+from firstboot import serverconf
 
 import gettext
 from gettext import gettext as _
@@ -55,8 +55,8 @@ class LinkToServerPage(PageWindow.PageWindow):
 
         self.show_status()
 
-        self.ldap_is_configured = ServerConf.ldap_is_configured()
-        self.chef_is_configured = ServerConf.chef_is_configured()
+        self.ldap_is_configured = serverconf.ldap_is_configured()
+        self.chef_is_configured = serverconf.chef_is_configured()
 
         show_conf_fields = not (self.ldap_is_configured & self.chef_is_configured)
         if not show_conf_fields:
@@ -175,7 +175,7 @@ server.')
             server_conf = None
             if self.ui.radioAuto.get_active():
                 url = self.ui.txtUrl.get_text()
-                server_conf = ServerConf.get_server_conf(url)
+                server_conf = serverconf.get_server_conf(url)
 
             load_page_callback(LinkToServerConfEditorPage, {
                 'server_conf': server_conf,
@@ -185,7 +185,7 @@ server.')
                 'unlink_from_chef': self.ui.chkUnlinkChef.get_active()
             })
 
-        except ServerConf.ServerConfException as e:
+        except serverconf.ServerConfException as e:
             self.show_status(__STATUS_ERROR__, e)
 
         except Exception as e:

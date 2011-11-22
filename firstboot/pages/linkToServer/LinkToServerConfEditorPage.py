@@ -21,9 +21,10 @@ __copyright__ = "Copyright (C) 2011, Junta de Andalucía <devmaster@guadalinex.o
 __license__ = "GPL-2"
 
 
-import ServerConf, LinkToServerHostnamePage, LinkToServerResultsPage
+import LinkToServerHostnamePage, LinkToServerResultsPage
 import firstboot.pages.linkToServer
 from firstboot_lib import PageWindow
+from firstboot import serverconf
 
 import gettext
 from gettext import gettext as _
@@ -63,7 +64,7 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
                 self.ui.txtUrlChefCert.set_text(self.server_conf.get_chef_conf().get_pem_url())
 
         if self.server_conf is None:
-            self.server_conf = ServerConf.ServerConf()
+            self.server_conf = serverconf.ServerConf()
 
         self.update_server_conf = True
 
@@ -148,7 +149,7 @@ workstation is going to be unlinked from the Chef server.')))
             # to ask for it before the setup.
 
             try:
-                used_hostnames = ServerConf.get_chef_hostnames(self.server_conf.get_chef_conf())
+                used_hostnames = serverconf.get_chef_hostnames(self.server_conf.get_chef_conf())
 
                 load_page_callback(LinkToServerHostnamePage, {
                     'server_conf': self.server_conf,
@@ -159,7 +160,7 @@ workstation is going to be unlinked from the Chef server.')))
                     'used_hostnames': used_hostnames
                 })
 
-            except ServerConf.ServerConfException as e:
+            except serverconf.ServerConfException as e:
                 messages = [{'type': 'error', 'message': str(e)}]
 
                 load_page_callback(LinkToServerResultsPage, {
@@ -169,7 +170,7 @@ workstation is going to be unlinked from the Chef server.')))
                 })
 
         else:
-            result, messages = ServerConf.setup_server(
+            result, messages = serverconf.setup_server(
                 server_conf=self.server_conf,
                 link_ldap=self.ui.chkLDAP.get_active(),
                 unlink_ldap=self.unlink_from_ldap,
