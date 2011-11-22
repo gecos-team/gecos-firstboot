@@ -45,7 +45,6 @@ class LinkToChefConfEditorPage(PageWindow.PageWindow):
     def finish_initializing(self):
 
         self.update_server_conf = False
-        self.unlink_from_ldap = False
         self.unlink_from_chef = False
 
     def load_page(self, params=None):
@@ -55,10 +54,6 @@ class LinkToChefConfEditorPage(PageWindow.PageWindow):
             if not self.server_conf is None:
                 self.ui.lblVersionValue.set_label(self.server_conf.get_version())
                 self.ui.lblOrganizationValue.set_label(self.server_conf.get_organization())
-                self.ui.txtUrlLDAP.set_text(self.server_conf.get_ldap_conf().get_url())
-                self.ui.txtBaseDN.set_text(self.server_conf.get_ldap_conf().get_basedn())
-                self.ui.txtBindDN.set_text(self.server_conf.get_ldap_conf().get_binddn())
-                self.ui.txtPassword.set_text(self.server_conf.get_ldap_conf().get_password())
                 self.ui.txtUrlChef.set_text(self.server_conf.get_chef_conf().get_url())
                 self.ui.txtUrlChefCert.set_text(self.server_conf.get_chef_conf().get_pem_url())
 
@@ -67,23 +62,7 @@ class LinkToChefConfEditorPage(PageWindow.PageWindow):
 
         self.update_server_conf = True
 
-        self.unlink_from_ldap = params['unlink_from_ldap']
         self.unlink_from_chef = params['unlink_from_chef']
-
-        if params['ldap_is_configured']:
-            self.ui.chkLDAP.set_active(False)
-            self.ui.chkLDAP.set_sensitive(False)
-
-        if params['chef_is_configured']:
-            self.ui.chkChef.set_active(False)
-            self.ui.chkChef.set_sensitive(False)
-
-        if params['ldap_is_configured'] and params['chef_is_configured']:
-            self.ui.lblDescription.set_visible(False)
-
-        if self.unlink_from_ldap:
-            self.ui.chkLDAP.get_child().set_markup(self._bold(_('This \
-workstation is going to be unlinked from the LDAP server.')))
 
         if self.unlink_from_chef:
             self.ui.chkChef.get_child().set_markup(self._bold(_('This \
@@ -100,61 +79,28 @@ workstation is going to be unlinked from the Chef server.')))
         self.ui.lblVersion.set_label(_('Version'))
         self.ui.lblOrganization.set_label(_('Organization'))
         self.ui.lblNotes.set_label(_('Notes'))
-        self.ui.lblUrlLDAP.set_label('URL')
-        self.ui.lblBaseDN.set_label('Base DN')
-        self.ui.lblBindDN.set_label('Bind DN')
-        self.ui.lblPassword.set_label(_('Password'))
-        self.ui.lblUrlChef.set_label('URL')
+        self.ui.lblUrlChef.set_label('Chef URL')
         self.ui.lblUrlChefCert.set_label(_('Certificate URL'))
 
-        self.ui.chkLDAP.get_child().set_markup(self._bold(_('Configure LDAP')))
-        self.ui.chkChef.get_child().set_markup(self._bold(_('Configure Chef')))
-
-    def on_chkLDAP_toggle(self, button):
-        active = self.ui.chkLDAP.get_active()
-
-        self.ui.txtUrlLDAP.set_sensitive(active)
-        self.ui.txtBaseDN.set_sensitive(active)
-        self.ui.txtBindDN.set_sensitive(active)
-        self.ui.txtPassword.set_sensitive(active)
-
-        active = active \
-            | self.ui.chkChef.get_active() \
-            | self.unlink_from_ldap \
-            | self.unlink_from_chef
-
-        self.main_window.btnNext.set_sensitive(active)
-
-    def on_chkChef_toggle(self, button):
-        active = self.ui.chkChef.get_active()
-
-        self.ui.txtUrlChef.set_sensitive(active)
-        self.ui.txtUrlChefCert.set_sensitive(active)
-
-        active = active \
-            | self.ui.chkLDAP.get_active() \
-            | self.unlink_from_ldap \
-            | self.unlink_from_chef
-
-        self.main_window.btnNext.set_sensitive(active)
-
     def previous_page(self, load_page_callback):
-        load_page_callback(firstboot.pages.linkToServer)
+        load_page_callback(firstboot.pages.linkToChef)
 
     def next_page(self, load_page_callback):
 
-        if not self.unlink_from_chef and self.ui.chkChef.get_active():
+        if not self.unlink_from_chef:
             # The unique host name for Chef is mandatory, so we need
             # to ask for it before the setup.
 
             try:
+
+                if not self.server_conf.get_chef_conf().validate():
+                    raise ServerConf.ServerConfException(_('The fields are mandatory.'))
+
                 used_hostnames = ServerConf.get_chef_hostnames(self.server_conf.get_chef_conf())
 
                 load_page_callback(LinkToChefHostnamePage, {
                     'server_conf': self.server_conf,
-                    'link_ldap': self.ui.chkLDAP.get_active(),
-                    'unlink_ldap': self.unlink_from_ldap,
-                    'link_chef': self.ui.chkChef.get_active(),
+                    'link_chef': not self.unlink_from_chef,
                     'unlink_chef': self.unlink_from_chef,
                     'used_hostnames': used_hostnames
                 })
@@ -171,9 +117,7 @@ workstation is going to be unlinked from the Chef server.')))
         else:
             result, messages = ServerConf.setup_server(
                 server_conf=self.server_conf,
-                link_ldap=self.ui.chkLDAP.get_active(),
-                unlink_ldap=self.unlink_from_ldap,
-                link_chef=self.ui.chkChef.get_active(),
+                link_chef=not self.unlink_from_chef,
                 unlink_chef=self.unlink_from_chef
             )
 
@@ -186,9 +130,5 @@ workstation is going to be unlinked from the Chef server.')))
     def on_serverConf_changed(self, entry):
         if not self.update_server_conf:
             return
-        self.server_conf.get_ldap_conf().set_url(self.ui.txtUrlLDAP.get_text())
-        self.server_conf.get_ldap_conf().set_basedn(self.ui.txtBaseDN.get_text())
-        self.server_conf.get_ldap_conf().set_binddn(self.ui.txtBindDN.get_text())
-        self.server_conf.get_ldap_conf().set_password(self.ui.txtPassword.get_text())
         self.server_conf.get_chef_conf().set_url(self.ui.txtUrlChef.get_text())
         self.server_conf.get_chef_conf().set_pem_url(self.ui.txtUrlChefCert.get_text())

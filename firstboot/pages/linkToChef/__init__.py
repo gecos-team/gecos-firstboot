@@ -54,12 +54,10 @@ class LinkToChefPage(PageWindow.PageWindow):
     def finish_initializing(self):
 
         self.show_status()
-
-        self.ldap_is_configured = ServerConf.ldap_is_configured()
         self.chef_is_configured = ServerConf.chef_is_configured()
 
-        show_conf_fields = not (self.ldap_is_configured & self.chef_is_configured)
-        if not show_conf_fields:
+        #show_conf_fields = not (self.ldap_is_configured & self.chef_is_configured)
+        if self.chef_is_configured:
             self.ui.radioOmit.set_visible(False)
             self.ui.radioManual.set_visible(False)
             self.ui.radioAuto.set_visible(False)
@@ -67,7 +65,6 @@ class LinkToChefPage(PageWindow.PageWindow):
             self.ui.txtUrl.set_visible(False)
             self.main_window.btnNext.set_sensitive(False)
 
-        self.ui.chkUnlinkLDAP.set_visible(self.ldap_is_configured)
         self.ui.chkUnlinkChef.set_visible(self.chef_is_configured)
 
         url_config = self.fbe.get_url()
@@ -86,31 +83,14 @@ class LinkToChefPage(PageWindow.PageWindow):
 managed remotely and existing users in the server can login into \
 this workstation.\n\n')
 
-        desc_detail = ''
-        if not self.ldap_is_configured and not self.chef_is_configured:
-            desc_detail = _('You can type the options manually or download \
-a default configuration from the server.')
-
-        elif self.ldap_is_configured and self.chef_is_configured:
-            desc_detail = _('This workstation is currently linked to a GECOS \
-server.')
-
-        self.ui.lblDescription.set_text(desc + desc_detail)
-        self.ui.chkUnlinkLDAP.set_label(_('Unlink from LDAP'))
+        self.ui.lblDescription.set_text(desc)
         self.ui.chkUnlinkChef.set_label(_('Unlink from Chef'))
         self.ui.radioOmit.set_label(_('Omit'))
         self.ui.radioManual.set_label(_('Manual'))
         self.ui.radioAuto.set_label(_('Automatic'))
 
-    def on_chkUnlinkLDAP_toggle(self, button):
-        if self.ldap_is_configured & self.chef_is_configured:
-            active = button.get_active() | self.ui.chkUnlinkChef.get_active()
-            self.main_window.btnNext.set_sensitive(active)
-
     def on_chkUnlinkChef_toggle(self, button):
-        if self.ldap_is_configured & self.chef_is_configured:
-            active = button.get_active() | self.ui.chkUnlinkLDAP.get_active()
-            self.main_window.btnNext.set_sensitive(active)
+        self.main_window.btnNext.set_sensitive(not button.get_active())
 
     def on_radioOmit_toggled(self, button):
         self.ui.lblUrl.set_visible(False)
@@ -165,7 +145,7 @@ server.')
     def next_page(self, load_page_callback):
 
         if self.ui.radioOmit.get_active():
-            self.emit('status-changed', 'linkToServer', True)
+            self.emit('status-changed', 'linkToChef', True)
             load_page_callback(firstboot.pages.localUsers)
             return
 
@@ -179,8 +159,6 @@ server.')
 
             load_page_callback(LinkToChefConfEditorPage, {
                 'server_conf': server_conf,
-                'ldap_is_configured': self.ldap_is_configured,
-                'unlink_from_ldap': self.ui.chkUnlinkLDAP.get_active(),
                 'chef_is_configured': self.chef_is_configured,
                 'unlink_from_chef': self.ui.chkUnlinkChef.get_active()
             })

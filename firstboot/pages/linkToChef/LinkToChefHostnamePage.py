@@ -70,10 +70,6 @@ uniquely identify this workstation.')
         # after the assignment ???
         # The workaround is to reassign the first element of the tuple.
 
-        self.link_ldap = params['link_ldap'],
-        self.link_ldap = self.link_ldap[0]
-        self.unlink_ldap = params['unlink_ldap'],
-        self.unlink_ldap = self.unlink_ldap[0]
         self.link_chef = params['link_chef'],
         self.link_chef = self.link_chef[0]
         self.unlink_chef = params['unlink_chef']
@@ -115,8 +111,8 @@ uniquely identify this workstation.')
 
         result, messages = ServerConf.setup_server(
             server_conf=self.server_conf,
-            link_ldap=self.link_ldap,
-            unlink_ldap=self.unlink_ldap,
+            link_ldap=False,
+            unlink_ldap=False,
             link_chef=self.link_chef,
             unlink_chef=self.unlink_chef
         )
