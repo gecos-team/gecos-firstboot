@@ -166,7 +166,7 @@ server.')
 
         if self.ui.radioOmit.get_active():
             self.emit('status-changed', 'linkToServer', True)
-            load_page_callback(firstboot.pages.localUsers)
+            load_page_callback(firstboot.pages.linkToChef)
             return
 
         self.show_status()

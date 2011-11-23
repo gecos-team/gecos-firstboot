@@ -140,7 +140,7 @@ this workstation.\n\n')
             self.ui.lblStatus.set_visible(True)
 
     def previous_page(self, load_page_callback):
-        load_page_callback(firstboot.pages.pcLabel)
+        load_page_callback(firstboot.pages.linkToServer)
 
     def next_page(self, load_page_callback):
 
