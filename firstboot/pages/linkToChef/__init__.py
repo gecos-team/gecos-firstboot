@@ -56,15 +56,11 @@ class LinkToChefPage(PageWindow.PageWindow):
         self.show_status()
         self.chef_is_configured = serverconf.chef_is_configured()
 
-        #show_conf_fields = not (self.ldap_is_configured & self.chef_is_configured)
-        if self.chef_is_configured:
-            self.ui.radioOmit.set_visible(False)
-            self.ui.radioManual.set_visible(False)
-            self.ui.radioAuto.set_visible(False)
-            self.ui.lblUrl.set_visible(False)
-            self.ui.txtUrl.set_visible(False)
-            self.main_window.btnNext.set_sensitive(False)
-
+        self.ui.radioOmit.set_visible(not self.chef_is_configured)
+        self.ui.radioManual.set_visible(not self.chef_is_configured)
+        self.ui.radioAuto.set_visible(not self.chef_is_configured)
+        self.ui.lblUrl.set_visible(not self.chef_is_configured)
+        self.ui.txtUrl.set_visible(not self.chef_is_configured)
         self.ui.chkUnlinkChef.set_visible(self.chef_is_configured)
 
         url_config = self.fbe.get_url()
@@ -90,7 +86,8 @@ this workstation.\n\n')
         self.ui.radioAuto.set_label(_('Automatic'))
 
     def on_chkUnlinkChef_toggle(self, button):
-        self.main_window.btnNext.set_sensitive(not button.get_active())
+        #self.main_window.btnNext.set_sensitive(button.get_active())
+        pass
 
     def on_radioOmit_toggled(self, button):
         self.ui.lblUrl.set_visible(False)
@@ -144,7 +141,8 @@ this workstation.\n\n')
 
     def next_page(self, load_page_callback):
 
-        if self.ui.radioOmit.get_active():
+        if self.ui.radioOmit.get_active() or \
+            (not self.ui.chkUnlinkChef.get_active() and self.chef_is_configured):
             self.emit('status-changed', 'linkToChef', True)
             load_page_callback(firstboot.pages.localUsers)
             return
