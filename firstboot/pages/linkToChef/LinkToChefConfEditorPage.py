@@ -22,7 +22,7 @@ __license__ = "GPL-2"
 
 
 import LinkToChefHostnamePage, LinkToChefResultsPage
-import firstboot.pages.linkToServer
+import firstboot.pages.linkToChef
 from firstboot_lib import PageWindow
 from firstboot import serverconf
 
@@ -62,7 +62,7 @@ class LinkToChefConfEditorPage(PageWindow.PageWindow):
             self.server_conf = serverconf.ServerConf()
 
         self.update_server_conf = True
-
+        self.chef_is_configured = params['self.chef_is_configured']
         self.unlink_from_chef = params['unlink_from_chef']
 
         if self.unlink_from_chef:

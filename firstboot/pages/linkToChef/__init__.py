@@ -142,7 +142,7 @@ this workstation.\n\n')
     def next_page(self, load_page_callback):
 
         if self.ui.radioOmit.get_active() or \
-            (not self.ui.chkUnlinkChef.get_active() and self.chef_is_configured):
+            (self.chef_is_configured and not self.ui.chkUnlinkChef.get_active()):
             self.emit('status-changed', 'linkToChef', True)
             load_page_callback(firstboot.pages.localUsers)
             return
@@ -151,7 +151,7 @@ this workstation.\n\n')
 
         try:
             server_conf = None
-            if self.ui.radioAuto.get_active():
+            if not self.chef_is_configured and self.ui.radioAuto.get_active():
                 url = self.ui.txtUrl.get_text()
                 server_conf = serverconf.get_server_conf(url)
 
