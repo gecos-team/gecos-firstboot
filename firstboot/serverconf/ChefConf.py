@@ -28,6 +28,10 @@ class ChefConf():
         self._data['chef_server_url'] = ''
         self._data['chef_validation_url'] = ''
 
+    def load_data(self, conf):
+        self.set_url(conf['chef_server_url'])
+        self.set_pem_url(conf['chef_validation_url'])
+
     def validate(self):
         valid = len(self._data['chef_server_url']) > 0 \
             and len(self._data['chef_validation_url']) > 0

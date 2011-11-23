@@ -30,6 +30,12 @@ class LdapConf():
         self._data['binddn'] = ''
         self._data['bindpw'] = ''
 
+    def load_data(self, conf):
+        self.set_url(conf['uri'])
+        self.set_basedn(conf['base'])
+        self.set_binddn(conf['binddn'])
+        self.set_password(conf['bindpw'])
+
     def validate(self):
         valid = len(self._data['uri']) > 0 \
             and len(self._data['base']) > 0 \

@@ -70,10 +70,12 @@ def get_server_conf(url):
             if version != __CONFIG_FILE_VERSION__:
                 raise Exception(_('Incorrect version of the configuration file.'))
 
-            server_conf = ServerConf(conf)
+            server_conf = ServerConf()
+            server_conf.load_data(conf)
             return server_conf
 
-        raise ValueError()
+        else:
+            raise ValueError()
 
     except urllib2.URLError as e:
         raise ServerConfException(e)
