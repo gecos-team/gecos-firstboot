@@ -150,16 +150,34 @@ this workstation.\n\n')
         self.show_status()
 
         try:
-            server_conf = None
-            if not self.chef_is_configured and self.ui.radioAuto.get_active():
-                url = self.ui.txtUrl.get_text()
-                server_conf = serverconf.get_server_conf(url)
 
-            load_page_callback(LinkToChefConfEditorPage, {
-                'server_conf': server_conf,
-                'chef_is_configured': self.chef_is_configured,
-                'unlink_from_chef': self.ui.chkUnlinkChef.get_active()
-            })
+            server_conf = None
+
+            if not self.chef_is_configured:
+
+                if self.ui.radioAuto.get_active():
+                    url = self.ui.txtUrl.get_text()
+                    server_conf = serverconf.get_server_conf(url)
+
+                load_page_callback(LinkToChefConfEditorPage, {
+                    'server_conf': server_conf,
+                    'chef_is_configured': self.chef_is_configured,
+                    'unlink_from_chef': self.ui.chkUnlinkChef.get_active()
+                })
+
+            elif self.ui.chkUnlinkChef.get_active():
+
+                result, messages = serverconf.setup_server(
+                    server_conf=server_conf,
+                    link_chef=False,
+                    unlink_chef=True
+                )
+
+                load_page_callback(LinkToChefResultsPage, {
+                    'result': result,
+                    'server_conf': server_conf,
+                    'messages': messages
+                })
 
         except serverconf.ServerConfException as e:
             self.show_status(__STATUS_ERROR__, e)

@@ -46,6 +46,7 @@ class LinkToChefConfEditorPage(PageWindow.PageWindow):
     def finish_initializing(self):
 
         self.update_server_conf = False
+        self.chef_is_configured = False
         self.unlink_from_chef = False
 
     def load_page(self, params=None):
@@ -62,12 +63,12 @@ class LinkToChefConfEditorPage(PageWindow.PageWindow):
             self.server_conf = serverconf.ServerConf()
 
         self.update_server_conf = True
-        self.chef_is_configured = params['self.chef_is_configured']
+        self.chef_is_configured = params['chef_is_configured']
         self.unlink_from_chef = params['unlink_from_chef']
 
-        if self.unlink_from_chef:
-            self.ui.chkChef.get_child().set_markup(self._bold(_('This \
-workstation is going to be unlinked from the Chef server.')))
+#        if self.chef_is_configured and self.unlink_from_chef:
+#            self.ui.chkChef.get_child().set_markup(self._bold(_('This \
+#workstation is going to be unlinked from the Chef server.')))
 
     def _bold(self, str):
         return '<b>%s</b>' % str
