@@ -38,11 +38,11 @@ __TITLE__ = _('Link workstation to a server')
 
 def get_page(main_window):
 
-    page = LinkToServerResultsPage(main_window)
+    page = LinkToChefResultsPage(main_window)
     return page
 
-class LinkToServerResultsPage(PageWindow.PageWindow):
-    __gtype_name__ = "LinkToServerResultsPage"
+class LinkToChefResultsPage(PageWindow.PageWindow):
+    __gtype_name__ = "LinkToChefResultsPage"
 
     def finish_initializing(self):
         self.result = False
@@ -91,7 +91,7 @@ updated successfully.'))
         return box
 
     def previous_page(self, load_page_callback):
-        load_page_callback(firstboot.pages.linkToServer)
+        load_page_callback(firstboot.pages.linkToChef)
 
     def next_page(self, load_page_callback):
-        load_page_callback(firstboot.pages.linkToChef)
+        load_page_callback(firstboot.pages.localUsers)

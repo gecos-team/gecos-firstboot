@@ -31,6 +31,7 @@ import urlparse
 import tempfile
 
 from firstboot_lib import firstbootconfig
+from ServerConf import ServerConf
 
 import gettext
 from gettext import gettext as _
@@ -69,10 +70,12 @@ def get_server_conf(url):
             if version != __CONFIG_FILE_VERSION__:
                 raise Exception(_('Incorrect version of the configuration file.'))
 
-            server_conf = ServerConf(conf)
+            server_conf = ServerConf()
+            server_conf.load_data(conf)
             return server_conf
 
-        raise ValueError()
+        else:
+            raise ValueError()
 
     except urllib2.URLError as e:
         raise ServerConfException(e)
@@ -365,128 +368,6 @@ def unlink_from_chef():
         raise e
 
     return True
-
-class ServerConf():
-
-    def __init__(self, json_conf=None):
-        self._data = json_conf
-        self._validate()
-        self._ldap_conf = LdapConf(self._data['pamldap'])
-        self._chef_conf = ChefConf(self._data['chef'])
-
-    def _validate(self):
-        if self._data is None:
-            self._data = {}
-            self._data['version'] = __CONFIG_FILE_VERSION__
-            self._data['organization'] = ''
-            self._data['notes'] = ''
-            self._data['pamldap'] = None
-            self._data['chef'] = None
-
-    def get_version(self):
-        return self._data['version'].encode('utf-8')
-
-    def set_version(self, version):
-        self._data['version'] = version
-        return self
-
-    def get_organization(self):
-        return self._data['organization'].encode('utf-8')
-
-    def set_organization(self, organization):
-        self._data['organization'] = organization
-        return self
-
-    def get_notes(self):
-        return self._data['notes'].encode('utf-8')
-
-    def set_notes(self, notes):
-        self._data['notes'] = notes
-        return self
-
-    def get_ldap_conf(self):
-        return self._ldap_conf
-
-    def get_chef_conf(self):
-        return self._chef_conf
-
-class LdapConf():
-
-    def __init__(self, json_conf=None):
-        self._data = json_conf
-        self._validate()
-
-    def _validate(self):
-        if self._data is None:
-            self._data = {}
-            self._data['uri'] = ''
-            self._data['base'] = ''
-            self._data['binddn'] = ''
-            self._data['bindpw'] = ''
-
-    def get_url(self):
-        return self._data['uri'].encode('utf-8')
-
-    def set_url(self, url):
-        self._data['uri'] = url
-        return self
-
-    def get_basedn(self):
-        return self._data['base'].encode('utf-8')
-
-    def set_basedn(self, basedn):
-        self._data['base'] = basedn
-        return self
-
-    def get_binddn(self):
-        return self._data['binddn'].encode('utf-8')
-
-    def set_binddn(self, binddn):
-        self._data['binddn'] = binddn
-        return self
-
-    def get_password(self):
-        return self._data['bindpw'].encode('utf-8')
-
-    def set_password(self, password):
-        self._data['bindpw'] = password
-        return self
-
-class ChefConf():
-
-    def __init__(self, json_conf=None):
-        self._data = json_conf
-        self._validate()
-
-    def _validate(self):
-        if self._data is None:
-            self._data = {}
-            self._data['chef_server_url'] = ''
-            self._data['chef_validation_url'] = ''
-
-    def get_url(self):
-        return self._data['chef_server_url'].encode('utf-8')
-
-    def set_url(self, url):
-        self._data['chef_server_url'] = url
-        return self
-
-    def get_pem_url(self):
-        return self._data['chef_validation_url'].encode('utf-8')
-
-    def set_pem_url(self, pem_url):
-        self._data['chef_validation_url'] = pem_url
-        return self
-
-    def get_hostname(self):
-        if not 'hostname' in self._data:
-            self._data['hostname'] = ''
-        return self._data['hostname'].encode('utf-8')
-
-    def set_hostname(self, hostname):
-        self._data['hostname'] = hostname
-        return self
-
 
 class ServerConfException(Exception):
     '''

@@ -23,4 +23,4 @@ __license__ = "GPL-2"
 
 import network, pcLabel, linkToServer, localUsers, installSoftware
 
-pages = ['network', 'pcLabel', 'linkToServer', 'localUsers', 'installSoftware']
+pages = ['network', 'pcLabel', 'linkToServer', 'linkToChef', 'localUsers', 'installSoftware']

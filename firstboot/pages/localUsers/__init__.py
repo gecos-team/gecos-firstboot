@@ -58,7 +58,7 @@ local users.'))
         os.spawnlp(os.P_NOWAIT, cmd, cmd, param)
 
     def previous_page(self, load_page_callback):
-        load_page_callback(firstboot.pages.linkToServer)
+        load_page_callback(firstboot.pages.linkToChef)
 
     def next_page(self, load_page_callback):
         load_page_callback(firstboot.pages.installSoftware)

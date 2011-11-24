@@ -27,7 +27,7 @@ import subprocess
 import shlex
 import json
 
-import LinkToServerConfEditorPage, LinkToServerResultsPage
+import LinkToChefConfEditorPage, LinkToChefResultsPage
 from firstboot_lib import PageWindow
 from firstboot import serverconf
 
@@ -43,11 +43,11 @@ __TITLE__ = _('Describe this workstation')
 
 def get_page(main_window):
 
-    page = LinkToServerHostnamePage(main_window)
+    page = LinkToChefHostnamePage(main_window)
     return page
 
-class LinkToServerHostnamePage(PageWindow.PageWindow):
-    __gtype_name__ = "LinkToServerHostnamePage"
+class LinkToChefHostnamePage(PageWindow.PageWindow):
+    __gtype_name__ = "LinkToChefHostnamePage"
 
     def finish_initializing(self):
         self.ui.imgStatus.set_visible(False)
@@ -70,10 +70,6 @@ uniquely identify this workstation.')
         # after the assignment ???
         # The workaround is to reassign the first element of the tuple.
 
-        self.link_ldap = params['link_ldap'],
-        self.link_ldap = self.link_ldap[0]
-        self.unlink_ldap = params['unlink_ldap'],
-        self.unlink_ldap = self.unlink_ldap[0]
         self.link_chef = params['link_chef'],
         self.link_chef = self.link_chef[0]
         self.unlink_chef = params['unlink_chef']
@@ -95,7 +91,7 @@ uniquely identify this workstation.')
         self.main_window.btnNext.set_sensitive(True)
 
     def previous_page(self, load_page_callback):
-        load_page_callback(LinkToServerConfEditorPage, {
+        load_page_callback(LinkToChefConfEditorPage, {
             'server_conf': self.server_conf
         })
 
@@ -115,13 +111,13 @@ uniquely identify this workstation.')
 
         result, messages = serverconf.setup_server(
             server_conf=self.server_conf,
-            link_ldap=self.link_ldap,
-            unlink_ldap=self.unlink_ldap,
+            link_ldap=False,
+            unlink_ldap=False,
             link_chef=self.link_chef,
             unlink_chef=self.unlink_chef
         )
 
-        load_page_callback(LinkToServerResultsPage, {
+        load_page_callback(LinkToChefResultsPage, {
             'server_conf': self.server_conf,
             'result': result,
             'messages': messages
