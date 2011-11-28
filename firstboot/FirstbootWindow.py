@@ -263,7 +263,7 @@ class FirstbootWindow(Window):
 
     def on_link_status(self, sender, status):
         for button_name in self.buttons:
-            if button_name in ['linkToServer', 'installSoftware']:
+            if button_name in ['linkToServer', 'linkToChef', 'installSoftware']:
                 self.buttons[button_name].set_sensitive(status)
                 self.pages[button_name]['enabled'] = status
 
