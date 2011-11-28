@@ -150,7 +150,6 @@ this workstation.\n\n')
         self.show_status()
 
         try:
-
             server_conf = None
 
             if not self.chef_is_configured:
