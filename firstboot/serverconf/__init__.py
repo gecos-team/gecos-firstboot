@@ -44,7 +44,7 @@ __CONFIG_FILE_VERSION__ = '1.1'
 __URLOPEN_TIMEOUT__ = 15
 __BIN_PATH__ = firstbootconfig.get_bin_path()
 __LDAP_CONF_SCRIPT__ = 'firstboot-ldapconf.sh'
-__CHEF_CONF_SCRIPT__ = 'firstboot-chef.sh'
+__CHEF_CONF_SCRIPT__ = 'firstboot-chefconf.sh'
 
 
 def _install_opener(url, user, password, url_based_auth=True):
