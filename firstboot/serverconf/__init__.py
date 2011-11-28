@@ -30,6 +30,7 @@ import json
 import urlparse
 import tempfile
 
+from gi.repository import Gtk
 from firstboot_lib import firstbootconfig
 from ServerConf import ServerConf
 
@@ -46,6 +47,24 @@ __LDAP_CONF_SCRIPT__ = 'firstboot-ldapconf.sh'
 __CHEF_CONF_SCRIPT__ = 'firstboot-chef.sh'
 
 
+def _install_opener(url, user, password, url_based_auth=True):
+
+    if not url_based_auth:
+        # Domain based auth
+        parsed_url = list(urlparse.urlparse(url))
+        top_level_url = '%s://%s' % (parsed_url[0], parsed_url[1])
+
+    else:
+        # URL based auth
+        top_level_url = url
+
+    pwmgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
+    pwmgr.add_password(None, top_level_url, user, password)
+    handler = urllib2.HTTPBasicAuthHandler(pwmgr)
+    opener = urllib2.build_opener(handler)
+    opener.open(url)
+    urllib2.install_opener(opener)
+
 def parse_url(url):
     parsed_url = list(urlparse.urlparse(url))
     if parsed_url[0] in ('http', 'https'):
@@ -59,9 +78,22 @@ def parse_url(url):
 def get_server_conf(url):
 
     try:
+        user = ''
+        password = ''
 
-        url = parse_url(url)
-        fp = urllib2.urlopen(url, timeout=__URLOPEN_TIMEOUT__)
+        try:
+            url = parse_url(url)
+            fp = urllib2.urlopen(url, timeout=__URLOPEN_TIMEOUT__)
+
+        except urllib2.URLError as e:
+            if hasattr(e, 'code') and e.code == 401:
+                user, password = auth_dialog()
+                _install_opener(url, user, password)
+                fp = urllib2.urlopen(url, timeout=__URLOPEN_TIMEOUT__)
+
+            else:
+                raise e
+
         content = fp.read()
         conf = json.loads(content)
 
@@ -83,12 +115,27 @@ def get_server_conf(url):
     except ValueError as e:
         raise ServerConfException(_('Configuration file is not valid.'))
 
-def get_chef_pem(url):
+def get_chef_pem(chef_conf):
+
+    url = chef_conf.get_pem_url()
 
     try:
+        try:
+            url = parse_url(url)
+            fp = urllib2.urlopen(url, timeout=__URLOPEN_TIMEOUT__)
 
-        url = parse_url(url)
-        fp = urllib2.urlopen(url, timeout=__URLOPEN_TIMEOUT__)
+        except urllib2.URLError as e:
+            if hasattr(e, 'code') and e.code == 401:
+                user, password = auth_dialog()
+                _install_opener(url, user, password)
+                fp = urllib2.urlopen(url, timeout=__URLOPEN_TIMEOUT__)
+
+                chef_conf.set_user(user)
+                chef_conf.set_password(password)
+
+            else:
+                raise e
+
         content = fp.read()
 
         (fd, filepath) = tempfile.mkstemp(dir='/tmp') # [suffix=''[, prefix='tmp'[, dir=None[, text=False]]]])
@@ -105,8 +152,8 @@ def get_chef_pem(url):
 def get_chef_hostnames(chef_conf):
 
     chef_url = chef_conf.get_url()
-    pem_url = chef_conf.get_pem_url()
-    pem_file_path = get_chef_pem(pem_url)
+    #pem_url = chef_conf.get_pem_url()
+    pem_file_path = get_chef_pem(chef_conf)
 
     cmd = 'knife node list -u chef-validator -k %s -s %s' % (pem_file_path, chef_url)
     args = shlex.split(cmd)
@@ -311,6 +358,8 @@ def link_to_chef(chef_conf):
     url = chef_conf.get_url()
     pemurl = chef_conf.get_pem_url()
     hostname = chef_conf.get_hostname()
+    user = chef_conf.get_user()
+    password = chef_conf.get_password()
     errors = []
 
     if len(url) == 0:
@@ -331,7 +380,7 @@ def link_to_chef(chef_conf):
         if not os.path.exists(script):
             raise LinkToChefException(_("The Chef configuration script couldn't be found") + ': ' + script)
 
-        cmd = '"%s" "%s" "%s" "%s" "%s" "%s"' % (script, url, pemurl, hostname, 'user', 'passwd')
+        cmd = '"%s" "%s" "%s" "%s" "%s" "%s"' % (script, url, pemurl, hostname, user, password)
         args = shlex.split(cmd)
 
         process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -368,6 +417,48 @@ def unlink_from_chef():
         raise e
 
     return True
+
+def auth_dialog():
+    dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.INFO,
+                                   Gtk.ButtonsType.OK_CANCEL)
+    dialog.set_title(_('Authentication Required'))
+    dialog.set_position(Gtk.WindowPosition.CENTER)
+    dialog.set_default_response(Gtk.ResponseType.OK)
+    dialog.set_icon_name('dialog-password')
+    dialog.set_markup(_('You need to enter your credentials to access the requested resource.'))
+
+    hboxuser = Gtk.HBox()
+    lbluser = Gtk.Label(_('user'))
+    lbluser.set_visible(True)
+    hboxuser.pack_start(lbluser,False, False, False)
+    user = Gtk.Entry()
+    user.set_activates_default(True)
+    user.show()
+    hboxuser.pack_end(user, False, False, False)
+    hboxuser.show()
+
+    hboxpwd = Gtk.HBox()
+    lblpwd = Gtk.Label(_('password'))
+    lblpwd.set_visible(True)
+    hboxpwd.pack_start(lblpwd,False, False, False)
+    pwd = Gtk.Entry()
+    pwd.set_activates_default(True)
+    pwd.set_visibility(False)
+    pwd.show()
+    hboxpwd.pack_end(pwd, False, False, False)
+    hboxpwd.show()
+
+    parent = dialog.get_content_area().get_children()[0].get_children()[1]
+    parent.pack_start(hboxuser, False, False, False)
+    parent.pack_end(hboxpwd, False, False, False)
+    result = dialog.run()
+
+    retval = [None, None]
+    if result == Gtk.ResponseType.OK:
+       retval = [user.get_text(), pwd.get_text()]
+
+    dialog.destroy()
+    return retval
 
 class ServerConfException(Exception):
     '''

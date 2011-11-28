@@ -59,3 +59,21 @@ class ChefConf():
     def set_hostname(self, hostname):
         self._data['hostname'] = hostname
         return self
+
+    def get_user(self):
+        if not 'user' in self._data:
+            self._data['user'] = ''
+        return self._data['user'].encode('utf-8')
+
+    def set_user(self, user):
+        self._data['user'] = user
+        return self
+
+    def get_password(self):
+        if not 'password' in self._data:
+            self._data['password'] = ''
+        return self._data['password'].encode('utf-8')
+
+    def set_password(self, password):
+        self._data['password'] = password
+        return self
