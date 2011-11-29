@@ -105,9 +105,6 @@ likely you don\'t need to create local users.'))
         self.ui.tvUsers.set_search_column(1)
         self.ui.tvUsers.set_show_expanders(False)
 
-        #treestore = Gtk.TreeStore(object)
-        #self.treeviewApplications.set_model(treestore)
-
     def _render_user_column(self, column, cell, model, iter, userdata):
         user = model.get_value(iter, 0)
         property = 'text'
@@ -117,7 +114,6 @@ likely you don\'t need to create local users.'))
     def load_users(self):
 
         users = SystemUsers.read_users()
-        print users
         store = self.ui.tvUsers.get_model()
         store.clear()
 
