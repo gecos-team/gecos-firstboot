@@ -24,6 +24,7 @@ __license__ = "GPL-2"
 import firstboot.serverconf
 from LdapConf import LdapConf
 from ChefConf import ChefConf
+from ActiveDirectoryConf import ActiveDirectoryConf
 
 class ServerConf():
 
@@ -34,6 +35,7 @@ class ServerConf():
         self._data['notes'] = ''
         self._ldap_conf = LdapConf()
         self._chef_conf = ChefConf()
+        self._ad_conf = ActiveDirectoryConf()
 
     def load_data(self, conf):
         self.set_organization(conf['organization'])
@@ -67,6 +69,9 @@ class ServerConf():
     def set_notes(self, notes):
         self._data['notes'] = notes
         return self
+
+    def get_ad_conf(self):
+        return self._ad_conf
 
     def get_ldap_conf(self):
         return self._ldap_conf

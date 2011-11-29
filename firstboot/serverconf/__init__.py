@@ -136,6 +136,9 @@ def get_chef_hostnames(chef_conf):
     os.remove(pem_file_path)
     return hostnames
 
+def ad_is_configured():
+    return False
+
 def ldap_is_configured():
     try:
 
@@ -190,7 +193,7 @@ def chef_is_configured():
 
 
 def setup_server(server_conf, link_ldap=False, unlink_ldap=False,
-                link_chef=False, unlink_chef=False):
+                link_chef=False, unlink_chef=False, link_ad=False, unlink_ad=False):
 
     result = True
     messages = []
