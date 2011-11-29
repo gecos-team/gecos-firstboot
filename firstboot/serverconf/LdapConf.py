@@ -70,3 +70,5 @@ class LdapConf():
     def set_password(self, password):
         self._data['bindpw'] = password
         return self
+    def __str__(self):
+        return str(self._data)
