@@ -138,46 +138,19 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
         load_page_callback(firstboot.pages.linkToServer)
 
     def next_page(self, load_page_callback):
-
-        if not self.unlink_from_chef and self.ui.chkChef.get_active():
-            # The unique host name for Chef is mandatory, so we need
-            # to ask for it before the setup.
-
-            try:
-                used_hostnames = serverconf.get_chef_hostnames(self.server_conf.get_chef_conf())
-
-                load_page_callback(LinkToServerHostnamePage, {
-                    'server_conf': self.server_conf,
-                    'link_ldap': self.ui.chkLDAP.get_active(),
-                    'unlink_ldap': self.unlink_from_ldap,
-                    'link_chef': self.ui.chkChef.get_active(),
-                    'unlink_chef': self.unlink_from_chef,
-                    'used_hostnames': used_hostnames
-                })
-
-            except serverconf.ServerConfException as e:
-                messages = [{'type': 'error', 'message': str(e)}]
-
-                load_page_callback(LinkToServerResultsPage, {
-                    'result': False,
-                    'server_conf': self.server_conf,
-                    'messages': messages
-                })
-
-        else:
-            result, messages = serverconf.setup_server(
-                server_conf=self.server_conf,
-                link_ldap=self.ui.chkLDAP.get_active(),
-                unlink_ldap=self.unlink_from_ldap,
-                link_chef=self.ui.chkChef.get_active(),
-                unlink_chef=self.unlink_from_chef
-            )
-
-            load_page_callback(LinkToServerResultsPage, {
-                'result': result,
-                'server_conf': self.server_conf,
-                'messages': messages
-            })
+        print self.server_conf.get_ldap_conf()
+        print self.server_conf.get_ad_conf()
+#        result, messages = serverconf.setup_server(
+#            server_conf=self.server_conf,
+#            link_ldap=self.link_ldap,
+#            link_ad=self.link_ad,
+#        )
+#
+#        load_page_callback(LinkToServerResultsPage, {
+#            'result': result,
+#            'server_conf': self.server_conf,
+#            'messages': messages
+#         })
 
     def on_serverConf_changed(self, entry):
         if not self.update_server_conf:

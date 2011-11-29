@@ -197,9 +197,8 @@ server.')
             load_page_callback(LinkToServerConfEditorPage, {
                 'server_conf': server_conf,
                 'ldap_is_configured': self.ldap_is_configured,
-                'unlink_from_ldap': self.ui.chkUnlinkLDAP.get_active(),
-                'chef_is_configured': self.chef_is_configured,
-                'unlink_from_chef': self.ui.chkUnlinkChef.get_active()
+                'auth_method': self.method,
+                'ad_is_configured': self.ad_is_configured,
             })
 
         except serverconf.ServerConfException as e:
