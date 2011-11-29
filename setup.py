@@ -89,7 +89,7 @@ class InstallAndUpdateDataDirectory(DistUtilsExtra.auto.install_auto):
         values = {'__firstboot_data_directory__': "'%s'" % (self.prefix + '/local/share/firstboot/'),
                   '__version__': "'%s'" % self.distribution.get_version()}
         previous_values = update_config(values)
-        update_desktop_file(self.prefix + '/local/share/firstboot/')
+        update_desktop_file(self.prefix + '/share/firstboot/')
         DistUtilsExtra.auto.install_auto.run(self)
         update_config(previous_values)
 
