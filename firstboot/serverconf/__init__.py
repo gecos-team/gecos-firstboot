@@ -448,9 +448,8 @@ def auth_dialog():
     hboxpwd.pack_end(pwd, False, False, False)
     hboxpwd.show()
 
-    parent = dialog.get_content_area().get_children()[0].get_children()[1]
-    parent.pack_start(hboxuser, False, False, False)
-    parent.pack_end(hboxpwd, False, False, False)
+    dialog.get_message_area().pack_start(hboxuser, False, False, False)
+    dialog.get_message_area().pack_end(hboxpwd, False, False, False)
     result = dialog.run()
 
     retval = [None, None]
