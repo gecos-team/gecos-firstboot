@@ -140,17 +140,20 @@ def get_chef_hostnames(chef_conf):
 def ad_is_configured():
     try:
         script = os.path.join(__BIN_PATH__, __AD_CONF_SCRIPT__)
+        print script
         if not os.path.exists(script):
             raise LinkToADException(_("The AD configuration script couldn't be found") + ': ' + script)
-
+        print 1
         cmd = '"%s" "--query"' % (script,)
         args = shlex.split(cmd)
-
+        print 2
+        print args, cmd
         process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        print 4
         exit_code = os.waitpid(process.pid, 0)
         output = process.communicate()[0]
         output = output.strip()
-
+        print 3
         if exit_code[1] == 0:
             ret = bool(int(output))
             return ret

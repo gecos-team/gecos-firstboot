@@ -74,6 +74,7 @@ class LinkToServerPage(PageWindow.PageWindow):
         self.ui.chkUnlinkAD.set_visible(self.ad_is_configured)
 
         self.ui.box5.set_visible(False)
+        self.ui.box6.set_visible(True)
         url_config = self.fbe.get_url()
         url = self.cmd_options.url
 
@@ -125,18 +126,21 @@ server.')
         self.ui.lblUrl.set_visible(False)
         self.ui.txtUrl.set_visible(False)
         self.ui.box5.set_visible(False)
+        self.ui.box6.set_visible(False)
         self.show_status()
 
     def on_radioManual_toggled(self, button):
         self.ui.lblUrl.set_visible(False)
         self.ui.txtUrl.set_visible(False)
         self.ui.box5.set_visible(True)
+        self.ui.box6.set_visible(False)
         self.show_status()
 
     def on_radioAutomatic_toggled(self, button):
         self.ui.lblUrl.set_visible(True)
         self.ui.txtUrl.set_visible(True)
         self.ui.box5.set_visible(False)
+        self.ui.box6.set_visible(True)
         self.show_status()
 
     def on_radioLDAP_toggled(self, button):
@@ -144,6 +148,13 @@ server.')
 
     def on_radioAD_toggled(self, button):
         self.method="ad"
+
+    def on_radioLDAPAut_toggled(self, button):
+        self.methodaut="ldap"
+
+    def on_radioADAut_toggled(self, button):
+        self.methodaut="ad"
+
 
     def show_status(self, status=None, exception=None):
 
@@ -208,7 +219,8 @@ server.')
             if self.ui.radioAuto.get_active():
                 url = self.ui.txtUrl.get_text()
                 server_conf = serverconf.get_server_conf(url)
-
+                self.method=self.methodaut
+            
             load_page_callback(LinkToServerConfEditorPage, {
                 'server_conf': server_conf,
                 'ldap_is_configured': self.ldap_is_configured,
