@@ -86,8 +86,9 @@ def copy_pages(pages_path):
 
 class InstallAndUpdateDataDirectory(DistUtilsExtra.auto.install_auto):
     def run(self):
-        values = {'__firstboot_data_directory__': "'%s'" % (self.prefix + '/local/share/firstboot/'),
-                  '__version__': "'%s'" % self.distribution.get_version()}
+        values = {'__firstboot_data_directory__': "'%s'" % (self.prefix + '/share/firstboot/'),
+                  '__version__': "'%s'" % self.distribution.get_version(),
+                  '__firstboot_prefix__': "'%s'" % self.prefix}
         previous_values = update_config(values)
         update_desktop_file(self.prefix + '/share/firstboot/')
         DistUtilsExtra.auto.install_auto.run(self)
