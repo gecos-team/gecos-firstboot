@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: gecos-firstboot VERSION\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-29 14:38+0100\n"
+"POT-Creation-Date: 2011-11-30 13:16+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,29 +33,23 @@ msgstr ""
 msgid "Are you sure you have fully configured this workstation?"
 msgstr ""
 
-#: ../firstboot/__init__.py:42
-msgid "Show debug messages (-vv debugs firstboot_lib also)"
+#: ../firstboot/pages/linkToChef/LinkToChefResultsPage.py:36
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:35
+#: ../firstboot/pages/linkToServer/LinkToServerResultsPage.py:36
+#: ../firstboot/pages/linkToServer/__init__.py:38
+msgid "Link workstation to a server"
 msgstr ""
 
-#: ../firstboot/__init__.py:46
-msgid "Debug mode. Force run the application after the first start"
+#: ../firstboot/pages/linkToChef/LinkToChefResultsPage.py:71
+#: ../firstboot/pages/linkToChef/__init__.py:123
+#: ../firstboot/pages/linkToServer/LinkToServerResultsPage.py:71
+#: ../firstboot/pages/linkToServer/__init__.py:147
+msgid "The configuration was updated successfully."
 msgstr ""
 
-#: ../firstboot/__init__.py:50
-msgid "Use this URL by default in the \"Link to Server\" page."
-msgstr ""
-
-#: ../firstboot/pages/installSoftware/__init__.py:35
-#: ../firstboot/pages/installSoftware/__init__.py:50
-msgid "Install software"
-msgstr ""
-
-#: ../firstboot/pages/installSoftware/__init__.py:47
-msgid "Close"
-msgstr ""
-
-#: ../firstboot/pages/installSoftware/__init__.py:51
-msgid "From this window you can install software and manage packages."
+#: ../firstboot/pages/linkToChef/LinkToChefResultsPage.py:76
+#: ../firstboot/pages/linkToServer/LinkToServerResultsPage.py:76
+msgid "There are some errors you may fix."
 msgstr ""
 
 #: ../firstboot/pages/linkToChef/__init__.py:38
@@ -64,46 +58,38 @@ msgid "Link workstation to a Chef server"
 msgstr ""
 
 #: ../firstboot/pages/linkToChef/__init__.py:78
-#: ../firstboot/pages/linkToServer/__init__.py:85
 msgid ""
-"When a workstation is linked to a GECOS server it can be managed remotely "
-"and existing users in the server can login into this workstation.\n"
+"When a workstation is linked to a Chef server it can be easily managed "
+"remotely.\n"
 "\n"
 msgstr ""
 
-#: ../firstboot/pages/linkToChef/__init__.py:83
+#: ../firstboot/pages/linkToChef/__init__.py:82
 #: ../firstboot/pages/linkToServer/__init__.py:100
 msgid "Unlink from Chef"
 msgstr ""
 
-#: ../firstboot/pages/linkToChef/__init__.py:84
+#: ../firstboot/pages/linkToChef/__init__.py:83
 #: ../firstboot/pages/linkToServer/__init__.py:101
 msgid "Omit"
 msgstr ""
 
-#: ../firstboot/pages/linkToChef/__init__.py:85
+#: ../firstboot/pages/linkToChef/__init__.py:84
 #: ../firstboot/pages/linkToServer/__init__.py:102
 msgid "Manual"
 msgstr ""
 
-#: ../firstboot/pages/linkToChef/__init__.py:86
+#: ../firstboot/pages/linkToChef/__init__.py:85
 #: ../firstboot/pages/linkToServer/__init__.py:103
 msgid "Automatic"
 msgstr ""
 
-#: ../firstboot/pages/linkToChef/__init__.py:118
+#: ../firstboot/pages/linkToChef/__init__.py:117
 #: ../firstboot/pages/linkToServer/__init__.py:141
 msgid "The configuration file is valid."
 msgstr ""
 
-#: ../firstboot/pages/linkToChef/__init__.py:124
-#: ../firstboot/pages/linkToChef/LinkToChefResultsPage.py:71
-#: ../firstboot/pages/linkToServer/__init__.py:147
-#: ../firstboot/pages/linkToServer/LinkToServerResultsPage.py:71
-msgid "The configuration was updated successfully."
-msgstr ""
-
-#: ../firstboot/pages/linkToChef/__init__.py:136
+#: ../firstboot/pages/linkToChef/__init__.py:135
 #: ../firstboot/pages/linkToServer/__init__.py:159
 msgid "Trying to connect..."
 msgstr ""
@@ -138,8 +124,8 @@ msgid "The fields are mandatory."
 msgstr ""
 
 #: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:41
-#: ../firstboot/pages/linkToServer/LinkToServerHostnamePage.py:41
 #: ../firstboot/pages/pcLabel/__init__.py:37
+#: ../firstboot/pages/linkToServer/LinkToServerHostnamePage.py:41
 msgid "Describe this workstation"
 msgstr ""
 
@@ -156,7 +142,6 @@ msgstr ""
 msgid "Hostname"
 msgstr ""
 
-#. self.txtHostname.modify_text(Gtk.StateFlags.NORMAL, Gdk.Color(255, 0, 0))
 #: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:86
 #: ../firstboot/pages/linkToServer/LinkToServerHostnamePage.py:90
 msgid "The host name is in use."
@@ -172,16 +157,47 @@ msgstr ""
 msgid "The host name already exists in the Chef server."
 msgstr ""
 
-#: ../firstboot/pages/linkToChef/LinkToChefResultsPage.py:36
-#: ../firstboot/pages/linkToServer/__init__.py:38
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:35
-#: ../firstboot/pages/linkToServer/LinkToServerResultsPage.py:36
-msgid "Link workstation to a server"
+#: ../firstboot/pages/pcLabel/__init__.py:59
+msgid ""
+"You can type a description for this workstation, it will be shown in the "
+"GECOS Server admin interface and will help you to find out the workstation "
+"later."
 msgstr ""
 
-#: ../firstboot/pages/linkToChef/LinkToChefResultsPage.py:76
-#: ../firstboot/pages/linkToServer/LinkToServerResultsPage.py:76
-msgid "There are some errors you may fix."
+#: ../firstboot/pages/pcLabel/__init__.py:64
+msgid "Label"
+msgstr ""
+
+#: ../firstboot/pages/pcLabel/__init__.py:70
+msgid "The label has been updated correctly."
+msgstr ""
+
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:86
+msgid "This workstation is going to be unlinked from the LDAP server."
+msgstr ""
+
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:90
+msgid "This workstation is going to be unlinked from the Chef server."
+msgstr ""
+
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:107
+#: ../firstboot/pages/localUsers/__init__.py:79
+msgid "Password"
+msgstr ""
+
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:111
+msgid "Configure LDAP"
+msgstr ""
+
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:112
+msgid "Configure Chef"
+msgstr ""
+
+#: ../firstboot/pages/linkToServer/__init__.py:85
+msgid ""
+"When a workstation is linked to a GECOS server it can be managed remotely "
+"and existing users in the server can login into this workstation.\n"
+"\n"
 msgstr ""
 
 #: ../firstboot/pages/linkToServer/__init__.py:91
@@ -196,38 +212,6 @@ msgstr ""
 
 #: ../firstboot/pages/linkToServer/__init__.py:99
 msgid "Unlink from LDAP"
-msgstr ""
-
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:86
-msgid "This workstation is going to be unlinked from the LDAP server."
-msgstr ""
-
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:90
-msgid "This workstation is going to be unlinked from the Chef server."
-msgstr ""
-
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:107
-msgid "Password"
-msgstr ""
-
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:111
-msgid "Configure LDAP"
-msgstr ""
-
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:112
-msgid "Configure Chef"
-msgstr ""
-
-#: ../firstboot/pages/localUsers/__init__.py:35
-#: ../firstboot/pages/localUsers/__init__.py:49
-msgid "Create local users"
-msgstr ""
-
-#: ../firstboot/pages/localUsers/__init__.py:50
-msgid ""
-"If you need to manage local users on this workstation click the button "
-"below. Note that if this workstation is linked to a GECOS server, it's "
-"likely you don't need to create local users."
 msgstr ""
 
 #: ../firstboot/pages/network/__init__.py:37
@@ -253,19 +237,163 @@ msgstr ""
 msgid "IP"
 msgstr ""
 
-#: ../firstboot/pages/pcLabel/__init__.py:59
+#: ../firstboot/pages/localUsers/__init__.py:35
+msgid "Manage local users"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/__init__.py:74
 msgid ""
-"You can type a description for this workstation, it will be shown in the "
-"GECOS Server admin interface and will help you to find out the workstation "
-"later."
+"You can manage local users on this workstation. Note if this workstation is "
+"linked to a GECOS server, it's likely you don't need to create local users."
 msgstr ""
 
-#: ../firstboot/pages/pcLabel/__init__.py:64
-msgid "Label"
+#: ../firstboot/pages/localUsers/__init__.py:78
+msgid "Name"
 msgstr ""
 
-#: ../firstboot/pages/pcLabel/__init__.py:70
-msgid "The label has been updated correctly."
+#: ../firstboot/pages/localUsers/__init__.py:80
+msgid "Confirm"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/__init__.py:81
+msgid "Groups"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/__init__.py:82
+msgid "Add"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/__init__.py:83
+msgid "Remove"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/__init__.py:84
+msgid "Cancel"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/__init__.py:85
+msgid "Apply"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/__init__.py:100
+msgid "User"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/__init__.py:164
+msgid "The passwords doesn't match."
+msgstr ""
+
+#: ../firstboot/pages/localUsers/SystemUsers.py:85
+msgid "The user couldn't be updated. Please check the parameters."
+msgstr ""
+
+#: ../firstboot/pages/localUsers/SystemUsers.py:103
+msgid "The password couldn't be changed."
+msgstr ""
+
+#: ../firstboot/pages/localUsers/SystemUsers.py:114
+msgid "The user couldn't be created. Please check the parameters."
+msgstr ""
+
+#: ../firstboot/pages/localUsers/SystemUsers.py:130
+msgid "The user to delete was not a system account."
+msgstr ""
+
+#: ../firstboot/pages/localUsers/SystemUsers.py:133
+msgid "There is no such user."
+msgstr ""
+
+#: ../firstboot/pages/localUsers/SystemUsers.py:136
+msgid "There is no such group."
+msgstr ""
+
+#: ../firstboot/pages/localUsers/SystemUsers.py:139
+msgid "Internal error. No action was performed."
+msgstr ""
+
+#: ../firstboot/pages/localUsers/SystemUsers.py:142
+msgid "The group to delete is not empty."
+msgstr ""
+
+#: ../firstboot/pages/localUsers/SystemUsers.py:145
+msgid "The user does not belong to the specified group."
+msgstr ""
+
+#: ../firstboot/pages/localUsers/SystemUsers.py:148
+msgid "You cannot remove a user from its primary group."
+msgstr ""
+
+#: ../firstboot/pages/localUsers/SystemUsers.py:151
+msgid ""
+"The required perl-package 'perl modules' is not installed. This package is "
+"required to perform the requested actions."
+msgstr ""
+
+#: ../firstboot/pages/localUsers/SystemUsers.py:154
+msgid "For removing the root account the parameter \"--force\" is required."
+msgstr ""
+
+#: ../firstboot/pages/localUsers/SystemUsers.py:157
+msgid "Unknown error, the user couldn't be removed for some reason."
+msgstr ""
+
+#: ../firstboot/pages/localUsers/Dialogs.py:32
+msgid "New user"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/Dialogs.py:36
+msgid "Type the new user login:"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/Dialogs.py:39
+msgid "login"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/Dialogs.py:49
+#: ../firstboot/serverconf/__init__.py:441
+msgid "password"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/Dialogs.py:73
+msgid "Remove user"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/Dialogs.py:77
+#, python-format
+msgid "The user %s is going to be removed, are you sure?"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/Dialogs.py:80
+msgid "Remove the user home?"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/Dialogs.py:98
+msgid "Error"
+msgstr ""
+
+#: ../firstboot/pages/installSoftware/__init__.py:35
+#: ../firstboot/pages/installSoftware/__init__.py:50
+msgid "Install software"
+msgstr ""
+
+#: ../firstboot/pages/installSoftware/__init__.py:47
+msgid "Close"
+msgstr ""
+
+#: ../firstboot/pages/installSoftware/__init__.py:51
+msgid "From this window you can install software and manage packages."
+msgstr ""
+
+#: ../firstboot/__init__.py:42
+msgid "Show debug messages (-vv debugs firstboot_lib also)"
+msgstr ""
+
+#: ../firstboot/__init__.py:46
+msgid "Debug mode. Force run the application after the first start"
+msgstr ""
+
+#: ../firstboot/__init__.py:50
+msgid "Use this URL by default in the \"Link to Server\" page."
 msgstr ""
 
 #: ../firstboot/serverconf/__init__.py:103
@@ -358,8 +486,4 @@ msgstr ""
 
 #: ../firstboot/serverconf/__init__.py:431
 msgid "user"
-msgstr ""
-
-#: ../firstboot/serverconf/__init__.py:441
-msgid "password"
 msgstr ""
