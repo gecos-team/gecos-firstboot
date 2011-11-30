@@ -63,7 +63,7 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
                 self.ui.txtUrlChef.set_text(self.server_conf.get_chef_conf().get_url())
                 self.ui.txtUrlChefCert.set_text(self.server_conf.get_chef_conf().get_pem_url())
 
-        if self.server_conf is None:
+        if not 'server_conf' in params:
             self.ui.lblVersionValue.set_visible(False)
             self.ui.lblOrganizationValue.set_visible(False)
             self.server_conf = serverconf.ServerConf()
