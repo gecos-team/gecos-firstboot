@@ -140,17 +140,17 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
     def next_page(self, load_page_callback):
         print self.server_conf.get_ldap_conf()
         print self.server_conf.get_ad_conf()
-#        result, messages = serverconf.setup_server(
-#            server_conf=self.server_conf,
-#            link_ldap=self.link_ldap,
-#            link_ad=self.link_ad,
-#        )
+        result, messages = serverconf.setup_server(
+            server_conf=self.server_conf,
+            link_ldap=self.link_ldap,
+            link_ad=self.link_ad
+        )
 #
-#        load_page_callback(LinkToServerResultsPage, {
-#            'result': result,
-#            'server_conf': self.server_conf,
-#            'messages': messages
-#         })
+        load_page_callback(LinkToServerResultsPage, {
+            'result': result,
+            'server_conf': self.server_conf,
+            'messages': messages
+         })
 
     def on_serverConf_changed(self, entry):
         if not self.update_server_conf:

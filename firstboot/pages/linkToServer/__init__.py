@@ -53,7 +53,8 @@ class LinkToServerPage(PageWindow.PageWindow):
 
     def finish_initializing(self):
         self.method="ldap"
-
+        self.unlink_ldap=False
+        self.unlink_ad=False
 
         self.show_status()
 
@@ -111,14 +112,14 @@ server.')
         self.ui.radioAD.set_label(_('Active Directory'))
 
     def on_chkUnlinkLDAP_toggle(self, button):
-        if self.ldap_is_configured:
-            active = button.get_active()
-            self.main_window.btnNext.set_sensitive(active)
+        active = button.get_active()
+        self.unlink_ldap=active
+        self.main_window.btnNext.set_sensitive(active)
 
     def on_chkUnlinkAD_toggle(self, button):
-        if self.ad_is_configured:
-            active = button.get_active()
-            self.main_window.btnNext.set_sensitive(active)
+        active = button.get_active()
+        self.unlink_ad=active
+        self.main_window.btnNext.set_sensitive(active)
 
     def on_radioOmit_toggled(self, button):
         self.ui.lblUrl.set_visible(False)
@@ -180,6 +181,20 @@ server.')
         load_page_callback(firstboot.pages.pcLabel)
 
     def next_page(self, load_page_callback):
+        if self.unlink_ldap or self.unlink_ad:
+            server_conf = None
+            result, messages = serverconf.setup_server(
+                server_conf=server_conf,
+                unlink_ldap=self.unlink_ldap,
+                unlink_ad=self.unlink_ad
+            )
+
+            load_page_callback(LinkToServerResultsPage, {
+                'result': result,
+                'server_conf': server_conf,
+                'messages': messages
+            })
+            return
 
         if self.ui.radioOmit.get_active():
             self.emit('status-changed', 'linkToServer', True)
