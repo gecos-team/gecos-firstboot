@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-30 09:54+0100\n"
+"POT-Creation-Date: 2011-11-30 12:22+0100\n"
 "PO-Revision-Date: 2011-08-08 13:38+0200\n"
 "Last-Translator: AHernandez <ahernandez@emergya.com>\n"
 "Language-Team: Spanish\n"
@@ -41,7 +41,7 @@ msgid "Link workstation to a server"
 msgstr "Enlazar puesto a un servidor"
 
 #: ../firstboot/pages/linkToChef/LinkToChefResultsPage.py:71
-#: ../firstboot/pages/linkToChef/__init__.py:124
+#: ../firstboot/pages/linkToChef/__init__.py:123
 #: ../firstboot/pages/linkToServer/LinkToServerResultsPage.py:71
 #: ../firstboot/pages/linkToServer/__init__.py:147
 msgid "The configuration was updated successfully."
@@ -58,43 +58,41 @@ msgid "Link workstation to a Chef server"
 msgstr "Enlazar puesto a un servidor Chef"
 
 #: ../firstboot/pages/linkToChef/__init__.py:78
-#: ../firstboot/pages/linkToServer/__init__.py:85
 msgid ""
-"When a workstation is linked to a GECOS server it can be managed remotely "
-"and existing users in the server can login into this workstation.\n"
+"When a workstation is linked to a Chef server it can be easily managed "
+"remotely.\n"
 "\n"
 msgstr ""
-"Cuando un puesto de trabajo está vinculado a un servidor GECOS este puede "
-"ser gestionado remotamente y los usuarios existentes en el servidor pueden "
-"iniciar sesión en este puesto de trabajo.\n"
+"Cuando un puesto de trabajo está vinculado a un servidor Chef este puede "
+"ser gestionado remotamente de forma sencilla.\n"
 "\n"
 
-#: ../firstboot/pages/linkToChef/__init__.py:83
+#: ../firstboot/pages/linkToChef/__init__.py:82
 #: ../firstboot/pages/linkToServer/__init__.py:100
 msgid "Unlink from Chef"
 msgstr "Desvincular de Chef"
 
-#: ../firstboot/pages/linkToChef/__init__.py:84
+#: ../firstboot/pages/linkToChef/__init__.py:83
 #: ../firstboot/pages/linkToServer/__init__.py:101
 msgid "Omit"
 msgstr "Omitir"
 
-#: ../firstboot/pages/linkToChef/__init__.py:85
+#: ../firstboot/pages/linkToChef/__init__.py:84
 #: ../firstboot/pages/linkToServer/__init__.py:102
 msgid "Manual"
 msgstr "Manual"
 
-#: ../firstboot/pages/linkToChef/__init__.py:86
+#: ../firstboot/pages/linkToChef/__init__.py:85
 #: ../firstboot/pages/linkToServer/__init__.py:103
 msgid "Automatic"
 msgstr "Automático"
 
-#: ../firstboot/pages/linkToChef/__init__.py:118
+#: ../firstboot/pages/linkToChef/__init__.py:117
 #: ../firstboot/pages/linkToServer/__init__.py:141
 msgid "The configuration file is valid."
 msgstr "El fichero de configuración es válido."
 
-#: ../firstboot/pages/linkToChef/__init__.py:136
+#: ../firstboot/pages/linkToChef/__init__.py:135
 #: ../firstboot/pages/linkToServer/__init__.py:159
 msgid "Trying to connect..."
 msgstr "Intentando conectar..."
@@ -203,6 +201,17 @@ msgstr "Configurar LDAP"
 #: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:112
 msgid "Configure Chef"
 msgstr "Configurar Chef"
+
+#: ../firstboot/pages/linkToServer/__init__.py:85
+msgid ""
+"When a workstation is linked to a GECOS server it can be managed remotely "
+"and existing users in the server can login into this workstation.\n"
+"\n"
+msgstr ""
+"Cuando un puesto de trabajo está vinculado a un servidor GECOS este puede "
+"ser gestionado remotamente y los usuarios existentes en el servidor pueden "
+"iniciar sesión en este puesto de trabajo.\n"
+"\n"
 
 #: ../firstboot/pages/linkToServer/__init__.py:91
 msgid ""
@@ -339,8 +348,8 @@ msgid ""
 "The required perl-package 'perl modules' is not installed. This package is "
 "required to perform the requested actions."
 msgstr ""
-"El paquete requerido 'perl-modules' no está instalado. Este paquete se necesita "
-"para realizar las acciones solicitadas."
+"El paquete requerido 'perl-modules' no está instalado. Este paquete se "
+"necesita para realizar las acciones solicitadas."
 
 #: ../firstboot/pages/localUsers/SystemUsers.py:154
 msgid "For removing the root account the parameter \"--force\" is required."
