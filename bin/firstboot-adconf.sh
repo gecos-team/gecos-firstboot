@@ -50,7 +50,7 @@ check_prerequisites() {
 
 # Check if AD is currently configured
 check_configured() {
-    if [ $(check_backup) -eq 1 ]; then
+    if [ "$(check_backup)" == "1" ]; then
         echo 1
     else
         echo 0
@@ -61,7 +61,7 @@ check_configured() {
 # Restore the configuration
 restore() {
 
-    if [ $(check_backup) -lt 1 ]; then
+    if [ "$(check_backup)" == "0" ]; then
         echo "Not found: "$bakdir
         exit 1
     fi
