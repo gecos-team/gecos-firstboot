@@ -138,8 +138,8 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
         load_page_callback(firstboot.pages.linkToServer)
 
     def next_page(self, load_page_callback):
-        print self.server_conf.get_ldap_conf()
-        print self.server_conf.get_ad_conf()
+#        print self.server_conf.get_ldap_conf()
+#        print self.server_conf.get_ad_conf()
         result, messages = serverconf.setup_server(
             server_conf=self.server_conf,
             link_ldap=self.link_ldap,
