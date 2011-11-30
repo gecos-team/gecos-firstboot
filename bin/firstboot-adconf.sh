@@ -51,9 +51,9 @@ check_prerequisites() {
 # Check if AD is currently configured
 check_configured() {
     if [ $(check_backup) -eq 1 ]; then
-        return 1
+        echo 1
     else
-        return 0
+        echo 0
     fi
     exit 0
 }
@@ -66,7 +66,7 @@ restore() {
         exit 1
     fi
     mv $bakdir/nsswitch.conf $nsswitch
-    mv $bakdir $pamd
+    mv $bakdir/* $pamd/
     rm -rf $bakdir 
     domainjoin-cli leave    
     retval=$(echo $?)
@@ -81,18 +81,20 @@ restore() {
 # Make a backup
 check_backup(){
     if [ ! -d $bakdir ]; then
-        return 0
+        echo 0
     else
-        return 1
+        echo 1
     fi
 }
 
 backup() {
-    if [ $(check_backup) -lt 1 ]; then
+    if [ "$(check_backup)" == "0" ]; then
         mkdir $bakdir
         cp -r $pamd/common-* $bakdir
+        cp $nsswitch $bakdir
     else
         cp -r $pamd/common-* $bakdir
+        cp $nsswitch $bakdir
     fi
 }
 
@@ -101,8 +103,8 @@ update_conf() {
 
     check_prerequisites
     backup
-    echo $dns > $resolv_header
-
+    echo "nameserver $dns" > $resolv_header
+    service resolvconf restart
     domainjoin-cli join $fqdn $user $passwd
     retval=$(echo $?)
     if [ $retval -ne 0 ]; then
@@ -111,11 +113,34 @@ update_conf() {
         exit 1
     fi
     $likewiseconf AssumeDefaultDomain true
+    retval=$(echo $?)
+    if [ $retval -ne 0 ]; then
+        echo "Fail connecting to AD"
+        restore
+        exit 1
+    fi
     rm -rf $pamd/common-*
-    debconf-set-selections $debconffile
+    debconf-set-selections $debconffile 2>&1 |grep -qi "can't open"
+    retval=$(echo $?)
+    if [ $retval -eq 0 ]; then
+        echo "Fail connecting to AD"
+        restore
+        exit 1
+    fi
     pam-auth-update --package --force
-    cp $nsswitch $bakdir
+    retval=$(echo $?)
+    if [ $retval -ne 0 ]; then
+        echo "Fail connecting to AD"
+        restore
+        exit 1
+    fi
     sed -i 's|ldap||g' $nsswitch
+    retval=$(echo $?)
+    if [ $retval -ne 0 ]; then
+        echo "Fail connecting to AD"
+        restore
+        exit 1
+    fi
     
 echo "The configuration was updated successfully."
     exit 0
