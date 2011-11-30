@@ -37,6 +37,7 @@ __all__ = [
 __firstboot_data_directory__ = '../data/'
 __license__ = ''
 __version__ = '0.3.1'
+__firstboot_prefix__ = '/usr/local'
 
 import os
 import sys
@@ -62,6 +63,8 @@ def get_data_file(*path_segments):
     """
     return os.path.join(get_data_path(), *path_segments)
 
+def get_prefix():
+    return __firstboot_prefix__
 
 def get_data_path():
     """Retrieve firstboot data path
