@@ -27,7 +27,11 @@ import os
 
 import gettext
 from gettext import gettext as _
-gettext.bindtextdomain('firstboot', '/usr/local/share/locale')
+
+if firstbootconfig.get_prefix() == '/usr/local':
+    gettext.bindtextdomain('firstboot', '/usr/local/share/locale')
+elif pdalconfig.get_prefix() == '/usr':
+    gettext.textdomain('firstboot')
 
 if __name__ == '__main__':
     if os.getuid() != 0:
