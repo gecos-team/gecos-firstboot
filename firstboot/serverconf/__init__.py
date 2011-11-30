@@ -44,7 +44,7 @@ __CONFIG_FILE_VERSION__ = '1.1'
 __URLOPEN_TIMEOUT__ = 15
 __BIN_PATH__ = firstbootconfig.get_bin_path()
 __LDAP_CONF_SCRIPT__ = 'firstboot-ldapconf.sh'
-__CHEF_CONF_SCRIPT__ = 'firstboot-chef.sh'
+__CHEF_CONF_SCRIPT__ = 'firstboot-chefconf.sh'
 
 
 def _install_opener(url, user, password, url_based_auth=True):
@@ -448,9 +448,8 @@ def auth_dialog():
     hboxpwd.pack_end(pwd, False, False, False)
     hboxpwd.show()
 
-    parent = dialog.get_content_area().get_children()[0].get_children()[1]
-    parent.pack_start(hboxuser, False, False, False)
-    parent.pack_end(hboxpwd, False, False, False)
+    dialog.get_message_area().pack_start(hboxuser, False, False, False)
+    dialog.get_message_area().pack_end(hboxpwd, False, False, False)
     result = dialog.run()
 
     retval = [None, None]

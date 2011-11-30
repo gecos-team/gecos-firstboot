@@ -149,12 +149,14 @@ workstation to different services',
         'bin/firstboot',
         'bin/firstboot-launcher',
         'bin/firstboot-ldapconf.sh',
-        'bin/firstboot-chef.sh'
+        'bin/firstboot-chefconf.sh'
+        'bin/firstboot-adconf.sh'
     ],
 
     data_files=[
        ('bin', ['bin/firstboot', 'bin/firstboot-launcher',
-            'bin/firstboot-ldapconf.sh', 'bin/firstboot-chef.sh']),
+            'bin/firstboot-ldapconf.sh', 'bin/firstboot-chefconf.sh',
+	    'bin/firstboot-adconf.sh']),
        ('share/firstboot/media', glob.glob('data/media/*')),
        ('share/firstboot/ui', glob.glob('data/ui/*')),
     ],
