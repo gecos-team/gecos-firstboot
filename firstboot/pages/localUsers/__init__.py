@@ -49,6 +49,9 @@ class LocalUsersPage(PageWindow.PageWindow):
         self.init_treeview()
         self.reload_page()
 
+        self.ui.lblGroups.set_visible(False)
+        self.ui.txtGroups.set_visible(False)
+
     def reload_page(self):
         self._accept_changes = False
         self._active_user = None
@@ -122,11 +125,16 @@ likely you don\'t need to create local users.'))
 
         self.ui.tvUsers.set_model(store)
 
+    def _select_user(self):
+        self.ui.tvUsers.get_selection().select_path(self._selected_path)
+        self.on_tvUsersCursorChanged(self.ui.tvUsers)
+
     def on_tvUsersCursorChanged(self, widget):
         if self._active_user and self._active_user['updated'] == True:
             return
         store, iter = widget.get_selection().get_selected()
         user = store.get_value(iter, 0)
+        self._selected_path = store.get_path(iter)
         self.set_active_user(user)
 
     def set_active_user(self, user):
@@ -166,12 +174,9 @@ likely you don\'t need to create local users.'))
         try:
             SystemUsers.update_user(user, update_passwd)
             self.reload_page()
+            self._select_user()
 
-            self._active_user['name'] = self.ui.txtName.get_text()
-            self._active_user['password'] = self.ui.txtPassword.get_text()
-            self._active_user['groups'] = self.ui.txtGroups.get_text()
-
-        except Exception as e:
+        except SystemUsers.SystemUserException as e:
             Dialogs.user_error_dialog(e.message)
 
     def on_btnCancelClicked(self, widget):
@@ -191,7 +196,7 @@ likely you don\'t need to create local users.'))
             SystemUsers.add_user(login_info[0], login_info[1])
             self.reload_page()
 
-        except Exception as e:
+        except SystemUsers.SystemUserException as e:
             Dialogs.user_error_dialog(e.message)
 
     def on_btnRemoveClicked(self, widget):
@@ -203,5 +208,5 @@ likely you don\'t need to create local users.'))
             SystemUsers.remove_user(self._active_user['login'], action[1])
             self.reload_page()
 
-        except Exception as e:
+        except SystemUsers.SystemUserException as e:
             Dialogs.user_error_dialog(e.message)
