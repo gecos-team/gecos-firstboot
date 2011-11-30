@@ -28,16 +28,6 @@ import os
 import gettext
 from gettext import gettext as _
 
-if firstbootconfig.get_prefix() == '/usr/local':
-    gettext.bindtextdomain('firstboot', '/usr/local/share/locale')
-elif pdalconfig.get_prefix() == '/usr':
-    gettext.textdomain('firstboot')
-
-if __name__ == '__main__':
-    if os.getuid() != 0:
-        sys.stdout.write(_('You need to be root to run this program.'))
-        sys.stdout.flush()
-        sys.exit(1)
 
 # Add project root directory (enable symlink and trunk execution)
 PROJECT_ROOT_DIRECTORY = os.path.abspath(
@@ -58,4 +48,18 @@ if python_path:
     os.putenv('PYTHONPATH', "%s:%s" % (os.getenv('PYTHONPATH', ''), ':'.join(python_path))) # for subprocesses
 
 import firstboot
+from firstboot_lib.firstbootconfig import get_prefix
+
+if get_prefix() == '/usr/local':
+    gettext.bindtextdomain('firstboot', '/usr/local/share/locale')
+elif get_prefix() == '/usr':
+    gettext.textdomain('firstboot')
+
+if __name__ == '__main__':
+    if os.getuid() != 0:
+        sys.stdout.write(_('You need to be root to run this program.'))
+        sys.stdout.flush()
+        sys.exit(1)
+
+
 firstboot.main()
