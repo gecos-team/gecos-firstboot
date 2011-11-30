@@ -125,7 +125,7 @@ msgstr "URL del certificado"
 
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:99
 msgid "The fields are mandatory."
-msgstr "Estos campos son obligatorios"
+msgstr "Los campos son obligatorios."
 
 #: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:41
 #: ../firstboot/pages/pcLabel/__init__.py:37
@@ -302,7 +302,7 @@ msgstr "Usuario"
 
 #: ../firstboot/pages/localUsers/__init__.py:164
 msgid "The passwords doesn't match."
-msgstr "Las contraseñas no coinciden"
+msgstr "Las contraseñas no coinciden."
 
 #: ../firstboot/pages/localUsers/SystemUsers.py:85
 msgid "The user couldn't be updated. Please check the parameters."
@@ -507,12 +507,11 @@ msgstr "Autenticación requerida"
 
 #: ../firstboot/serverconf/__init__.py:428
 msgid "You need to enter your credentials to access the requested resource."
-msgstr ""
-"Necesita introducir sus credenciales para acceder al recurso solicitado."
+msgstr "Necesita indicar sus credenciales para acceder al recurso solicitado."
 
 #: ../firstboot/serverconf/__init__.py:431
 msgid "user"
-msgstr "Usuario"
+msgstr "usuario"
 
 #~ msgid "Run applications"
 #~ msgstr "Ejecutar aplicaciones"
