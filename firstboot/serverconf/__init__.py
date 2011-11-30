@@ -32,7 +32,7 @@ import tempfile
 
 from firstboot_lib import firstbootconfig
 from ServerConf import ServerConf
-
+from gi.repository import Gtk
 import gettext
 from gettext import gettext as _
 gettext.textdomain('firstboot')
@@ -261,7 +261,7 @@ def setup_server(server_conf, link_ldap=False, unlink_ldap=False,
                 messages += ret
         except Exception as e:
             messages.append({'type': 'error', 'message': str(e)})
-1
+
 
     if unlink_chef == True:
         try:
@@ -339,12 +339,15 @@ def link_to_ad(ad_conf):
     passwd = ad_conf.get_passwd()
     errors = []
 
-    if len(url) == 0:
+    if len(fqdn) == 0:
         errors.append({'type': 'error', 'message': _('The ActiveDirectory URL cannot be empty.')})
 
     if len(dns_domain) == 0:
         errors.append({'type': 'error', 'message': _('The DNS Domain cannot be empty.')})
-
+    if len(user) == 0:
+        errors.append({'type': 'error', 'message': _('The administrator user cannot be empty.')})
+    if len(passwd) == 0:
+        errors.append({'type': 'error', 'message': _('The administrator password cannot be empty.')})
 
     if len(errors) > 0:
         return errors
@@ -355,7 +358,7 @@ def link_to_ad(ad_conf):
         if not os.path.exists(script):
             raise LinkToADException(_("The AD configuration script couldn't be found") + ': ' + script)
 
-        cmd = '"%s" "%s" "%s" "%s"' % (fqdn, dns_domain, user, passwd)
+        cmd = '"%s" "%s" "%s" "%s" "%s"' % (script, fqdn, dns_domain, user, passwd)
         args = shlex.split(cmd)
 
         process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -481,6 +484,50 @@ def unlink_from_chef():
         raise e
 
     return True
+
+
+
+def auth_dialog(title, text):
+    dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.INFO,
+                                   Gtk.ButtonsType.OK_CANCEL)
+    dialog.set_title(title)
+    dialog.set_position(Gtk.WindowPosition.CENTER)
+    dialog.set_default_response(Gtk.ResponseType.OK)
+    dialog.set_icon_name('dialog-password')
+    dialog.set_markup(text)
+
+    hboxuser = Gtk.HBox()
+    lbluser = Gtk.Label(_('user'))
+    lbluser.set_visible(True)
+    hboxuser.pack_start(lbluser,False, False, False)
+    user = Gtk.Entry()
+    user.set_activates_default(True)
+    user.show()
+    hboxuser.pack_end(user, False, False, False)
+    hboxuser.show()
+
+    hboxpwd = Gtk.HBox()
+    lblpwd = Gtk.Label(_('password'))
+    lblpwd.set_visible(True)
+    hboxpwd.pack_start(lblpwd,False, False, False)
+    pwd = Gtk.Entry()
+    pwd.set_activates_default(True)
+    pwd.set_visibility(False)
+    pwd.show()
+    hboxpwd.pack_end(pwd, False, False, False)
+    hboxpwd.show()
+
+    dialog.get_message_area().pack_start(hboxuser, False, False, False)
+    dialog.get_message_area().pack_end(hboxpwd, False, False, False)
+    result = dialog.run()
+
+    retval = [None, None]
+    if result == Gtk.ResponseType.OK:
+       retval = [user.get_text(), pwd.get_text()]
+
+    dialog.destroy()
+    return retval
+
 
 class ServerConfException(Exception):
     '''
