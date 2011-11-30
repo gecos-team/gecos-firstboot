@@ -75,9 +75,8 @@ class LinkToChefPage(PageWindow.PageWindow):
         self.ui.txtUrl.set_text(url)
 
     def translate(self):
-        desc = _('When a workstation is linked to a GECOS server it can be \
-managed remotely and existing users in the server can login into \
-this workstation.\n\n')
+        desc = _('When a workstation is linked to a Chef server it can be \
+easily managed remotely.\n\n')
 
         self.ui.lblDescription.set_text(desc)
         self.ui.chkUnlinkChef.set_label(_('Unlink from Chef'))
