@@ -1,6 +1,9 @@
 firstboot/FirstbootWindow.py
+firstboot/pages/linkToChef/LinkToChefResultsPage.py
+firstboot/pages/linkToChef/__init__.py
+firstboot/pages/linkToChef/LinkToChefConfEditorPage.py
+firstboot/pages/linkToChef/LinkToChefHostnamePage.py
 firstboot/pages/pcLabel/__init__.py
-firstboot/pages/linkToServer/ServerConf.py
 firstboot/pages/linkToServer/LinkToServerConfEditorPage.py
 firstboot/pages/linkToServer/LinkToServerHostnamePage.py
 firstboot/pages/linkToServer/LinkToServerResultsPage.py
@@ -9,8 +12,15 @@ firstboot/pages/network/__init__.py
 firstboot/pages/network/interface.py
 firstboot/pages/__init__.py
 firstboot/pages/localUsers/__init__.py
+firstboot/pages/localUsers/SystemUsers.py
+firstboot/pages/localUsers/Dialogs.py
 firstboot/pages/installSoftware/__init__.py
 firstboot/__init__.py
+firstboot/serverconf/ServerConf.py
+firstboot/serverconf/LdapConf.py
+firstboot/serverconf/ChefConf.py
+firstboot/serverconf/__init__.py
+firstboot/serverconf/ActiveDirectoryConf.py
 firstboot_lib/helpers.py
 firstboot_lib/Window.py
 firstboot_lib/__init__.py
