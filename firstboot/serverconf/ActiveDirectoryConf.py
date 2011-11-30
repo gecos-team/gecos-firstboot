@@ -27,6 +27,8 @@ class ActiveDirectoryConf():
         self._data = {}
         self._data['fqdn'] = ''
         self._data['dns_domain'] = ''
+        self._data['user'] = ''
+        self._data['passwd'] = ''
 
     def load_data(self, conf):
         self.set_fqdn(conf['hostname'])
@@ -50,6 +52,21 @@ class ActiveDirectoryConf():
     def set_dns_domain(self, dns_domain):
         self._data['dns_domain'] = dns_domain
         return self
+    
+    def get_user(self):
+        return self._data['user'].encode('utf-8')
+
+    def set_user(self, user):
+        self._data['user'] = user
+        return self
+    
+    def get_passwd(self):
+        return self._data['passwd'].encode('utf-8')
+
+    def set_passwd(self, passwd):
+        self._data['passwd'] = passwd
+        return self
+
     def __str__(self):
         return str(self._data)
 
