@@ -165,7 +165,6 @@ msgstr ""
 msgid "Hostname"
 msgstr "Hostname"
 
-#. self.txtHostname.modify_text(Gtk.StateFlags.NORMAL, Gdk.Color(255, 0, 0))
 #: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:86
 #: ../firstboot/pages/linkToServer/LinkToServerHostnamePage.py:90
 msgid "The host name is in use."
@@ -287,6 +286,22 @@ msgstr "Etiqueta"
 #: ../firstboot/pages/pcLabel/__init__.py:70
 msgid "The label has been updated correctly."
 msgstr "La etiqueta se ha actualizado correctamente."
+
+#: ../firstboot/serverconf/__init__.py:103
+msgid "Incorrect version of the configuration file."
+msgstr "Versión incorrecta del fichero de configuración."
+
+#: ../firstboot/serverconf/__init__.py:116
+msgid "Configuration file is not valid."
+msgstr "El fichero de configuración no es válido."
+
+#: ../firstboot/serverconf/__init__.py:168
+msgid "Couldn\t retrieve the host names list"
+msgstr "No se ha podido recuperar la lista de nombres de host"
+
+#: ../firstboot/__init__.py:50
+msgid "Use this URL by default in the \"Link to Server\" page."
+msgstr "Usa esta URL por defecto en la página \"Enlazar a Servidor\"."
 
 #: ../firstboot/serverconf/__init__.py:103
 msgid "Incorrect version of the configuration file."

@@ -146,9 +146,8 @@ msgstr ""
 #: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:60
 #: ../firstboot/pages/linkToServer/LinkToServerHostnamePage.py:60
 msgid ""
-"This workstation is going to be linked to a Chef server, therefore it must "
-"be given a host name. That name will be used for uniquely identify this "
-"workstation."
+"You need to be connected to the network for linking this workstation to a "
+"GECOS server and for installing software."
 msgstr ""
 
 #: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:65
@@ -274,6 +273,7 @@ msgstr ""
 
 #: ../firstboot/serverconf/__init__.py:116
 msgid "Configuration file is not valid."
+
 msgstr ""
 
 #: ../firstboot/serverconf/__init__.py:168
@@ -362,4 +362,96 @@ msgstr ""
 
 #: ../firstboot/serverconf/__init__.py:441
 msgid "password"
+msgstr ""
+
+#: ../firstboot/serverconf/__init__.py:103
+msgid "Incorrect version of the configuration file."
+msgstr ""
+
+#: ../firstboot/serverconf/__init__.py:116
+msgid "Configuration file is not valid."
+msgstr ""
+
+#: ../firstboot/serverconf/__init__.py:168
+msgid "Couldn\t retrieve the host names list"
+msgstr ""
+
+#: ../firstboot/serverconf/__init__.py:191
+#: ../firstboot/serverconf/__init__.py:316
+msgid "The LDAP configuration script couldn't be found"
+msgstr ""
+
+#: ../firstboot/serverconf/__init__.py:206
+#: ../firstboot/serverconf/__init__.py:326
+msgid "LDAP setup error"
+msgstr ""
+
+#: ../firstboot/serverconf/__init__.py:217
+#: ../firstboot/serverconf/__init__.py:381
+msgid "The Chef configuration script couldn't be found"
+msgstr ""
+
+#: ../firstboot/serverconf/__init__.py:232
+#: ../firstboot/serverconf/__init__.py:391
+msgid "Chef setup error"
+msgstr ""
+
+#: ../firstboot/serverconf/__init__.py:249
+msgid "Workstation has been unlinked from LDAP."
+msgstr ""
+
+#: ../firstboot/serverconf/__init__.py:259
+msgid "The LDAP has been configured successfully."
+msgstr ""
+
+#: ../firstboot/serverconf/__init__.py:269
+msgid "Workstation has been unlinked from Chef."
+msgstr ""
+
+#: ../firstboot/serverconf/__init__.py:279
+msgid "The Chef client has been configured successfully."
+msgstr ""
+
+#: ../firstboot/serverconf/__init__.py:301
+msgid "The LDAP URL cannot be empty."
+msgstr ""
+
+#: ../firstboot/serverconf/__init__.py:304
+msgid "The LDAP BaseDN cannot be empty."
+msgstr ""
+
+#: ../firstboot/serverconf/__init__.py:307
+msgid "The LDAP BindDN cannot be empty."
+msgstr ""
+
+#: ../firstboot/serverconf/__init__.py:349
+msgid "An error has ocurred unlinking from LDAP"
+msgstr ""
+
+#: ../firstboot/serverconf/__init__.py:366
+msgid "The Chef URL cannot be empty."
+msgstr ""
+
+#: ../firstboot/serverconf/__init__.py:369
+msgid "The Chef certificate URL cannot be empty."
+msgstr ""
+
+#: ../firstboot/serverconf/__init__.py:372
+msgid "The Chef host name cannot be empty."
+msgstr ""
+
+#: ../firstboot/serverconf/__init__.py:414
+msgid "An error has ocurred unlinking from Chef"
+msgstr ""
+
+#: ../firstboot/serverconf/__init__.py:424
+msgid "Authentication Required"
+msgstr ""
+
+#: ../firstboot/serverconf/__init__.py:428
+msgid "You need to enter your credentials to access the requested resource."
+msgstr ""
+
+#: ../firstboot/serverconf/__init__.py:431
+msgid "user"
 msgstr ""
