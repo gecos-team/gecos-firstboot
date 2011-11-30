@@ -44,6 +44,7 @@ __URLOPEN_TIMEOUT__ = 15
 __BIN_PATH__ = firstbootconfig.get_bin_path()
 __LDAP_CONF_SCRIPT__ = 'firstboot-ldapconf.sh'
 __CHEF_CONF_SCRIPT__ = 'firstboot-chef.sh'
+__AD_CONF_SCRIPT__ = 'firstboot-adconf.sh'
 
 
 def parse_url(url):
@@ -137,7 +138,30 @@ def get_chef_hostnames(chef_conf):
     return hostnames
 
 def ad_is_configured():
-    return False
+    try:
+        script = os.path.join(__BIN_PATH__, __AD_CONF_SCRIPT__)
+        if not os.path.exists(script):
+            raise LinkToADException(_("The AD configuration script couldn't be found") + ': ' + script)
+
+        cmd = '"%s" "--query"' % (script,)
+        args = shlex.split(cmd)
+
+        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        exit_code = os.waitpid(process.pid, 0)
+        output = process.communicate()[0]
+        output = output.strip()
+
+        if exit_code[1] == 0:
+            ret = bool(int(output))
+            return ret
+
+        else:
+            raise LinkToADException(_('AD setup error') + ': ' + output)
+
+
+    except Exception as e:
+        raise e
+
 
 def ldap_is_configured():
     try:
@@ -218,6 +242,27 @@ def setup_server(server_conf, link_ldap=False, unlink_ldap=False,
         except Exception as e:
             messages.append({'type': 'error', 'message': str(e)})
 
+    if unlink_ad == True:
+        try:
+            ret = unlink_from_ad()
+            if ret == True:
+                messages.append({'type': 'info', 'message': _('Workstation has been unlinked from AD.')})
+            else:
+                messages += ret
+        except Exception as e:
+            messages.append({'type': 'error', 'message': str(e)})
+
+    elif link_ad == True:
+        try:
+            ret = link_to_ad(server_conf.get_ad_conf())
+            if ret == True:
+                messages.append({'type': 'info', 'message': _('The AD has been configured successfully.')})
+            else:
+                messages += ret
+        except Exception as e:
+            messages.append({'type': 'error', 'message': str(e)})
+1
+
     if unlink_chef == True:
         try:
             ret = unlink_from_chef()
@@ -286,6 +331,46 @@ def link_to_ldap(ldap_conf):
 
     return True
 
+def link_to_ad(ad_conf):
+    
+    fqdn = ad_conf.get_fqdn()
+    dns_domain = ad_conf.get_dns_domain()
+    user = ad_conf.get_user()
+    passwd = ad_conf.get_passwd()
+    errors = []
+
+    if len(url) == 0:
+        errors.append({'type': 'error', 'message': _('The ActiveDirectory URL cannot be empty.')})
+
+    if len(dns_domain) == 0:
+        errors.append({'type': 'error', 'message': _('The DNS Domain cannot be empty.')})
+
+
+    if len(errors) > 0:
+        return errors
+
+    try:
+
+        script = os.path.join(__BIN_PATH__, __AD_CONF_SCRIPT__)
+        if not os.path.exists(script):
+            raise LinkToADException(_("The AD configuration script couldn't be found") + ': ' + script)
+
+        cmd = '"%s" "%s" "%s" "%s"' % (fqdn, dns_domain, user, passwd)
+        args = shlex.split(cmd)
+
+        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        exit_code = os.waitpid(process.pid, 0)
+        output = process.communicate()[0]
+
+        if exit_code[1] != 0:
+            raise LinkToADException(_('AD setup error') + ': ' + output)
+
+    except Exception as e:
+        raise e
+
+    return True
+
+
 def unlink_from_ldap():
 
     try:
@@ -308,6 +393,31 @@ def unlink_from_ldap():
         raise e
 
     return True
+
+
+def unlink_from_ad():
+
+    try:
+
+        script = os.path.join(__BIN_PATH__, __AD_CONF_SCRIPT__)
+        if not os.path.exists(script):
+            raise LinkToADException("The file could not be found: " + script)
+
+        cmd = '"%s" "--restore"' % (script,)
+        args = shlex.split(cmd)
+
+        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        exit_code = os.waitpid(process.pid, 0)
+        output = process.communicate()[0]
+
+        if exit_code[1] != 0:
+            raise LinkToADException(_('An error has ocurred unlinking from AD') + ': ' + output)
+
+    except Exception as e:
+        raise e
+
+    return True
+
 
 def link_to_chef(chef_conf):
 
@@ -387,6 +497,15 @@ class LinkToLDAPException(Exception):
 
     def __init__(self, msg):
         Exception.__init__(self, msg)
+
+class LinkToADException(Exception):
+    '''
+    Raised when there are errors trying to link the client to a LDAP server.
+    '''
+
+    def __init__(self, msg):
+        Exception.__init__(self, msg)
+
 
 class LinkToChefException(Exception):
     '''
