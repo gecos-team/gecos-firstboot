@@ -33,7 +33,7 @@ import tempfile
 from gi.repository import Gtk
 from firstboot_lib import firstbootconfig
 from ServerConf import ServerConf
-
+from gi.repository import Gtk
 import gettext
 from gettext import gettext as _
 gettext.textdomain('firstboot')
@@ -44,7 +44,8 @@ __CONFIG_FILE_VERSION__ = '1.1'
 __URLOPEN_TIMEOUT__ = 15
 __BIN_PATH__ = firstbootconfig.get_bin_path()
 __LDAP_CONF_SCRIPT__ = 'firstboot-ldapconf.sh'
-__CHEF_CONF_SCRIPT__ = 'firstboot-chefconf.sh'
+__CHEF_CONF_SCRIPT__ = 'firstboot-chef.sh'
+__AD_CONF_SCRIPT__ = 'firstboot-adconf.sh'
 
 
 def _install_opener(url, user, password, url_based_auth=True):
@@ -183,6 +184,35 @@ def get_chef_hostnames(chef_conf):
     os.remove(pem_file_path)
     return hostnames
 
+def ad_is_configured():
+    try:
+        script = os.path.join(__BIN_PATH__, __AD_CONF_SCRIPT__)
+        print script
+        if not os.path.exists(script):
+            raise LinkToADException(_("The AD configuration script couldn't be found") + ': ' + script)
+        print 1
+        cmd = '"%s" "--query"' % (script,)
+        args = shlex.split(cmd)
+        print 2
+        print args, cmd
+        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        print 4
+        exit_code = os.waitpid(process.pid, 0)
+        output = process.communicate()[0]
+        output = output.strip()
+        print 3
+        if exit_code[1] == 0:
+            ret = bool(int(output))
+            return ret
+
+        else:
+            raise LinkToADException(_('AD setup error') + ': ' + output)
+
+
+    except Exception as e:
+        raise e
+
+
 def ldap_is_configured():
     try:
 
@@ -237,7 +267,7 @@ def chef_is_configured():
 
 
 def setup_server(server_conf, link_ldap=False, unlink_ldap=False,
-                link_chef=False, unlink_chef=False):
+                link_chef=False, unlink_chef=False, link_ad=False, unlink_ad=False):
 
     result = True
     messages = []
@@ -261,6 +291,27 @@ def setup_server(server_conf, link_ldap=False, unlink_ldap=False,
                 messages += ret
         except Exception as e:
             messages.append({'type': 'error', 'message': str(e)})
+
+    if unlink_ad == True:
+        try:
+            ret = unlink_from_ad()
+            if ret == True:
+                messages.append({'type': 'info', 'message': _('Workstation has been unlinked from AD.')})
+            else:
+                messages += ret
+        except Exception as e:
+            messages.append({'type': 'error', 'message': str(e)})
+
+    elif link_ad == True:
+        try:
+            ret = link_to_ad(server_conf.get_ad_conf())
+            if ret == True:
+                messages.append({'type': 'info', 'message': _('The AD has been configured successfully.')})
+            else:
+                messages += ret
+        except Exception as e:
+            messages.append({'type': 'error', 'message': str(e)})
+
 
     if unlink_chef == True:
         try:
@@ -330,6 +381,49 @@ def link_to_ldap(ldap_conf):
 
     return True
 
+def link_to_ad(ad_conf):
+    
+    fqdn = ad_conf.get_fqdn()
+    dns_domain = ad_conf.get_dns_domain()
+    user = ad_conf.get_user()
+    passwd = ad_conf.get_passwd()
+    errors = []
+
+    if len(fqdn) == 0:
+        errors.append({'type': 'error', 'message': _('The ActiveDirectory URL cannot be empty.')})
+
+    if len(dns_domain) == 0:
+        errors.append({'type': 'error', 'message': _('The DNS Domain cannot be empty.')})
+    if len(user) == 0:
+        errors.append({'type': 'error', 'message': _('The administrator user cannot be empty.')})
+    if len(passwd) == 0:
+        errors.append({'type': 'error', 'message': _('The administrator password cannot be empty.')})
+
+    if len(errors) > 0:
+        return errors
+
+    try:
+
+        script = os.path.join(__BIN_PATH__, __AD_CONF_SCRIPT__)
+        if not os.path.exists(script):
+            raise LinkToADException(_("The AD configuration script couldn't be found") + ': ' + script)
+
+        cmd = '"%s" "%s" "%s" "%s" "%s"' % (script, fqdn, dns_domain, user, passwd)
+        args = shlex.split(cmd)
+
+        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        exit_code = os.waitpid(process.pid, 0)
+        output = process.communicate()[0]
+
+        if exit_code[1] != 0:
+            raise LinkToADException(_('AD setup error') + ': ' + output)
+
+    except Exception as e:
+        raise e
+
+    return True
+
+
 def unlink_from_ldap():
 
     try:
@@ -352,6 +446,31 @@ def unlink_from_ldap():
         raise e
 
     return True
+
+
+def unlink_from_ad():
+
+    try:
+
+        script = os.path.join(__BIN_PATH__, __AD_CONF_SCRIPT__)
+        if not os.path.exists(script):
+            raise LinkToADException("The file could not be found: " + script)
+
+        cmd = '"%s" "--restore"' % (script,)
+        args = shlex.split(cmd)
+
+        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        exit_code = os.waitpid(process.pid, 0)
+        output = process.communicate()[0]
+
+        if exit_code[1] != 0:
+            raise LinkToADException(_('An error has ocurred unlinking from AD') + ': ' + output)
+
+    except Exception as e:
+        raise e
+
+    return True
+
 
 def link_to_chef(chef_conf):
 
@@ -418,14 +537,15 @@ def unlink_from_chef():
 
     return True
 
-def auth_dialog():
+
+def auth_dialog(title, text):
     dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.INFO,
                                    Gtk.ButtonsType.OK_CANCEL)
-    dialog.set_title(_('Authentication Required'))
+    dialog.set_title(title)
     dialog.set_position(Gtk.WindowPosition.CENTER)
     dialog.set_default_response(Gtk.ResponseType.OK)
     dialog.set_icon_name('dialog-password')
-    dialog.set_markup(_('You need to enter your credentials to access the requested resource.'))
+    dialog.set_markup(text)
 
     hboxuser = Gtk.HBox()
     lbluser = Gtk.Label(_('user'))
@@ -474,6 +594,15 @@ class LinkToLDAPException(Exception):
 
     def __init__(self, msg):
         Exception.__init__(self, msg)
+
+class LinkToADException(Exception):
+    '''
+    Raised when there are errors trying to link the client to a LDAP server.
+    '''
+
+    def __init__(self, msg):
+        Exception.__init__(self, msg)
+
 
 class LinkToChefException(Exception):
     '''

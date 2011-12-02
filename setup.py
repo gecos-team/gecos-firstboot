@@ -90,7 +90,7 @@ class InstallAndUpdateDataDirectory(DistUtilsExtra.auto.install_auto):
                   '__version__': "'%s'" % self.distribution.get_version(),
                   '__firstboot_prefix__': "'%s'" % self.prefix}
         previous_values = update_config(values)
-        update_desktop_file(self.prefix + '/local/share/firstboot/')
+        update_desktop_file(self.prefix + '/share/firstboot/')
         DistUtilsExtra.auto.install_auto.run(self)
         update_config(previous_values)
 
@@ -128,7 +128,9 @@ workstation to different services',
         'firstboot',
         'firstboot_lib',
         'firstboot.pages',
+        'firstboot.serverconf',
         'firstboot.pages.installSoftware',
+        'firstboot.pages.linkToChef',
         'firstboot.pages.linkToServer',
         'firstboot.pages.localUsers',
         'firstboot.pages.network',
@@ -139,8 +141,10 @@ workstation to different services',
         'firstboot': 'firstboot',
         'firstboot_lib': 'firstboot_lib',
         'firstboot.pages': 'firstboot/pages',
+        'firstboot.serverconf': 'firstboot/serverconf',
         'firstboot.pages.installSoftware': 'firstboot/pages/installSoftware',
         'firstboot.pages.linkToServer': 'firstboot/pages/linkToServer',
+        'firstboot.pages.linkToChef': 'firstboot/pages/linkToChef',
         'firstboot.pages.localUsers': 'firstboot/pages/localUsers',
         'firstboot.pages.network': 'firstboot/pages/network',
         'firstboot.pages.pcLabel': 'firstboot/pages/pcLabel',

@@ -6,7 +6,12 @@ user=$3
 passwd=$4
 
 resolv=/etc/resolv.conf
-likewise=/opt/likewise/bin/domainjoin
+resolv_header=/etc/resolvconf/resolv.conf.d/head
+likewiseconf=/opt/likewise/bin/lwconfig
+bakdir=/opt/likewise/pam.d.bak/
+pamd=/etc/pam.d/
+debconffile=/opt/likewise/debconf.likewise
+nsswitch=/etc/nsswitch.conf
 #bakconf=$chefdir/client.rb.gecos-firststart.bak
 #tmpconf=/tmp/client.rb.tmp
 
@@ -45,7 +50,7 @@ check_prerequisites() {
 
 # Check if AD is currently configured
 check_configured() {
-    if [ -f $bakconf ]; then
+    if [ "$(check_backup)" == "1" ]; then
         echo 1
     else
         echo 0
@@ -56,21 +61,40 @@ check_configured() {
 # Restore the configuration
 restore() {
 
-    if [ ! -f $bakconf ]; then
-        echo "File not found: "$bakconf
+    if [ "$(check_backup)" == "0" ]; then
+        echo "Not found: "$bakdir
         exit 1
     fi
-
-    mv $chefconf $chefconf".bak"
-    mv $bakconf $chefconf
+    mv $bakdir/nsswitch.conf $nsswitch
+    mv $bakdir/* $pamd/
+    rm -rf $bakdir 
+    domainjoin-cli leave    
+    retval=$(echo $?)
+    if [ $retval -ne 0 ]; then
+        echo "Fail to restore AD configuration"
+        exit 1
+    fi
 
     exit 0
 }
 
 # Make a backup
+check_backup(){
+    if [ ! -d $bakdir ]; then
+        echo 0
+    else
+        echo 1
+    fi
+}
+
 backup() {
-    if [ ! -f $bakconf ]; then
-        cp $chefconf $bakconf
+    if [ "$(check_backup)" == "0" ]; then
+        mkdir $bakdir
+        cp -r $pamd/common-* $bakdir
+        cp $nsswitch $bakdir
+    else
+        cp -r $pamd/common-* $bakdir
+        cp $nsswitch $bakdir
     fi
 }
 
@@ -78,70 +102,53 @@ backup() {
 update_conf() {
 
     check_prerequisites
-    #backup
-
-    sed -e s@"^chef_server_url .*"@"chef_server_url \"$chef_server_url\""@g \
-        -e 's/^node_name .*/node_name "'$chef_node_name'"/g' \
-        $chefconf > $tmpconf
-
-    # It's posible that some options are commented,
-    # be sure to decomment them.
-    sed -e s@"^#chef_server_url .*"@"chef_server_url \"$chef_server_url\""@g \
-        -e s/"^#node_name .*"/"node_name \"$chef_node_name\""/g \
-        $tmpconf > $tmpconf".2"
-
-    mv $tmpconf".2" $tmpconf
-
-    /usr/bin/wget -q --no-check-certificate --http-user=$user --http-password=$passwd $chef_validation_url -O validation.pem
-    r_validation=$?
-
-    if [ -f validation.pem ]; then
-        mv validation.pem $valpem
+    backup
+    echo "nameserver $dns" > $resolv_header
+    service resolvconf restart
+    domainjoin-cli join $fqdn $user $passwd
+    retval=$(echo $?)
+    if [ $retval -ne 0 ]; then
+        echo "Fail connecting to AD"
+        restore
+        exit 1
     fi
-
-    check_configuration
-
-    mv $tmpconf $chefconf
-
-    # Run chef-client in daemon mode
-    if [ -f $chefclient ]; then
-        #$chefclient -d 2&>/dev/null
-        service chef-client restart
+    $likewiseconf AssumeDefaultDomain true
+    retval=$(echo $?)
+    if [ $retval -ne 0 ]; then
+        echo "Fail connecting to AD"
+        restore
+        exit 1
     fi
-
-    echo "The configuration was updated successfully."
+    rm -rf $pamd/common-*
+    debconf-set-selections $debconffile 2>&1 |grep -qi "can't open"
+    retval=$(echo $?)
+    if [ $retval -eq 0 ]; then
+        echo "Fail connecting to AD"
+        restore
+        exit 1
+    fi
+    pam-auth-update --package --force
+    retval=$(echo $?)
+    if [ $retval -ne 0 ]; then
+        echo "Fail connecting to AD"
+        restore
+        exit 1
+    fi
+    sed -i 's|ldap||g' $nsswitch
+    retval=$(echo $?)
+    if [ $retval -ne 0 ]; then
+        echo "Fail connecting to AD"
+        restore
+        exit 1
+    fi
+    
+echo "The configuration was updated successfully."
     exit 0
 }
 
-# Check the changes are valid
-check_configuration() {
-
-    r_chef_server_url=`egrep "^chef_server_url \"$chef_server_url\"" $tmpconf`
-    r_node_name=`egrep "^node_name \"$chef_node_name\"" $tmpconf`
-
-    if [ "" == "$r_node_name" ]; then
-        echo "" >> $tmpconf
-        echo "node_name \"$chef_node_name\"" >> $tmpconf
-    fi
-
-    if [ "" == "$r_chef_server_url" ]; then
-        echo "The configuration couldn't be updated correctly."
-        exit 1
-    fi
-
-    if [ $r_validation != 0 ]; then
-        echo "The validation.pem file couldn't be downloaded correctly."
-        exit 1
-    fi
-
-    if [ ! -f $valpem ]; then
-        echo "The validation.pem file couldn't be moved to $chefdir."
-        exit 1
-    fi
-}
 
 # Restore or update the Chef configuration
-case $chef_server_url in
+case $fqdn in
     --restore | -r)
         need_root
         restore
