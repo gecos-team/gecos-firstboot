@@ -138,9 +138,11 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
     def next_page(self, load_page_callback):
 #        print self.server_conf.get_ldap_conf()
 #        print self.server_conf.get_ad_conf()
-        retval=serverconf.auth_dialog(_('Authentication Required'),_('You need enter Administrator credentials of ActiveDirectory'))
-        self.server_conf.get_ad_conf().set_user(retval[0])
-        self.server_conf.get_ad_conf().set_passwd(retval[1])
+        if self.method == 'ad':
+            retval=serverconf.auth_dialog(_('Authentication Required'),_('You need enter Administrator credentials of ActiveDirectory'))
+            self.server_conf.get_ad_conf().set_user(retval[0])
+            self.server_conf.get_ad_conf().set_passwd(retval[1])
+        
         result, messages = serverconf.setup_server(
             server_conf=self.server_conf,
             link_ldap=self.link_ldap,
