@@ -8,7 +8,7 @@ bindpw=$4
 ldapconf=/etc/ldap.conf
 bakconf=/etc/ldap.conf.gecos-firststart.bak
 tmpconf=/tmp/ldap.conf.tmp
-
+debconffile=/usr/share/firstboot/debconf.ldap
 
 # Need root user
 need_root() {
@@ -99,6 +99,21 @@ update_conf() {
     check_configuration
 
     mv $tmpconf $ldapconf
+
+    debconf-set-selections $debconffile 2>&1 |grep -qi "can't open"
+    retval=$(echo $?)
+    if [ $retval -eq 0 ]; then
+        echo "Fail connecting to LDAP"
+        restore
+        exit 1
+    fi
+    pam-auth-update --package --force
+    retval=$(echo $?)
+    if [ $retval -ne 0 ]; then
+        echo "Fail connecting to LDAP"
+        restore
+        exit 1
+    fi
     echo "The configuration was updated successfully."
 
     exit 0
