@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Firstboot
+Comment=Firstboot application
+Categories=GNOME;Utility;
+Exec=firstboot-launcher
+Icon=/usr/share/firstboot/media/wizard1.png
+Terminal=false
+Type=Application
