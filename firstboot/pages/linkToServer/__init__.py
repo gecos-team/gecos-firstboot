@@ -88,7 +88,7 @@ class LinkToServerPage(PageWindow.PageWindow):
         self.ui.txtUrl.set_text(url)
 
     def translate(self):
-        desc = _('When a workstation is linked to a authentication server\
+        desc = _('When a workstation is linked to a authentication server \
 existing users in the server can login into \
 this workstation.\n\n')
 
