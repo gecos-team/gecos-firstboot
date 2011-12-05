@@ -53,6 +53,7 @@ class LinkToServerPage(PageWindow.PageWindow):
 
     def finish_initializing(self):
         self.method="ldap"
+        self.methodaut = "ldap"
         self.unlink_ldap=False
         self.unlink_ad=False
 
