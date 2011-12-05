@@ -1,3 +1,3 @@
 libpam-runtime libpam-runtime/override select true
-libpam-runtime libpam-runtime/profiles select ccreds-save, unix, likewise, libpam-mount, gnome-keyring, ecryptfs-utils, ccreds-check, capability
+libpam-runtime libpam-runtime/profiles select my_mkhomedir, ccreds-save, unix, likewise, libpam-mount, gnome-keyring, ecryptfs-utils, ccreds-check, capability
 
