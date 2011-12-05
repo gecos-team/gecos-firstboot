@@ -44,7 +44,7 @@ __CONFIG_FILE_VERSION__ = '1.1'
 __URLOPEN_TIMEOUT__ = 15
 __BIN_PATH__ = firstbootconfig.get_bin_path()
 __LDAP_CONF_SCRIPT__ = 'firstboot-ldapconf.sh'
-__CHEF_CONF_SCRIPT__ = 'firstboot-chef.sh'
+__CHEF_CONF_SCRIPT__ = 'firstboot-chefconf.sh'
 __AD_CONF_SCRIPT__ = 'firstboot-adconf.sh'
 
 
@@ -88,7 +88,7 @@ def get_server_conf(url):
 
         except urllib2.URLError as e:
             if hasattr(e, 'code') and e.code == 401:
-                user, password = auth_dialog()
+                user, password = auth_dialog(_('Authentication Required'),_('You need to enter your credentials to access the requested resource.'))
                 _install_opener(url, user, password)
                 fp = urllib2.urlopen(url, timeout=__URLOPEN_TIMEOUT__)
 
@@ -127,7 +127,7 @@ def get_chef_pem(chef_conf):
 
         except urllib2.URLError as e:
             if hasattr(e, 'code') and e.code == 401:
-                user, password = auth_dialog()
+                user, password = auth_dialog(_('Authentication Required'),_('You need to enter your credentials to access the requested resource.'))
                 _install_opener(url, user, password)
                 fp = urllib2.urlopen(url, timeout=__URLOPEN_TIMEOUT__)
 
@@ -187,20 +187,14 @@ def get_chef_hostnames(chef_conf):
 def ad_is_configured():
     try:
         script = os.path.join(__BIN_PATH__, __AD_CONF_SCRIPT__)
-        print script
         if not os.path.exists(script):
             raise LinkToADException(_("The AD configuration script couldn't be found") + ': ' + script)
-        print 1
         cmd = '"%s" "--query"' % (script,)
         args = shlex.split(cmd)
-        print 2
-        print args, cmd
         process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        print 4
         exit_code = os.waitpid(process.pid, 0)
         output = process.communicate()[0]
         output = output.strip()
-        print 3
         if exit_code[1] == 0:
             ret = bool(int(output))
             return ret

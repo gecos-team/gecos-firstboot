@@ -31,7 +31,7 @@ class ActiveDirectoryConf():
         self._data['passwd'] = ''
 
     def load_data(self, conf):
-        self.set_fqdn(conf['hostname'])
+        self.set_fqdn(conf['fqdn'])
         self.set_dns_domain(conf['dns'])
 
     def validate(self):

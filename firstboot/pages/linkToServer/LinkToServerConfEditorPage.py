@@ -50,7 +50,6 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
         self.link_ad = False
 
     def load_page(self, params=None):
-
         if 'server_conf' in params:
             self.server_conf = params['server_conf']
             if not self.server_conf is None:
@@ -60,23 +59,22 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
                 self.ui.txtBaseDN.set_text(self.server_conf.get_ldap_conf().get_basedn())
                 self.ui.txtBindDN.set_text(self.server_conf.get_ldap_conf().get_binddn())
                 self.ui.txtPassword.set_text(self.server_conf.get_ldap_conf().get_password())
-                self.ui.txtUrlChef.set_text(self.server_conf.get_chef_conf().get_url())
-                self.ui.txtUrlChefCert.set_text(self.server_conf.get_chef_conf().get_pem_url())
+                self.ui.txtFqdnAD.set_text(self.server_conf.get_ad_conf().get_fqdn())
+                self.ui.txtDnsDomain.set_text(self.server_conf.get_ad_conf().get_dns_domain())
 
-        if not 'server_conf' in params:
-            self.ui.lblVersionValue.set_visible(False)
+        if not 'server_conf' in params or self.server_conf is None:
+            self.ui.lblOrganization.set_visible(False)
+            self.ui.lblNotes.set_visible(False)
+            self.ui.lblNotesValue.set_visible(False)
             self.ui.lblOrganizationValue.set_visible(False)
             self.server_conf = serverconf.ServerConf()
-
         self.update_server_conf = True
         self.method = params['auth_method']
         if self.method == 'ldap':
-            print "ldap"
             self.ui.adBox.set_visible(False)
             self.ui.ldapBox.set_visible(True)
             self.link_ldap = True
         else:
-            print "ad"
             self.ui.ldapBox.set_visible(False)
             self.ui.adBox.set_visible(True)
             self.link_ad = True 
@@ -140,9 +138,11 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
     def next_page(self, load_page_callback):
 #        print self.server_conf.get_ldap_conf()
 #        print self.server_conf.get_ad_conf()
-        retval=serverconf.auth_dialog(_('Authentication Required'),_('You need enter Administrator credentials of ActiveDirectory'))
-        self.server_conf.get_ad_conf().set_user(retval[0])
-        self.server_conf.get_ad_conf().set_passwd(retval[1])
+        if self.method == 'ad':
+            retval=serverconf.auth_dialog(_('Authentication Required'),_('You need enter Administrator credentials of ActiveDirectory'))
+            self.server_conf.get_ad_conf().set_user(retval[0])
+            self.server_conf.get_ad_conf().set_passwd(retval[1])
+        
         result, messages = serverconf.setup_server(
             server_conf=self.server_conf,
             link_ldap=self.link_ldap,

@@ -161,6 +161,7 @@ workstation to different services',
     data_files=[
        ('share/firstboot/media', glob.glob('data/media/*')),
        ('share/firstboot/ui', glob.glob('data/ui/*')),
+       ('/etc/xdg/autostart/',glob.glob('data/firstboot.desktop')),
     ],
 
     cmdclass={
