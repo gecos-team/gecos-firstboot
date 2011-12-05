@@ -67,9 +67,17 @@ class LinkToServerPage(PageWindow.PageWindow):
             self.ui.radioOmit.set_visible(False)
             self.ui.radioManual.set_visible(False)
             self.ui.radioAuto.set_visible(False)
+            self.ui.radioAuto.set_visible(False)
+            self.ui.radioLDAP.set_visible(False)
+            self.ui.radioLDAPAut.set_visible(False)
+            self.ui.radioAD.set_visible(False)
+            self.ui.radioADAut.set_visible(False)
             self.ui.lblUrl.set_visible(False)
             self.ui.txtUrl.set_visible(False)
+            self.ui.box5.set_visible(False)
+            self.ui.box6.set_visible(False)
             self.main_window.btnNext.set_sensitive(False)
+
 
         self.ui.chkUnlinkLDAP.set_visible(self.ldap_is_configured)
         self.ui.chkUnlinkAD.set_visible(self.ad_is_configured)
