@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-02 14:26+0100\n"
+"POT-Creation-Date: 2011-12-05 15:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,113 +30,118 @@ msgid "Use this URL by default in the \"Link to Server\" page."
 msgstr ""
 
 #: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:35
-#: ../firstboot/pages/linkToServer/__init__.py:38
 #: ../firstboot/pages/linkToServer/LinkToServerResultsPage.py:36
 #: ../firstboot/pages/linkToChef/LinkToChefResultsPage.py:36
 msgid "Link workstation to a server"
 msgstr ""
 
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:95
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:93
 msgid "Insert your authentication configuration"
 msgstr ""
 
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:99
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:97
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:81
 msgid "Version"
 msgstr ""
 
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:100
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:98
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:82
 msgid "Organization"
 msgstr ""
 
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:101
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:99
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:83
 msgid "Notes"
 msgstr ""
 
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:105
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:103
 #: ../firstboot/pages/localUsers/__init__.py:79
 msgid "Password"
 msgstr ""
 
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:107
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:105
 msgid "Domain DNS"
 msgstr ""
 
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:143
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:142
+#: ../firstboot/serverconf/__init__.py:91
+#: ../firstboot/serverconf/__init__.py:130
 msgid "Authentication Required"
 msgstr ""
 
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:143
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:142
 msgid "You need enter Administrator credentials of ActiveDirectory"
 msgstr ""
 
-#: ../firstboot/pages/linkToServer/__init__.py:90
+#: ../firstboot/pages/linkToServer/__init__.py:38
+msgid "Select authentication method"
+msgstr ""
+
+#: ../firstboot/pages/linkToServer/__init__.py:91
 msgid ""
-"When a workstation is linked to a authentication serverexisting users in the "
-"server can login into this workstation.\n"
+"When a workstation is linked to a authentication server existing users in "
+"the server can login into this workstation.\n"
 "\n"
 msgstr ""
 
-#: ../firstboot/pages/linkToServer/__init__.py:96
+#: ../firstboot/pages/linkToServer/__init__.py:97
 msgid ""
 "You can type the options manually or download a default configuration from "
 "the server."
 msgstr ""
 
-#: ../firstboot/pages/linkToServer/__init__.py:100
+#: ../firstboot/pages/linkToServer/__init__.py:101
 msgid "This workstation is currently linked to an LDAP server."
 msgstr ""
 
-#: ../firstboot/pages/linkToServer/__init__.py:103
+#: ../firstboot/pages/linkToServer/__init__.py:104
 msgid "This workstation is currently linked to an Active Directory server."
 msgstr ""
 
-#: ../firstboot/pages/linkToServer/__init__.py:107
+#: ../firstboot/pages/linkToServer/__init__.py:108
 msgid "Unlink from LDAP"
 msgstr ""
 
-#: ../firstboot/pages/linkToServer/__init__.py:108
+#: ../firstboot/pages/linkToServer/__init__.py:109
 msgid "Unlink from Active Directory"
 msgstr ""
 
-#: ../firstboot/pages/linkToServer/__init__.py:109
+#: ../firstboot/pages/linkToServer/__init__.py:110
 #: ../firstboot/pages/linkToChef/__init__.py:83
 msgid "Omit"
 msgstr ""
 
-#: ../firstboot/pages/linkToServer/__init__.py:110
+#: ../firstboot/pages/linkToServer/__init__.py:111
 #: ../firstboot/pages/linkToChef/__init__.py:84
 msgid "Manual"
 msgstr ""
 
-#: ../firstboot/pages/linkToServer/__init__.py:111
+#: ../firstboot/pages/linkToServer/__init__.py:112
 #: ../firstboot/pages/linkToChef/__init__.py:85
 msgid "Automatic"
 msgstr ""
 
-#: ../firstboot/pages/linkToServer/__init__.py:112
+#: ../firstboot/pages/linkToServer/__init__.py:113
 msgid "LDAP"
 msgstr ""
 
-#: ../firstboot/pages/linkToServer/__init__.py:113
+#: ../firstboot/pages/linkToServer/__init__.py:114
 msgid "Active Directory"
 msgstr ""
 
-#: ../firstboot/pages/linkToServer/__init__.py:170
+#: ../firstboot/pages/linkToServer/__init__.py:171
 #: ../firstboot/pages/linkToChef/__init__.py:117
 msgid "The configuration file is valid."
 msgstr ""
 
-#: ../firstboot/pages/linkToServer/__init__.py:176
+#: ../firstboot/pages/linkToServer/__init__.py:177
 #: ../firstboot/pages/linkToServer/LinkToServerResultsPage.py:71
 #: ../firstboot/pages/linkToChef/LinkToChefResultsPage.py:71
 #: ../firstboot/pages/linkToChef/__init__.py:123
 msgid "The configuration was updated successfully."
 msgstr ""
 
-#: ../firstboot/pages/linkToServer/__init__.py:188
+#: ../firstboot/pages/linkToServer/__init__.py:189
 #: ../firstboot/pages/linkToChef/__init__.py:135
 msgid "Trying to connect..."
 msgstr ""
@@ -292,7 +297,7 @@ msgid "login"
 msgstr ""
 
 #: ../firstboot/pages/localUsers/Dialogs.py:49
-#: ../firstboot/serverconf/__init__.py:561
+#: ../firstboot/serverconf/__init__.py:555
 msgid "password"
 msgstr ""
 
@@ -403,6 +408,11 @@ msgstr ""
 msgid "Are you sure you have fully configured this workstation?"
 msgstr ""
 
+#: ../firstboot/serverconf/__init__.py:91
+#: ../firstboot/serverconf/__init__.py:130
+msgid "You need to enter your credentials to access the requested resource."
+msgstr ""
+
 #: ../firstboot/serverconf/__init__.py:104
 msgid "Incorrect version of the configuration file."
 msgstr ""
@@ -415,112 +425,112 @@ msgstr ""
 msgid "Couldn\t retrieve the host names list"
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:192
-#: ../firstboot/serverconf/__init__.py:409
+#: ../firstboot/serverconf/__init__.py:191
+#: ../firstboot/serverconf/__init__.py:403
 msgid "The AD configuration script couldn't be found"
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:209
-#: ../firstboot/serverconf/__init__.py:419
+#: ../firstboot/serverconf/__init__.py:203
+#: ../firstboot/serverconf/__init__.py:413
 msgid "AD setup error"
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:221
-#: ../firstboot/serverconf/__init__.py:367
+#: ../firstboot/serverconf/__init__.py:215
+#: ../firstboot/serverconf/__init__.py:361
 msgid "The LDAP configuration script couldn't be found"
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:236
-#: ../firstboot/serverconf/__init__.py:377
+#: ../firstboot/serverconf/__init__.py:230
+#: ../firstboot/serverconf/__init__.py:371
 msgid "LDAP setup error"
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:247
-#: ../firstboot/serverconf/__init__.py:500
+#: ../firstboot/serverconf/__init__.py:241
+#: ../firstboot/serverconf/__init__.py:494
 msgid "The Chef configuration script couldn't be found"
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:262
-#: ../firstboot/serverconf/__init__.py:510
+#: ../firstboot/serverconf/__init__.py:256
+#: ../firstboot/serverconf/__init__.py:504
 msgid "Chef setup error"
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:279
+#: ../firstboot/serverconf/__init__.py:273
 msgid "Workstation has been unlinked from LDAP."
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:289
+#: ../firstboot/serverconf/__init__.py:283
 msgid "The LDAP has been configured successfully."
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:299
+#: ../firstboot/serverconf/__init__.py:293
 msgid "Workstation has been unlinked from AD."
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:309
+#: ../firstboot/serverconf/__init__.py:303
 msgid "The AD has been configured successfully."
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:320
+#: ../firstboot/serverconf/__init__.py:314
 msgid "Workstation has been unlinked from Chef."
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:330
+#: ../firstboot/serverconf/__init__.py:324
 msgid "The Chef client has been configured successfully."
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:352
+#: ../firstboot/serverconf/__init__.py:346
 msgid "The LDAP URL cannot be empty."
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:355
+#: ../firstboot/serverconf/__init__.py:349
 msgid "The LDAP BaseDN cannot be empty."
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:358
+#: ../firstboot/serverconf/__init__.py:352
 msgid "The LDAP BindDN cannot be empty."
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:393
+#: ../firstboot/serverconf/__init__.py:387
 msgid "The ActiveDirectory URL cannot be empty."
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:396
+#: ../firstboot/serverconf/__init__.py:390
 msgid "The DNS Domain cannot be empty."
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:398
+#: ../firstboot/serverconf/__init__.py:392
 msgid "The administrator user cannot be empty."
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:400
+#: ../firstboot/serverconf/__init__.py:394
 msgid "The administrator password cannot be empty."
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:443
+#: ../firstboot/serverconf/__init__.py:437
 msgid "An error has ocurred unlinking from LDAP"
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:467
+#: ../firstboot/serverconf/__init__.py:461
 msgid "An error has ocurred unlinking from AD"
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:485
+#: ../firstboot/serverconf/__init__.py:479
 msgid "The Chef URL cannot be empty."
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:488
+#: ../firstboot/serverconf/__init__.py:482
 msgid "The Chef certificate URL cannot be empty."
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:491
+#: ../firstboot/serverconf/__init__.py:485
 msgid "The Chef host name cannot be empty."
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:533
+#: ../firstboot/serverconf/__init__.py:527
 msgid "An error has ocurred unlinking from Chef"
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:551
+#: ../firstboot/serverconf/__init__.py:545
 msgid "user"
 msgstr ""

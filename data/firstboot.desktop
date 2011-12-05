@@ -3,6 +3,7 @@ Name=Firstboot
 Comment=Firstboot application
 Categories=GNOME;Utility;
 Exec=firstboot-launcher
+X-GNOME-Autostart-Delay=1
 Icon=/usr/share/firstboot/media/wizard1.png
 Terminal=false
 Type=Application

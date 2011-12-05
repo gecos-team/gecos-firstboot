@@ -35,7 +35,7 @@ gettext.textdomain('firstboot')
 
 __REQUIRED__ = True
 
-__TITLE__ = _('Link workstation to a server')
+__TITLE__ = _('Select authentication method')
 
 __STATUS_TEST_PASSED__ = 0
 __STATUS_CONFIG_CHANGED__ = 1

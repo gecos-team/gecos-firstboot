@@ -12,6 +12,7 @@ bakdir=/opt/likewise/pam.d.bak/
 pamd=/etc/pam.d/
 debconffile=/opt/likewise/debconf.likewise
 nsswitch=/etc/nsswitch.conf
+pam_auth_update_orig=/usr/sbin/pam-auth-update
 #bakconf=$chefdir/client.rb.gecos-firststart.bak
 #tmpconf=/tmp/client.rb.tmp
 
@@ -63,6 +64,7 @@ restore() {
 
     if [ "$(check_backup)" == "0" ]; then
         echo "Not found: "$bakdir
+        mv $pam_auth_update_orig.orig $pam_auth_update_orig
         exit 1
     fi
     mv $bakdir/nsswitch.conf $nsswitch
@@ -72,8 +74,10 @@ restore() {
     retval=$(echo $?)
     if [ $retval -ne 0 ]; then
         echo "Fail to restore AD configuration"
+        mv $pam_auth_update_orig.orig $pam_auth_update_orig
         exit 1
     fi
+    mv $pam_auth_update_orig.orig $pam_auth_update_orig
 
     exit 0
 }
@@ -100,7 +104,6 @@ backup() {
 
 # Update the configuration
 update_conf() {
-
     check_prerequisites
     backup
     echo "nameserver $dns" > $resolv_header
@@ -143,6 +146,7 @@ update_conf() {
     fi
     
 echo "The configuration was updated successfully."
+    mv $pam_auth_update_orig.orig $pam_auth_update_orig
     exit 0
 }
 
@@ -151,6 +155,8 @@ echo "The configuration was updated successfully."
 case $fqdn in
     --restore | -r)
         need_root
+        mv $pam_auth_update_orig $pam_auth_update_orig.orig
+        cp $pam_auth_update_orig.firstboot $pam_auth_update_orig
         restore
         ;;
     --query | -q)
@@ -158,6 +164,8 @@ case $fqdn in
         ;;
     *)
         need_root
+        mv $pam_auth_update_orig $pam_auth_update_orig.orig
+        cp $pam_auth_update_orig.firstboot $pam_auth_update_orig
         update_conf
         ;;
 esac
