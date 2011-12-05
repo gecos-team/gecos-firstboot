@@ -162,6 +162,8 @@ workstation to different services',
        ('share/firstboot/media', glob.glob('data/media/*')),
        ('share/firstboot/ui', glob.glob('data/ui/*')),
        ('/etc/xdg/autostart/',glob.glob('data/firstboot.desktop')),
+       ('/opt/likewise/',glob.glob('data/debconf.likewise')),
+       ('/usr/sbin/',glob.glob('data/pam-auth-update.firstboot')),
     ],
 
     cmdclass={
