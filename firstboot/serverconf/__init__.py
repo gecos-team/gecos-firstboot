@@ -88,7 +88,7 @@ def get_server_conf(url):
 
         except urllib2.URLError as e:
             if hasattr(e, 'code') and e.code == 401:
-                user, password = auth_dialog()
+                user, password = auth_dialog(_('Authentication Required'),_('You need to enter your credentials to access the requested resource.'))
                 _install_opener(url, user, password)
                 fp = urllib2.urlopen(url, timeout=__URLOPEN_TIMEOUT__)
 
@@ -127,7 +127,7 @@ def get_chef_pem(chef_conf):
 
         except urllib2.URLError as e:
             if hasattr(e, 'code') and e.code == 401:
-                user, password = auth_dialog()
+                user, password = auth_dialog(_('Authentication Required'),_('You need to enter your credentials to access the requested resource.'))
                 _install_opener(url, user, password)
                 fp = urllib2.urlopen(url, timeout=__URLOPEN_TIMEOUT__)
 
