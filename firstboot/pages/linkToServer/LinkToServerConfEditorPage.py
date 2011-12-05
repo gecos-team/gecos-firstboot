@@ -75,6 +75,7 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
             self.ui.ldapBox.set_visible(True)
             self.link_ldap = True
         else:
+            os.system('DEBCONF_PRIORITY=critical DEBIAN_FRONTEND=noninteractive dpkg-reconfigure resolvconf')
             self.ui.ldapBox.set_visible(False)
             self.ui.adBox.set_visible(True)
             self.link_ad = True 

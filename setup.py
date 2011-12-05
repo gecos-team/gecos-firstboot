@@ -161,6 +161,7 @@ workstation to different services',
     data_files=[
        ('share/firstboot/media', glob.glob('data/media/*')),
        ('share/firstboot/ui', glob.glob('data/ui/*')),
+       ('share/pam-configs/', glob.glob('data/my_mkhomedir')),
        ('/etc/xdg/autostart/',glob.glob('data/firstboot.desktop')),
        ('/opt/likewise/',glob.glob('data/debconf.likewise')),
        ('/usr/sbin/',glob.glob('data/pam-auth-update.firstboot')),
