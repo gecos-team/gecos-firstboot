@@ -42,6 +42,7 @@ class ServerConf():
         self.set_notes(conf['notes'])
         self._ldap_conf.load_data(conf['pamldap'])
         self._chef_conf.load_data(conf['chef'])
+        self._ad_conf.load_data(conf['ad'])
 
     def validate(self):
         valid = len(self._data['version']) > 0 \
