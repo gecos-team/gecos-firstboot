@@ -160,7 +160,9 @@ workstation to different services',
 
     data_files=[
        ('share/firstboot/media', glob.glob('data/media/*')),
-       ('share/firstboot/pamd-ldap', glob.glob('data/pamd-ldap/*')),
+       ('share/firstboot/pamd-ldap', glob.glob('data/pamd-ldap/nsswitch.conf')),
+       ('share/firstboot/pamd-ldap', glob.glob('data/pamd-ldap/ldap.conf')),
+       ('share/firstboot/pamd-ldap/pam.d', glob.glob('data/pamd-ldap/pam.d')),
        ('share/firstboot/ui', glob.glob('data/ui/*')),
        ('share/pam-configs/', glob.glob('data/my_mkhomedir')),
        ('/etc/xdg/autostart/',glob.glob('data/firstboot.desktop')),
