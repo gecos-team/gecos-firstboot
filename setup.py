@@ -164,6 +164,7 @@ workstation to different services',
        ('share/pam-configs/', glob.glob('data/my_mkhomedir')),
        ('/etc/xdg/autostart/',glob.glob('data/firstboot.desktop')),
        ('/opt/likewise/',glob.glob('data/debconf.likewise')),
+       ('share/firstboot/',glob.glob('data/debconf.ldap')),
        ('/usr/sbin/',glob.glob('data/pam-auth-update.firstboot')),
     ],
 
