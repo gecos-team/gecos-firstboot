@@ -25,7 +25,7 @@ import LinkToServerResultsPage
 import firstboot.pages.linkToServer
 from firstboot_lib import PageWindow
 from firstboot import serverconf
-
+import os
 import gettext
 from gettext import gettext as _
 gettext.textdomain('firstboot')
