@@ -70,9 +70,9 @@ restore() {
     mv $ldapconf $ldapconf".bak"
     mv $bakconf $ldapconf
     mv $bakdir/nsswitch.conf $nsswitch
+    mv $bakdir/nscd.conf /etc/nscd.conf
     mv $bakdir/* $pamd/
     rm -rf $bakdir
-    pam-auth-update --force --package
     exit 0
 }
 
@@ -84,9 +84,11 @@ backup() {
     if [ ! -d $bakdir ]; then
         mkdir $bakdir
         cp -r $pamd/* $bakdir
+        cp /etc/nscd.conf $bakdir
         cp $nsswitch $bakdir
     else
         cp -r $pamd/* $bakdir
+        cp /etc/nscd.conf $bakdir
         cp $nsswitch $bakdir
     fi
 
@@ -120,20 +122,7 @@ update_conf() {
     mv $tmpconf $ldapconf
     cp -r $pamdconfig/pam.d/* $pamd
     cp -r $pamdconfig/nsswitch.conf $nsswitch
-    debconf-set-selections $debconffile 2>&1 |grep -qi "can't open"
-    retval=$(echo $?)
-    if [ $retval -eq 0 ]; then
-        echo "Fail connecting to LDAP"
-        restore
-        exit 1
-    fi
-    pam-auth-update --package --force
-    retval=$(echo $?)
-    if [ $retval -ne 0 ]; then
-        echo "Fail connecting to LDAP"
-        restore
-        exit 1
-    fi
+    cp -r $pamdconfig/nscd.conf /etc/nscd.conf
     echo "The configuration was updated successfully."
 
     exit 0
