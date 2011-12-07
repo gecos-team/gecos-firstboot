@@ -94,10 +94,10 @@ check_backup(){
 backup() {
     if [ "$(check_backup)" == "0" ]; then
         mkdir $bakdir
-        cp -r $pamd/common-* $bakdir
+        cp -r $pamd/* $bakdir
         cp $nsswitch $bakdir
     else
-        cp -r $pamd/common-* $bakdir
+        cp -r $pamd/* $bakdir
         cp $nsswitch $bakdir
     fi
 }

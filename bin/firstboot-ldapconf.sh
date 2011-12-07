@@ -9,6 +9,12 @@ ldapconf=/etc/ldap.conf
 bakconf=/etc/ldap.conf.gecos-firststart.bak
 tmpconf=/tmp/ldap.conf.tmp
 debconffile=/usr/share/firstboot/debconf.ldap
+pamdconfig=/usr/share/firstboot/pamd-ldap
+bakdir=/usr/share/firstboot/pamd-ldap.bak
+pamd=/etc/pam.d/
+nsswitch=/etc/nsswitch.conf
+
+
 
 # Need root user
 need_root() {
@@ -63,7 +69,10 @@ restore() {
 
     mv $ldapconf $ldapconf".bak"
     mv $bakconf $ldapconf
-
+    mv $bakdir/nsswitch.conf $nsswitch
+    mv $bakdir/* $pamd/
+    rm -rf $bakdir
+    pam-auth-update --force --package
     exit 0
 }
 
@@ -72,6 +81,15 @@ backup() {
     if [ ! -f $bakconf ]; then
         cp $ldapconf $bakconf
     fi
+    if [ ! -d $bakdir ]; then
+        mkdir $bakdir
+        cp -r $pamd/* $bakdir
+        cp $nsswitch $bakdir
+    else
+        cp -r $pamd/* $bakdir
+        cp $nsswitch $bakdir
+    fi
+
 }
 
 
@@ -81,6 +99,7 @@ update_conf() {
     check_prerequisites
     backup
 
+    cp -r $pamdconfig/ldap.conf $ldapconf
     sed -e s@"^uri .*"@"uri $uri"@ \
         -e s/"^base .*"/"base $basedn"/g \
         -e s/"^binddn .*"/"binddn $binddn"/g \
@@ -99,7 +118,8 @@ update_conf() {
     check_configuration
 
     mv $tmpconf $ldapconf
-
+    cp -r $pamdconfig/pam.d/* $pamd
+    cp -r $pamdconfig/nsswitch.conf $nsswitch
     debconf-set-selections $debconffile 2>&1 |grep -qi "can't open"
     retval=$(echo $?)
     if [ $retval -eq 0 ]; then

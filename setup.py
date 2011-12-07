@@ -160,6 +160,7 @@ workstation to different services',
 
     data_files=[
        ('share/firstboot/media', glob.glob('data/media/*')),
+       ('share/firstboot/pamd-ldap', glob.glob('data/pamd-ldap/*')),
        ('share/firstboot/ui', glob.glob('data/ui/*')),
        ('share/pam-configs/', glob.glob('data/my_mkhomedir')),
        ('/etc/xdg/autostart/',glob.glob('data/firstboot.desktop')),
