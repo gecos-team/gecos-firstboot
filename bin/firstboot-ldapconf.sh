@@ -123,6 +123,7 @@ update_conf() {
     cp -r $pamdconfig/pam.d/* $pamd
     cp -r $pamdconfig/nsswitch.conf $nsswitch
     cp -r $pamdconfig/nscd.conf /etc/nscd.conf
+    service nscd restart
     echo "The configuration was updated successfully."
 
     exit 0
