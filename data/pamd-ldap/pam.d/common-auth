@@ -17,6 +17,7 @@
 auth required pam_env.so
 auth [success=ignore default=1] pam_localuser.so
 auth [success=done new_authtok_reqd=done default=die]	pam_unix.so likeauth nullok shadow
+auth    required     pam_group.so use_first_pass
 auth [authinfo_unavail=1  success=ignore  default=ignore ]	pam_ldap.so
 auth [default=done] pam_ccreds.so action=store use_first_pass
 auth [success=done default=die] pam_ccreds.so action=validate use_first_pass
