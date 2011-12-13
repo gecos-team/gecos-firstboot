@@ -65,7 +65,7 @@ msgstr "Contraseña"
 
 #: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:105
 msgid "Domain DNS"
-msgstr "Dominio DNS"
+msgstr "Servidor DNS"
 
 #: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:142
 #: ../firstboot/serverconf/__init__.py:91
