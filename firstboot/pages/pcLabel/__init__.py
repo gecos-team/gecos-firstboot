@@ -61,7 +61,7 @@ shown in the GECOS Server admin interface and will help you to find out the \
 workstation later.')
 
         self.ui.lblDescription.set_text(desc)
-        self.ui.lblLabel.set_label(_('Label'))
+        self.ui.lblLabel.set_label(_('Description'))
 
     def on_txtLabel_changed(self, entry):
         try:
