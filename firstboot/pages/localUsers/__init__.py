@@ -21,6 +21,7 @@ __copyright__ = "Copyright (C) 2011, Junta de Andalucía <devmaster@guadalinex.o
 __license__ = "GPL-2"
 
 
+import pwd
 import os, SystemUsers, Dialogs
 from gi.repository import Gtk
 import firstboot.pages
@@ -138,6 +139,8 @@ likely you don\'t need to create local users.'))
         self.set_active_user(user)
 
     def set_active_user(self, user):
+        pwd_struct = pwd.getpwnam(os.getlogin())
+        is_current_user = int(user['uid']) == int(pwd_struct.pw_uid)
         self._active_user = user
         self._active_user['updated'] = False
         self._accept_changes = False
@@ -145,8 +148,8 @@ likely you don\'t need to create local users.'))
         self.ui.txtPassword.set_text(__DUMMY_PASSWORD__)
         self.ui.txtConfirm.set_text('')
         self.ui.txtGroups.set_text(user['groups'])
+        self.ui.btnRemove.set_sensitive(not is_current_user)
         self._accept_changes = True
-        self.ui.btnRemove.set_sensitive(True)
 
     def on_userDataChanged(self, widget):
         if self._active_user != None:
