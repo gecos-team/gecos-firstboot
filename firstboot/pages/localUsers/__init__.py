@@ -62,9 +62,13 @@ class LocalUsersPage(PageWindow.PageWindow):
         self.ui.btnRemove.set_sensitive(False)
         self._accept_changes = False
         self.ui.txtName.set_text('')
+        self.ui.txtName.set_sensitive(False)
         self.ui.txtPassword.set_text('')
+        self.ui.txtPassword.set_sensitive(False)
         self.ui.txtConfirm.set_text('')
+        self.ui.txtConfirm.set_sensitive(False)
         self.ui.txtGroups.set_text('')
+        self.ui.txtGroups.set_sensitive(False)
         self._accept_changes = True
         try:
             self.load_users()
@@ -145,9 +149,13 @@ likely you don\'t need to create local users.'))
         self._active_user['updated'] = False
         self._accept_changes = False
         self.ui.txtName.set_text(user['name'])
+        self.ui.txtName.set_sensitive(True)
         self.ui.txtPassword.set_text(__DUMMY_PASSWORD__)
+        self.ui.txtPassword.set_sensitive(True)
         self.ui.txtConfirm.set_text('')
+        self.ui.txtConfirm.set_sensitive(True)
         self.ui.txtGroups.set_text(user['groups'])
+        self.ui.txtGroups.set_sensitive(True)
         self.ui.btnRemove.set_sensitive(not is_current_user)
         self._accept_changes = True
 
