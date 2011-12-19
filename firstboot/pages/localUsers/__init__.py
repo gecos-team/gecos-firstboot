@@ -201,10 +201,16 @@ likely you don\'t need to create local users.'))
     def on_btnAddClicked(self, widget):
         login_info = Dialogs.new_user_dialog()
         if login_info == False:
+            Dialogs.user_error_dialog(_('The user\'s login couldn\'t be empty.'))
+            return
+
+        if login_info['password'] != login_info['confirm']:
+            Dialogs.user_error_dialog(_('The passwords doesn\'t match, couldn\'t create the new user.'))
             return
 
         try:
-            SystemUsers.add_user(login_info[0], login_info[1])
+            SystemUsers.add_user(login_info['login'], login_info['password'])
+            SystemUsers.update_user(login_info)
             self.reload_page()
 
         except SystemUsers.SystemUserException as e:

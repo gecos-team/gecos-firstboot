@@ -29,21 +29,32 @@ gettext.textdomain('firstboot')
 def new_user_dialog():
     dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.INFO,
                                    Gtk.ButtonsType.OK_CANCEL)
+
     dialog.set_title(_('New user'))
     dialog.set_position(Gtk.WindowPosition.CENTER)
     dialog.set_default_response(Gtk.ResponseType.OK)
     dialog.set_icon_name('dialog-password')
-    dialog.set_markup(_('Type the new user login:'))
+    dialog.set_markup(_('Type the new user information:'))
 
-    hboxuser = Gtk.HBox()
+    hboxname = Gtk.HBox()
+    lblname = Gtk.Label(_('name'))
+    lblname.set_visible(True)
+    hboxname.pack_start(lblname, False, False, False)
+    name = Gtk.Entry()
+    name.set_activates_default(True)
+    name.show()
+    hboxname.pack_end(name, False, False, False)
+    hboxname.show()
+
+    hboxlogin = Gtk.HBox()
     lbluser = Gtk.Label(_('login'))
     lbluser.set_visible(True)
-    hboxuser.pack_start(lbluser, False, False, False)
+    hboxlogin.pack_start(lbluser, False, False, False)
     user = Gtk.Entry()
     user.set_activates_default(True)
     user.show()
-    hboxuser.pack_end(user, False, False, False)
-    hboxuser.show()
+    hboxlogin.pack_end(user, False, False, False)
+    hboxlogin.show()
 
     hboxpwd = Gtk.HBox()
     lblpwd = Gtk.Label(_('password'))
@@ -56,13 +67,32 @@ def new_user_dialog():
     hboxpwd.pack_end(pwd, False, False, False)
     hboxpwd.show()
 
-    dialog.get_message_area().pack_start(hboxuser, False, False, False)
-    dialog.get_message_area().pack_end(hboxpwd, False, False, False)
+    hboxconfirm = Gtk.HBox()
+    lblconfirm = Gtk.Label(_('confirm'))
+    lblconfirm.set_visible(True)
+    hboxconfirm.pack_start(lblconfirm, False, False, False)
+    confirm = Gtk.Entry()
+    confirm.set_activates_default(True)
+    confirm.set_visibility(False)
+    confirm.show()
+    hboxconfirm.pack_end(confirm, False, False, False)
+    hboxconfirm.show()
+
+    dialog.get_message_area().pack_start(hboxname, False, False, False)
+    dialog.get_message_area().pack_start(hboxlogin, False, False, False)
+    dialog.get_message_area().pack_start(hboxpwd, False, False, False)
+    dialog.get_message_area().pack_start(hboxconfirm, False, False, False)
     result = dialog.run()
 
     retval = False
     if result == Gtk.ResponseType.OK:
-       retval = [user.get_text(), pwd.get_text()]
+        retval = {
+            'name': name.get_text(),
+            'login': user.get_text(),
+            'password': pwd.get_text(),
+            'confirm': confirm.get_text(),
+            'groups': ''
+        }
 
     dialog.destroy()
     return retval

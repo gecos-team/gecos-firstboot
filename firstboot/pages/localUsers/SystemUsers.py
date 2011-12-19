@@ -72,7 +72,12 @@ def update_user(user, update_passwd=False):
     groups = ','.join(groups)
     groups = groups.replace(' ', '')
 
-    cmd = 'usermod -c "%s" -G %s %s' % (user['name'], groups, user['login'])
+    if len(groups) > 0:
+        cmd = 'usermod -c "%s" -G %s %s' % (user['name'], groups, user['login'])
+
+    else:
+        cmd = 'usermod -c "%s" %s' % (user['name'], user['login'])
+
     pid, exit_code, output = _run_command(cmd)
 
     if exit_code == 0:
