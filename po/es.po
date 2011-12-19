@@ -192,8 +192,8 @@ msgid "Authentication Required"
 msgstr "Autenticación requerida"
 
 #: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:143
-msgid "You need enter Administrator credentials of ActiveDirectory"
-msgstr "Necesita las credecnciales de Administrador de Active Directory."
+msgid "You need enter Administrator credentials of Active Directory"
+msgstr "Necesita las credenciales de Administrador del Directorio Activo."
 
 #: ../firstboot/pages/linkToServer/__init__.py:38
 msgid "Select authentication method"
@@ -225,8 +225,7 @@ msgstr "Este puesto de trabajo está actualmente vinculado a un servidor LDAP."
 #: ../firstboot/pages/linkToServer/__init__.py:112
 msgid "This workstation is currently linked to an Active Directory server."
 msgstr ""
-"Este puesto de trabajo está actualmente vinculado a un servidor Active "
-"Directory."
+"Este puesto de trabajo está actualmente vinculado a un Directorio Activo."
 
 #: ../firstboot/pages/linkToServer/__init__.py:116
 msgid "Unlink from LDAP"
@@ -234,7 +233,7 @@ msgstr "Desvincular del LDAP"
 
 #: ../firstboot/pages/linkToServer/__init__.py:117
 msgid "Unlink from Active Directory"
-msgstr "Desvincular del Active Directory"
+msgstr "Desvincular del Directorio Activo"
 
 #: ../firstboot/pages/linkToServer/__init__.py:121
 msgid "LDAP"
@@ -242,7 +241,7 @@ msgstr "LDAP"
 
 #: ../firstboot/pages/linkToServer/__init__.py:122
 msgid "Active Directory"
-msgstr "Active Directory"
+msgstr "Directorio Activo"
 
 #: ../firstboot/pages/network/__init__.py:37
 #: ../firstboot/pages/network/__init__.py:57
@@ -439,7 +438,7 @@ msgstr "Usa esta URL por defecto en la página \"Enlazar a Servidor\"."
 #: ../firstboot/serverconf/__init__.py:91
 #: ../firstboot/serverconf/__init__.py:130
 msgid "You need to enter your credentials to access the requested resource."
-msgstr "Necesita las credecnciales para acceder al recurso remoto."
+msgstr "Necesita las credenciales para acceder al recurso remoto."
 
 #: ../firstboot/serverconf/__init__.py:104
 msgid "Incorrect version of the configuration file."
@@ -456,12 +455,12 @@ msgstr "No se ha podido recuperar la lista de nombres de host"
 #: ../firstboot/serverconf/__init__.py:191
 #: ../firstboot/serverconf/__init__.py:403
 msgid "The AD configuration script couldn't be found"
-msgstr "No se pudo encontrar el script de configuración del Active Directory"
+msgstr "No se pudo encontrar el script de configuración del Directorio Activo"
 
 #: ../firstboot/serverconf/__init__.py:203
 #: ../firstboot/serverconf/__init__.py:413
 msgid "AD setup error"
-msgstr "Error en la configuración del Active Directory"
+msgstr "Error en la configuración del Directorio Activo"
 
 #: ../firstboot/serverconf/__init__.py:215
 #: ../firstboot/serverconf/__init__.py:361
@@ -493,11 +492,11 @@ msgstr "El LDAP se ha configurado correctamente."
 
 #: ../firstboot/serverconf/__init__.py:293
 msgid "Workstation has been unlinked from AD."
-msgstr "Este puesto de trabajo se ha desvinculado del Active Directory."
+msgstr "Este puesto de trabajo se ha desvinculado del Directorio Activo."
 
 #: ../firstboot/serverconf/__init__.py:303
 msgid "The AD has been configured successfully."
-msgstr "El Active Directory se ha configurado correctamente."
+msgstr "Este puesto de trabajo se ha vinculado correctamente a un Directorio Activo."
 
 #: ../firstboot/serverconf/__init__.py:314
 msgid "Workstation has been unlinked from Chef."
@@ -520,8 +519,8 @@ msgid "The LDAP BindDN cannot be empty."
 msgstr "El BindDN del LDAP no puede estar vacío."
 
 #: ../firstboot/serverconf/__init__.py:387
-msgid "The ActiveDirectory URL cannot be empty."
-msgstr "La URL del Active Directory no puede quedar vacía."
+msgid "The Active Directory URL cannot be empty."
+msgstr "La URL del Directorio Activo no puede quedar vacía."
 
 #: ../firstboot/serverconf/__init__.py:390
 msgid "The DNS Domain cannot be empty."
@@ -541,7 +540,7 @@ msgstr "Ha ocurrido un error desvinculándose del LDAP"
 
 #: ../firstboot/serverconf/__init__.py:461
 msgid "An error has ocurred unlinking from AD"
-msgstr "Ha ocurrido un error desvinculándose del ActiveDirectory"
+msgstr "Ha ocurrido un error desvinculándose del Active Directory"
 
 #: ../firstboot/serverconf/__init__.py:479
 msgid "The Chef URL cannot be empty."
