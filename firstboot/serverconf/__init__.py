@@ -47,9 +47,10 @@ __LDAP_CONF_SCRIPT__ = 'firstboot-ldapconf.sh'
 __CHEF_CONF_SCRIPT__ = 'firstboot-chefconf.sh'
 __AD_CONF_SCRIPT__ = 'firstboot-adconf.sh'
 
+CREDENTIAL_CACHED = {}
+
 
 def _install_opener(url, user, password, url_based_auth=True):
-
     if not url_based_auth:
         # Domain based auth
         parsed_url = list(urlparse.urlparse(url))
@@ -76,28 +77,67 @@ def parse_url(url):
     url = urlparse.urlunparse(parsed_url)
     return url
 
-def get_server_conf(url):
+def validate_credentials(url):
+    global CREDENTIAL_CACHED
+    url_parsed=urlparse.urlparse(url)
+    user = ''
+    password = ''
+    hostname = ''
+    if url_parsed.scheme == '':
+        if url_parsed.path == '':
+            hostname = url_parsed.hostname
+        else:
+            hostname = url_parsed.path
+    else:
+        hostname = url_parsed.hostname
 
+    if CREDENTIAL_CACHED.has_key(hostname):
+        validate_credentials = False
+        credentials=CREDENTIAL_CACHED[hostname]
+        for cred in credentials:
+            try:
+                _install_opener(url, cred[0], cred[1])
+                validate = True
+                break
+            except urllib2.URLError as e:
+                print e
+                if hasattr(e, 'code') and e.code == 401 and e.msg == 'basic auth failed':
+                    continue
+        if not validate:
+            user, password = auth_dialog(_('Authentication Required'),_('You need to enter your credentials to access the requested resource.'))
+            _install_opener(url, user, password)
+            credentials=CREDENTIAL_CACHED[hostname]
+            credentials.append([user,password])
+    else:
+        user, password = auth_dialog(_('Authentication Required'),_('You need to enter your credentials to access the requested resource.'))
+        _install_opener(url, user, password)
+        CREDENTIAL_CACHED[hostname] = [[user,password]]
+    return user,password
+
+
+def get_server_conf(url,json_cached=False):
     try:
-        user = ''
-        password = ''
-
-        try:
-            url = parse_url(url)
-            fp = urllib2.urlopen(url, timeout=__URLOPEN_TIMEOUT__)
-
-        except urllib2.URLError as e:
-            if hasattr(e, 'code') and e.code == 401:
-                user, password = auth_dialog(_('Authentication Required'),_('You need to enter your credentials to access the requested resource.'))
-                _install_opener(url, user, password)
+        if json_cached == True:
+            fp = open('/tmp/json_cached', 'r')
+        else:
+            try:
+                url = parse_url(url)
                 fp = urllib2.urlopen(url, timeout=__URLOPEN_TIMEOUT__)
-
-            else:
-                raise e
-
+            except urllib2.URLError as e:
+                if hasattr(e, 'code') and e.code == 401:
+                    user, password = validate_credentials(url)
+                    fp = urllib2.urlopen(url, timeout=__URLOPEN_TIMEOUT__)
+                else:
+                    raise e
+            fp_cached = open('/tmp/json_cached', 'w')
+            for line in fp:
+                fp_cached.write(line)
+            fp_cached.close()
+            fp.close()
+            fp = open('/tmp/json_cached', 'r')
         content = fp.read()
+        fp.close()
         conf = json.loads(content)
-
         if 'version' in conf:
             version = conf['version']
             if version != __CONFIG_FILE_VERSION__:
@@ -109,7 +149,6 @@ def get_server_conf(url):
 
         else:
             raise ValueError()
-
     except urllib2.URLError as e:
         raise ServerConfException(e)
 
@@ -117,9 +156,10 @@ def get_server_conf(url):
         raise ServerConfException(_('Configuration file is not valid.'))
 
 def get_chef_pem(chef_conf):
-
+    global CREDENTIAL_CACHED
     url = chef_conf.get_pem_url()
-
+    user = ''
+    password = ''
     try:
         try:
             url = parse_url(url)
@@ -127,8 +167,7 @@ def get_chef_pem(chef_conf):
 
         except urllib2.URLError as e:
             if hasattr(e, 'code') and e.code == 401:
-                user, password = auth_dialog(_('Authentication Required'),_('You need to enter your credentials to access the requested resource.'))
-                _install_opener(url, user, password)
+                user, password = validate_credentials(url)
                 fp = urllib2.urlopen(url, timeout=__URLOPEN_TIMEOUT__)
 
                 chef_conf.set_user(user)
@@ -136,7 +175,6 @@ def get_chef_pem(chef_conf):
 
             else:
                 raise e
-
         content = fp.read()
 
         (fd, filepath) = tempfile.mkstemp(dir='/tmp') # [suffix=''[, prefix='tmp'[, dir=None[, text=False]]]])
