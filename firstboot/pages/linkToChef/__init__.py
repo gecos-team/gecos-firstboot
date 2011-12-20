@@ -51,10 +51,23 @@ def get_page(main_window):
 class LinkToChefPage(PageWindow.PageWindow):
     __gtype_name__ = "LinkToChefPage"
 
+    def load_page(self,params=None):
+        if os.path.exists('/tmp/json_cached') and not self.chef_is_configured:
+            self.json_cached = True
+            server_conf = serverconf.get_server_conf('', self.json_cached)
+            self.emit('page-changed', LinkToChefConfEditorPage, {
+                    'server_conf': server_conf,
+                    'chef_is_configured': self.chef_is_configured,
+                    'unlink_from_chef': False
+            })
+
+        else:
+            self.json_cached = False
+
     def finish_initializing(self):
+        self.chef_is_configured = serverconf.chef_is_configured()
 
         self.show_status()
-        self.chef_is_configured = serverconf.chef_is_configured()
 
         self.ui.radioOmit.set_visible(not self.chef_is_configured)
         self.ui.radioManual.set_visible(not self.chef_is_configured)
@@ -139,20 +152,16 @@ easily managed remotely.\n\n')
         load_page_callback(firstboot.pages.linkToServer)
 
     def next_page(self, load_page_callback):
-
         if self.ui.radioOmit.get_active() or \
             (self.chef_is_configured and not self.ui.chkUnlinkChef.get_active()):
             self.emit('status-changed', 'linkToChef', True)
             load_page_callback(firstboot.pages.localUsers)
             return
-
         self.show_status()
-
         try:
             server_conf = None
 
             if not self.chef_is_configured:
-
                 if self.ui.radioAuto.get_active():
                     url = self.ui.txtUrl.get_text()
                     server_conf = serverconf.get_server_conf(url)
