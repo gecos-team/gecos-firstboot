@@ -51,12 +51,37 @@ def get_page(main_window):
 class LinkToServerPage(PageWindow.PageWindow):
     __gtype_name__ = "LinkToServerPage"
 
+    def load_page(self,params=None):
+        if os.path.exists('/tmp/json_cached') and not (self.ldap_is_configured or self.ad_is_configured):
+            self.json_cached = True
+            self.ui.radioOmit.set_visible(False)
+            self.ui.radioManual.set_visible(False)
+            self.ui.radioAuto.set_visible(False)
+            self.ui.radioAuto.set_active(True)
+            self.ui.radioLDAP.set_visible(False)
+            self.ui.radioLDAPAut.set_visible(True)
+            self.ui.radioAD.set_visible(False)
+            self.ui.radioADAut.set_visible(True)
+            self.ui.lblUrl.set_visible(False)
+            self.ui.txtUrl.set_visible(False)
+            self.ui.box5.set_visible(False)
+            self.ui.box6.set_visible(True)
+            self.main_window.btnNext.set_sensitive(True)
+
+        else:
+            self.json_cached = False
+
     def finish_initializing(self):
+        if os.path.exists('/tmp/json_cached'):
+            self.json_cached = True
+        else:
+            self.json_cached = False
+        
         self.method="ldap"
         self.methodaut = "ldap"
         self.unlink_ldap=False
         self.unlink_ad=False
-
+        
         self.show_status()
 
         self.ldap_is_configured = serverconf.ldap_is_configured()
@@ -227,7 +252,7 @@ server.')
             server_conf = None
             if self.ui.radioAuto.get_active():
                 url = self.ui.txtUrl.get_text()
-                server_conf = serverconf.get_server_conf(url)
+                server_conf = serverconf.get_server_conf(url, self.json_cached)
                 self.method=self.methodaut
             
             load_page_callback(LinkToServerConfEditorPage, {
