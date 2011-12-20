@@ -26,6 +26,7 @@ import os, SystemUsers, Dialogs
 from gi.repository import Gtk
 import firstboot.pages
 from firstboot_lib import PageWindow
+import firstboot.validation as validation
 
 import gettext
 from gettext import gettext as _
@@ -171,16 +172,17 @@ likely you don\'t need to create local users.'))
 
         if self.ui.txtPassword.get_text() != __DUMMY_PASSWORD__:
             update_passwd = True
-            if self.ui.txtPassword.get_text() != self.ui.txtConfirm.get_text():
-                Dialogs.user_error_dialog(_('The passwords doesn\'t match.'))
-                return
 
         user = {
             'login': self._active_user['login'],
             'name': self.ui.txtName.get_text(),
             'password': self.ui.txtPassword.get_text(),
+            'confirm': self.ui.txtConfirm.get_text(),
             'groups': self.ui.txtGroups.get_text()
         }
+
+        if not self.validate_user(user):
+            return
 
         try:
             SystemUsers.update_user(user, update_passwd)
@@ -200,12 +202,12 @@ likely you don\'t need to create local users.'))
 
     def on_btnAddClicked(self, widget):
         login_info = Dialogs.new_user_dialog()
+
         if login_info == False:
-            Dialogs.user_error_dialog(_('The user\'s login couldn\'t be empty.'))
+            # Pressed 'Cancel' or dialog closed
             return
 
-        if login_info['password'] != login_info['confirm']:
-            Dialogs.user_error_dialog(_('The passwords doesn\'t match, couldn\'t create the new user.'))
+        if not self.validate_user(login_info):
             return
 
         try:
@@ -227,3 +229,27 @@ likely you don\'t need to create local users.'))
 
         except SystemUsers.SystemUserException as e:
             Dialogs.user_error_dialog(e.message)
+
+    def validate_user(self, user):
+
+        valid = True
+        messages = []
+
+        if not validation.is_qname(user['login']):
+            messages.append(_('The user login couldn\'t be empty.'))
+            valid = False
+
+        if validation.is_empty(user['password']):
+            messages.append(_('The user password couldn\'t be empty.'))
+            valid = False
+
+        elif user['password'] != __DUMMY_PASSWORD__ and user['password'] != user['confirm']:
+            messages.append(_('The passwords doesn\'t match.'))
+            valid = False
+
+        if not valid:
+            msgs = '\n'.join(messages)
+            Dialogs.user_error_dialog(msgs)
+
+        return valid
+
