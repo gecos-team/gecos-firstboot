@@ -188,8 +188,11 @@ class FirstbootWindow(Window):
         self.translate()
 
         try:
+           # print 'unload -> '+str(self.current_page)
+           # print 'params -> '+str(params)
             self.current_page.unload_page(params)
         except Exception as e:
+           # print e
             pass
 
         self.current_page = module.get_page(self)
@@ -209,10 +212,13 @@ class FirstbootWindow(Window):
         except Exception as e:
             pass
 
-        try:
-            self.current_page.load_page(params)
-        except Exception as e:
-            pass
+#        try:
+#            print 'load -> '+ str(self.current_page)
+#            print 'params -> '+ str(params)
+#            self.current_page.load_page(params)
+#        except Exception as e:
+#            print e
+#            pass
 
 
         page_name = module.__name__.split('.')[-1]
@@ -227,7 +233,15 @@ class FirstbootWindow(Window):
         for child in self.ui.swContent.get_children():
             self.ui.swContent.remove(child)
 
+        #self.ui.swContent.add(self.current_page.get_widget())
         self.ui.swContent.add_with_viewport(self.current_page.get_widget())
+        try:
+            #print 'load -> '+ str(self.current_page)
+            #print 'params -> '+ str(params)
+            self.current_page.load_page(params)
+        except Exception as e:
+            #print e
+            pass
 
     def on_page_changed(self, sender, module, params):
         self.set_current_page(module, params)
