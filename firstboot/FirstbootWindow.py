@@ -32,18 +32,38 @@ from gi.repository import Gtk
 from gi.repository import Pango
 from gi.repository import Gio
 from gi.repository import GdkPixbuf
+from gi.repository import GObject
 import logging
 logger = logging.getLogger('firstboot')
 
 from firstboot_lib import Window, firstbootconfig, FirstbootEntry
-
 import pages
+import dbus
+from dbus.mainloop.glib import DBusGMainLoop
+
 
 __DESKTOP_FILE__ = '/etc/xdg/autostart/firstboot.desktop'
+
+NM_DBUS_SERVICE = 'org.freedesktop.NetworkManager'
+NM_DBUS_OBJECT_PATH = '/org/freedesktop/NetworkManager'
+
+NM_STATE_UNKNOWN = 0    # Networking state is unknown.
+NM_STATE_ASLEEP = 10    # Networking is inactive and all devices are disabled.
+NM_STATE_DISCONNECTED = 20    # There is no active network connection.
+NM_STATE_DISCONNECTING = 30    # Network connections are being cleaned up.
+NM_STATE_CONNECTING = 40    # A network device is connecting to a network and there is no other available network connection.
+NM_STATE_CONNECTED_LOCAL = 50    # A network device is connected, but there is only link-local connectivity.
+NM_STATE_CONNECTED_SITE = 60    # A network device is connected, but there is only site-local connectivity.
+NM_STATE_CONNECTED_GLOBAL = 70    # A network device is connected, with global network connectivity.
+
 
 # See firstboot_lib.Window.py for more details about how this class works
 class FirstbootWindow(Window):
     __gtype_name__ = "FirstbootWindow"
+
+    __gsignals__ = {
+        'link-status': (GObject.SignalFlags.ACTION, None, (GObject.TYPE_BOOLEAN,))
+    }
 
     def finish_initializing(self, builder, options=None): # pylint: disable=E1002
         """Set up the main window"""
@@ -70,10 +90,23 @@ class FirstbootWindow(Window):
 
         first_page = self.pages[pages.pages[0]]
         self.set_current_page(first_page['module'])
-        self.on_link_status(None, False)
         self.show_applications()
 
         self.set_focus(self.ui.btnNext)
+
+        # Register changes on NetworkManager so we will
+        # know the connection state.
+        DBusGMainLoop(set_as_default = True)
+
+        self.system_bus = dbus.SystemBus()
+        self.nm = self.system_bus.get_object(NM_DBUS_SERVICE, NM_DBUS_OBJECT_PATH)
+        self.nm.connect_to_signal('StateChanged', self.on_nm_state_changed)
+
+        # Read the connection state now since it's posible we don't
+        # get any signals at that point.
+        i = dbus.Interface(self.nm, 'org.freedesktop.DBus.Properties')
+        state = i.Get(NM_DBUS_SERVICE, 'State')
+        self.on_nm_state_changed(state)
 
     def translate(self):
         self.set_title(_('First Boot Assistant'))
@@ -195,11 +228,6 @@ class FirstbootWindow(Window):
         self.current_page = module.get_page(self)
 
         try:
-            self.current_page.connect('link-status', self.on_link_status)
-        except Exception as e:
-            pass
-
-        try:
             self.current_page.connect('page-changed', self.on_page_changed)
         except Exception as e:
             pass
@@ -261,11 +289,20 @@ class FirstbootWindow(Window):
         label.set_padding(10, 0)
         label.set_markup(label.get_text())
 
-    def on_link_status(self, sender, status):
+    def on_nm_state_changed(self, state):
+        ''' Handle the NetworkManager state changed signal. If we have
+        global network connectivity then try to connect to the resources.
+        We launch a new thread for each resource.
+        '''
+
+        linked = state == NM_STATE_CONNECTED_GLOBAL
+
         for button_name in self.buttons:
             if button_name in ['linkToServer', 'linkToChef', 'installSoftware']:
-                self.buttons[button_name].set_sensitive(status)
-                self.pages[button_name]['enabled'] = status
+                self.buttons[button_name].set_sensitive(linked)
+                self.pages[button_name]['enabled'] = linked
+
+        self.emit('link-status', linked)
 
     def show_applications(self):
 

@@ -44,12 +44,7 @@ def get_page(main_window):
 class NetworkPage(PageWindow.PageWindow):
     __gtype_name__ = "NetworkPage"
 
-    __gsignals__ = {
-        'link-status': (GObject.SignalFlags.ACTION, None, (GObject.TYPE_BOOLEAN,))
-    }
-
     def finish_initializing(self):
-        self.timer_ret = True
         self.init_treeviewInterfaces()
         self.main_window.btnPrev.set_sensitive(False)
 
@@ -61,11 +56,10 @@ for linking this workstation to a GECOS server and for installing software.'))
 detected interfaces.'))
 
     def load_page(self, params=None):
-        self.timer_ret = True
-        GObject.timeout_add_seconds(1, self.load_treeviewInterfaces)
+        self.main_window.connect('link-status', self.on_link_status_changed)
 
     def unload_page(self, params=None):
-        self.timer_ret = False
+        self.main_window.disconnect('link-status')
 
     def on_btnNetworkDialog_Clicked(self, button):
         cmd = 'nm-connection-editor'
@@ -93,8 +87,6 @@ detected interfaces.'))
 
     def load_treeviewInterfaces(self):
 
-        n_ifaces = 0
-
         try:
             store = self.ui.treeviewInterfaces.get_model()
             store.clear()
@@ -103,17 +95,17 @@ detected interfaces.'))
 
             for _if in ifs:
                 store.append([_if[0], _if[1]])
-                if _if[0] != 'lo' and len(_if[1]) > 0:
-                    n_ifaces += 1
 
-            self.emit('link-status', n_ifaces > 0)
-            self.emit('status-changed', 'network', bool(n_ifaces > 0))
             self.ui.treeviewInterfaces.set_model(store)
 
         except AttributeError as e:
             pass
 
-        return self.timer_ret
+    def on_link_status_changed(self, sender, status):
+        """ If status = True there are global connectivity.
+        """
+        self.load_treeviewInterfaces()
+        self.emit('status-changed', 'network', status)
 
     def _render_column_name(self, column, cell, model, iter, user_param):
 
