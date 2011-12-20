@@ -21,6 +21,7 @@ __copyright__ = "Copyright (C) 2011, Junta de Andalucía <devmaster@guadalinex.o
 __license__ = "GPL-2"
 
 
+import pwd
 import os, SystemUsers, Dialogs
 from gi.repository import Gtk
 import firstboot.pages
@@ -61,9 +62,13 @@ class LocalUsersPage(PageWindow.PageWindow):
         self.ui.btnRemove.set_sensitive(False)
         self._accept_changes = False
         self.ui.txtName.set_text('')
+        self.ui.txtName.set_sensitive(False)
         self.ui.txtPassword.set_text('')
+        self.ui.txtPassword.set_sensitive(False)
         self.ui.txtConfirm.set_text('')
+        self.ui.txtConfirm.set_sensitive(False)
         self.ui.txtGroups.set_text('')
+        self.ui.txtGroups.set_sensitive(False)
         self._accept_changes = True
         try:
             self.load_users()
@@ -138,15 +143,21 @@ likely you don\'t need to create local users.'))
         self.set_active_user(user)
 
     def set_active_user(self, user):
+        pwd_struct = pwd.getpwnam(os.getlogin())
+        is_current_user = int(user['uid']) == int(pwd_struct.pw_uid)
         self._active_user = user
         self._active_user['updated'] = False
         self._accept_changes = False
         self.ui.txtName.set_text(user['name'])
+        self.ui.txtName.set_sensitive(True)
         self.ui.txtPassword.set_text(__DUMMY_PASSWORD__)
+        self.ui.txtPassword.set_sensitive(True)
         self.ui.txtConfirm.set_text('')
+        self.ui.txtConfirm.set_sensitive(True)
         self.ui.txtGroups.set_text(user['groups'])
+        self.ui.txtGroups.set_sensitive(True)
+        self.ui.btnRemove.set_sensitive(not is_current_user)
         self._accept_changes = True
-        self.ui.btnRemove.set_sensitive(True)
 
     def on_userDataChanged(self, widget):
         if self._active_user != None:
@@ -190,10 +201,16 @@ likely you don\'t need to create local users.'))
     def on_btnAddClicked(self, widget):
         login_info = Dialogs.new_user_dialog()
         if login_info == False:
+            Dialogs.user_error_dialog(_('The user\'s login couldn\'t be empty.'))
+            return
+
+        if login_info['password'] != login_info['confirm']:
+            Dialogs.user_error_dialog(_('The passwords doesn\'t match, couldn\'t create the new user.'))
             return
 
         try:
-            SystemUsers.add_user(login_info[0], login_info[1])
+            SystemUsers.add_user(login_info['login'], login_info['password'])
+            SystemUsers.update_user(login_info)
             self.reload_page()
 
         except SystemUsers.SystemUserException as e:
