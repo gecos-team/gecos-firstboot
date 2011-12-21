@@ -236,7 +236,7 @@ likely you don\'t need to create local users.'))
         messages = []
 
         if not validation.is_qname(user['login']):
-            messages.append(_('The user login couldn\'t be empty.'))
+            messages.append(_('The user login is empty or contains invalid characters.'))
             valid = False
 
         if validation.is_empty(user['password']):
