@@ -78,9 +78,9 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
             os.system('DEBCONF_PRIORITY=critical DEBIAN_FRONTEND=noninteractive dpkg-reconfigure resolvconf')
             self.ui.ldapBox.set_visible(False)
             self.ui.adBox.set_visible(True)
-            self.link_ad = True 
-        
-                
+            self.link_ad = True
+
+
 
 
         if params['ldap_is_configured'] or params['ad_is_configured']:
@@ -105,51 +105,33 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
         self.ui.lblFqdnAD.set_label('FQDN')
         self.ui.lblDnsDomain.set_label(_('Domain DNS'))
 
-    #def on_chkLDAP_toggle(self, button):
-    #    active = self.ui.chkLDAP.get_active()
-
-    #    self.ui.txtUrlLDAP.set_sensitive(active)
-    #    self.ui.txtBaseDN.set_sensitive(active)
-    #    self.ui.txtBindDN.set_sensitive(active)
-    #    self.ui.txtPassword.set_sensitive(active)
-
-    #    active = active \
-    #        | self.ui.chkChef.get_active() \
-    #        | self.unlink_from_ldap \
-    #        | self.unlink_from_chef
-
-    #    self.main_window.btnNext.set_sensitive(active)
-
-    #def on_chkChef_toggle(self, button):
-    #    active = self.ui.chkChef.get_active()
-
-    #    self.ui.txtUrlChef.set_sensitive(active)
-    #    self.ui.txtUrlChefCert.set_sensitive(active)
-
-    #    active = active \
-    #        | self.ui.chkLDAP.get_active() \
-    #        | self.unlink_from_ldap \
-    #        | self.unlink_from_chef
-
-    #    self.main_window.btnNext.set_sensitive(active)
-
     def previous_page(self, load_page_callback):
         load_page_callback(firstboot.pages.linkToServer)
 
     def next_page(self, load_page_callback):
-#        print self.server_conf.get_ldap_conf()
-#        print self.server_conf.get_ad_conf()
         if self.method == 'ad':
             retval=serverconf.auth_dialog(_('Authentication Required'),_('You need enter Administrator credentials of ActiveDirectory'))
             self.server_conf.get_ad_conf().set_user(retval[0])
             self.server_conf.get_ad_conf().set_passwd(retval[1])
-        
-        result, messages = serverconf.setup_server(
-            server_conf=self.server_conf,
-            link_ldap=self.link_ldap,
-            link_ad=self.link_ad
-        )
-#
+
+        messages = []
+
+        if self.method == 'ad':
+            if not self.server_conf.get_ad_conf().validate():
+                messages.append({'type': 'error', 'message': 'Please, check the Active Directory parameters.'})
+
+        else:
+            if not self.server_conf.get_ldap_conf().validate():
+                messages.append({'type': 'error', 'message': 'Please, check the LDAP parameters.'})
+
+        result = len(messages) == 0
+        if result == True:
+            result, messages = serverconf.setup_server(
+                server_conf=self.server_conf,
+                link_ldap=self.link_ldap,
+                link_ad=self.link_ad
+            )
+
         load_page_callback(LinkToServerResultsPage, {
             'result': result,
             'server_conf': self.server_conf,
@@ -163,7 +145,7 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
             self.server_conf.get_ldap_conf().set_url(self.ui.txtUrlLDAP.get_text())
             self.server_conf.get_ldap_conf().set_basedn(self.ui.txtBaseDN.get_text())
             self.server_conf.get_ldap_conf().set_binddn(self.ui.txtBindDN.get_text())
-            self.server_conf.get_ldap_conf().set_password(self.ui.txtPassword.get_text())   
+            self.server_conf.get_ldap_conf().set_password(self.ui.txtPassword.get_text())
         else:
             self.server_conf.get_ad_conf().set_fqdn(self.ui.txtFqdnAD.get_text())
             self.server_conf.get_ad_conf().set_dns_domain(self.ui.txtDnsDomain.get_text())
