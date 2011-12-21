@@ -310,6 +310,7 @@
                   <object class="GtkEntry" id="txtPassword">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="visibility">False</property>
                     <property name="invisible_char">•</property>
                     <property name="invisible_char_set">True</property>
                     <signal name="changed" handler="on_serverConf_changed" swapped="no"/>
