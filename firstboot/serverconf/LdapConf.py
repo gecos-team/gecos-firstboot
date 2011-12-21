@@ -20,6 +20,7 @@ __author__ = "Antonio Hernández <ahernandez@emergya.com>"
 __copyright__ = "Copyright (C) 2011, Junta de Andalucía <devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
+import firstboot.validation as validation
 
 class LdapConf():
 
@@ -37,10 +38,10 @@ class LdapConf():
         self.set_password(conf['bindpw'])
 
     def validate(self):
-        valid = len(self._data['uri']) > 0 \
-            and len(self._data['base']) > 0 \
-            and len(self._data['binddn']) > 0 \
-            and len(self._data['bindpw']) > 0
+        valid = validation.is_url(self._data['uri']) \
+            and not validation.is_empty(self._data['base']) \
+            and not validation.is_empty(self._data['binddn']) \
+            and not validation.is_empty(self._data['bindpw'])
         return valid;
 
     def get_url(self):

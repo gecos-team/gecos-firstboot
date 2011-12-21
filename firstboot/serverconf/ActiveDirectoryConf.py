@@ -20,6 +20,7 @@ __author__ = "David Amian Valle <damian@emergya.com>"
 __copyright__ = "Copyright (C) 2011, Junta de Andalucía <devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
+import firstboot.validation as validation
 
 class ActiveDirectoryConf():
 
@@ -35,8 +36,8 @@ class ActiveDirectoryConf():
         self.set_dns_domain(conf['dns'])
 
     def validate(self):
-        valid = len(self._data['fqdn']) > 0 \
-            and len(self._data['dns_domain']) > 0 
+        valid = not validation.is_empty(self._data['fqdn']) \
+            and not validation.is_empty(self._data['dns_domain'])
         return valid;
 
     def get_fqdn(self):
@@ -52,14 +53,14 @@ class ActiveDirectoryConf():
     def set_dns_domain(self, dns_domain):
         self._data['dns_domain'] = dns_domain
         return self
-    
+
     def get_user(self):
         return self._data['user'].encode('utf-8')
 
     def set_user(self, user):
         self._data['user'] = user
         return self
-    
+
     def get_passwd(self):
         return self._data['passwd'].encode('utf-8')
 
