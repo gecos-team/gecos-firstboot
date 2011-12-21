@@ -175,6 +175,7 @@ def get_chef_pem(chef_conf):
 
             else:
                 raise e
+
         content = fp.read()
 
         (fd, filepath) = tempfile.mkstemp(dir='/tmp') # [suffix=''[, prefix='tmp'[, dir=None[, text=False]]]])
@@ -191,7 +192,6 @@ def get_chef_pem(chef_conf):
 def get_chef_hostnames(chef_conf):
 
     chef_url = chef_conf.get_url()
-    #pem_url = chef_conf.get_pem_url()
     pem_file_path = get_chef_pem(chef_conf)
 
     cmd = 'knife node list -u chef-validator -k %s -s %s' % (pem_file_path, chef_url)
@@ -204,7 +204,7 @@ def get_chef_hostnames(chef_conf):
 
     names = []
     if exit_code[1] != 0:
-        raise ServerConfException(_('Couldn\t retrieve the host names list') + ': ' + output)
+        raise ServerConfException(_('Couldn\'t retrieve the host names list') + ': ' + output)
 
     else:
         try:
@@ -414,7 +414,7 @@ def link_to_ldap(ldap_conf):
     return True
 
 def link_to_ad(ad_conf):
-    
+
     fqdn = ad_conf.get_fqdn()
     dns_domain = ad_conf.get_dns_domain()
     user = ad_conf.get_user()
