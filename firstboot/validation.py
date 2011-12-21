@@ -34,7 +34,7 @@ def is_qname(value):
     return m != None
 
 def is_url(value):
-    m = re.search('^(http|https|ftp|ftps|file)://(.+)', value)
+    m = re.search('^(http|https|ftp|ftps|file|ldap)://(.+)', value)
     #print '> %s :: %s' % (m != None, value)
     return m != None
 
