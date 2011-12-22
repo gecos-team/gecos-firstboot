@@ -22,6 +22,7 @@ __license__ = "GPL-2"
 
 import firstboot.validation as validation
 
+
 class ChefConf():
 
     def __init__(self):

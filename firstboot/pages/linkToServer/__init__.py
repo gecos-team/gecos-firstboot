@@ -24,7 +24,8 @@ __license__ = "GPL-2"
 import os
 from gi.repository import Gtk
 
-import firstboot.pages, LinkToServerConfEditorPage
+import firstboot.pages
+import LinkToServerConfEditorPage
 from firstboot_lib import PageWindow
 from firstboot import serverconf
 
@@ -48,10 +49,11 @@ def get_page(main_window):
     page = LinkToServerPage(main_window)
     return page
 
+
 class LinkToServerPage(PageWindow.PageWindow):
     __gtype_name__ = "LinkToServerPage"
 
-    def load_page(self,params=None):
+    def load_page(self, params=None):
         if os.path.exists('/tmp/json_cached') and not (self.ldap_is_configured or self.ad_is_configured):
             self.json_cached = True
             self.ui.radioOmit.set_visible(False)
@@ -76,12 +78,12 @@ class LinkToServerPage(PageWindow.PageWindow):
             self.json_cached = True
         else:
             self.json_cached = False
-        
-        self.method="ldap"
+
+        self.method = "ldap"
         self.methodaut = "ldap"
-        self.unlink_ldap=False
-        self.unlink_ad=False
-        
+        self.unlink_ldap = False
+        self.unlink_ad = False
+
         self.show_status()
 
         self.ldap_is_configured = serverconf.ldap_is_configured()
@@ -102,7 +104,6 @@ class LinkToServerPage(PageWindow.PageWindow):
             self.ui.box5.set_visible(False)
             self.ui.box6.set_visible(False)
             self.main_window.btnNext.set_sensitive(False)
-
 
         self.ui.chkUnlinkLDAP.set_visible(self.ldap_is_configured)
         self.ui.chkUnlinkAD.set_visible(self.ad_is_configured)
@@ -148,12 +149,12 @@ server.')
 
     def on_chkUnlinkLDAP_toggle(self, button):
         active = button.get_active()
-        self.unlink_ldap=active
+        self.unlink_ldap = active
         self.main_window.btnNext.set_sensitive(active)
 
     def on_chkUnlinkAD_toggle(self, button):
         active = button.get_active()
-        self.unlink_ad=active
+        self.unlink_ad = active
         self.main_window.btnNext.set_sensitive(active)
 
     def on_radioOmit_toggled(self, button):
@@ -178,17 +179,16 @@ server.')
         self.show_status()
 
     def on_radioLDAP_toggled(self, button):
-        self.method="ldap"
+        self.method = "ldap"
 
     def on_radioAD_toggled(self, button):
-        self.method="ad"
+        self.method = "ad"
 
     def on_radioLDAPAut_toggled(self, button):
-        self.methodaut="ldap"
+        self.methodaut = "ldap"
 
     def on_radioADAut_toggled(self, button):
-        self.methodaut="ad"
-
+        self.methodaut = "ad"
 
     def show_status(self, status=None, exception=None):
 
@@ -253,8 +253,8 @@ server.')
             if self.ui.radioAuto.get_active():
                 url = self.ui.txtUrl.get_text()
                 server_conf = serverconf.get_server_conf(url, self.json_cached)
-                self.method=self.methodaut
-            
+                self.method = self.methodaut
+
             load_page_callback(LinkToServerConfEditorPage, {
                 'server_conf': server_conf,
                 'ldap_is_configured': self.ldap_is_configured,

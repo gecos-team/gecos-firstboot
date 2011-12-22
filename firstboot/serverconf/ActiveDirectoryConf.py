@@ -22,6 +22,7 @@ __license__ = "GPL-2"
 
 import firstboot.validation as validation
 
+
 class ActiveDirectoryConf():
 
     def __init__(self):
@@ -38,13 +39,13 @@ class ActiveDirectoryConf():
     def validate(self):
         valid = not validation.is_empty(self._data['fqdn']) \
             and not validation.is_empty(self._data['dns_domain'])
-        return valid;
+        return valid
 
     def get_fqdn(self):
         return self._data['fqdn'].encode('utf-8')
 
     def set_fqdn(self, fqdn):
-        self._data['fqdn'] =fqdn
+        self._data['fqdn'] = fqdn
         return self
 
     def get_dns_domain(self):
@@ -70,4 +71,3 @@ class ActiveDirectoryConf():
 
     def __str__(self):
         return str(self._data)
-

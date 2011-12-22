@@ -34,10 +34,12 @@ __REQUIRED__ = False
 
 __TITLE__ = _('Install software')
 
+
 def get_page(main_window):
 
     page = InstallSoftwarePage(main_window)
     return page
+
 
 class InstallSoftwarePage(PageWindow.PageWindow):
     __gtype_name__ = "InstallSoftwarePage"

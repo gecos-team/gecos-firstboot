@@ -44,6 +44,7 @@ def get_page(main_window):
     page = PCLabelPage(main_window)
     return page
 
+
 class PCLabelPage(PageWindow.PageWindow):
     __gtype_name__ = "PCLabelPage"
 

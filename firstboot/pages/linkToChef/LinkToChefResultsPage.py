@@ -41,6 +41,7 @@ def get_page(main_window):
     page = LinkToChefResultsPage(main_window)
     return page
 
+
 class LinkToChefResultsPage(PageWindow.PageWindow):
     __gtype_name__ = "LinkToChefResultsPage"
 

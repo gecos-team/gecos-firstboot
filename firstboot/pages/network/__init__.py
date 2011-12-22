@@ -36,10 +36,12 @@ __REQUIRED__ = True
 
 __TITLE__ = _('Configure the network')
 
+
 def get_page(main_window):
 
     page = NetworkPage(main_window)
     return page
+
 
 class NetworkPage(PageWindow.PageWindow):
     __gtype_name__ = "NetworkPage"

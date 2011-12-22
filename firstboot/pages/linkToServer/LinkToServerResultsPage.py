@@ -41,6 +41,7 @@ def get_page(main_window):
     page = LinkToServerResultsPage(main_window)
     return page
 
+
 class LinkToServerResultsPage(PageWindow.PageWindow):
     __gtype_name__ = "LinkToServerResultsPage"
 

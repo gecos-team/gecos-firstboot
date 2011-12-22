@@ -22,6 +22,7 @@ __license__ = "GPL-2"
 
 import firstboot.validation as validation
 
+
 class LdapConf():
 
     def __init__(self):
@@ -42,7 +43,7 @@ class LdapConf():
             and not validation.is_empty(self._data['base']) \
             and not validation.is_empty(self._data['binddn']) \
             and not validation.is_empty(self._data['bindpw'])
-        return valid;
+        return valid
 
     def get_url(self):
         return self._data['uri'].encode('utf-8')
@@ -71,5 +72,6 @@ class LdapConf():
     def set_password(self, password):
         self._data['bindpw'] = password
         return self
+
     def __str__(self):
         return str(self._data)

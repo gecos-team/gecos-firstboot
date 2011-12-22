@@ -27,7 +27,8 @@ import subprocess
 import shlex
 import json
 
-import LinkToChefConfEditorPage, LinkToChefResultsPage
+import LinkToChefConfEditorPage
+import LinkToChefResultsPage
 from firstboot_lib import PageWindow
 from firstboot import serverconf
 
@@ -45,6 +46,7 @@ def get_page(main_window):
 
     page = LinkToChefHostnamePage(main_window)
     return page
+
 
 class LinkToChefHostnamePage(PageWindow.PageWindow):
     __gtype_name__ = "LinkToChefHostnamePage"

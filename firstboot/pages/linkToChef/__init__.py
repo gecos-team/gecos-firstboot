@@ -24,7 +24,8 @@ __license__ = "GPL-2"
 import os
 from gi.repository import Gtk
 
-import firstboot.pages, LinkToChefConfEditorPage
+import firstboot.pages
+import LinkToChefConfEditorPage
 from firstboot_lib import PageWindow
 from firstboot import serverconf
 
@@ -48,10 +49,11 @@ def get_page(main_window):
     page = LinkToChefPage(main_window)
     return page
 
+
 class LinkToChefPage(PageWindow.PageWindow):
     __gtype_name__ = "LinkToChefPage"
 
-    def load_page(self,params=None):
+    def load_page(self, params=None):
         if os.path.exists('/tmp/json_cached') and not self.chef_is_configured:
             self.json_cached = True
             server_conf = serverconf.get_server_conf('', self.json_cached)

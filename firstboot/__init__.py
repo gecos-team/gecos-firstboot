@@ -54,6 +54,7 @@ def parse_options():
     set_up_logging(options)
     return options
 
+
 def is_first_start(debug):
 
     fbe = FirstbootEntry.FirstbootEntry()
@@ -64,7 +65,8 @@ def is_first_start(debug):
 
     fbe.set_firststart(1)
 
-    return 
+    return
+
 
 def main():
     'constructor for your class instances'
@@ -73,7 +75,7 @@ def main():
    # if not is_first_start(options.debug):
    #     return
 
-    # Run the application.    
+    # Run the application.
     window = FirstbootWindow.FirstbootWindow(options)
     window.show()
     Gtk.main()

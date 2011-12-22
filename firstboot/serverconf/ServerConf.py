@@ -26,6 +26,7 @@ from LdapConf import LdapConf
 from ChefConf import ChefConf
 from ActiveDirectoryConf import ActiveDirectoryConf
 
+
 class ServerConf():
 
     def __init__(self):
@@ -48,7 +49,7 @@ class ServerConf():
         valid = len(self._data['version']) > 0 \
             and self._ldap_conf.validate() \
             and self._chef_conf.validate()
-        return valid;
+        return valid
 
     def get_version(self):
         return self._data['version'].encode('utf-8')

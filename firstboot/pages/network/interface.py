@@ -40,6 +40,7 @@ import urllib2
 SIOCGIFCONF = 0x8912
 MAXBYTES = 8096
 
+
 def localifs():
     """
     Used to get a list of the up interfaces and associated IP addresses

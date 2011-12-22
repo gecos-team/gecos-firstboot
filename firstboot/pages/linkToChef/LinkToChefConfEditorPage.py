@@ -21,7 +21,8 @@ __copyright__ = "Copyright (C) 2011, Junta de Andalucía <devmaster@guadalinex.o
 __license__ = "GPL-2"
 
 
-import LinkToChefHostnamePage, LinkToChefResultsPage
+import LinkToChefHostnamePage
+import LinkToChefResultsPage
 import firstboot.pages.linkToChef
 from firstboot_lib import PageWindow
 from firstboot import serverconf
@@ -40,6 +41,7 @@ def get_page(main_window):
 
     page = LinkToChefConfEditorPage(main_window)
     return page
+
 
 class LinkToChefConfEditorPage(PageWindow.PageWindow):
     __gtype_name__ = "LinkToChefConfEditorPage"
@@ -140,9 +142,7 @@ class LinkToChefConfEditorPage(PageWindow.PageWindow):
             valid = False
             messages.append({'type': 'error', 'message': _('Chef and Chef Cert URLs must be well formed URLs.')})
 
-
         hostname = self.server_conf.get_chef_conf().get_hostname()
-        print 'hostname = ' + hostname
 
         if not validation.is_qname(hostname):
             valid = False
@@ -156,11 +156,8 @@ class LinkToChefConfEditorPage(PageWindow.PageWindow):
             valid = False
             messages.append({'type': 'error', 'message': _('Please check the Chef Cert URL, it seems to be wrong.')})
 
-        print 'host_names:', used_hostnames
-
         if hostname in used_hostnames:
             valid = False
             messages.append({'type': 'error', 'message': _('The host name already exists in the Chef server. Choose a different one.')})
 
         return valid, messages
-

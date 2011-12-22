@@ -40,6 +40,7 @@ def get_page(main_window):
     page = LinkToServerConfEditorPage(main_window)
     return page
 
+
 class LinkToServerConfEditorPage(PageWindow.PageWindow):
     __gtype_name__ = "LinkToServerConfEditorPage"
 
@@ -80,12 +81,8 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
             self.ui.adBox.set_visible(True)
             self.link_ad = True
 
-
-
-
         if params['ldap_is_configured'] or params['ad_is_configured']:
             self.ui.lblDescription.set_visible(False)
-
 
     def _bold(self, str):
         return '<b>%s</b>' % str
@@ -110,7 +107,8 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
 
     def next_page(self, load_page_callback):
         if self.method == 'ad':
-            retval=serverconf.auth_dialog(_('Authentication Required'),_('You need enter Administrator credentials of ActiveDirectory'))
+            retval = serverconf.auth_dialog(_('Authentication Required'),
+                    _('You need enter Administrator credentials of ActiveDirectory'))
             self.server_conf.get_ad_conf().set_user(retval[0])
             self.server_conf.get_ad_conf().set_passwd(retval[1])
 
