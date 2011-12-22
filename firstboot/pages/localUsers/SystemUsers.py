@@ -21,11 +21,15 @@ __copyright__ = "Copyright (C) 2011, Junta de Andalucía <devmaster@guadalinex.o
 __license__ = "GPL-2"
 
 
-import os, shlex, subprocess, crypt
+import os
+import shlex
+import subprocess
+import crypt
 
 import gettext
 from gettext import gettext as _
 gettext.textdomain('firstboot')
+
 
 def read_users(min_uid=1000):
 
@@ -58,6 +62,7 @@ def read_users(min_uid=1000):
 
     return users
 
+
 def update_user(user, update_passwd=False):
     # Modifies an user:
     #    -c Comment line, GECOS info.
@@ -89,6 +94,7 @@ def update_user(user, update_passwd=False):
     else:
         raise SystemUserException(_('The user couldn\'t be updated. Please check the parameters.'))
 
+
 def set_password(login, plain_passwd):
     # Modifies an user:
     #    -c Comment line, GECOS info.
@@ -107,16 +113,18 @@ def set_password(login, plain_passwd):
     else:
         raise SystemUserException(_('The password couldn\'t be changed.'))
 
+
 def add_user(login, passwd):
 
     cmd = 'adduser --add_extra_groups --disabled-login --gecos "" %s' % (login,)
     pid, exit_code, output = _run_command(cmd)
 
     if exit_code == 0:
-        return set_password(login, passwd);
+        return set_password(login, passwd)
 
     else:
         raise SystemUserException(_('The user couldn\'t be created. Please check the parameters.'))
+
 
 def remove_user(login, remove_home=False):
 
@@ -161,6 +169,7 @@ def remove_user(login, remove_home=False):
     else:
         raise SystemUserException(_('Unknown error, the user couldn\'t be removed for some reason.'))
 
+
 def _run_command(cmd):
     args = shlex.split(cmd)
     process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -174,6 +183,7 @@ def _run_command(cmd):
 
     # PID, exit code, output
     return (exit_code[0], exit_code[1], output)
+
 
 class SystemUserException(Exception):
 

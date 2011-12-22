@@ -21,10 +21,12 @@ __copyright__ = "Copyright (C) 2011, Junta de Andalucía <devmaster@guadalinex.o
 __license__ = "GPL-2"
 
 
-import LinkToChefHostnamePage, LinkToChefResultsPage
+import LinkToChefHostnamePage
+import LinkToChefResultsPage
 import firstboot.pages.linkToChef
 from firstboot_lib import PageWindow
 from firstboot import serverconf
+import firstboot.validation as validation
 
 import gettext
 from gettext import gettext as _
@@ -39,6 +41,7 @@ def get_page(main_window):
 
     page = LinkToChefConfEditorPage(main_window)
     return page
+
 
 class LinkToChefConfEditorPage(PageWindow.PageWindow):
     __gtype_name__ = "LinkToChefConfEditorPage"
@@ -58,6 +61,7 @@ class LinkToChefConfEditorPage(PageWindow.PageWindow):
                 self.ui.lblOrganizationValue.set_label(self.server_conf.get_organization())
                 self.ui.txtUrlChef.set_text(self.server_conf.get_chef_conf().get_url())
                 self.ui.txtUrlChefCert.set_text(self.server_conf.get_chef_conf().get_pem_url())
+                self.ui.txtHostname.set_text(self.server_conf.get_chef_conf().get_hostname())
 
         if self.server_conf is None:
             self.server_conf = serverconf.ServerConf()
@@ -83,6 +87,7 @@ class LinkToChefConfEditorPage(PageWindow.PageWindow):
         self.ui.lblNotes.set_label(_('Notes'))
         self.ui.lblUrlChef.set_label('Chef URL')
         self.ui.lblUrlChefCert.set_label(_('Certificate URL'))
+        self.ui.lblHostname.set_label(_('Node Name'))
 
     def previous_page(self, load_page_callback):
         load_page_callback(firstboot.pages.linkToChef)
@@ -90,31 +95,23 @@ class LinkToChefConfEditorPage(PageWindow.PageWindow):
     def next_page(self, load_page_callback):
 
         if not self.unlink_from_chef:
-            # The unique host name for Chef is mandatory, so we need
-            # to ask for it before the setup.
 
-            try:
+            result, messages = self.validate_conf()
 
-                if not self.server_conf.get_chef_conf().validate():
-                    raise serverconf.ServerConfException(_('The fields are mandatory.'))
+            if result == True:
+                result, messages = serverconf.setup_server(
+                    server_conf=self.server_conf,
+                    link_ldap=False,
+                    unlink_ldap=False,
+                    link_chef=not self.unlink_from_chef,
+                    unlink_chef=self.unlink_from_chef
+                )
 
-                used_hostnames = serverconf.get_chef_hostnames(self.server_conf.get_chef_conf())
-
-                load_page_callback(LinkToChefHostnamePage, {
-                    'server_conf': self.server_conf,
-                    'link_chef': not self.unlink_from_chef,
-                    'unlink_chef': self.unlink_from_chef,
-                    'used_hostnames': used_hostnames
-                })
-
-            except serverconf.ServerConfException as e:
-                messages = [{'type': 'error', 'message': str(e)}]
-
-                load_page_callback(LinkToChefResultsPage, {
-                    'result': False,
-                    'server_conf': self.server_conf,
-                    'messages': messages
-                })
+            load_page_callback(LinkToChefResultsPage, {
+                'server_conf': self.server_conf,
+                'result': result,
+                'messages': messages
+            })
 
         else:
             result, messages = serverconf.setup_server(
@@ -134,3 +131,33 @@ class LinkToChefConfEditorPage(PageWindow.PageWindow):
             return
         self.server_conf.get_chef_conf().set_url(self.ui.txtUrlChef.get_text())
         self.server_conf.get_chef_conf().set_pem_url(self.ui.txtUrlChefCert.get_text())
+        self.server_conf.get_chef_conf().set_hostname(self.ui.txtHostname.get_text())
+
+    def validate_conf(self):
+
+        valid = True
+        messages = []
+
+        if not self.server_conf.get_chef_conf().validate():
+            valid = False
+            messages.append({'type': 'error', 'message': _('Chef and Chef Cert URLs must be well formed URLs.')})
+
+        hostname = self.server_conf.get_chef_conf().get_hostname()
+
+        if not validation.is_qname(hostname):
+            valid = False
+            messages.append({'type': 'error', 'message': _('The host name is empty or contains invalid characters.')})
+
+        try:
+            used_hostnames = serverconf.get_chef_hostnames(self.server_conf.get_chef_conf())
+
+        except:
+            used_hostnames = []
+            valid = False
+            messages.append({'type': 'error', 'message': _('Please check the Chef Cert URL, it seems to be wrong.')})
+
+        if hostname in used_hostnames:
+            valid = False
+            messages.append({'type': 'error', 'message': _('The host name already exists in the Chef server. Choose a different one.')})
+
+        return valid, messages

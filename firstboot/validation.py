@@ -21,11 +21,27 @@ __copyright__ = "Copyright (C) 2011, Junta de Andalucía <devmaster@guadalinex.o
 __license__ = "GPL-2"
 
 
-import network
-import pcLabel
-import linkToServer
-import localUsers
-import installSoftware
+import re
 
-pages = ['network', 'pcLabel', 'linkToServer',
-        'linkToChef', 'localUsers', 'installSoftware']
+
+def is_empty(value):
+    ret = not(len(value) > 0)
+    #print '> %s :: %s' % (ret, value)
+    return ret
+
+
+def is_qname(value):
+    m = re.search('^[a-zA-Z][\w-]+$', value)
+    #print '> %s :: %s' % (m != None, value)
+    return m != None
+
+
+def is_url(value):
+    m = re.search('^(http|https|ftp|ftps|file|ldap)://(.+)', value)
+    #print '> %s :: %s' % (m != None, value)
+    return m != None
+
+
+def is_password(value):
+    """ Maybe not necesary """
+    return True

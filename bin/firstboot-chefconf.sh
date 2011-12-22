@@ -102,7 +102,7 @@ update_conf() {
         mv validation.pem $valpem
     fi
 
-    check_configuration
+    check_configuration r_validation
 
     mv $tmpconf $chefconf
 
@@ -119,6 +119,33 @@ update_conf() {
 # Check the changes are valid
 check_configuration() {
 
+    r_validation=$1
+
+    if [ $r_validation ==  1 ]; then
+        msg="Generic error code."
+
+    elif [ $r_validation ==  2 ]; then
+        msg="Error parsing the wget options."
+
+    elif [ $r_validation ==  3 ]; then
+        msg="File I/O error."
+
+    elif [ $r_validation ==  4 ]; then
+        msg="Network failure."
+
+    elif [ $r_validation ==  5 ]; then
+        msg="SSL verification failure."
+
+    elif [ $r_validation ==  6 ]; then
+        msg="Username/password authentication failure."
+
+    elif [ $r_validation ==  7 ]; then
+        msg="Protocol errors."
+
+    elif [ $r_validation ==  8 ]; then
+        msg="Server issued an error response."
+    fi
+
     r_chef_server_url=`egrep "^chef_server_url \"$chef_server_url\"" $tmpconf`
     r_node_name=`egrep "^node_name \"$chef_node_name\"" $tmpconf`
 
@@ -128,16 +155,19 @@ check_configuration() {
     fi
 
     if [ "" == "$r_chef_server_url" ]; then
+        restore
         echo "The configuration couldn't be updated correctly."
         exit 1
     fi
 
     if [ $r_validation != 0 ]; then
-        echo "The validation.pem file couldn't be downloaded correctly."
+        restore
+        echo "The validation.pem file couldn't be downloaded correctly. $msg"
         exit 1
     fi
 
     if [ ! -f $valpem ]; then
+        restore
         echo "The validation.pem file couldn't be moved to $chefdir."
         exit 1
     fi

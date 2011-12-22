@@ -65,7 +65,7 @@ class FirstbootWindow(Window):
         'link-status': (GObject.SignalFlags.ACTION, None, (GObject.TYPE_BOOLEAN,))
     }
 
-    def finish_initializing(self, builder, options=None): # pylint: disable=E1002
+    def finish_initializing(self, builder, options=None):   # pylint: disable=E1002
         """Set up the main window"""
         super(FirstbootWindow, self).finish_initializing(builder)
         self.connect("delete_event", self.on_delete_event)
@@ -96,7 +96,7 @@ class FirstbootWindow(Window):
 
         # Register changes on NetworkManager so we will
         # know the connection state.
-        DBusGMainLoop(set_as_default = True)
+        DBusGMainLoop(set_as_default=True)
 
         self.system_bus = dbus.SystemBus()
         self.nm = self.system_bus.get_object(NM_DBUS_SERVICE, NM_DBUS_OBJECT_PATH)
@@ -136,7 +136,7 @@ class FirstbootWindow(Window):
 
         if result == Gtk.ResponseType.YES:
             if os.path.exists(__DESKTOP_FILE__):
-                os.rename(__DESKTOP_FILE__, '/tmp/firstboot.desktop');
+                os.rename(__DESKTOP_FILE__, '/tmp/firstboot.desktop')
             retval = False
 
         return retval
@@ -213,7 +213,6 @@ class FirstbootWindow(Window):
 
         return button
 
-
     def set_current_page(self, module, params=None):
 
         self.ui.btnPrev.set_sensitive(True)
@@ -221,11 +220,8 @@ class FirstbootWindow(Window):
         self.translate()
 
         try:
-           # print 'unload -> '+str(self.current_page)
-           # print 'params -> '+str(params)
             self.current_page.unload_page(params)
         except Exception as e:
-           # print e
             pass
 
         self.current_page = module.get_page(self)
@@ -240,15 +236,6 @@ class FirstbootWindow(Window):
         except Exception as e:
             pass
 
-#        try:
-#            print 'load -> '+ str(self.current_page)
-#            print 'params -> '+ str(params)
-#            self.current_page.load_page(params)
-#        except Exception as e:
-#            print e
-#            pass
-
-
         page_name = module.__name__.split('.')[-1]
         self.is_last_page = (page_name == pages.pages[-1])
 
@@ -261,14 +248,11 @@ class FirstbootWindow(Window):
         for child in self.ui.swContent.get_children():
             self.ui.swContent.remove(child)
 
-        #self.ui.swContent.add(self.current_page.get_widget())
         self.ui.swContent.add_with_viewport(self.current_page.get_widget())
+
         try:
-            #print 'load -> '+ str(self.current_page)
-            #print 'params -> '+ str(params)
             self.current_page.load_page(params)
         except Exception as e:
-            #print e
             pass
 
     def on_page_changed(self, sender, module, params):
@@ -340,7 +324,7 @@ class FirstbootWindow(Window):
                     pixbuf = pixbuf.scale_simple(24, 24, GdkPixbuf.InterpType.BILINEAR)
 
                 except Exception, e:
-                    print "Error loading icon pixbuf: " + e.message;
+                    print "Error loading icon pixbuf: " + e.message
 
                 btn = Gtk.Button()
                 btn.set_relief(Gtk.ReliefStyle.NONE)

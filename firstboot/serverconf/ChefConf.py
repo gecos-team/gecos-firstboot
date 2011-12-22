@@ -20,6 +20,8 @@ __author__ = "Antonio Hernández <ahernandez@emergya.com>"
 __copyright__ = "Copyright (C) 2011, Junta de Andalucía <devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
+import firstboot.validation as validation
+
 
 class ChefConf():
 
@@ -33,8 +35,8 @@ class ChefConf():
         self.set_pem_url(conf['chef_validation_url'])
 
     def validate(self):
-        valid = len(self._data['chef_server_url']) > 0 \
-            and len(self._data['chef_validation_url']) > 0
+        valid = validation.is_url(self._data['chef_server_url']) \
+            and validation.is_url(self._data['chef_validation_url'])
         return valid
 
     def get_url(self):

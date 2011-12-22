@@ -67,6 +67,7 @@ def _install_opener(url, user, password, url_based_auth=True):
     opener.open(url)
     urllib2.install_opener(opener)
 
+
 def parse_url(url):
     parsed_url = list(urlparse.urlparse(url))
     if parsed_url[0] in ('http', 'https'):
@@ -77,9 +78,10 @@ def parse_url(url):
     url = urlparse.urlunparse(parsed_url)
     return url
 
+
 def validate_credentials(url):
     global CREDENTIAL_CACHED
-    url_parsed=urlparse.urlparse(url)
+    url_parsed = urlparse.urlparse(url)
     user = ''
     password = ''
     hostname = ''
@@ -91,9 +93,9 @@ def validate_credentials(url):
     else:
         hostname = url_parsed.hostname
 
-    if CREDENTIAL_CACHED.has_key(hostname):
+    if hostname in CREDENTIAL_CACHED:
         validate_credentials = False
-        credentials=CREDENTIAL_CACHED[hostname]
+        credentials = CREDENTIAL_CACHED[hostname]
         for cred in credentials:
             try:
                 _install_opener(url, cred[0], cred[1])
@@ -104,18 +106,20 @@ def validate_credentials(url):
                 if hasattr(e, 'code') and e.code == 401 and e.msg == 'basic auth failed':
                     continue
         if not validate:
-            user, password = auth_dialog(_('Authentication Required'),_('You need to enter your credentials to access the requested resource.'))
+            user, password = auth_dialog(_('Authentication Required'),
+                    _('You need to enter your credentials to access the requested resource.'))
             _install_opener(url, user, password)
-            credentials=CREDENTIAL_CACHED[hostname]
-            credentials.append([user,password])
+            credentials = CREDENTIAL_CACHED[hostname]
+            credentials.append([user, password])
     else:
-        user, password = auth_dialog(_('Authentication Required'),_('You need to enter your credentials to access the requested resource.'))
+        user, password = auth_dialog(_('Authentication Required'),
+                _('You need to enter your credentials to access the requested resource.'))
         _install_opener(url, user, password)
-        CREDENTIAL_CACHED[hostname] = [[user,password]]
-    return user,password
+        CREDENTIAL_CACHED[hostname] = [[user, password]]
+    return user, password
 
 
-def get_server_conf(url,json_cached=False):
+def get_server_conf(url, json_cached=False):
     try:
         if json_cached == True:
             fp = open('/tmp/json_cached', 'r')
@@ -155,6 +159,7 @@ def get_server_conf(url,json_cached=False):
     except ValueError as e:
         raise ServerConfException(_('Configuration file is not valid.'))
 
+
 def get_chef_pem(chef_conf):
     global CREDENTIAL_CACHED
     url = chef_conf.get_pem_url()
@@ -175,9 +180,10 @@ def get_chef_pem(chef_conf):
 
             else:
                 raise e
+
         content = fp.read()
 
-        (fd, filepath) = tempfile.mkstemp(dir='/tmp') # [suffix=''[, prefix='tmp'[, dir=None[, text=False]]]])
+        (fd, filepath) = tempfile.mkstemp(dir='/tmp')  # [suffix=''[, prefix='tmp'[, dir=None[, text=False]]]])
         fp = os.fdopen(fd, "w+b")
         if fp:
             fp.write(content)
@@ -188,10 +194,10 @@ def get_chef_pem(chef_conf):
     except urllib2.URLError as e:
         raise ServerConfException(e)
 
+
 def get_chef_hostnames(chef_conf):
 
     chef_url = chef_conf.get_url()
-    #pem_url = chef_conf.get_pem_url()
     pem_file_path = get_chef_pem(chef_conf)
 
     cmd = 'knife node list -u chef-validator -k %s -s %s' % (pem_file_path, chef_url)
@@ -204,7 +210,7 @@ def get_chef_hostnames(chef_conf):
 
     names = []
     if exit_code[1] != 0:
-        raise ServerConfException(_('Couldn\t retrieve the host names list') + ': ' + output)
+        raise ServerConfException(_('Couldn\'t retrieve the host names list') + ': ' + output)
 
     else:
         try:
@@ -221,6 +227,7 @@ def get_chef_hostnames(chef_conf):
 
     os.remove(pem_file_path)
     return hostnames
+
 
 def ad_is_configured():
     try:
@@ -239,7 +246,6 @@ def ad_is_configured():
 
         else:
             raise LinkToADException(_('AD setup error') + ': ' + output)
-
 
     except Exception as e:
         raise e
@@ -267,9 +273,9 @@ def ldap_is_configured():
         else:
             raise LinkToLDAPException(_('LDAP setup error') + ': ' + output)
 
-
     except Exception as e:
         raise e
+
 
 def chef_is_configured():
     try:
@@ -292,7 +298,6 @@ def chef_is_configured():
 
         else:
             raise LinkToChefException(_('Chef setup error') + ': ' + output)
-
 
     except Exception as e:
         raise e
@@ -344,7 +349,6 @@ def setup_server(server_conf, link_ldap=False, unlink_ldap=False,
         except Exception as e:
             messages.append({'type': 'error', 'message': str(e)})
 
-
     if unlink_chef == True:
         try:
             ret = unlink_from_chef()
@@ -371,6 +375,7 @@ def setup_server(server_conf, link_ldap=False, unlink_ldap=False,
             break
 
     return result, messages
+
 
 def link_to_ldap(ldap_conf):
 
@@ -413,8 +418,9 @@ def link_to_ldap(ldap_conf):
 
     return True
 
+
 def link_to_ad(ad_conf):
-    
+
     fqdn = ad_conf.get_fqdn()
     dns_domain = ad_conf.get_dns_domain()
     user = ad_conf.get_user()
@@ -546,6 +552,7 @@ def link_to_chef(chef_conf):
 
     return True
 
+
 def unlink_from_chef():
 
     try:
@@ -582,7 +589,7 @@ def auth_dialog(title, text):
     hboxuser = Gtk.HBox()
     lbluser = Gtk.Label(_('user'))
     lbluser.set_visible(True)
-    hboxuser.pack_start(lbluser,False, False, False)
+    hboxuser.pack_start(lbluser, False, False, False)
     user = Gtk.Entry()
     user.set_activates_default(True)
     user.show()
@@ -592,7 +599,7 @@ def auth_dialog(title, text):
     hboxpwd = Gtk.HBox()
     lblpwd = Gtk.Label(_('password'))
     lblpwd.set_visible(True)
-    hboxpwd.pack_start(lblpwd,False, False, False)
+    hboxpwd.pack_start(lblpwd, False, False, False)
     pwd = Gtk.Entry()
     pwd.set_activates_default(True)
     pwd.set_visibility(False)
@@ -606,10 +613,11 @@ def auth_dialog(title, text):
 
     retval = [None, None]
     if result == Gtk.ResponseType.OK:
-       retval = [user.get_text(), pwd.get_text()]
+        retval = [user.get_text(), pwd.get_text()]
 
     dialog.destroy()
     return retval
+
 
 class ServerConfException(Exception):
     '''
@@ -619,6 +627,7 @@ class ServerConfException(Exception):
     def __init__(self, msg):
         Exception.__init__(self, msg)
 
+
 class LinkToLDAPException(Exception):
     '''
     Raised when there are errors trying to link the client to a LDAP server.
@@ -626,6 +635,7 @@ class LinkToLDAPException(Exception):
 
     def __init__(self, msg):
         Exception.__init__(self, msg)
+
 
 class LinkToADException(Exception):
     '''

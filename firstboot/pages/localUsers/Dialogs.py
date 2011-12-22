@@ -26,6 +26,7 @@ import gettext
 from gettext import gettext as _
 gettext.textdomain('firstboot')
 
+
 def new_user_dialog():
     dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.INFO,
                                    Gtk.ButtonsType.OK_CANCEL)
@@ -97,6 +98,7 @@ def new_user_dialog():
     dialog.destroy()
     return retval
 
+
 def remove_user_dialog(user):
     dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.INFO,
                                    Gtk.ButtonsType.OK_CANCEL)
@@ -117,10 +119,11 @@ def remove_user_dialog(user):
 
     retval = False
     if result == Gtk.ResponseType.OK:
-       retval = [True, check.get_active()]
+        retval = [True, check.get_active()]
 
     dialog.destroy()
     return retval
+
 
 def user_error_dialog(message):
     dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.INFO,

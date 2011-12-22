@@ -37,6 +37,7 @@ except ImportError:
     sys.exit(1)
 assert DistUtilsExtra.auto.__version__ >= '2.18', 'needs DistUtilsExtra.auto >= 2.18'
 
+
 def update_config(values={}):
 
     oldvalues = {}
@@ -45,7 +46,7 @@ def update_config(values={}):
         fout = file(fin.name + '.new', 'w')
 
         for line in fin:
-            fields = line.split(' = ') # Separate variable from value
+            fields = line.split(' = ')  # Separate variable from value
             if fields[0] in values:
                 oldvalues[fields[0]] = fields[1].strip()
                 line = "%s = %s\n" % (fields[0], values[fields[0]])
@@ -86,7 +87,8 @@ def copy_pages(pages_path):
 
 class InstallAndUpdateDataDirectory(DistUtilsExtra.auto.install_auto):
     def run(self):
-        values = {'__firstboot_data_directory__': "'%s'" % (self.prefix + '/share/firstboot/'),
+        values = {'__firstboot_data_directory__': "'%s'" % (
+                                        self.prefix + '/share/firstboot/'),
                   '__version__': "'%s'" % self.distribution.get_version(),
                   '__firstboot_prefix__': "'%s'" % self.prefix}
         previous_values = update_config(values)
@@ -98,10 +100,13 @@ class InstallAndUpdateDataDirectory(DistUtilsExtra.auto.install_auto):
 class Clean(Command):
     description = "custom clean command that forcefully removes dist/build directories and update data directory"
     user_options = []
+
     def initialize_options(self):
         self.cwd = None
+
     def finalize_options(self):
         self.cwd = os.getcwd()
+
     def run(self):
         assert os.getcwd() == self.cwd, 'Must be in package root: %s' % self.cwd
         os.system('rm -rf ./build ./dist')
@@ -167,16 +172,16 @@ workstation to different services',
        ('share/firstboot/ui', glob.glob('data/ui/*')),
        ('share/pam-configs/', glob.glob('data/my_mkhomedir')),
        ('share/pam-configs/', glob.glob('data/my_groups')),
-       ('/etc/xdg/autostart/',glob.glob('data/firstboot.desktop')),
-       ('/opt/likewise/',glob.glob('data/debconf.likewise')),
-       ('share/firstboot/',glob.glob('data/debconf.ldap')),
-       ('/usr/sbin/',glob.glob('data/pam-auth-update.firstboot')),
+       ('/etc/xdg/autostart/', glob.glob('data/firstboot.desktop')),
+       ('/opt/likewise/', glob.glob('data/debconf.likewise')),
+       ('share/firstboot/', glob.glob('data/debconf.ldap')),
+       ('/usr/sbin/', glob.glob('data/pam-auth-update.firstboot')),
     ],
 
     cmdclass={
         'install': InstallAndUpdateDataDirectory,
-        "build" : build_extra.build_extra,
-        "build_i18n" :  build_i18n.build_i18n,
+        "build": build_extra.build_extra,
+        "build_i18n":  build_i18n.build_i18n,
         "clean": [clean_i18n.clean_i18n, Clean],
     }
 )
