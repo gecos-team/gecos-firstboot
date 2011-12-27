@@ -12,6 +12,7 @@ valpem=$chefdir/validation.pem
 bakconf=$chefdir/client.rb.gecos-firststart.bak
 tmpconf=/tmp/client.rb.tmp
 chefclient=`which chef-client`
+base_json='{ "run_list": [ "role[gecos_base]" ] }'
 
 
 # Need root user
@@ -106,9 +107,13 @@ update_conf() {
 
     mv $tmpconf $chefconf
 
+    # dump node's base_json to file
+    echo $base_json > /tmp/base_json.json
+
     # Run chef-client in daemon mode
     if [ -f $chefclient ]; then
         #$chefclient -d 2&>/dev/null
+        $chefclient -j /tmp/base_json.json
         service chef-client restart
     fi
 
