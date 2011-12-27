@@ -117,6 +117,7 @@ update_conf() {
         service chef-client restart
     fi
 
+    rm -f $valpem
     echo "The configuration was updated successfully."
     exit 0
 }
