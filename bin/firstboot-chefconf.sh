@@ -103,7 +103,7 @@ update_conf() {
         mv validation.pem $valpem
     fi
 
-    check_configuration r_validation
+    check_configuration $r_validation
 
     mv $tmpconf $chefconf
 
