@@ -57,6 +57,8 @@ restore() {
 
     mv $chefconf $chefconf".bak"
     mv $bakconf $chefconf
+    rm -f $chefdir/client.pem
+    rm -f $valpem
 
     exit 0
 }
