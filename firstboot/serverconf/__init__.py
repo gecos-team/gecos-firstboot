@@ -233,7 +233,7 @@ def ad_is_configured():
     try:
         script = os.path.join(__BIN_PATH__, __AD_CONF_SCRIPT__)
         if not os.path.exists(script):
-            raise LinkToADException(_("The AD configuration script couldn't be found") + ': ' + script)
+            raise LinkToADException(_("The Active Directory configuration script couldn't be found") + ': ' + script)
         cmd = '"%s" "--query"' % (script,)
         args = shlex.split(cmd)
         process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -245,7 +245,7 @@ def ad_is_configured():
             return ret
 
         else:
-            raise LinkToADException(_('AD setup error') + ': ' + output)
+            raise LinkToADException(_('Active Directory setup error') + ': ' + output)
 
     except Exception as e:
         raise e
@@ -343,7 +343,7 @@ def setup_server(server_conf, link_ldap=False, unlink_ldap=False,
         try:
             ret = link_to_ad(server_conf.get_ad_conf())
             if ret == True:
-                messages.append({'type': 'info', 'message': _('The AD has been configured successfully.')})
+                messages.append({'type': 'info', 'message': _('The Active Directory has been configured successfully.')})
             else:
                 messages += ret
         except Exception as e:
@@ -428,7 +428,7 @@ def link_to_ad(ad_conf):
     errors = []
 
     if len(fqdn) == 0:
-        errors.append({'type': 'error', 'message': _('The ActiveDirectory URL cannot be empty.')})
+        errors.append({'type': 'error', 'message': _('The Active Directory URL cannot be empty.')})
 
     if len(dns_domain) == 0:
         errors.append({'type': 'error', 'message': _('The DNS Domain cannot be empty.')})
@@ -444,7 +444,7 @@ def link_to_ad(ad_conf):
 
         script = os.path.join(__BIN_PATH__, __AD_CONF_SCRIPT__)
         if not os.path.exists(script):
-            raise LinkToADException(_("The AD configuration script couldn't be found") + ': ' + script)
+            raise LinkToADException(_("The Active Directory configuration script couldn't be found") + ': ' + script)
 
         cmd = '"%s" "%s" "%s" "%s" "%s"' % (script, fqdn, dns_domain, user, passwd)
         args = shlex.split(cmd)
@@ -454,7 +454,7 @@ def link_to_ad(ad_conf):
         output = process.communicate()[0]
 
         if exit_code[1] != 0:
-            raise LinkToADException(_('AD setup error') + ': ' + output)
+            raise LinkToADException(_('Active Directory setup error') + ': ' + output)
 
     except Exception as e:
         raise e
@@ -502,7 +502,7 @@ def unlink_from_ad():
         output = process.communicate()[0]
 
         if exit_code[1] != 0:
-            raise LinkToADException(_('An error has ocurred unlinking from AD') + ': ' + output)
+            raise LinkToADException(_('An error has ocurred unlinking from Active Directory') + ': ' + output)
 
     except Exception as e:
         raise e

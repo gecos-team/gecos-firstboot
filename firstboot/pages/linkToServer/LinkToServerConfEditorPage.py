@@ -32,8 +32,6 @@ gettext.textdomain('firstboot')
 
 __REQUIRED__ = False
 
-__TITLE__ = _('Link workstation to a server')
-
 
 def get_page(main_window):
 
@@ -108,7 +106,7 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
     def next_page(self, load_page_callback):
         if self.method == 'ad':
             retval = serverconf.auth_dialog(_('Authentication Required'),
-                    _('You need enter Administrator credentials of ActiveDirectory'))
+                    _('You need enter Administrator credentials of Active Directory'))
             self.server_conf.get_ad_conf().set_user(retval[0])
             self.server_conf.get_ad_conf().set_passwd(retval[1])
 

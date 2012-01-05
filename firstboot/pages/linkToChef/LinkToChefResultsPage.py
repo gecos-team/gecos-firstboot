@@ -33,8 +33,6 @@ gettext.textdomain('firstboot')
 
 __REQUIRED__ = False
 
-__TITLE__ = _('Link workstation to a server')
-
 
 def get_page(main_window):
 
