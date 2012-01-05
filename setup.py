@@ -127,7 +127,7 @@ DistUtilsExtra.auto.setup(
 workstation to different services',
     url='https://github.com/ahdiaz/gecos-firstboot',
 
-    keywords=['python', 'gnome'],
+    keywords=['python', 'gnome', 'guadalinex', 'gecos'],
 
     packages=[
         'firstboot',

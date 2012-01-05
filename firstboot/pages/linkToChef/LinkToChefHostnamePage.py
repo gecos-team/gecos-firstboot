@@ -39,8 +39,6 @@ gettext.textdomain('firstboot')
 
 __REQUIRED__ = False
 
-__TITLE__ = _('Describe this workstation')
-
 
 def get_page(main_window):
 

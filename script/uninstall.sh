@@ -6,7 +6,7 @@ if [ 0 != `id -u` ]; then
     exit 1
 fi
 
-updatedb
+updatedb 2>/dev/null
 
 for f in `locate firstboot | grep -v home | grep -v common`; do
 
