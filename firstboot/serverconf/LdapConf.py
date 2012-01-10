@@ -29,18 +29,21 @@ class LdapConf():
         self._data = {}
         self._data['uri'] = ''
         self._data['base'] = ''
+        self._data['basegroup'] = ''
         self._data['binddn'] = ''
         self._data['bindpw'] = ''
 
     def load_data(self, conf):
         self.set_url(conf['uri'])
         self.set_basedn(conf['base'])
+        self.set_basedngroup(conf['basegroup'])
         self.set_binddn(conf['binddn'])
         self.set_password(conf['bindpw'])
 
     def validate(self):
         valid = validation.is_url(self._data['uri']) \
             and not validation.is_empty(self._data['base']) \
+            and not validation.is_empty(self._data['basegroup']) \
             and not validation.is_empty(self._data['binddn']) \
             and not validation.is_empty(self._data['bindpw'])
         return valid
@@ -50,6 +53,13 @@ class LdapConf():
 
     def set_url(self, url):
         self._data['uri'] = url
+        return self
+
+    def get_basedngroup(self):
+        return self._data['basegroup'].encode('utf-8')
+
+    def set_basedngroup(self, basedngroup):
+        self._data['basegroup'] = basedngroup
         return self
 
     def get_basedn(self):

@@ -2,8 +2,9 @@
 
 uri=$1
 basedn=$2
-binddn=$3
-bindpw=$4
+basedngroup=$3
+binddn=$4
+bindpw=$5
 
 ldapconf=/etc/ldap.conf
 bakconf=/etc/ldap.conf.gecos-firststart.bak
@@ -39,6 +40,11 @@ check_prerequisites() {
 
     if [ "" == "$basedn" ]; then
         echo "Base DN couldn't be empty."
+        exit 1
+    fi
+
+    if [ "" == "$basedngroup" ]; then
+        echo "Base DN Group couldn't be empty."
         exit 1
     fi
 
@@ -104,6 +110,7 @@ update_conf() {
     cp -r $pamdconfig/ldap.conf $ldapconf
     sed -e s@"^uri .*"@"uri $uri"@ \
         -e s/"^base .*"/"base $basedn"/g \
+        -e s/"^nss_base_group .*"/"nss_base_group $basedngroup"/g \
         -e s/"^binddn .*"/"binddn $binddn"/g \
         -e s/"^bindpw .*"/"bindpw $bindpw"/g \
         $ldapconf > $tmpconf
@@ -111,6 +118,7 @@ update_conf() {
     # It's posible that some options are commented,
     # be sure to decomment them.
     sed -e s/"^#base .*"/"base $basedn"/g \
+        -e s/"^#nss_base_group .*"/"nss_base_group $basedngroup"/g \
         -e s/"^#binddn .*"/"binddn $binddn"/g \
         -e s/"^#bindpw .*"/"bindpw $bindpw"/g \
         $tmpconf > $tmpconf".2"
@@ -133,6 +141,7 @@ update_conf() {
 check_configuration() {
     r_uri=`egrep "^uri $uri" $tmpconf`
     r_base=`egrep "^base $basedn" $tmpconf`
+    r_base=`egrep "^nss_base_group $basedngroup" $tmpconf`
     r_bind=`egrep "^binddn $binddn" $tmpconf`
     r_pass=`egrep "^bindpw $bindpw" $tmpconf`
 
