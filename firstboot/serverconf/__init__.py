@@ -381,6 +381,7 @@ def link_to_ldap(ldap_conf):
 
     url = ldap_conf.get_url()
     basedn = ldap_conf.get_basedn()
+    basedngroup = ldap_conf.get_basedngroup()
     binddn = ldap_conf.get_binddn()
     password = ldap_conf.get_password()
     errors = []
@@ -403,7 +404,7 @@ def link_to_ldap(ldap_conf):
         if not os.path.exists(script):
             raise LinkToLDAPException(_("The LDAP configuration script couldn't be found") + ': ' + script)
 
-        cmd = '"%s" "%s" "%s" "%s" "%s"' % (script, url, basedn, binddn, password)
+        cmd = '"%s" "%s" "%s" "%s" "%s" "%s"' % (script, url, basedn, basedngroup, binddn, password)
         args = shlex.split(cmd)
 
         process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)

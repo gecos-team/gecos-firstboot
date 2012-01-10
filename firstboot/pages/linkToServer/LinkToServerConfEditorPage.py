@@ -56,6 +56,7 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
                 self.ui.lblOrganizationValue.set_label(self.server_conf.get_organization())
                 self.ui.txtUrlLDAP.set_text(self.server_conf.get_ldap_conf().get_url())
                 self.ui.txtBaseDN.set_text(self.server_conf.get_ldap_conf().get_basedn())
+                self.ui.txtBaseDNGroup.set_text(self.server_conf.get_ldap_conf().get_basedngroup())
                 self.ui.txtBindDN.set_text(self.server_conf.get_ldap_conf().get_binddn())
                 self.ui.txtPassword.set_text(self.server_conf.get_ldap_conf().get_password())
                 self.ui.txtFqdnAD.set_text(self.server_conf.get_ad_conf().get_fqdn())
@@ -95,6 +96,7 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
         self.ui.lblNotes.set_label(_('Notes'))
         self.ui.lblUrlLDAP.set_label('URL')
         self.ui.lblBaseDN.set_label('Base DN')
+        self.ui.lblBaseDNGroup.set_label(_('Base DN Group'))
         self.ui.lblBindDN.set_label('Bind DN')
         self.ui.lblPassword.set_label(_('Password'))
         self.ui.lblFqdnAD.set_label('FQDN')
@@ -140,6 +142,7 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
         if self.method == 'ldap':
             self.server_conf.get_ldap_conf().set_url(self.ui.txtUrlLDAP.get_text())
             self.server_conf.get_ldap_conf().set_basedn(self.ui.txtBaseDN.get_text())
+            self.server_conf.get_ldap_conf().set_basedngroup(self.ui.txtBaseDNGroup.get_text())
             self.server_conf.get_ldap_conf().set_binddn(self.ui.txtBindDN.get_text())
             self.server_conf.get_ldap_conf().set_password(self.ui.txtPassword.get_text())
         else:
