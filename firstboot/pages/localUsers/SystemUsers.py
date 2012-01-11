@@ -40,7 +40,7 @@ def read_users(min_uid=1000):
         for line in f:
             line = line.strip()
             tokens = line.split(':')
-            if int(tokens[2]) >= min_uid:
+            if int(tokens[2]) >= min_uid and tokens[0] != 'nobody':
                 cmd = 'groups %s' % (tokens[0],)
                 pid, exit_code, output = _run_command(cmd)
                 groups = output.split(':')
@@ -53,7 +53,8 @@ def read_users(min_uid=1000):
                     'name': tokens[4].split(',')[0],
                     'home': tokens[5],
                     'shell': tokens[6],
-                    'groups': groups
+                    'groups': groups,
+                    'is_admin': ('admin' in groups)
                 }
                 users.append(user)
 
