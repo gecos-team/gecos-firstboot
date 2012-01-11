@@ -127,6 +127,7 @@ def get_server_conf(url, json_cached=False):
         else:
             try:
                 url = parse_url(url)
+                user, password = validate_credentials(url)
                 fp = urllib2.urlopen(url, timeout=__URLOPEN_TIMEOUT__)
             except urllib2.URLError as e:
                 if hasattr(e, 'code') and e.code == 401:
@@ -169,6 +170,9 @@ def get_chef_pem(chef_conf):
     try:
         try:
             url = parse_url(url)
+            user, password = validate_credentials(url)
+            chef_conf.set_user(user)
+            chef_conf.set_password(password)
             fp = urllib2.urlopen(url, timeout=__URLOPEN_TIMEOUT__)
 
         except urllib2.URLError as e:
