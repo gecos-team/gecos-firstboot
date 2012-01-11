@@ -136,16 +136,15 @@ likely you don\'t need to create local users.'))
         self.on_tvUsersCursorChanged(self.ui.tvUsers)
 
     def on_tvUsersCursorChanged(self, widget):
-        if self._active_user and self._active_user['updated'] == True:
-            return
+        #if self._active_user and self._active_user['updated'] == True:
+        #    return
         store, iter = widget.get_selection().get_selected()
         user = store.get_value(iter, 0)
         self._selected_path = store.get_path(iter)
         self.set_active_user(user)
 
     def set_active_user(self, user):
-        pwd_struct = pwd.getpwnam(os.getlogin())
-        is_current_user = int(user['uid']) == int(pwd_struct.pw_uid)
+        is_current_user = user['is_admin']
         self._active_user = user
         self._active_user['updated'] = False
         self._accept_changes = False
