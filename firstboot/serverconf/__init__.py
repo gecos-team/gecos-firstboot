@@ -100,6 +100,7 @@ def validate_credentials(url):
             try:
                 _install_opener(url, cred[0], cred[1])
                 validate = True
+                user, password = cred[0], cred[1]
                 break
             except urllib2.URLError as e:
                 print e
