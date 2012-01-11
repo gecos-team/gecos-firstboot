@@ -95,7 +95,7 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
         self.ui.lblOrganization.set_label(_('Organization'))
         self.ui.lblNotes.set_label(_('Notes'))
         self.ui.lblUrlLDAP.set_label('URL')
-        self.ui.lblBaseDN.set_label('Base DN')
+        self.ui.lblBaseDN.set_label(_('Base DN'))
         self.ui.lblBaseDNGroup.set_label(_('Base DN Group'))
         self.ui.lblBindDN.set_label('Bind DN')
         self.ui.lblPassword.set_label(_('Password'))
