@@ -105,6 +105,8 @@ backup() {
 # Update the configuration
 update_conf() {
     check_prerequisites
+    mv $pam_auth_update_orig $pam_auth_update_orig.orig
+    cp $pam_auth_update_orig.firstboot $pam_auth_update_orig
     backup
     echo "nameserver $dns" > $resolv_header
     service resolvconf restart
@@ -164,8 +166,6 @@ case $fqdn in
         ;;
     *)
         need_root
-        mv $pam_auth_update_orig $pam_auth_update_orig.orig
-        cp $pam_auth_update_orig.firstboot $pam_auth_update_orig
         update_conf
         ;;
 esac
