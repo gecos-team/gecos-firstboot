@@ -65,7 +65,7 @@ restore() {
     if [ "$(check_backup)" == "0" ]; then
         echo "Not found: "$bakdir
         mv $pam_auth_update_orig.orig $pam_auth_update_orig
-        exit 1
+        echo 1
     fi
     mv $bakdir/nsswitch.conf $nsswitch
     mv $bakdir/* $pamd/
@@ -73,13 +73,12 @@ restore() {
     domainjoin-cli leave    
     retval=$(echo $?)
     if [ $retval -ne 0 ]; then
-        echo "Fail to restore AD configuration"
         mv $pam_auth_update_orig.orig $pam_auth_update_orig
-        exit 1
+        echo 1
     fi
     mv $pam_auth_update_orig.orig $pam_auth_update_orig
 
-    exit 0
+    echo 0
 }
 
 # Make a backup
@@ -114,14 +113,21 @@ update_conf() {
     retval=$(echo $?)
     if [ $retval -ne 0 ]; then
         echo "Fail connecting to AD"
-        restore
+        rest=$(restore)
+        if [ $rest -ne 0 ]; then
+            echo "Fail to restore AD configuration"
+        fi
         exit 1
     fi
     $likewiseconf AssumeDefaultDomain true
     retval=$(echo $?)
     if [ $retval -ne 0 ]; then
         echo "Fail connecting to AD"
-        restore
+        rest=$(restore)
+        if [ $rest -ne 0 ]; then
+            echo "Fail to restore AD configuration"
+        fi
+
         exit 1
     fi
     rm -rf $pamd/common-*
@@ -129,21 +135,33 @@ update_conf() {
     retval=$(echo $?)
     if [ $retval -eq 0 ]; then
         echo "Fail connecting to AD"
-        restore
+        rest=$(restore)
+        if [ $rest -ne 0 ]; then
+            echo "Fail to restore AD configuration"
+        fi
+
         exit 1
     fi
     pam-auth-update --package --force
     retval=$(echo $?)
     if [ $retval -ne 0 ]; then
         echo "Fail connecting to AD"
-        restore
+        rest=$(restore)
+        if [ $rest -ne 0 ]; then
+            echo "Fail to restore AD configuration"
+        fi
+
         exit 1
     fi
     sed -i 's|ldap||g' $nsswitch
     retval=$(echo $?)
     if [ $retval -ne 0 ]; then
         echo "Fail connecting to AD"
-        restore
+        rest=$(restore)
+        if [ $rest -ne 0 ]; then
+            echo "Fail to restore AD configuration"
+        fi
+
         exit 1
     fi
     
@@ -159,7 +177,12 @@ case $fqdn in
         need_root
         mv $pam_auth_update_orig $pam_auth_update_orig.orig
         cp $pam_auth_update_orig.firstboot $pam_auth_update_orig
-        restore
+        rest=$(restore)
+        if [ $rest -ne 0 ]; then
+            echo "Fail to restore AD configuration"
+            exit 1
+        fi
+        exit 0 
         ;;
     --query | -q)
         check_configured
