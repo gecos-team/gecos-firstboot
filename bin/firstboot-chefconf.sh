@@ -51,8 +51,7 @@ check_configured() {
 restore() {
 
     if [ ! -f $bakconf ]; then
-        echo "File not found: "$bakconf
-        exit 1
+        echo 1
     fi
 
     mv $chefconf $chefconf".bak"
@@ -60,7 +59,7 @@ restore() {
     rm -f $chefdir/client.pem
     rm -f $valpem
 
-    exit 0
+    echo 0
 }
 
 # Make a backup
@@ -163,19 +162,30 @@ check_configuration() {
     fi
 
     if [ "" == "$r_chef_server_url" ]; then
-        restore
+        rest=$(restore)
+        if [ $rest -ne 0 ]; then
+            echo "Fail to restore configuration"
+        fi
+
         echo "The configuration couldn't be updated correctly."
         exit 1
     fi
 
     if [ $r_validation != 0 ]; then
-        restore
+        rest=$(restore)
+        if [ $rest -ne 0 ]; then
+            echo "Fail to restore configuration"
+        fi
+
         echo "The validation.pem file couldn't be downloaded correctly. $msg"
         exit 1
     fi
 
     if [ ! -f $valpem ]; then
-        restore
+        rest=$(restore)
+        if [ $rest -ne 0 ]; then
+            echo "Fail to restore configuration"
+        fi
         echo "The validation.pem file couldn't be moved to $chefdir."
         exit 1
     fi
@@ -185,7 +195,12 @@ check_configuration() {
 case $chef_server_url in
     --restore | -r)
         need_root
-        restore
+        rest=$(restore)
+        if [ $rest -ne 0 ]; then
+            echo "Fail to restore configuration"
+            exit 1
+        fi
+        exit 0
         ;;
     --query | -q)
         check_configured
