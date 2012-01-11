@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-05 13:50+0100\n"
+"POT-Creation-Date: 2012-01-11 11:06+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,180 +17,61 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../firstboot/FirstbootWindow.py:112
-msgid "First Boot Assistant"
+#: ../firstboot/__init__.py:42
+msgid "Show debug messages (-vv debugs firstboot_lib also)"
 msgstr ""
 
-#: ../firstboot/FirstbootWindow.py:114
-msgid "Previous"
+#: ../firstboot/__init__.py:46
+msgid "Debug mode. Force run the application after the first start"
 msgstr ""
 
-#: ../firstboot/FirstbootWindow.py:115
-msgid "Next"
+#: ../firstboot/__init__.py:50
+msgid "Use this URL by default in the \"Link to Server\" page."
 msgstr ""
 
-#: ../firstboot/FirstbootWindow.py:131
-msgid "Are you sure you have fully configured this workstation?"
-msgstr ""
-
-#: ../firstboot/pages/linkToChef/LinkToChefResultsPage.py:70
-#: ../firstboot/pages/linkToChef/__init__.py:138
-#: ../firstboot/pages/linkToServer/LinkToServerResultsPage.py:70
-#: ../firstboot/pages/linkToServer/__init__.py:210
-msgid "The configuration was updated successfully."
-msgstr ""
-
-#: ../firstboot/pages/linkToChef/LinkToChefResultsPage.py:75
-#: ../firstboot/pages/linkToServer/LinkToServerResultsPage.py:75
-msgid "There are some errors you may fix."
-msgstr ""
-
-#: ../firstboot/pages/linkToChef/__init__.py:39
-msgid "Link workstation to a Chef server"
-msgstr ""
-
-#: ../firstboot/pages/linkToChef/__init__.py:93
-msgid ""
-"When a workstation is linked to a Chef server it can be easily managed "
-"remotely.\n"
-"\n"
-msgstr ""
-
-#: ../firstboot/pages/linkToChef/__init__.py:97
-msgid "Unlink from Chef"
-msgstr ""
-
-#: ../firstboot/pages/linkToChef/__init__.py:98
-#: ../firstboot/pages/linkToServer/__init__.py:144
-msgid "Omit"
-msgstr ""
-
-#: ../firstboot/pages/linkToChef/__init__.py:99
-#: ../firstboot/pages/linkToServer/__init__.py:145
-msgid "Manual"
-msgstr ""
-
-#: ../firstboot/pages/linkToChef/__init__.py:100
-#: ../firstboot/pages/linkToServer/__init__.py:146
-msgid "Automatic"
-msgstr ""
-
-#: ../firstboot/pages/linkToChef/__init__.py:132
-#: ../firstboot/pages/linkToServer/__init__.py:204
-msgid "The configuration file is valid."
-msgstr ""
-
-#: ../firstboot/pages/linkToChef/__init__.py:150
-#: ../firstboot/pages/linkToServer/__init__.py:222
-msgid "Trying to connect..."
-msgstr ""
-
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:79
-msgid "Remember you can disable the sections you don't want to configure."
-msgstr ""
-
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:83
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:93
-msgid "Version"
-msgstr ""
-
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:84
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:94
-msgid "Organization"
-msgstr ""
-
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:85
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:95
-msgid "Notes"
-msgstr ""
-
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:87
-msgid "Certificate URL"
-msgstr ""
-
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:88
-msgid "Node Name"
-msgstr ""
-
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:141
-msgid "Chef and Chef Cert URLs must be well formed URLs."
-msgstr ""
-
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:147
-msgid "The host name is empty or contains invalid characters."
-msgstr ""
-
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:155
-msgid "Please check the Chef Cert URL, it seems to be wrong."
-msgstr ""
-
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:159
-msgid ""
-"The host name already exists in the Chef server. Choose a different one."
-msgstr ""
-
-#: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:60
-msgid ""
-"This workstation is going to be linked to a Chef server, therefore it must "
-"be given a host name. That name will be used for uniquely identify this "
-"workstation."
-msgstr ""
-
-#: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:65
-msgid "Hostname"
-msgstr ""
-
-#: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:86
-msgid "The host name is in use."
-msgstr ""
-
-#: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:103
-msgid "The host name cannot be empty."
-msgstr ""
-
-#: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:107
-msgid "The host name already exists in the Chef server."
-msgstr ""
-
-#: ../firstboot/pages/pcLabel/__init__.py:37
-msgid "Describe this workstation"
-msgstr ""
-
-#: ../firstboot/pages/pcLabel/__init__.py:60
-msgid ""
-"You can type a description for this workstation, it will be shown in the "
-"GECOS Server admin interface and will help you to find out the workstation "
-"later."
-msgstr ""
-
-#: ../firstboot/pages/pcLabel/__init__.py:65
-msgid "Description"
-msgstr ""
-
-#: ../firstboot/pages/pcLabel/__init__.py:71
-msgid "The label has been updated correctly."
-msgstr ""
-
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:89
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:90
 msgid "Insert your authentication configuration"
 msgstr ""
 
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:94
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:83
+msgid "Version"
+msgstr ""
+
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:95
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:84
+msgid "Organization"
+msgstr ""
+
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:96
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:85
+msgid "Notes"
+msgstr ""
+
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:98
+msgid "Base DN"
+msgstr ""
+
 #: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:99
+msgid "Base DN Group"
+msgstr ""
+
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:101
 #: ../firstboot/pages/localUsers/__init__.py:85
 msgid "Password"
 msgstr ""
 
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:101
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:103
 msgid "Domain DNS"
 msgstr ""
 
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:108
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:110
 #: ../firstboot/serverconf/__init__.py:109
 #: ../firstboot/serverconf/__init__.py:115
 msgid "Authentication Required"
 msgstr ""
 
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:109
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:111
 msgid "You need enter Administrator credentials of Active Directory"
 msgstr ""
 
@@ -227,6 +108,21 @@ msgstr ""
 msgid "Unlink from Active Directory"
 msgstr ""
 
+#: ../firstboot/pages/linkToServer/__init__.py:144
+#: ../firstboot/pages/linkToChef/__init__.py:98
+msgid "Omit"
+msgstr ""
+
+#: ../firstboot/pages/linkToServer/__init__.py:145
+#: ../firstboot/pages/linkToChef/__init__.py:99
+msgid "Manual"
+msgstr ""
+
+#: ../firstboot/pages/linkToServer/__init__.py:146
+#: ../firstboot/pages/linkToChef/__init__.py:100
+msgid "Automatic"
+msgstr ""
+
 #: ../firstboot/pages/linkToServer/__init__.py:147
 msgid "LDAP"
 msgstr ""
@@ -235,81 +131,58 @@ msgstr ""
 msgid "Active Directory"
 msgstr ""
 
-#: ../firstboot/pages/network/__init__.py:37
-#: ../firstboot/pages/network/__init__.py:54
-msgid "Configure the network"
+#: ../firstboot/pages/linkToServer/__init__.py:204
+#: ../firstboot/pages/linkToChef/__init__.py:132
+msgid "The configuration file is valid."
 msgstr ""
 
-#: ../firstboot/pages/network/__init__.py:55
+#: ../firstboot/pages/linkToServer/__init__.py:210
+#: ../firstboot/pages/linkToServer/LinkToServerResultsPage.py:70
+#: ../firstboot/pages/linkToChef/LinkToChefResultsPage.py:70
+#: ../firstboot/pages/linkToChef/__init__.py:138
+msgid "The configuration was updated successfully."
+msgstr ""
+
+#: ../firstboot/pages/linkToServer/__init__.py:222
+#: ../firstboot/pages/linkToChef/__init__.py:150
+msgid "Trying to connect..."
+msgstr ""
+
+#: ../firstboot/pages/linkToServer/LinkToServerResultsPage.py:75
+#: ../firstboot/pages/linkToChef/LinkToChefResultsPage.py:75
+msgid "There are some errors you may fix."
+msgstr ""
+
+#: ../firstboot/pages/pcLabel/__init__.py:37
+msgid "Describe this workstation"
+msgstr ""
+
+#: ../firstboot/pages/pcLabel/__init__.py:60
 msgid ""
-"You need to be connected to the network for linking this workstation to a "
-"GECOS server and for installing software."
+"You can type a description for this workstation, it will be shown in the "
+"GECOS Server admin interface and will help you to find out the workstation "
+"later."
 msgstr ""
 
-#: ../firstboot/pages/network/__init__.py:57
-msgid "Below are shown the current detected interfaces."
+#: ../firstboot/pages/pcLabel/__init__.py:65
+msgid "Description"
 msgstr ""
 
-#: ../firstboot/pages/network/__init__.py:73
-msgid "Interface"
+#: ../firstboot/pages/pcLabel/__init__.py:71
+msgid "The label has been updated correctly."
 msgstr ""
 
-#: ../firstboot/pages/network/__init__.py:79
-msgid "IP"
+#: ../firstboot/pages/installSoftware/__init__.py:35
+#: ../firstboot/pages/installSoftware/__init__.py:52
+msgid "Install software"
 msgstr ""
 
-#: ../firstboot/pages/localUsers/__init__.py:37
-msgid "Manage local users"
+#: ../firstboot/pages/installSoftware/__init__.py:49
+msgid "Close"
 msgstr ""
 
-#: ../firstboot/pages/localUsers/__init__.py:80
-msgid ""
-"You can manage local users on this workstation. Note if this workstation is "
-"linked to a GECOS server, it's likely you don't need to create local users."
-msgstr ""
-
-#: ../firstboot/pages/localUsers/__init__.py:84
-msgid "Name"
-msgstr ""
-
-#: ../firstboot/pages/localUsers/__init__.py:86
-msgid "Confirm"
-msgstr ""
-
-#: ../firstboot/pages/localUsers/__init__.py:87
-msgid "Groups"
-msgstr ""
-
-#: ../firstboot/pages/localUsers/__init__.py:88
-msgid "Add"
-msgstr ""
-
-#: ../firstboot/pages/localUsers/__init__.py:89
-msgid "Remove"
-msgstr ""
-
-#: ../firstboot/pages/localUsers/__init__.py:90
-msgid "Cancel"
-msgstr ""
-
-#: ../firstboot/pages/localUsers/__init__.py:91
-msgid "Apply"
-msgstr ""
-
-#: ../firstboot/pages/localUsers/__init__.py:106
-msgid "User"
-msgstr ""
-
-#: ../firstboot/pages/localUsers/__init__.py:239
-msgid "The user login is empty or contains invalid characters."
-msgstr ""
-
-#: ../firstboot/pages/localUsers/__init__.py:243
-msgid "The user password couldn't be empty."
-msgstr ""
-
-#: ../firstboot/pages/localUsers/__init__.py:247
-msgid "The passwords doesn't match."
+#: ../firstboot/pages/installSoftware/__init__.py:53
+msgid "From this window you can install software and manage packages."
 msgstr ""
 
 #: ../firstboot/pages/localUsers/SystemUsers.py:95
@@ -366,6 +239,60 @@ msgstr ""
 msgid "Unknown error, the user couldn't be removed for some reason."
 msgstr ""
 
+#: ../firstboot/pages/localUsers/__init__.py:37
+msgid "Manage local users"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/__init__.py:80
+msgid ""
+"You can manage local users on this workstation. Note if this workstation is "
+"linked to a GECOS server, it's likely you don't need to create local users."
+msgstr ""
+
+#: ../firstboot/pages/localUsers/__init__.py:84
+msgid "Name"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/__init__.py:86
+msgid "Confirm"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/__init__.py:87
+msgid "Groups"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/__init__.py:88
+msgid "Add"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/__init__.py:89
+msgid "Remove"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/__init__.py:90
+msgid "Cancel"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/__init__.py:91
+msgid "Apply"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/__init__.py:106
+msgid "User"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/__init__.py:239
+msgid "The user login is empty or contains invalid characters."
+msgstr ""
+
+#: ../firstboot/pages/localUsers/__init__.py:243
+msgid "The user password couldn't be empty."
+msgstr ""
+
+#: ../firstboot/pages/localUsers/__init__.py:247
+msgid "The passwords doesn't match."
+msgstr ""
+
 #: ../firstboot/pages/localUsers/Dialogs.py:34
 msgid "New user"
 msgstr ""
@@ -383,7 +310,7 @@ msgid "login"
 msgstr ""
 
 #: ../firstboot/pages/localUsers/Dialogs.py:61
-#: ../firstboot/serverconf/__init__.py:600
+#: ../firstboot/serverconf/__init__.py:601
 msgid "password"
 msgstr ""
 
@@ -408,29 +335,110 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: ../firstboot/pages/installSoftware/__init__.py:35
-#: ../firstboot/pages/installSoftware/__init__.py:52
-msgid "Install software"
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:79
+msgid "Remember you can disable the sections you don't want to configure."
 msgstr ""
 
-#: ../firstboot/pages/installSoftware/__init__.py:49
-msgid "Close"
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:87
+msgid "Certificate URL"
 msgstr ""
 
-#: ../firstboot/pages/installSoftware/__init__.py:53
-msgid "From this window you can install software and manage packages."
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:88
+msgid "Node Name"
 msgstr ""
 
-#: ../firstboot/__init__.py:42
-msgid "Show debug messages (-vv debugs firstboot_lib also)"
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:141
+msgid "Chef and Chef Cert URLs must be well formed URLs."
 msgstr ""
 
-#: ../firstboot/__init__.py:46
-msgid "Debug mode. Force run the application after the first start"
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:147
+msgid "The host name is empty or contains invalid characters."
 msgstr ""
 
-#: ../firstboot/__init__.py:50
-msgid "Use this URL by default in the \"Link to Server\" page."
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:155
+msgid "Please check the Chef Cert URL, it seems to be wrong."
+msgstr ""
+
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:159
+msgid ""
+"The host name already exists in the Chef server. Choose a different one."
+msgstr ""
+
+#: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:60
+msgid ""
+"This workstation is going to be linked to a Chef server, therefore it must "
+"be given a host name. That name will be used for uniquely identify this "
+"workstation."
+msgstr ""
+
+#: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:65
+msgid "Hostname"
+msgstr ""
+
+#: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:86
+msgid "The host name is in use."
+msgstr ""
+
+#: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:103
+msgid "The host name cannot be empty."
+msgstr ""
+
+#: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:107
+msgid "The host name already exists in the Chef server."
+msgstr ""
+
+#: ../firstboot/pages/linkToChef/__init__.py:39
+msgid "Link workstation to a Chef server"
+msgstr ""
+
+#: ../firstboot/pages/linkToChef/__init__.py:93
+msgid ""
+"When a workstation is linked to a Chef server it can be easily managed "
+"remotely.\n"
+"\n"
+msgstr ""
+
+#: ../firstboot/pages/linkToChef/__init__.py:97
+msgid "Unlink from Chef"
+msgstr ""
+
+#: ../firstboot/pages/network/__init__.py:37
+#: ../firstboot/pages/network/__init__.py:54
+msgid "Configure the network"
+msgstr ""
+
+#: ../firstboot/pages/network/__init__.py:55
+msgid ""
+"You need to be connected to the network for linking this workstation to a "
+"GECOS server and for installing software."
+msgstr ""
+
+#: ../firstboot/pages/network/__init__.py:57
+msgid "Below are shown the current detected interfaces."
+msgstr ""
+
+#: ../firstboot/pages/network/__init__.py:73
+msgid "Interface"
+msgstr ""
+
+#: ../firstboot/pages/network/__init__.py:79
+msgid "IP"
+msgstr ""
+
+#: ../firstboot/FirstbootWindow.py:112
+msgid "First Boot Assistant"
+msgstr ""
+
+#: ../firstboot/FirstbootWindow.py:114
+msgid "Previous"
+msgstr ""
+
+#: ../firstboot/FirstbootWindow.py:115
+msgid "Next"
+msgstr ""
+
+#: ../firstboot/FirstbootWindow.py:131
+msgid "Are you sure you have fully configured this workstation?"
 msgstr ""
 
 #: ../firstboot/serverconf/__init__.py:110
@@ -451,32 +459,32 @@ msgid "Couldn't retrieve the host names list"
 msgstr ""
 
 #: ../firstboot/serverconf/__init__.py:236
-#: ../firstboot/serverconf/__init__.py:447
+#: ../firstboot/serverconf/__init__.py:448
 msgid "The Active Directory configuration script couldn't be found"
 msgstr ""
 
 #: ../firstboot/serverconf/__init__.py:248
-#: ../firstboot/serverconf/__init__.py:457
+#: ../firstboot/serverconf/__init__.py:458
 msgid "Active Directory setup error"
 msgstr ""
 
 #: ../firstboot/serverconf/__init__.py:259
-#: ../firstboot/serverconf/__init__.py:404
+#: ../firstboot/serverconf/__init__.py:405
 msgid "The LDAP configuration script couldn't be found"
 msgstr ""
 
 #: ../firstboot/serverconf/__init__.py:274
-#: ../firstboot/serverconf/__init__.py:414
+#: ../firstboot/serverconf/__init__.py:415
 msgid "LDAP setup error"
 msgstr ""
 
 #: ../firstboot/serverconf/__init__.py:285
-#: ../firstboot/serverconf/__init__.py:538
+#: ../firstboot/serverconf/__init__.py:539
 msgid "The Chef configuration script couldn't be found"
 msgstr ""
 
 #: ../firstboot/serverconf/__init__.py:300
-#: ../firstboot/serverconf/__init__.py:548
+#: ../firstboot/serverconf/__init__.py:549
 msgid "Chef setup error"
 msgstr ""
 
@@ -504,58 +512,58 @@ msgstr ""
 msgid "The Chef client has been configured successfully."
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:389
+#: ../firstboot/serverconf/__init__.py:390
 msgid "The LDAP URL cannot be empty."
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:392
+#: ../firstboot/serverconf/__init__.py:393
 msgid "The LDAP BaseDN cannot be empty."
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:395
+#: ../firstboot/serverconf/__init__.py:396
 msgid "The LDAP BindDN cannot be empty."
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:431
+#: ../firstboot/serverconf/__init__.py:432
 msgid "The Active Directory URL cannot be empty."
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:434
+#: ../firstboot/serverconf/__init__.py:435
 msgid "The DNS Domain cannot be empty."
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:436
+#: ../firstboot/serverconf/__init__.py:437
 msgid "The administrator user cannot be empty."
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:438
+#: ../firstboot/serverconf/__init__.py:439
 msgid "The administrator password cannot be empty."
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:481
+#: ../firstboot/serverconf/__init__.py:482
 msgid "An error has ocurred unlinking from LDAP"
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:505
+#: ../firstboot/serverconf/__init__.py:506
 msgid "An error has ocurred unlinking from Active Directory"
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:523
+#: ../firstboot/serverconf/__init__.py:524
 msgid "The Chef URL cannot be empty."
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:526
+#: ../firstboot/serverconf/__init__.py:527
 msgid "The Chef certificate URL cannot be empty."
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:529
+#: ../firstboot/serverconf/__init__.py:530
 msgid "The Chef host name cannot be empty."
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:572
+#: ../firstboot/serverconf/__init__.py:573
 msgid "An error has ocurred unlinking from Chef"
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:590
+#: ../firstboot/serverconf/__init__.py:591
 msgid "user"
 msgstr ""
