@@ -18,12 +18,12 @@ auth required pam_env.so
 auth [success=ignore default=1] pam_localuser.so
 auth [success=done new_authtok_reqd=done default=die]	pam_unix.so likeauth nullok shadow
 auth    required     pam_group.so use_first_pass
-auth [authinfo_unavail=1  success=ignore  default=ignore ]	pam_ldap.so
-auth [default=done] pam_ccreds.so action=store use_first_pass
+auth [authinfo_unavail=ignore  success=1  default=2 ]	pam_ldap.so
 auth [success=done default=die] pam_ccreds.so action=validate use_first_pass
+auth [success=done default=die] pam_ccreds.so action=store use_first_pass
 auth [default=ignore] pam_echo.so Delete cached password
 auth [default=bad] pam_ccreds.so action=update
-# here's the fallback if no module succeeds
+## here's the fallback if no module succeeds
 auth	requisite			pam_deny.so
 # prime the stack with a positive return value if there isn't one already;
 # this avoids us returning an error just because nothing sets a success code
