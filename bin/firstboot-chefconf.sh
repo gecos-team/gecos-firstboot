@@ -12,7 +12,7 @@ valpem=$chefdir/validation.pem
 bakconf=$chefdir/client.rb.gecos-firststart.bak
 tmpconf=/tmp/client.rb.tmp
 chefclient=`which chef-client`
-base_json='{ "run_list": [ "role[gecos_base]" ] }'
+base_json='{ "run_list": [ "role[default_group]" ] }'
 
 
 # Need root user
