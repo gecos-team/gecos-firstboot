@@ -34,11 +34,27 @@ class LdapConf():
         self._data['bindpw'] = ''
 
     def load_data(self, conf):
-        self.set_url(conf['uri'])
-        self.set_basedn(conf['base'])
-        self.set_basedngroup(conf['basegroup'])
-        self.set_binddn(conf['binddn'])
-        self.set_password(conf['bindpw'])
+        msg = 'ServerConf: Key "%s" not found in the configuration file.'
+        try:
+            self.set_url(conf['uri'])
+        except KeyError as e:
+            print msg % ('uri',)
+        try:
+            self.set_basedn(conf['base'])
+        except KeyError as e:
+            print msg % ('base',)
+        try:
+            self.set_basedngroup(conf['basegroup'])
+        except KeyError as e:
+            print msg % ('basegroup',)
+        try:
+            self.set_binddn(conf['binddn'])
+        except KeyError as e:
+            print msg % ('binddn',)
+        try:
+            self.set_password(conf['bindpw'])
+        except KeyError as e:
+            print msg % ('bindpw',)
 
     def validate(self):
         valid = validation.is_url(self._data['uri']) \

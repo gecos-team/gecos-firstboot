@@ -39,8 +39,6 @@ from gettext import gettext as _
 gettext.textdomain('firstboot')
 
 
-__CONFIG_FILE_VERSION__ = '1.1'
-
 __URLOPEN_TIMEOUT__ = 15
 __BIN_PATH__ = firstbootconfig.get_bin_path()
 __LDAP_CONF_SCRIPT__ = 'firstboot-ldapconf.sh'
@@ -72,7 +70,7 @@ def parse_url(url):
     parsed_url = list(urlparse.urlparse(url))
     if parsed_url[0] in ('http', 'https'):
         query = urlparse.parse_qsl(parsed_url[4])
-        query.append(('v', __CONFIG_FILE_VERSION__))
+        query.append(('v', ServerConf.VERSION))
         query = urllib.urlencode(query)
         parsed_url[4] = query
     url = urlparse.urlunparse(parsed_url)
@@ -141,20 +139,15 @@ def get_server_conf(url, json_cached=False):
             fp_cached.close()
             fp.close()
             fp = open('/tmp/json_cached', 'r')
+
         content = fp.read()
         fp.close()
         conf = json.loads(content)
-        if 'version' in conf:
-            version = conf['version']
-            if version != __CONFIG_FILE_VERSION__:
-                raise Exception(_('Incorrect version of the configuration file.'))
 
-            server_conf = ServerConf()
-            server_conf.load_data(conf)
-            return server_conf
+        server_conf = ServerConf()
+        server_conf.load_data(conf)
+        return server_conf
 
-        else:
-            raise ValueError()
     except urllib2.URLError as e:
         raise ServerConfException(e)
 
@@ -520,6 +513,7 @@ def link_to_chef(chef_conf):
 
     url = chef_conf.get_url()
     pemurl = chef_conf.get_pem_url()
+    role = chef_conf.get_default_role()
     hostname = chef_conf.get_hostname()
     user = chef_conf.get_user()
     password = chef_conf.get_password()
@@ -543,7 +537,7 @@ def link_to_chef(chef_conf):
         if not os.path.exists(script):
             raise LinkToChefException(_("The Chef configuration script couldn't be found") + ': ' + script)
 
-        cmd = '"%s" "%s" "%s" "%s" "%s" "%s"' % (script, url, pemurl, hostname, user, password)
+        cmd = '"%s" "%s" "%s" "%s" "%s" "%s" "%s"' % (script, url, pemurl, hostname, user, password, role)
         args = shlex.split(cmd)
 
         process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
