@@ -25,10 +25,12 @@ import gettext
 from gettext import gettext as _
 gettext.textdomain('firstboot')
 
+import math
 import shlex
 import subprocess
 import os
 from gi.repository import Gtk
+from gi.repository import Gdk
 from gi.repository import Pango
 from gi.repository import Gio
 from gi.repository import GdkPixbuf
@@ -69,6 +71,11 @@ class FirstbootWindow(Window):
         """Set up the main window"""
         super(FirstbootWindow, self).finish_initializing(builder)
         self.connect("delete_event", self.on_delete_event)
+
+        screen = Gdk.Screen.get_default()
+        sw = math.floor(screen.width() - screen.width() / 6)
+        sh = math.floor(screen.height() - screen.height() / 6)
+        self.resize(sw, sh)
 
         self.btnPrev = self.ui.btnPrev
         self.btnNext = self.ui.btnNext
