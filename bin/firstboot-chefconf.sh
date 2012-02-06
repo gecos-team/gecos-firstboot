@@ -5,6 +5,7 @@ chef_validation_url=$2
 chef_node_name=$3
 user=$4
 passwd=$5
+default_group=$6
 
 chefdir=/etc/chef
 chefconf=$chefdir/client.rb
@@ -12,8 +13,12 @@ valpem=$chefdir/validation.pem
 bakconf=$chefdir/client.rb.gecos-firststart.bak
 tmpconf=/tmp/client.rb.tmp
 chefclient=`which chef-client`
-base_json='{ "run_list": [ "role[default_group]" ] }'
 
+#if [ "$default_group" == "" ]; then
+#    default_group="default_group"
+#fi
+
+base_json='{ "run_list": [ "role['$default_group']" ] }'
 
 # Need root user
 need_root() {

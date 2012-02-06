@@ -54,6 +54,7 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
             if not self.server_conf is None:
                 self.ui.lblVersionValue.set_label(self.server_conf.get_version())
                 self.ui.lblOrganizationValue.set_label(self.server_conf.get_organization())
+                self.ui.lblNotesValue.set_label(self.server_conf.get_notes())
                 self.ui.txtUrlLDAP.set_text(self.server_conf.get_ldap_conf().get_url())
                 self.ui.txtBaseDN.set_text(self.server_conf.get_ldap_conf().get_basedn())
                 self.ui.txtBaseDNGroup.set_text(self.server_conf.get_ldap_conf().get_basedngroup())

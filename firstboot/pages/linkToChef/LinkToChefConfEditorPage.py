@@ -57,9 +57,11 @@ class LinkToChefConfEditorPage(PageWindow.PageWindow):
             if not self.server_conf is None:
                 self.ui.lblVersionValue.set_label(self.server_conf.get_version())
                 self.ui.lblOrganizationValue.set_label(self.server_conf.get_organization())
+                self.ui.lblNotesValue.set_label(self.server_conf.get_notes())
                 self.ui.txtUrlChef.set_text(self.server_conf.get_chef_conf().get_url())
                 self.ui.txtUrlChefCert.set_text(self.server_conf.get_chef_conf().get_pem_url())
                 self.ui.txtHostname.set_text(self.server_conf.get_chef_conf().get_hostname())
+                self.ui.txtDefaultRole.set_text(self.server_conf.get_chef_conf().get_default_role())
 
         if self.server_conf is None:
             self.server_conf = serverconf.ServerConf()
@@ -86,6 +88,7 @@ class LinkToChefConfEditorPage(PageWindow.PageWindow):
         self.ui.lblUrlChef.set_label('Chef URL')
         self.ui.lblUrlChefCert.set_label(_('Certificate URL'))
         self.ui.lblHostname.set_label(_('Node Name'))
+        self.ui.lblDefaultRole.set_label(_('Default Group'))
 
     def previous_page(self, load_page_callback):
         load_page_callback(firstboot.pages.linkToChef)
