@@ -132,6 +132,7 @@ class LinkToChefConfEditorPage(PageWindow.PageWindow):
             return
         self.server_conf.get_chef_conf().set_url(self.ui.txtUrlChef.get_text())
         self.server_conf.get_chef_conf().set_pem_url(self.ui.txtUrlChefCert.get_text())
+        self.server_conf.get_chef_conf().set_default_role(self.ui.txtDefaultRole.get_text())
         self.server_conf.get_chef_conf().set_hostname(self.ui.txtHostname.get_text())
 
     def validate_conf(self):
