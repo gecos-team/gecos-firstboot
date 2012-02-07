@@ -57,16 +57,6 @@ def get_page(main_window):
 class LinkToServerPage(PageWindow.PageWindow):
     __gtype_name__ = "LinkToServerPage"
 
-    def load_page(self, params=None):
-
-        return
-
-        self.json_cached = os.path.exists(__JSON_CACHE__) and not (self.ldap_is_configured or self.ad_is_configured)
-
-        self.ui.boxLinkOptions.set_visible(not self.json_cached)
-        self.ui.boxAuthSection.set_visible(self.json_cached)
-        self.main_window.btnNext.set_sensitive(self.json_cached)
-
     def finish_initializing(self):
 
         self.show_status()
@@ -100,25 +90,24 @@ class LinkToServerPage(PageWindow.PageWindow):
         self.ui.txtUrl.set_text(url)
 
     def translate(self):
-        desc1 = _('When a workstation is linked to a authentication server \
+        desc = _('When a workstation is linked to a authentication server \
 existing users in the server can login into \
 this workstation.\n\n')
 
-        desc_detail = ''
-        if not (self.ldap_is_configured and self.ad_is_configured):
-            desc_detail = _('You can type the options manually or download \
-a default configuration from the server.')
-
-        elif self.ldap_is_configured:
-            desc_detail = _('This workstation is currently linked to an LDAP \
+        if self.ldap_is_configured:
+            desc1 = _('This workstation is currently linked to a LDAP \
 server.')
         elif self.ad_is_configured:
-            desc_detail = _('This workstation is currently linked to an Active Directory \
+            desc1 = _('This workstation is currently linked to an Active Directory \
 server.')
+        else:
+            desc1 = _('You can type the options manually or download \
+a default configuration from the server.')
 
         desc2 = _('Select the authentication method you would like to use:')
 
-        self.ui.lblDescription1.set_text(desc1 + desc_detail)
+        self.ui.lblDescription.set_text(desc)
+        self.ui.lblDescription1.set_text(desc1)
         self.ui.lblDescription2.set_text(desc2)
         self.ui.chkUnlinkLDAP.set_label(_('Unlink from LDAP'))
         self.ui.chkUnlinkAD.set_label(_('Unlink from Active Directory'))
