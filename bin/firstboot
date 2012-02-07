@@ -24,6 +24,7 @@ __license__ = "GPL-2"
 
 import sys
 import os
+import subprocess
 
 import gettext
 from gettext import gettext as _
@@ -55,11 +56,21 @@ if get_prefix() == '/usr/local':
 elif get_prefix() == '/usr':
     gettext.textdomain('firstboot')
 
+def fix_psmouse():
+    ''' There's a bug with the module psmouse, the trackpad stop working.
+    Thanks to apinel@emergya.com for the pointer.
+    See https://answers.launchpad.net/ubuntu/+source/xserver-xorg-input-synaptics/+question/176273
+    '''
+
+    subprocess.call(['modprobe', '-r', 'psmouse'])
+    subprocess.call(['sleep', '2'])
+    subprocess.call(['modprobe', 'psmouse'])
+
 if __name__ == '__main__':
     if os.getuid() != 0:
         sys.stdout.write(_('You need to be root to run this program.'))
         sys.stdout.flush()
         sys.exit(1)
 
-
-firstboot.main()
+    fix_psmouse()
+    firstboot.main()
