@@ -34,6 +34,7 @@ gettext.textdomain('firstboot')
 
 __REQUIRED__ = False
 
+__DEFAULT_ROLE__ = 'default_group'
 
 def get_page(main_window):
 
@@ -66,6 +67,9 @@ class LinkToChefConfEditorPage(PageWindow.PageWindow):
         if self.server_conf is None:
             self.server_conf = serverconf.ServerConf()
 
+        if len(self.ui.txtDefaultRole.get_text()) == 0:
+            self.ui.txtDefaultRole.set_text(__DEFAULT_ROLE__)
+
         self.update_server_conf = True
         self.chef_is_configured = params['chef_is_configured']
         self.unlink_from_chef = params['unlink_from_chef']
@@ -78,7 +82,12 @@ class LinkToChefConfEditorPage(PageWindow.PageWindow):
         return '<b>%s</b>' % str
 
     def translate(self):
-        desc = _('Remember you can disable the sections you don\'t want to configure.')
+        desc = _('These are the parameters you need to configure to join this workstation to \
+a Chef server. The "Chef URL" is the URL this workstation will use to comunicate with the server. \
+The "Chef Certificate" parameter is the URL from which this assistant will download a required \
+certificate for joining to the Chef server. The "Node Name" parameter must be an unique name \
+for this wokstation. \n\n The "Default Group" parameter is the default group for this workstation \
+in the Chef server, you may not modify this parameter unless you really know what you are doing.')
 
         self.ui.lblDescription.set_text(desc)
 

@@ -91,7 +91,7 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
         return '<b>%s</b>' % str
 
     def translate(self):
-        desc = _('Insert your authentication configuration')
+        desc = _('The next options are required for this workstation to join to an authentication server:')
 
         self.ui.lblDescription.set_text(desc)
 
@@ -112,7 +112,7 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
     def next_page(self, load_page_callback):
         if self.method == 'ad':
             retval = serverconf.auth_dialog(_('Authentication Required'),
-                    _('You need enter Administrator credentials of Active Directory'))
+                _('Type the credentials of an user with administrative rights in the Active Directory.'))
             self.server_conf.get_ad_conf().set_user(retval[0])
             self.server_conf.get_ad_conf().set_passwd(retval[1])
 

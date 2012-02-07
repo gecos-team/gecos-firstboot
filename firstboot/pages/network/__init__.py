@@ -55,7 +55,7 @@ class NetworkPage(PageWindow.PageWindow):
         self.ui.lblDescription.set_text(_('You need to be connected to the network \
 for linking this workstation to a GECOS server and for installing software.'))
         self.ui.lblDescription1.set_text(_('Below are shown the current \
-detected interfaces.'))
+detected networks.'))
 
     def load_page(self, params=None):
         self.main_window.connect('link-status', self.on_link_status_changed)

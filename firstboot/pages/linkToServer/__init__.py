@@ -90,9 +90,8 @@ class LinkToServerPage(PageWindow.PageWindow):
         self.ui.txtUrl.set_text(url)
 
     def translate(self):
-        desc = _('When a workstation is linked to a authentication server \
-existing users in the server can login into \
-this workstation.\n\n')
+        desc = _('When a workstation is linked to an authentication server \
+existing users in the server can login into this workstation.\n\n')
 
         if self.ldap_is_configured:
             desc1 = _('This workstation is currently linked to a LDAP \
