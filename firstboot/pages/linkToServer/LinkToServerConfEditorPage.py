@@ -54,6 +54,7 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
             if not self.server_conf is None:
                 self.ui.lblVersionValue.set_label(self.server_conf.get_version())
                 self.ui.lblOrganizationValue.set_label(self.server_conf.get_organization())
+                self.ui.lblNotesValue.set_label(self.server_conf.get_notes())
                 self.ui.txtUrlLDAP.set_text(self.server_conf.get_ldap_conf().get_url())
                 self.ui.txtBaseDN.set_text(self.server_conf.get_ldap_conf().get_basedn())
                 self.ui.txtBaseDNGroup.set_text(self.server_conf.get_ldap_conf().get_basedngroup())
@@ -68,12 +69,15 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
             self.ui.lblNotesValue.set_visible(False)
             self.ui.lblOrganizationValue.set_visible(False)
             self.server_conf = serverconf.ServerConf()
+
         self.update_server_conf = True
         self.method = params['auth_method']
+
         if self.method == 'ldap':
             self.ui.adBox.set_visible(False)
             self.ui.ldapBox.set_visible(True)
             self.link_ldap = True
+
         else:
             os.system('DEBCONF_PRIORITY=critical DEBIAN_FRONTEND=noninteractive dpkg-reconfigure resolvconf')
             self.ui.ldapBox.set_visible(False)
@@ -87,7 +91,7 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
         return '<b>%s</b>' % str
 
     def translate(self):
-        desc = _('Insert your authentication configuration')
+        desc = _('The next options are required for this workstation to join to an authentication server:')
 
         self.ui.lblDescription.set_text(desc)
 
@@ -108,7 +112,7 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
     def next_page(self, load_page_callback):
         if self.method == 'ad':
             retval = serverconf.auth_dialog(_('Authentication Required'),
-                    _('You need enter Administrator credentials of Active Directory'))
+                _('Type the credentials of an user with administrative rights in the Active Directory.'))
             self.server_conf.get_ad_conf().set_user(retval[0])
             self.server_conf.get_ad_conf().set_passwd(retval[1])
 

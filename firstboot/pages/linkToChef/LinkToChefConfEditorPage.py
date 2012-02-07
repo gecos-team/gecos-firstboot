@@ -34,6 +34,7 @@ gettext.textdomain('firstboot')
 
 __REQUIRED__ = False
 
+__DEFAULT_ROLE__ = 'default_group'
 
 def get_page(main_window):
 
@@ -57,12 +58,17 @@ class LinkToChefConfEditorPage(PageWindow.PageWindow):
             if not self.server_conf is None:
                 self.ui.lblVersionValue.set_label(self.server_conf.get_version())
                 self.ui.lblOrganizationValue.set_label(self.server_conf.get_organization())
+                self.ui.lblNotesValue.set_label(self.server_conf.get_notes())
                 self.ui.txtUrlChef.set_text(self.server_conf.get_chef_conf().get_url())
                 self.ui.txtUrlChefCert.set_text(self.server_conf.get_chef_conf().get_pem_url())
                 self.ui.txtHostname.set_text(self.server_conf.get_chef_conf().get_hostname())
+                self.ui.txtDefaultRole.set_text(self.server_conf.get_chef_conf().get_default_role())
 
         if self.server_conf is None:
             self.server_conf = serverconf.ServerConf()
+
+        if len(self.ui.txtDefaultRole.get_text()) == 0:
+            self.ui.txtDefaultRole.set_text(__DEFAULT_ROLE__)
 
         self.update_server_conf = True
         self.chef_is_configured = params['chef_is_configured']
@@ -76,7 +82,12 @@ class LinkToChefConfEditorPage(PageWindow.PageWindow):
         return '<b>%s</b>' % str
 
     def translate(self):
-        desc = _('Remember you can disable the sections you don\'t want to configure.')
+        desc = _('These are the parameters you need to configure to join this workstation to \
+a Chef server. The "Chef URL" is the URL this workstation will use to comunicate with the server. \
+The "Chef Certificate" parameter is the URL from which this assistant will download a required \
+certificate for joining to the Chef server. The "Node Name" parameter must be an unique name \
+for this wokstation. \n\n The "Default Group" parameter is the default group for this workstation \
+in the Chef server, you may not modify this parameter unless you really know what you are doing.')
 
         self.ui.lblDescription.set_text(desc)
 
@@ -86,6 +97,7 @@ class LinkToChefConfEditorPage(PageWindow.PageWindow):
         self.ui.lblUrlChef.set_label('Chef URL')
         self.ui.lblUrlChefCert.set_label(_('Certificate URL'))
         self.ui.lblHostname.set_label(_('Node Name'))
+        self.ui.lblDefaultRole.set_label(_('Default Group'))
 
     def previous_page(self, load_page_callback):
         load_page_callback(firstboot.pages.linkToChef)
@@ -129,6 +141,7 @@ class LinkToChefConfEditorPage(PageWindow.PageWindow):
             return
         self.server_conf.get_chef_conf().set_url(self.ui.txtUrlChef.get_text())
         self.server_conf.get_chef_conf().set_pem_url(self.ui.txtUrlChefCert.get_text())
+        self.server_conf.get_chef_conf().set_default_role(self.ui.txtDefaultRole.get_text())
         self.server_conf.get_chef_conf().set_hostname(self.ui.txtHostname.get_text())
 
     def validate_conf(self):

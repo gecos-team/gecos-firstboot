@@ -33,8 +33,15 @@ class ActiveDirectoryConf():
         self._data['passwd'] = ''
 
     def load_data(self, conf):
-        self.set_fqdn(conf['fqdn'])
-        self.set_dns_domain(conf['dns'])
+        msg = 'ServerConf: Key "%s" not found in the configuration file.'
+        try:
+            self.set_fqdn(conf['fqdn'])
+        except KeyError as e:
+            print msg % ('fqdn',)
+        try:
+            self.set_dns_domain(conf['dns'])
+        except KeyError as e:
+            print msg % ('dns',)
 
     def validate(self):
         valid = not validation.is_empty(self._data['fqdn']) \

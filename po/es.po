@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gecos-firstboot 0.2.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-11 11:06+0100\n"
+"POT-Creation-Date: 2012-02-07 14:30+0100\n"
 "PO-Revision-Date: 2011-11-29 14:43+0200\n"
 "Last-Translator: Roberto C. Morano <rcmorano@emergya.com>\n"
 "Language-Team: Spanish\n"
@@ -18,149 +18,169 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../firstboot/__init__.py:42
-msgid "Show debug messages (-vv debugs firstboot_lib also)"
-msgstr "Muestra mensaje de depuración (-vv también depura firstboot_lib)"
+#: ../firstboot/FirstbootWindow.py:119
+msgid "First Boot Assistant"
+msgstr "Asistente de Primer Arranque"
 
-#: ../firstboot/__init__.py:46
-msgid "Debug mode. Force run the application after the first start"
-msgstr ""
-"Modo depuracion. Fuerza a correr la aplicacion despues del primer arranque"
+#: ../firstboot/FirstbootWindow.py:121
+msgid "Previous"
+msgstr "Anterior"
 
-#: ../firstboot/__init__.py:50
-msgid "Use this URL by default in the \"Link to Server\" page."
-msgstr "Usa esta URL por defecto en la página \"Enlazar a Servidor\"."
+#: ../firstboot/FirstbootWindow.py:122
+msgid "Next"
+msgstr "Siguiente"
 
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:90
-msgid "Insert your authentication configuration"
-msgstr "Inserta la configuracion de autentificacion"
+#: ../firstboot/FirstbootWindow.py:138
+msgid "Are you sure you have fully configured this workstation?"
+msgstr "¿Está seguro de haber configurado totalmente este puesto de trabajo?"
 
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:94
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:83
-msgid "Version"
-msgstr "Versión"
-
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:95
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:84
-msgid "Organization"
-msgstr "Organización"
-
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:96
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:85
-msgid "Notes"
-msgstr "Notas"
-
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:98
-msgid "Base DN"
-msgstr "Base DN de los usuarios"
-
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:99
-msgid "Base DN Group"
-msgstr "Base DN de los grupos"
-
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:101
-#: ../firstboot/pages/localUsers/__init__.py:85
-msgid "Password"
-msgstr "Contraseña"
-
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:103
-msgid "Domain DNS"
-msgstr "Servidor DNS"
-
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:110
-#: ../firstboot/serverconf/__init__.py:109
-#: ../firstboot/serverconf/__init__.py:115
-msgid "Authentication Required"
-msgstr "Autenticación requerida"
-
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:111
-msgid "You need enter Administrator credentials of Active Directory"
-msgstr "Necesita las credenciales de Administrador del Directorio Activo."
-
-#: ../firstboot/pages/linkToServer/__init__.py:39
-msgid "Select authentication method"
-msgstr "Seleccionar método de autenticación"
-
-#: ../firstboot/pages/linkToServer/__init__.py:125
-msgid ""
-"When a workstation is linked to a authentication server existing users in "
-"the server can login into this workstation.\n"
-"\n"
-msgstr ""
-"Cuando un puesto de trabajo está vinculado a un servidor de autenticacion "
-"los usuarios existentes en el servidor pueden iniciar sesión en este puesto "
-"de trabajo.\n"
-"\n"
-
-#: ../firstboot/pages/linkToServer/__init__.py:131
-msgid ""
-"You can type the options manually or download a default configuration from "
-"the server."
-msgstr ""
-"Puede escribir las opciones manualmente o descargar una configuración por "
-"defecto desde el servidor."
-
-#: ../firstboot/pages/linkToServer/__init__.py:135
-msgid "This workstation is currently linked to an LDAP server."
-msgstr "Este puesto de trabajo está actualmente vinculado a un servidor LDAP."
-
-#: ../firstboot/pages/linkToServer/__init__.py:138
-msgid "This workstation is currently linked to an Active Directory server."
-msgstr ""
-"Este puesto de trabajo está actualmente vinculado a un Directorio Activo."
-
-#: ../firstboot/pages/linkToServer/__init__.py:142
-msgid "Unlink from LDAP"
-msgstr "Desvincular del LDAP"
-
-#: ../firstboot/pages/linkToServer/__init__.py:143
-msgid "Unlink from Active Directory"
-msgstr "Desvincular del Directorio Activo"
-
-#: ../firstboot/pages/linkToServer/__init__.py:144
-#: ../firstboot/pages/linkToChef/__init__.py:98
-msgid "Omit"
-msgstr "Omitir"
-
-#: ../firstboot/pages/linkToServer/__init__.py:145
-#: ../firstboot/pages/linkToChef/__init__.py:99
-msgid "Manual"
-msgstr "Manual"
-
-#: ../firstboot/pages/linkToServer/__init__.py:146
-#: ../firstboot/pages/linkToChef/__init__.py:100
-msgid "Automatic"
-msgstr "Automático"
-
-#: ../firstboot/pages/linkToServer/__init__.py:147
-msgid "LDAP"
-msgstr "LDAP"
-
-#: ../firstboot/pages/linkToServer/__init__.py:148
-msgid "Active Directory"
-msgstr "Directorio Activo"
-
-#: ../firstboot/pages/linkToServer/__init__.py:204
-#: ../firstboot/pages/linkToChef/__init__.py:132
-msgid "The configuration file is valid."
-msgstr "El fichero de configuración es válido."
-
-#: ../firstboot/pages/linkToServer/__init__.py:210
-#: ../firstboot/pages/linkToServer/LinkToServerResultsPage.py:70
 #: ../firstboot/pages/linkToChef/LinkToChefResultsPage.py:70
 #: ../firstboot/pages/linkToChef/__init__.py:138
+#: ../firstboot/pages/linkToServer/LinkToServerResultsPage.py:70
+#: ../firstboot/pages/linkToServer/__init__.py:168
 msgid "The configuration was updated successfully."
 msgstr "La configuración se actualizó correctamente."
 
-#: ../firstboot/pages/linkToServer/__init__.py:222
+#: ../firstboot/pages/linkToChef/LinkToChefResultsPage.py:75
+#: ../firstboot/pages/linkToServer/LinkToServerResultsPage.py:75
+msgid "There are some errors you may fix."
+msgstr "Se han producido algunos errores que debería corregir."
+
+#: ../firstboot/pages/linkToChef/__init__.py:39
+msgid "Link workstation to a Chef server"
+msgstr "Enlazar puesto a un servidor Chef"
+
+#: ../firstboot/pages/linkToChef/__init__.py:93
+msgid ""
+"When a workstation is linked to a Chef server can be easily managed "
+"remotely.\n"
+"\n"
+msgstr ""
+"Cuando un puesto de trabajo está vinculado a un servidor Chef este puede ser "
+"gestionado remotamente de forma sencilla.\n"
+"\n"
+
+#: ../firstboot/pages/linkToChef/__init__.py:97
+msgid "Unlink from Chef"
+msgstr "Desvincular de Chef"
+
+#: ../firstboot/pages/linkToChef/__init__.py:98
+#: ../firstboot/pages/linkToServer/__init__.py:113
+msgid "Omit"
+msgstr "Omitir"
+
+#: ../firstboot/pages/linkToChef/__init__.py:99
+#: ../firstboot/pages/linkToServer/__init__.py:114
+msgid "Manual"
+msgstr "Manual"
+
+#: ../firstboot/pages/linkToChef/__init__.py:100
+#: ../firstboot/pages/linkToServer/__init__.py:115
+msgid "Automatic"
+msgstr "Automático"
+
+#: ../firstboot/pages/linkToChef/__init__.py:132
+#: ../firstboot/pages/linkToServer/__init__.py:162
+msgid "The configuration file is valid."
+msgstr "El fichero de configuración es válido."
+
 #: ../firstboot/pages/linkToChef/__init__.py:150
+#: ../firstboot/pages/linkToServer/__init__.py:180
 msgid "Trying to connect..."
 msgstr "Intentando conectar..."
 
-#: ../firstboot/pages/linkToServer/LinkToServerResultsPage.py:75
-#: ../firstboot/pages/linkToChef/LinkToChefResultsPage.py:75
-msgid "There are some errors you may fix."
-msgstr "Se han producido algunos errores que debería corregir."
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:85
+msgid ""
+"These are the parameters you need to configure to join this workstation to a "
+"Chef server. The \"Chef URL\" is the URL this workstation will use to "
+"comunicate with the server. The \"Chef Certificate\" parameter is the URL "
+"from which this assistant will download a required certificate for joining "
+"to the Chef server. The \"Node Name\" parameter must be an unique name for "
+"this wokstation. \n"
+"\n"
+" The \"Default Group\" parameter is the default group for this workstation "
+"in the Chef server, you may not modify this parameter unless you really know "
+"what you are doing."
+msgstr ""
+"Estos son los parámetros que necesita configurar para unir esta estación de "
+"trabajo a un servidor Chef. El parámetro \"Chef URL\" es la URL que esta estación "
+"de trabajo usará para comunicarse con el servidor Chef. El parámetro \"Certificado\" "
+"es la URL desde la cual este asistente se descargará un certificado requerido para "
+"poder unir la estación de trabajo al servidor Chef. El parámetro \"Nombre del Nodo\" "
+"debe ser un nombre único para identificar a esta estación de trabajo. \n\n"
+"El parámetro \"Group por defecto\" es el group que se le asignará a la estación de "
+"trabajo en el servidor Chef, no debería modificar este parámetro a menos que realmente
+sepa lo que está haciendo."
+
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:94
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:98
+msgid "Version"
+msgstr "Versión"
+
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:95
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:99
+msgid "Organization"
+msgstr "Organización"
+
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:96
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:100
+msgid "Notes"
+msgstr "Notas"
+
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:98
+msgid "Certificate URL"
+msgstr "URL del certificado"
+
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:99
+msgid "Node Name"
+msgstr "Nombre del nodo"
+
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:100
+msgid "Default Group"
+msgstr "Grupo por Defecto"
+
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:154
+msgid "Chef and Chef Cert URLs must be well formed URLs."
+msgstr "Las URLs de Chef y su certificado deben estar bien formadas."
+
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:160
+msgid "The host name is empty or contains invalid characters."
+msgstr "El nobre de host está vacío o contiene caracteres inválidos."
+
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:168
+msgid "Please check the Chef Cert URL, it seems to be wrong."
+msgstr "Por favor verifica la URL del certificado de Chef, parece ser erronea."
+
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:172
+msgid ""
+"The host name already exists in the Chef server. Choose a different one."
+msgstr "El nombre de host ya existe en el servidor Chef. Elige uno diferente."
+
+#: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:60
+msgid ""
+"This workstation is going to be linked to a Chef server, therefore it must "
+"be given a host name. That name will be used for uniquely identify this "
+"workstation."
+msgstr ""
+"Este puesto de trabajo se va a vincular a un servidor Chef, así pues es "
+"necesario darle un nombre de host. El nombre de host será usado para "
+"identificar unívocamente a este puesto de trabajo."
+
+#: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:65
+msgid "Hostname"
+msgstr "Hostname"
+
+#: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:86
+msgid "The host name is in use."
+msgstr "El nombre de host está en uso"
+
+#: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:103
+msgid "The host name cannot be empty."
+msgstr "El nombre de host no puede quedar vacio."
+
+#: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:107
+msgid "The host name already exists in the Chef server."
+msgstr "El nombre de host ya existe en el servidor Chef."
 
 #: ../firstboot/pages/pcLabel/__init__.py:37
 msgid "Describe this workstation"
@@ -184,74 +204,121 @@ msgstr "Descripción"
 msgid "The label has been updated correctly."
 msgstr "La etiqueta se ha actualizado correctamente."
 
-#: ../firstboot/pages/installSoftware/__init__.py:35
-#: ../firstboot/pages/installSoftware/__init__.py:52
-msgid "Install software"
-msgstr "Instalar software"
-
-#: ../firstboot/pages/installSoftware/__init__.py:49
-msgid "Close"
-msgstr "Cerrar"
-
-#: ../firstboot/pages/installSoftware/__init__.py:53
-msgid "From this window you can install software and manage packages."
-msgstr "Desde esta ventana puede instalar software y gestionar paquetes."
-
-#: ../firstboot/pages/localUsers/SystemUsers.py:95
-msgid "The user couldn't be updated. Please check the parameters."
-msgstr "El usuario no se pudo actualizar. Por favor, revise los parámetros."
-
-#: ../firstboot/pages/localUsers/SystemUsers.py:114
-msgid "The password couldn't be changed."
-msgstr "La contraseña no se pudo cambiar."
-
-#: ../firstboot/pages/localUsers/SystemUsers.py:126
-msgid "The user couldn't be created. Please check the parameters."
-msgstr "El usuario no pudo ser creado. Por favor, revise los parámetros."
-
-#: ../firstboot/pages/localUsers/SystemUsers.py:143
-msgid "The user to delete was not a system account."
-msgstr "El usuario a eliminar no era una cuenta del sistema."
-
-#: ../firstboot/pages/localUsers/SystemUsers.py:146
-msgid "There is no such user."
-msgstr "No existe el usuario."
-
-#: ../firstboot/pages/localUsers/SystemUsers.py:149
-msgid "There is no such group."
-msgstr "No existe el grupo."
-
-#: ../firstboot/pages/localUsers/SystemUsers.py:152
-msgid "Internal error. No action was performed."
-msgstr "Error interno. No se realizó ninguna acción."
-
-#: ../firstboot/pages/localUsers/SystemUsers.py:155
-msgid "The group to delete is not empty."
-msgstr "El grupo a eliminar no está vacío."
-
-#: ../firstboot/pages/localUsers/SystemUsers.py:158
-msgid "The user does not belong to the specified group."
-msgstr "El usuario no pertenece al grupo especificado."
-
-#: ../firstboot/pages/localUsers/SystemUsers.py:161
-msgid "You cannot remove a user from its primary group."
-msgstr "No puede eliminar un usuario de su grupo primario."
-
-#: ../firstboot/pages/localUsers/SystemUsers.py:164
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:94
 msgid ""
-"The required perl-package 'perl modules' is not installed. This package is "
-"required to perform the requested actions."
+"The next options are required for this workstation to join to an "
+"authentication server:"
 msgstr ""
-"El paquete requerido 'perl-modules' no está instalado. Este paquete se "
-"necesita para realizar las acciones solicitadas."
+"Las siguiente opciones son requeridas para unir esta estación de "
+"trabajo a un servidor de autenticación."
 
-#: ../firstboot/pages/localUsers/SystemUsers.py:167
-msgid "For removing the root account the parameter \"--force\" is required."
-msgstr "Para eliminar la cuenta root se necesita el parámetro \"--force\"."
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:102
+msgid "Base DN"
+msgstr "Base DN de los usuarios"
 
-#: ../firstboot/pages/localUsers/SystemUsers.py:170
-msgid "Unknown error, the user couldn't be removed for some reason."
-msgstr "Error desconocido, no se pudo eliminar el usuario por algún motivo."
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:103
+msgid "Base DN Group"
+msgstr "Base DN de los grupos"
+
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:105
+#: ../firstboot/pages/localUsers/__init__.py:85
+msgid "Password"
+msgstr "Contraseña"
+
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:107
+msgid "Domain DNS"
+msgstr "Servidor DNS"
+
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:114
+#: ../firstboot/serverconf/__init__.py:108
+#: ../firstboot/serverconf/__init__.py:114
+msgid "Authentication Required"
+msgstr "Autenticación requerida"
+
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:115
+msgid ""
+"Type the credentials of an user with administrative rights in the Active "
+"Directory."
+msgstr ""
+"Escribe las credenciales de un usuario con privilegios de administración "
+"en el Directorio Activo."
+
+#: ../firstboot/pages/linkToServer/__init__.py:39
+msgid "Select authentication method"
+msgstr "Seleccionar método de autenticación"
+
+#: ../firstboot/pages/linkToServer/__init__.py:93
+msgid ""
+"When a workstation is linked to an authentication server existing users in "
+"the server can login into this workstation.\n"
+"\n"
+msgstr ""
+"Cuando un puesto de trabajo está vinculado a un servidor de autenticación "
+"los usuarios existentes en el servidor pueden iniciar sesión en este puesto "
+"de trabajo.\n"
+"\n"
+
+#: ../firstboot/pages/linkToServer/__init__.py:97
+msgid "This workstation is currently linked to a LDAP server."
+msgstr "Este puesto de trabajo está actualmente vinculado a un servidor LDAP."
+
+#: ../firstboot/pages/linkToServer/__init__.py:100
+msgid "This workstation is currently linked to an Active Directory server."
+msgstr ""
+"Este puesto de trabajo está actualmente vinculado a un Directorio Activo."
+
+#: ../firstboot/pages/linkToServer/__init__.py:103
+msgid ""
+"You can type the options manually or download a default configuration from "
+"the server."
+msgstr ""
+"Puede escribir las opciones manualmente o descargar una configuración por "
+"defecto desde el servidor."
+
+#: ../firstboot/pages/linkToServer/__init__.py:106
+msgid "Select the authentication method you would like to use:"
+msgstr "Seleccione el método de autenticación que desea usar:"
+
+#: ../firstboot/pages/linkToServer/__init__.py:111
+msgid "Unlink from LDAP"
+msgstr "Desvincular del LDAP"
+
+#: ../firstboot/pages/linkToServer/__init__.py:112
+msgid "Unlink from Active Directory"
+msgstr "Desvincular del Directorio Activo"
+
+#: ../firstboot/pages/linkToServer/__init__.py:116
+msgid "LDAP"
+msgstr "LDAP"
+
+#: ../firstboot/pages/linkToServer/__init__.py:117
+msgid "Active Directory"
+msgstr "Directorio Activo"
+
+#: ../firstboot/pages/network/__init__.py:37
+#: ../firstboot/pages/network/__init__.py:54
+msgid "Configure the network"
+msgstr "Configurar la red"
+
+#: ../firstboot/pages/network/__init__.py:55
+msgid ""
+"You need to be connected to the network for linking this workstation to a "
+"GECOS server and for installing software."
+msgstr ""
+"Necesita estar conectado a la red para vincular este puesto de trabajo a un "
+"servidor GECOS y para instalar software."
+
+#: ../firstboot/pages/network/__init__.py:57
+msgid "Below are shown the current detected networks."
+msgstr "Debajo se muestran las redes detectadas."
+
+#: ../firstboot/pages/network/__init__.py:73
+msgid "Interface"
+msgstr "Interfaz"
+
+#: ../firstboot/pages/network/__init__.py:79
+msgid "IP"
+msgstr "IP"
 
 #: ../firstboot/pages/localUsers/__init__.py:37
 msgid "Manage local users"
@@ -298,17 +365,73 @@ msgstr "Aplicar"
 msgid "User"
 msgstr "Usuario"
 
-#: ../firstboot/pages/localUsers/__init__.py:239
+#: ../firstboot/pages/localUsers/__init__.py:238
 msgid "The user login is empty or contains invalid characters."
 msgstr "El login del usuario está vacío o contiene caracteres inválidos."
 
-#: ../firstboot/pages/localUsers/__init__.py:243
+#: ../firstboot/pages/localUsers/__init__.py:242
 msgid "The user password couldn't be empty."
 msgstr "La contraseña del usuario no puede quedar vacía."
 
-#: ../firstboot/pages/localUsers/__init__.py:247
+#: ../firstboot/pages/localUsers/__init__.py:246
 msgid "The passwords doesn't match."
 msgstr "Las contraseñas no coinciden."
+
+#: ../firstboot/pages/localUsers/SystemUsers.py:96
+msgid "The user couldn't be updated. Please check the parameters."
+msgstr "El usuario no se pudo actualizar. Por favor, revise los parámetros."
+
+#: ../firstboot/pages/localUsers/SystemUsers.py:115
+msgid "The password couldn't be changed."
+msgstr "La contraseña no se pudo cambiar."
+
+#: ../firstboot/pages/localUsers/SystemUsers.py:127
+msgid "The user couldn't be created. Please check the parameters."
+msgstr "El usuario no pudo ser creado. Por favor, revise los parámetros."
+
+#: ../firstboot/pages/localUsers/SystemUsers.py:144
+msgid "The user to delete was not a system account."
+msgstr "El usuario a eliminar no era una cuenta del sistema."
+
+#: ../firstboot/pages/localUsers/SystemUsers.py:147
+msgid "There is no such user."
+msgstr "No existe el usuario."
+
+#: ../firstboot/pages/localUsers/SystemUsers.py:150
+msgid "There is no such group."
+msgstr "No existe el grupo."
+
+#: ../firstboot/pages/localUsers/SystemUsers.py:153
+msgid "Internal error. No action was performed."
+msgstr "Error interno. No se realizó ninguna acción."
+
+#: ../firstboot/pages/localUsers/SystemUsers.py:156
+msgid "The group to delete is not empty."
+msgstr "El grupo a eliminar no está vacío."
+
+#: ../firstboot/pages/localUsers/SystemUsers.py:159
+msgid "The user does not belong to the specified group."
+msgstr "El usuario no pertenece al grupo especificado."
+
+#: ../firstboot/pages/localUsers/SystemUsers.py:162
+msgid "You cannot remove a user from its primary group."
+msgstr "No puede eliminar un usuario de su grupo primario."
+
+#: ../firstboot/pages/localUsers/SystemUsers.py:165
+msgid ""
+"The required perl-package 'perl modules' is not installed. This package is "
+"required to perform the requested actions."
+msgstr ""
+"El paquete requerido 'perl-modules' no está instalado. Este paquete se "
+"necesita para realizar las acciones solicitadas."
+
+#: ../firstboot/pages/localUsers/SystemUsers.py:168
+msgid "For removing the root account the parameter \"--force\" is required."
+msgstr "Para eliminar la cuenta root se necesita el parámetro \"--force\"."
+
+#: ../firstboot/pages/localUsers/SystemUsers.py:171
+msgid "Unknown error, the user couldn't be removed for some reason."
+msgstr "Error desconocido, no se pudo eliminar el usuario por algún motivo."
 
 #: ../firstboot/pages/localUsers/Dialogs.py:34
 msgid "New user"
@@ -327,7 +450,7 @@ msgid "login"
 msgstr "login"
 
 #: ../firstboot/pages/localUsers/Dialogs.py:61
-#: ../firstboot/serverconf/__init__.py:601
+#: ../firstboot/serverconf/__init__.py:600
 msgid "password"
 msgstr "contraseña"
 
@@ -352,247 +475,168 @@ msgstr "¿Eliminar el home del usuario?"
 msgid "Error"
 msgstr "Error"
 
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:79
-msgid "Remember you can disable the sections you don't want to configure."
-msgstr "Recuerde que puede deshabilitar la sección que no quiera configurar."
+#: ../firstboot/pages/installSoftware/__init__.py:35
+#: ../firstboot/pages/installSoftware/__init__.py:52
+msgid "Install software"
+msgstr "Instalar software"
 
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:87
-msgid "Certificate URL"
-msgstr "URL del certificado"
+#: ../firstboot/pages/installSoftware/__init__.py:49
+msgid "Close"
+msgstr "Cerrar"
 
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:88
-msgid "Node Name"
-msgstr "Nombre del nodo"
+#: ../firstboot/pages/installSoftware/__init__.py:53
+msgid "From this window you can install software and manage packages."
+msgstr "Desde esta ventana puede instalar software y gestionar paquetes."
 
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:141
-msgid "Chef and Chef Cert URLs must be well formed URLs."
-msgstr "Las URLs de Chef y su certificado deben estar bien formadas."
+#: ../firstboot/__init__.py:42
+msgid "Show debug messages (-vv debugs firstboot_lib also)"
+msgstr "Muestra mensaje de depuración (-vv también depura firstboot_lib)"
 
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:147
-msgid "The host name is empty or contains invalid characters."
-msgstr "El nobre de host está vacío o contiene caracteres inválidos."
-
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:155
-msgid "Please check the Chef Cert URL, it seems to be wrong."
-msgstr "Por favor verifica la URL del certificado de Chef, parece ser erronea."
-
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:159
-msgid ""
-"The host name already exists in the Chef server. Choose a different one."
-msgstr "El nombre de host ya existe en el servidor Chef. Elige uno diferente."
-
-#: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:60
-msgid ""
-"This workstation is going to be linked to a Chef server, therefore it must "
-"be given a host name. That name will be used for uniquely identify this "
-"workstation."
+#: ../firstboot/__init__.py:46
+msgid "Debug mode. Force run the application after the first start"
 msgstr ""
-"Este puesto de trabajo se va a vincular a un servidor Chef, así pues es "
-"necesario darle un nombre de host. El nombre de host será usado para "
-"identificar unívocamente a este puesto de trabajo."
+"Modo depuracion. Fuerza a correr la aplicacion despues del primer arranque"
 
-#: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:65
-msgid "Hostname"
-msgstr "Hostname"
+#: ../firstboot/__init__.py:50
+msgid "Use this URL by default in the \"Link to Server\" page."
+msgstr "Usa esta URL por defecto en la página \"Enlazar a Servidor\"."
 
-#: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:86
-msgid "The host name is in use."
-msgstr "El nombre de host está en uso"
-
-#: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:103
-msgid "The host name cannot be empty."
-msgstr "El nombre de host no puede quedar vacio."
-
-#: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:107
-msgid "The host name already exists in the Chef server."
-msgstr "El nombre de host ya existe en el servidor Chef."
-
-#: ../firstboot/pages/linkToChef/__init__.py:39
-msgid "Link workstation to a Chef server"
-msgstr "Enlazar puesto a un servidor Chef"
-
-#: ../firstboot/pages/linkToChef/__init__.py:93
-msgid ""
-"When a workstation is linked to a Chef server it can be easily managed "
-"remotely.\n"
-"\n"
-msgstr ""
-"Cuando un puesto de trabajo está vinculado a un servidor Chef este puede ser "
-"gestionado remotamente de forma sencilla.\n"
-"\n"
-
-#: ../firstboot/pages/linkToChef/__init__.py:97
-msgid "Unlink from Chef"
-msgstr "Desvincular de Chef"
-
-#: ../firstboot/pages/network/__init__.py:37
-#: ../firstboot/pages/network/__init__.py:54
-msgid "Configure the network"
-msgstr "Configurar la red"
-
-#: ../firstboot/pages/network/__init__.py:55
-msgid ""
-"You need to be connected to the network for linking this workstation to a "
-"GECOS server and for installing software."
-msgstr ""
-"Necesita estar conectado a la red para vincular este puesto de trabajo a un "
-"servidor GECOS y para instalar software."
-
-#: ../firstboot/pages/network/__init__.py:57
-msgid "Below are shown the current detected interfaces."
-msgstr "Debajo se muestran las interfaces detectadas."
-
-#: ../firstboot/pages/network/__init__.py:73
-msgid "Interface"
-msgstr "Interfaz"
-
-#: ../firstboot/pages/network/__init__.py:79
-msgid "IP"
-msgstr "IP"
-
-#: ../firstboot/FirstbootWindow.py:112
-msgid "First Boot Assistant"
-msgstr "Asistente de Primer Arranque"
-
-#: ../firstboot/FirstbootWindow.py:114
-msgid "Previous"
-msgstr "Anterior"
-
-#: ../firstboot/FirstbootWindow.py:115
-msgid "Next"
-msgstr "Siguiente"
-
-#: ../firstboot/FirstbootWindow.py:131
-msgid "Are you sure you have fully configured this workstation?"
-msgstr "¿Está seguro de haber configurado totalmente este puesto de trabajo?"
-
-#: ../firstboot/serverconf/__init__.py:110
-#: ../firstboot/serverconf/__init__.py:116
+#: ../firstboot/serverconf/__init__.py:109
+#: ../firstboot/serverconf/__init__.py:115
 msgid "You need to enter your credentials to access the requested resource."
 msgstr "Necesita las credenciales para acceder al recurso remoto."
 
-#: ../firstboot/serverconf/__init__.py:148
-msgid "Incorrect version of the configuration file."
-msgstr "Versión incorrecta del fichero de configuración."
-
-#: ../firstboot/serverconf/__init__.py:160
+#: ../firstboot/serverconf/__init__.py:155
 msgid "Configuration file is not valid."
 msgstr "El fichero de configuración no es válido."
 
-#: ../firstboot/serverconf/__init__.py:213
+#: ../firstboot/serverconf/__init__.py:211
 msgid "Couldn't retrieve the host names list"
 msgstr "No se ha podido recuperar la lista de nombres de host"
 
-#: ../firstboot/serverconf/__init__.py:236
-#: ../firstboot/serverconf/__init__.py:448
+#: ../firstboot/serverconf/__init__.py:234
+#: ../firstboot/serverconf/__init__.py:446
 msgid "The Active Directory configuration script couldn't be found"
 msgstr "No se pudo encontrar el script de configuración del Directorio Activo"
 
-#: ../firstboot/serverconf/__init__.py:248
-#: ../firstboot/serverconf/__init__.py:458
+#: ../firstboot/serverconf/__init__.py:246
+#: ../firstboot/serverconf/__init__.py:456
 msgid "Active Directory setup error"
 msgstr "Error en la configuración del Directorio Activo"
 
-#: ../firstboot/serverconf/__init__.py:259
-#: ../firstboot/serverconf/__init__.py:405
+#: ../firstboot/serverconf/__init__.py:257
+#: ../firstboot/serverconf/__init__.py:403
 msgid "The LDAP configuration script couldn't be found"
 msgstr "No se pudo encontrar el script de configuración del LDAP"
 
-#: ../firstboot/serverconf/__init__.py:274
-#: ../firstboot/serverconf/__init__.py:415
+#: ../firstboot/serverconf/__init__.py:272
+#: ../firstboot/serverconf/__init__.py:413
 msgid "LDAP setup error"
 msgstr "Error en la configuración del LDAP"
 
-#: ../firstboot/serverconf/__init__.py:285
-#: ../firstboot/serverconf/__init__.py:539
+#: ../firstboot/serverconf/__init__.py:283
+#: ../firstboot/serverconf/__init__.py:538
 msgid "The Chef configuration script couldn't be found"
 msgstr "No se pudo encontrar el script de configuración de Chef"
 
-#: ../firstboot/serverconf/__init__.py:300
-#: ../firstboot/serverconf/__init__.py:549
+#: ../firstboot/serverconf/__init__.py:298
+#: ../firstboot/serverconf/__init__.py:548
 msgid "Chef setup error"
 msgstr "Error en la configuración de Chef"
 
-#: ../firstboot/serverconf/__init__.py:316
+#: ../firstboot/serverconf/__init__.py:314
 msgid "Workstation has been unlinked from LDAP."
 msgstr "Este puesto de trabajo se ha desvinculado del LDAP."
 
-#: ../firstboot/serverconf/__init__.py:326
+#: ../firstboot/serverconf/__init__.py:324
 msgid "The LDAP has been configured successfully."
 msgstr "El LDAP se ha configurado correctamente."
 
-#: ../firstboot/serverconf/__init__.py:336
+#: ../firstboot/serverconf/__init__.py:334
 msgid "Workstation has been unlinked from AD."
 msgstr "Este puesto de trabajo se ha desvinculado del Directorio Activo."
 
-#: ../firstboot/serverconf/__init__.py:346
+#: ../firstboot/serverconf/__init__.py:344
 msgid "The Active Directory has been configured successfully."
 msgstr ""
 "Este puesto de trabajo se ha vinculado correctamente a un Directorio Activo."
 
-#: ../firstboot/serverconf/__init__.py:356
+#: ../firstboot/serverconf/__init__.py:354
 msgid "Workstation has been unlinked from Chef."
 msgstr "Este puesto de trabajo se ha desvinculado de Chef."
 
-#: ../firstboot/serverconf/__init__.py:366
+#: ../firstboot/serverconf/__init__.py:364
 msgid "The Chef client has been configured successfully."
 msgstr "El cliente de Chef se ha configurado correctamente."
 
-#: ../firstboot/serverconf/__init__.py:390
+#: ../firstboot/serverconf/__init__.py:388
 msgid "The LDAP URL cannot be empty."
 msgstr "La URL del LDAP no puede estar vacía."
 
-#: ../firstboot/serverconf/__init__.py:393
+#: ../firstboot/serverconf/__init__.py:391
 msgid "The LDAP BaseDN cannot be empty."
 msgstr "El BaseDN del LDAP no puede estar vacío."
 
-#: ../firstboot/serverconf/__init__.py:396
+#: ../firstboot/serverconf/__init__.py:394
 msgid "The LDAP BindDN cannot be empty."
 msgstr "El BindDN del LDAP no puede estar vacío."
 
-#: ../firstboot/serverconf/__init__.py:432
+#: ../firstboot/serverconf/__init__.py:430
 msgid "The Active Directory URL cannot be empty."
 msgstr "La URL del Directorio Activo no puede quedar vacía."
 
-#: ../firstboot/serverconf/__init__.py:435
+#: ../firstboot/serverconf/__init__.py:433
 msgid "The DNS Domain cannot be empty."
 msgstr "El dominio DNS no puede estar vacío."
 
-#: ../firstboot/serverconf/__init__.py:437
+#: ../firstboot/serverconf/__init__.py:435
 msgid "The administrator user cannot be empty."
 msgstr "El administrador no puede estar vacío."
 
-#: ../firstboot/serverconf/__init__.py:439
+#: ../firstboot/serverconf/__init__.py:437
 msgid "The administrator password cannot be empty."
 msgstr "La contraseña de adminstrador no puede quedar vacio."
 
-#: ../firstboot/serverconf/__init__.py:482
+#: ../firstboot/serverconf/__init__.py:480
 msgid "An error has ocurred unlinking from LDAP"
 msgstr "Ha ocurrido un error desvinculándose del LDAP"
 
-#: ../firstboot/serverconf/__init__.py:506
+#: ../firstboot/serverconf/__init__.py:504
 msgid "An error has ocurred unlinking from Active Directory"
 msgstr "Ha ocurrido un error desvinculándose del Directorio Activo"
 
-#: ../firstboot/serverconf/__init__.py:524
+#: ../firstboot/serverconf/__init__.py:523
 msgid "The Chef URL cannot be empty."
 msgstr "LA URL de Chef no puede quedar vacía."
 
-#: ../firstboot/serverconf/__init__.py:527
+#: ../firstboot/serverconf/__init__.py:526
 msgid "The Chef certificate URL cannot be empty."
 msgstr "La URL del certificado de Chef no puede quedar vacía."
 
-#: ../firstboot/serverconf/__init__.py:530
+#: ../firstboot/serverconf/__init__.py:529
 msgid "The Chef host name cannot be empty."
 msgstr "El nombre de host para Chef no puede quedar vacío."
 
-#: ../firstboot/serverconf/__init__.py:573
+#: ../firstboot/serverconf/__init__.py:572
 msgid "An error has ocurred unlinking from Chef"
 msgstr "Ha ocurrido un error desvinculándose de Chef"
 
-#: ../firstboot/serverconf/__init__.py:591
+#: ../firstboot/serverconf/__init__.py:590
 msgid "user"
 msgstr "usuario"
+
+#~ msgid "Insert your authentication configuration"
+#~ msgstr "Inserta la configuracion de autentificacion"
+
+#~ msgid "You need enter Administrator credentials of Active Directory"
+#~ msgstr "Necesita las credenciales de Administrador del Directorio Activo."
+
+#~ msgid "Remember you can disable the sections you don't want to configure."
+#~ msgstr ""
+#~ "Recuerde que puede deshabilitar la sección que no quiera configurar."
+
+#~ msgid "Incorrect version of the configuration file."
+#~ msgstr "Versión incorrecta del fichero de configuración."
 
 #~ msgid "Link workstation to a server"
 #~ msgstr "Enlazar puesto a un servidor"

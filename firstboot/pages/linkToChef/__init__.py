@@ -90,7 +90,7 @@ class LinkToChefPage(PageWindow.PageWindow):
         self.ui.txtUrl.set_text(url)
 
     def translate(self):
-        desc = _('When a workstation is linked to a Chef server it can be \
+        desc = _('When a workstation is linked to a Chef server can be \
 easily managed remotely.\n\n')
 
         self.ui.lblDescription.set_text(desc)

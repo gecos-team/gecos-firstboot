@@ -29,9 +29,12 @@ from ActiveDirectoryConf import ActiveDirectoryConf
 
 class ServerConf():
 
+    # Version of the configuration JSON file
+    VERSION = '1.2'
+
     def __init__(self):
         self._data = {}
-        self._data['version'] = firstboot.serverconf.__CONFIG_FILE_VERSION__
+        self._data['version'] = ServerConf.VERSION
         self._data['organization'] = ''
         self._data['notes'] = ''
         self._ldap_conf = LdapConf()
@@ -39,11 +42,33 @@ class ServerConf():
         self._ad_conf = ActiveDirectoryConf()
 
     def load_data(self, conf):
-        self.set_organization(conf['organization'])
-        self.set_notes(conf['notes'])
-        self._ldap_conf.load_data(conf['pamldap'])
-        self._chef_conf.load_data(conf['chef'])
-        self._ad_conf.load_data(conf['ad'])
+        msg = 'ServerConf: Key "%s" not found in the configuration file.'
+        try:
+            v = conf['version']
+            if v != ServerConf.VERSION:
+                print 'WARNING: ServerConf and AUTOCONFIG_JSON version mismatch!'
+        except KeyError as e:
+            print msg % ('version',)
+        try:
+            self.set_organization(conf['organization'])
+        except KeyError as e:
+            print msg % ('organization',)
+        try:
+            self.set_notes(conf['notes'])
+        except KeyError as e:
+            print msg % ('notes',)
+        try:
+            self._ldap_conf.load_data(conf['pamldap'])
+        except KeyError as e:
+            print msg % ('pamldap',)
+        try:
+            self._chef_conf.load_data(conf['chef'])
+        except KeyError as e:
+            print msg % ('chef',)
+        try:
+            self._ad_conf.load_data(conf['ad'])
+        except KeyError as e:
+            print msg % ('ad',)
 
     def validate(self):
         valid = len(self._data['version']) > 0 \
