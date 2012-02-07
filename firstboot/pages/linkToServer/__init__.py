@@ -43,6 +43,10 @@ __STATUS_CONFIG_CHANGED__ = 1
 __STATUS_CONNECTING__ = 2
 __STATUS_ERROR__ = 3
 
+__JSON_CACHE__ = '/tmp/json_cached'
+__LDAP__ = 'ldap'
+__AD__ = 'ad'
+
 
 def get_page(main_window):
 
@@ -54,33 +58,22 @@ class LinkToServerPage(PageWindow.PageWindow):
     __gtype_name__ = "LinkToServerPage"
 
     def load_page(self, params=None):
-        if os.path.exists('/tmp/json_cached') and not (self.ldap_is_configured or self.ad_is_configured):
-            self.json_cached = True
-            self.ui.radioOmit.set_visible(False)
-            self.ui.radioManual.set_visible(False)
-            self.ui.radioAuto.set_visible(False)
-            self.ui.radioAuto.set_active(True)
-            self.ui.radioLDAP.set_visible(False)
-            self.ui.radioLDAPAut.set_visible(True)
-            self.ui.radioAD.set_visible(False)
-            self.ui.radioADAut.set_visible(True)
-            self.ui.lblUrl.set_visible(False)
-            self.ui.txtUrl.set_visible(False)
-            self.ui.box5.set_visible(False)
-            self.ui.box6.set_visible(True)
-            self.main_window.btnNext.set_sensitive(True)
 
-        else:
-            self.json_cached = False
+        return
+
+        self.json_cached = os.path.exists(__JSON_CACHE__) and not (self.ldap_is_configured or self.ad_is_configured)
+
+        self.ui.boxLinkOptions.set_visible(not self.json_cached)
+        self.ui.boxAuthSection.set_visible(self.json_cached)
+        self.main_window.btnNext.set_sensitive(self.json_cached)
 
     def finish_initializing(self):
-        if os.path.exists('/tmp/json_cached'):
-            self.json_cached = True
-        else:
-            self.json_cached = False
 
-        self.method = "ldap"
-        self.methodaut = "ldap"
+        self.json_cached = os.path.exists(__JSON_CACHE__)
+        print 'json_cached: ', self.json_cached
+
+#        self.method = "ldap"
+#        self.methodaut = "ldap"
         self.unlink_ldap = False
         self.unlink_ad = False
 
@@ -89,27 +82,18 @@ class LinkToServerPage(PageWindow.PageWindow):
         self.ldap_is_configured = serverconf.ldap_is_configured()
         self.ad_is_configured = serverconf.ad_is_configured()
 
-        hide_conf_fields = self.ldap_is_configured or self.ad_is_configured
-        if hide_conf_fields:
-            self.ui.radioOmit.set_visible(False)
-            self.ui.radioManual.set_visible(False)
-            self.ui.radioAuto.set_visible(False)
-            self.ui.radioAuto.set_visible(False)
-            self.ui.radioLDAP.set_visible(False)
-            self.ui.radioLDAPAut.set_visible(False)
-            self.ui.radioAD.set_visible(False)
-            self.ui.radioADAut.set_visible(False)
-            self.ui.lblUrl.set_visible(False)
-            self.ui.txtUrl.set_visible(False)
-            self.ui.box5.set_visible(False)
-            self.ui.box6.set_visible(False)
-            self.main_window.btnNext.set_sensitive(False)
+        is_configured = self.ldap_is_configured or self.ad_is_configured
+        print 'is_configured: ', is_configured
+
+        self.ui.boxOptionsSection.set_visible(True)
+        self.ui.boxUnlinkOptions.set_visible(is_configured)
+        self.ui.boxLinkOptions.set_visible(not is_configured)
+        self.ui.boxAuthSection.set_visible(not is_configured)
+        self.main_window.btnNext.set_sensitive(True)
 
         self.ui.chkUnlinkLDAP.set_visible(self.ldap_is_configured)
         self.ui.chkUnlinkAD.set_visible(self.ad_is_configured)
 
-        self.ui.box5.set_visible(False)
-        self.ui.box6.set_visible(True)
         url_config = self.fbe.get_url()
         url = self.cmd_options.url
 
@@ -122,7 +106,7 @@ class LinkToServerPage(PageWindow.PageWindow):
         self.ui.txtUrl.set_text(url)
 
     def translate(self):
-        desc = _('When a workstation is linked to a authentication server \
+        desc1 = _('When a workstation is linked to a authentication server \
 existing users in the server can login into \
 this workstation.\n\n')
 
@@ -138,7 +122,10 @@ server.')
             desc_detail = _('This workstation is currently linked to an Active Directory \
 server.')
 
-        self.ui.lblDescription.set_text(desc + desc_detail)
+        desc2 = _('Select the authentication method you would like to use:')
+
+        self.ui.lblDescription1.set_text(desc1 + desc_detail)
+        self.ui.lblDescription2.set_text(desc2)
         self.ui.chkUnlinkLDAP.set_label(_('Unlink from LDAP'))
         self.ui.chkUnlinkAD.set_label(_('Unlink from Active Directory'))
         self.ui.radioOmit.set_label(_('Omit'))
@@ -158,37 +145,50 @@ server.')
         self.main_window.btnNext.set_sensitive(active)
 
     def on_radioOmit_toggled(self, button):
-        self.ui.lblUrl.set_visible(False)
-        self.ui.txtUrl.set_visible(False)
-        self.ui.box5.set_visible(False)
-        self.ui.box6.set_visible(False)
+ #       self.ui.lblUrl.set_visible(False)
+ #       self.ui.txtUrl.set_visible(False)
+        self.ui.boxAutoOptionsDetails.set_visible(False)
+        self.ui.boxAuthSection.set_visible(False)
+#        self.ui.box5.set_visible(False)
+#        self.ui.box6.set_visible(False)
         self.show_status()
 
     def on_radioManual_toggled(self, button):
-        self.ui.lblUrl.set_visible(False)
-        self.ui.txtUrl.set_visible(False)
-        self.ui.box5.set_visible(True)
-        self.ui.box6.set_visible(False)
+        self.ui.boxAutoOptionsDetails.set_visible(False)
+        self.ui.boxAuthSection.set_visible(True)
+#        self.ui.lblUrl.set_visible(False)
+#        self.ui.txtUrl.set_visible(False)
+#        self.ui.box5.set_visible(True)
+#        self.ui.box6.set_visible(False)
         self.show_status()
 
     def on_radioAutomatic_toggled(self, button):
-        self.ui.lblUrl.set_visible(True)
-        self.ui.txtUrl.set_visible(True)
-        self.ui.box5.set_visible(False)
-        self.ui.box6.set_visible(True)
+        self.ui.boxAutoOptionsDetails.set_visible(True)
+        self.ui.boxAuthSection.set_visible(True)
+#        self.ui.lblUrl.set_visible(True)
+#        self.ui.txtUrl.set_visible(True)
+#        self.ui.box5.set_visible(False)
+#        self.ui.box6.set_visible(True)
         self.show_status()
 
-    def on_radioLDAP_toggled(self, button):
-        self.method = "ldap"
+#    def on_radioLDAP_toggled(self, button):
+#        self.method = "ldap"
 
-    def on_radioAD_toggled(self, button):
-        self.method = "ad"
+#    def on_radioAD_toggled(self, button):
+#        self.method = "ad"
 
-    def on_radioLDAPAut_toggled(self, button):
-        self.methodaut = "ldap"
+#    def on_radioLDAPAut_toggled(self, button):
+#        self.methodaut = "ldap"
 
-    def on_radioADAut_toggled(self, button):
-        self.methodaut = "ad"
+#    def on_radioADAut_toggled(self, button):
+#        self.methodaut = "ad"
+
+    def get_auth_method(self):
+        if self.ui.radioLDAP.get_active():
+            return __LDAP__
+
+        elif self.ui.radioAD.get_active():
+            return __AD__
 
     def show_status(self, status=None, exception=None):
 
@@ -253,12 +253,12 @@ server.')
             if self.ui.radioAuto.get_active():
                 url = self.ui.txtUrl.get_text()
                 server_conf = serverconf.get_server_conf(url, self.json_cached)
-                self.method = self.methodaut
+#                self.method = self.methodaut
 
             load_page_callback(LinkToServerConfEditorPage, {
                 'server_conf': server_conf,
                 'ldap_is_configured': self.ldap_is_configured,
-                'auth_method': self.method,
+                'auth_method': self.get_auth_method(),
                 'ad_is_configured': self.ad_is_configured,
             })
 

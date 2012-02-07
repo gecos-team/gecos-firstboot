@@ -69,12 +69,15 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
             self.ui.lblNotesValue.set_visible(False)
             self.ui.lblOrganizationValue.set_visible(False)
             self.server_conf = serverconf.ServerConf()
+
         self.update_server_conf = True
         self.method = params['auth_method']
+
         if self.method == 'ldap':
             self.ui.adBox.set_visible(False)
             self.ui.ldapBox.set_visible(True)
             self.link_ldap = True
+
         else:
             os.system('DEBCONF_PRIORITY=critical DEBIAN_FRONTEND=noninteractive dpkg-reconfigure resolvconf')
             self.ui.ldapBox.set_visible(False)
