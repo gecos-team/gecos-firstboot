@@ -69,23 +69,17 @@ class LinkToServerPage(PageWindow.PageWindow):
 
     def finish_initializing(self):
 
-        self.json_cached = os.path.exists(__JSON_CACHE__)
-        print 'json_cached: ', self.json_cached
+        self.show_status()
 
-#        self.method = "ldap"
-#        self.methodaut = "ldap"
+        self.json_cached = os.path.exists(__JSON_CACHE__)
         self.unlink_ldap = False
         self.unlink_ad = False
 
-        self.show_status()
-
         self.ldap_is_configured = serverconf.ldap_is_configured()
         self.ad_is_configured = serverconf.ad_is_configured()
-
         is_configured = self.ldap_is_configured or self.ad_is_configured
-        print 'is_configured: ', is_configured
 
-        self.ui.boxOptionsSection.set_visible(True)
+        self.ui.boxOptionsSection.set_visible(not self.json_cached)
         self.ui.boxUnlinkOptions.set_visible(is_configured)
         self.ui.boxLinkOptions.set_visible(not is_configured)
         self.ui.boxAuthSection.set_visible(not is_configured)
@@ -145,43 +139,19 @@ server.')
         self.main_window.btnNext.set_sensitive(active)
 
     def on_radioOmit_toggled(self, button):
- #       self.ui.lblUrl.set_visible(False)
- #       self.ui.txtUrl.set_visible(False)
         self.ui.boxAutoOptionsDetails.set_visible(False)
         self.ui.boxAuthSection.set_visible(False)
-#        self.ui.box5.set_visible(False)
-#        self.ui.box6.set_visible(False)
         self.show_status()
 
     def on_radioManual_toggled(self, button):
         self.ui.boxAutoOptionsDetails.set_visible(False)
         self.ui.boxAuthSection.set_visible(True)
-#        self.ui.lblUrl.set_visible(False)
-#        self.ui.txtUrl.set_visible(False)
-#        self.ui.box5.set_visible(True)
-#        self.ui.box6.set_visible(False)
         self.show_status()
 
     def on_radioAutomatic_toggled(self, button):
         self.ui.boxAutoOptionsDetails.set_visible(True)
         self.ui.boxAuthSection.set_visible(True)
-#        self.ui.lblUrl.set_visible(True)
-#        self.ui.txtUrl.set_visible(True)
-#        self.ui.box5.set_visible(False)
-#        self.ui.box6.set_visible(True)
         self.show_status()
-
-#    def on_radioLDAP_toggled(self, button):
-#        self.method = "ldap"
-
-#    def on_radioAD_toggled(self, button):
-#        self.method = "ad"
-
-#    def on_radioLDAPAut_toggled(self, button):
-#        self.methodaut = "ldap"
-
-#    def on_radioADAut_toggled(self, button):
-#        self.methodaut = "ad"
 
     def get_auth_method(self):
         if self.ui.radioLDAP.get_active():
@@ -253,7 +223,6 @@ server.')
             if self.ui.radioAuto.get_active():
                 url = self.ui.txtUrl.get_text()
                 server_conf = serverconf.get_server_conf(url, self.json_cached)
-#                self.method = self.methodaut
 
             load_page_callback(LinkToServerConfEditorPage, {
                 'server_conf': server_conf,
