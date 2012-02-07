@@ -62,9 +62,13 @@ def fix_psmouse():
     See https://answers.launchpad.net/ubuntu/+source/xserver-xorg-input-synaptics/+question/176273
     '''
 
-    subprocess.call(['modprobe', '-r', 'psmouse'])
-    subprocess.call(['sleep', '2'])
-    subprocess.call(['modprobe', 'psmouse'])
+    try:
+        subprocess.call(['modprobe', '-r', 'psmouse'])
+        subprocess.call(['sleep', '2'])
+        subprocess.call(['modprobe', 'psmouse'])
+
+    except Exception as e:
+        pass
 
 if __name__ == '__main__':
     if os.getuid() != 0:
