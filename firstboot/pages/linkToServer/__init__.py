@@ -69,10 +69,11 @@ class LinkToServerPage(PageWindow.PageWindow):
         self.ad_is_configured = serverconf.ad_is_configured()
         is_configured = self.ldap_is_configured or self.ad_is_configured
 
-        self.ui.boxOptionsSection.set_visible(not self.json_cached)
+        self.ui.boxOptionsSection.set_visible(not (self.json_cached and not is_configured))
         self.ui.boxUnlinkOptions.set_visible(is_configured)
         self.ui.boxLinkOptions.set_visible(not is_configured)
         self.ui.boxAuthSection.set_visible(not is_configured)
+        self.ui.radioOmit.set_active(is_configured)
         self.main_window.btnNext.set_sensitive(True)
 
         self.ui.chkUnlinkLDAP.set_visible(self.ldap_is_configured)
@@ -184,7 +185,7 @@ a default configuration from the server.')
         load_page_callback(firstboot.pages.pcLabel)
 
     def next_page(self, load_page_callback):
-        if self.unlink_ldap or self.unlink_ad:
+        if self.unlink_ldap == True or self.unlink_ad == True:
             server_conf = None
             result, messages = serverconf.setup_server(
                 server_conf=server_conf,
