@@ -109,8 +109,8 @@ msgstr ""
 "poder unir la estación de trabajo al servidor Chef. El parámetro \"Nombre del Nodo\" "
 "debe ser un nombre único para identificar a esta estación de trabajo. \n\n"
 "El parámetro \"Group por defecto\" es el group que se le asignará a la estación de "
-"trabajo en el servidor Chef, no debería modificar este parámetro a menos que realmente
-sepa lo que está haciendo."
+"trabajo en el servidor Chef, no debería modificar este parámetro a menos que realmente "
+"sepa lo que está haciendo."
 
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:94
 #: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:98
