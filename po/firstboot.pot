@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-07 14:30+0100\n"
+"POT-Creation-Date: 2012-02-08 15:09+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -36,7 +36,7 @@ msgstr ""
 #: ../firstboot/pages/linkToChef/LinkToChefResultsPage.py:70
 #: ../firstboot/pages/linkToChef/__init__.py:138
 #: ../firstboot/pages/linkToServer/LinkToServerResultsPage.py:70
-#: ../firstboot/pages/linkToServer/__init__.py:168
+#: ../firstboot/pages/linkToServer/__init__.py:169
 msgid "The configuration was updated successfully."
 msgstr ""
 
@@ -61,84 +61,102 @@ msgid "Unlink from Chef"
 msgstr ""
 
 #: ../firstboot/pages/linkToChef/__init__.py:98
-#: ../firstboot/pages/linkToServer/__init__.py:113
+#: ../firstboot/pages/linkToServer/__init__.py:114
 msgid "Omit"
 msgstr ""
 
 #: ../firstboot/pages/linkToChef/__init__.py:99
-#: ../firstboot/pages/linkToServer/__init__.py:114
+#: ../firstboot/pages/linkToServer/__init__.py:115
 msgid "Manual"
 msgstr ""
 
 #: ../firstboot/pages/linkToChef/__init__.py:100
-#: ../firstboot/pages/linkToServer/__init__.py:115
+#: ../firstboot/pages/linkToServer/__init__.py:116
 msgid "Automatic"
 msgstr ""
 
 #: ../firstboot/pages/linkToChef/__init__.py:132
-#: ../firstboot/pages/linkToServer/__init__.py:162
+#: ../firstboot/pages/linkToServer/__init__.py:163
 msgid "The configuration file is valid."
 msgstr ""
 
 #: ../firstboot/pages/linkToChef/__init__.py:150
-#: ../firstboot/pages/linkToServer/__init__.py:180
+#: ../firstboot/pages/linkToServer/__init__.py:181
 msgid "Trying to connect..."
 msgstr ""
 
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:85
 msgid ""
 "These are the parameters you need to configure to join this workstation to a "
-"Chef server. The \"Chef URL\" is the URL this workstation will use to "
-"comunicate with the server. The \"Chef Certificate\" parameter is the URL "
-"from which this assistant will download a required certificate for joining "
-"to the Chef server. The \"Node Name\" parameter must be an unique name for "
-"this wokstation. \n"
-"\n"
-" The \"Default Group\" parameter is the default group for this workstation "
-"in the Chef server, you may not modify this parameter unless you really know "
-"what you are doing."
+"Chef server:"
+msgstr ""
+
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:89
+msgid ""
+"The \"Chef URL\" parameter is the URL this workstation\n"
+"will use to comunicate with the server."
+msgstr ""
+
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:90
+msgid ""
+"The \"Chef Certificate\" parameter is the URL from which\n"
+"this assistant will download a required certificate for joining to the Chef "
+"server."
+msgstr ""
+
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:92
+msgid ""
+"The \"Node Name\" parameter must be an unique name\n"
+" for this wokstation."
 msgstr ""
 
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:94
+msgid ""
+"The \"Default Group\" parameter is the default group for this workstation\n"
+" in the Chef server, you may not modify this parameter unless you really\n"
+"know what you are doing."
+msgstr ""
+
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:97
 #: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:98
 msgid "Version"
 msgstr ""
 
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:95
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:98
 #: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:99
 msgid "Organization"
 msgstr ""
 
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:96
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:99
 #: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:100
 msgid "Notes"
 msgstr ""
 
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:98
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:101
 msgid "Certificate URL"
 msgstr ""
 
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:99
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:102
 msgid "Node Name"
 msgstr ""
 
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:100
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:103
 msgid "Default Group"
 msgstr ""
 
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:154
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:157
 msgid "Chef and Chef Cert URLs must be well formed URLs."
 msgstr ""
 
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:160
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:163
 msgid "The host name is empty or contains invalid characters."
 msgstr ""
 
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:168
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:171
 msgid "Please check the Chef Cert URL, it seems to be wrong."
 msgstr ""
 
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:172
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:175
 msgid ""
 "The host name already exists in the Chef server. Choose a different one."
 msgstr ""
@@ -224,44 +242,44 @@ msgstr ""
 msgid "Select authentication method"
 msgstr ""
 
-#: ../firstboot/pages/linkToServer/__init__.py:93
+#: ../firstboot/pages/linkToServer/__init__.py:94
 msgid ""
 "When a workstation is linked to an authentication server existing users in "
 "the server can login into this workstation.\n"
 "\n"
 msgstr ""
 
-#: ../firstboot/pages/linkToServer/__init__.py:97
+#: ../firstboot/pages/linkToServer/__init__.py:98
 msgid "This workstation is currently linked to a LDAP server."
 msgstr ""
 
-#: ../firstboot/pages/linkToServer/__init__.py:100
+#: ../firstboot/pages/linkToServer/__init__.py:101
 msgid "This workstation is currently linked to an Active Directory server."
 msgstr ""
 
-#: ../firstboot/pages/linkToServer/__init__.py:103
+#: ../firstboot/pages/linkToServer/__init__.py:104
 msgid ""
 "You can type the options manually or download a default configuration from "
 "the server."
 msgstr ""
 
-#: ../firstboot/pages/linkToServer/__init__.py:106
+#: ../firstboot/pages/linkToServer/__init__.py:107
 msgid "Select the authentication method you would like to use:"
 msgstr ""
 
-#: ../firstboot/pages/linkToServer/__init__.py:111
+#: ../firstboot/pages/linkToServer/__init__.py:112
 msgid "Unlink from LDAP"
 msgstr ""
 
-#: ../firstboot/pages/linkToServer/__init__.py:112
+#: ../firstboot/pages/linkToServer/__init__.py:113
 msgid "Unlink from Active Directory"
 msgstr ""
 
-#: ../firstboot/pages/linkToServer/__init__.py:116
+#: ../firstboot/pages/linkToServer/__init__.py:117
 msgid "LDAP"
 msgstr ""
 
-#: ../firstboot/pages/linkToServer/__init__.py:117
+#: ../firstboot/pages/linkToServer/__init__.py:118
 msgid "Active Directory"
 msgstr ""
 

@@ -83,13 +83,16 @@ class LinkToChefConfEditorPage(PageWindow.PageWindow):
 
     def translate(self):
         desc = _('These are the parameters you need to configure to join this workstation to \
-a Chef server. The "Chef URL" is the URL this workstation will use to comunicate with the server. \
-The "Chef Certificate" parameter is the URL from which this assistant will download a required \
-certificate for joining to the Chef server. The "Node Name" parameter must be an unique name \
-for this wokstation. \n\n The "Default Group" parameter is the default group for this workstation \
-in the Chef server, you may not modify this parameter unless you really know what you are doing.')
+a Chef server:')
 
         self.ui.lblDescription.set_text(desc)
+        self.ui.lblUrlChefDesc.set_label(_('The "Chef URL" parameter is the URL this workstation\nwill use to comunicate with the server.'))
+        self.ui.lblUrlChefCertDesc.set_label(_('The "Chef Certificate" parameter is the URL from which\nthis assistant will download a required \
+certificate for joining to the Chef server.'))
+        self.ui.lblHostnameDesc.set_label(_('The "Node Name" parameter must be an unique name\n \
+for this wokstation.'))
+        self.ui.lblDefaultRoleDesc.set_label(_('The "Default Group" parameter is the default group for this workstation\n \
+in the Chef server, you may not modify this parameter unless you really\nknow what you are doing.'))
 
         self.ui.lblVersion.set_label(_('Version'))
         self.ui.lblOrganization.set_label(_('Organization'))
