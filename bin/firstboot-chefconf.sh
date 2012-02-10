@@ -118,14 +118,20 @@ update_conf() {
 
     # Run chef-client in daemon mode
     if [ -f $chefclient ]; then
-        #$chefclient -d 2&>/dev/null
-        $chefclient -j /tmp/base_json.json
-        service chef-client restart
+        output=`$chefclient -j /tmp/base_json.json`
+        ret=$?
+        #service chef-client restart
     fi
 
     rm -f $valpem
-    echo "The configuration was updated successfully."
-    exit 0
+    if [ "$ret" == 0 ]; then
+        echo "The configuration was updated successfully."
+        exit 0
+    else
+        echo "There was a problem running chef-client:"
+        echo $output
+        exit 1
+    fi
 }
 
 # Check the changes are valid

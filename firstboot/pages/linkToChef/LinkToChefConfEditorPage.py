@@ -165,10 +165,13 @@ in the Chef server, you may not modify this parameter unless you really\nknow wh
         try:
             used_hostnames = serverconf.get_chef_hostnames(self.server_conf.get_chef_conf())
 
-        except:
+        except Exception as e:
             used_hostnames = []
-            valid = False
-            messages.append({'type': 'error', 'message': _('Please check the Chef Cert URL, it seems to be wrong.')})
+            # IMPORTANT: Append the error but don't touch the variable "valid" here,
+            # just because if we can't get the hostnames here,
+            # Chef will inform us about that later, while we are registering
+            # the client.
+            messages.append({'type': 'error', 'message': str(e))
 
         if hostname in used_hostnames:
             valid = False
