@@ -25,6 +25,7 @@ import firstboot.serverconf
 from LdapConf import LdapConf
 from ChefConf import ChefConf
 from ActiveDirectoryConf import ActiveDirectoryConf
+from DateSyncConf import DateSyncConf
 
 
 class ServerConf():
@@ -40,6 +41,7 @@ class ServerConf():
         self._ldap_conf = LdapConf()
         self._chef_conf = ChefConf()
         self._ad_conf = ActiveDirectoryConf()
+        self._ntp_conf = DateSyncConf()
 
     def load_data(self, conf):
         msg = 'ServerConf: Key "%s" not found in the configuration file.'
@@ -69,11 +71,17 @@ class ServerConf():
             self._ad_conf.load_data(conf['ad'])
         except KeyError as e:
             print msg % ('ad',)
+        try:
+            self._ntp_conf.load_data(conf['ntp'])
+        except KeyError as e:
+            print msg % ('ntp',)
 
     def validate(self):
         valid = len(self._data['version']) > 0 \
             and self._ldap_conf.validate() \
-            and self._chef_conf.validate()
+            and self._chef_conf.validate() \
+            and self._ad_conf.validate() \
+            and self._ntp_conf.validate()
         return valid
 
     def get_version(self):
@@ -105,3 +113,7 @@ class ServerConf():
 
     def get_chef_conf(self):
         return self._chef_conf
+
+    def get_ntp_conf(self):
+        return self._ntp_conf
+
