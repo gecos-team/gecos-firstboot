@@ -31,7 +31,7 @@ from DateSyncConf import DateSyncConf
 class ServerConf():
 
     # Version of the configuration JSON file
-    VERSION = '1.2'
+    VERSION = '1.3'
 
     def __init__(self):
         self._data = {}
