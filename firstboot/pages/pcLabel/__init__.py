@@ -96,7 +96,7 @@ workstation later.')
             fd.close()
 
     def previous_page(self, load_page_callback):
-        load_page_callback(firstboot.pages.network)
+        load_page_callback(firstboot.pages.dateSync)
 
     def next_page(self, load_page_callback):
         load_page_callback(firstboot.pages.linkToServer)

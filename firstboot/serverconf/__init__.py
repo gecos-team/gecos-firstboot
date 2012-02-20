@@ -40,6 +40,7 @@ gettext.textdomain('firstboot')
 
 
 __URLOPEN_TIMEOUT__ = 15
+__JSON_CACHE__ = '/tmp/json_cached'
 __BIN_PATH__ = firstbootconfig.get_bin_path()
 __LDAP_CONF_SCRIPT__ = 'firstboot-ldapconf.sh'
 __CHEF_CONF_SCRIPT__ = 'firstboot-chefconf.sh'
@@ -117,28 +118,38 @@ def validate_credentials(url):
         CREDENTIAL_CACHED[hostname] = [[user, password]]
     return user, password
 
+def json_is_cached():
+    return os.path.exists(__JSON_CACHE__)
 
-def get_server_conf(url, json_cached=False):
+def get_server_conf(url):
+
+    is_cached = json_is_cached()
+
     try:
-        if json_cached == True:
-            fp = open('/tmp/json_cached', 'r')
+        if is_cached:
+            fp = open(__JSON_CACHE__, 'r')
+
         else:
             try:
                 url = parse_url(url)
                 user, password = validate_credentials(url)
                 fp = urllib2.urlopen(url, timeout=__URLOPEN_TIMEOUT__)
+
             except urllib2.URLError as e:
                 if hasattr(e, 'code') and e.code == 401:
                     user, password = validate_credentials(url)
                     fp = urllib2.urlopen(url, timeout=__URLOPEN_TIMEOUT__)
+
                 else:
                     raise e
-            fp_cached = open('/tmp/json_cached', 'w')
+
+            fp_cached = open(__JSON_CACHE__, 'w')
             for line in fp:
                 fp_cached.write(line)
+
             fp_cached.close()
             fp.close()
-            fp = open('/tmp/json_cached', 'r')
+            fp = open(__JSON_CACHE__, 'r')
 
         content = fp.read()
         fp.close()
@@ -331,7 +342,7 @@ def setup_server(server_conf, link_ldap=False, unlink_ldap=False,
         try:
             ret = unlink_from_ad()
             if ret == True:
-                messages.append({'type': 'info', 'message': _('Workstation has been unlinked from AD.')})
+                messages.append({'type': 'info', 'message': _('Workstation has been unlinked from the Active Directory.')})
             else:
                 messages += ret
         except Exception as e:

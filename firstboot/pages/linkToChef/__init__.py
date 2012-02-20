@@ -54,9 +54,9 @@ class LinkToChefPage(PageWindow.PageWindow):
     __gtype_name__ = "LinkToChefPage"
 
     def load_page(self, params=None):
-        if os.path.exists('/tmp/json_cached') and not self.chef_is_configured:
+        if serverconf.json_is_cached() and not self.chef_is_configured:
             self.json_cached = True
-            server_conf = serverconf.get_server_conf('', self.json_cached)
+            server_conf = serverconf.get_server_conf(None)
             self.emit('page-changed', LinkToChefConfEditorPage, {
                     'server_conf': server_conf,
                     'chef_is_configured': self.chef_is_configured,

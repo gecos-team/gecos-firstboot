@@ -171,7 +171,7 @@ in the Chef server, you may not modify this parameter unless you really\nknow wh
             # just because if we can't get the hostnames here,
             # Chef will inform us about that later, while we are registering
             # the client.
-            messages.append({'type': 'error', 'message': str(e))
+            messages.append({'type': 'error', 'message': str(e)})
 
         if hostname in used_hostnames:
             valid = False

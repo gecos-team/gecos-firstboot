@@ -20,13 +20,30 @@ __author__ = "Antonio Hernández <ahernandez@emergya.com>"
 __copyright__ = "Copyright (C) 2011, Junta de Andalucía <devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
+import firstboot.validation as validation
 
-import network
-import dateSync
-import pcLabel
-import linkToServer
-import localUsers
-import installSoftware
 
-pages = ['network', 'dateSync',  'pcLabel', 'linkToServer',
-        'linkToChef', 'localUsers', 'installSoftware']
+class DateSyncConf():
+
+    def __init__(self):
+        self._data = {}
+        self._data['host'] = ''
+
+    def load_data(self, conf):
+        msg = 'DateSyncConf: Key "%s" not found in the configuration file.'
+        try:
+            self.set_host(conf['host'])
+        except KeyError as e:
+            print msg % ('host',)
+
+    def validate(self):
+        valid = validation.is_qname(self._data['host'])
+        return valid
+
+    def get_host(self):
+        return self._data['host'].encode('utf-8')
+
+    def set_host(self, host):
+        self._data['host'] = host
+        return self
+
