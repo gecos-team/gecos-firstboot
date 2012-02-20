@@ -342,7 +342,7 @@ def setup_server(server_conf, link_ldap=False, unlink_ldap=False,
         try:
             ret = unlink_from_ad()
             if ret == True:
-                messages.append({'type': 'info', 'message': _('Workstation has been unlinked from AD.')})
+                messages.append({'type': 'info', 'message': _('Workstation has been unlinked from the Active Directory.')})
             else:
                 messages += ret
         except Exception as e:
