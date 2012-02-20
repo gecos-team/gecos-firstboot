@@ -22,6 +22,8 @@ __license__ = "GPL-2"
 
 
 import os
+import shlex
+import subprocess
 from gi.repository import Gtk
 from firstboot_lib import PageWindow
 
@@ -34,27 +36,23 @@ import firstboot.pages
 
 __REQUIRED__ = False
 
-__TITLE__ = _('Describe this workstation')
-
-__LABEL_FILE__ = '/etc/pclabel'
+__TITLE__ = _('Date Synchronization')
 
 
 def get_page(main_window):
 
-    page = PCLabelPage(main_window)
+    page = DateSyncPage(main_window)
     return page
 
 
-class PCLabelPage(PageWindow.PageWindow):
-    __gtype_name__ = "PCLabelPage"
+class DateSyncPage(PageWindow.PageWindow):
+    __gtype_name__ = "DateSyncPage"
 
     def finish_initializing(self):
-        self.ui.txtLabel.set_text(self.get_label())
-        self.ui.imgStatus.set_visible(False)
-        self.ui.lblStatus.set_visible(False)
+        self.set_status(None)
 
     def load_page(self, params=None):
-        self.emit('status-changed', 'dateSync', not __REQUIRED__)
+        self.emit('status-changed', 'pcLabel', not __REQUIRED__)
 
     def translate(self):
         desc = _('You can type a description for this workstation, it will be \
@@ -62,41 +60,44 @@ shown in the GECOS Server admin interface and will help you to find out the \
 workstation later.')
 
         self.ui.lblDescription.set_text(desc)
-        self.ui.lblLabel.set_label(_('Description'))
+        self.ui.lblDomain.set_label(_('Domain'))
+        self.ui.btnSync.set_label(_('Synchronize'))
 
-    def on_txtLabel_changed(self, entry):
-        try:
-            self.set_label(self.ui.txtLabel.get_text())
-            self.ui.imgStatus.set_from_stock(Gtk.STOCK_YES, Gtk.IconSize.MENU)
-            self.ui.lblStatus.set_label(_('The label has been updated correctly.'))
+    def on_btnSync_clicked(self, widget):
 
-        except Exception as e:
-            self.ui.imgStatus.set_from_stock(Gtk.STOCK_DIALOG_ERROR, Gtk.IconSize.MENU)
-            self.ui.lblStatus.set_label(str(e))
+        self.ui.btnSync.set_sensitive(False)
 
-        self.ui.imgStatus.set_visible(True)
-        self.ui.lblStatus.set_visible(True)
+        cmd = 'ntpdate -u %s' % (self.ui.txtDomain.get_text(),)
+        args = shlex.split(cmd)
 
-    def get_label(self):
+        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        #exit_code = os.waitpid(process.pid, 0)
+        exit_code = process.wait()
+        output = process.communicate()
+        output = "%s%s" % (output[0].strip(), output[1].strip())
 
-        label = ''
+        self.ui.btnSync.set_sensitive(True)
+        self.set_status(exit_code, output)
 
-        if os.path.exists(__LABEL_FILE__):
-            fd = open(__LABEL_FILE__, 'r')
-            if fd != None:
-                label = fd.read()
-                fd.close()
+    def set_status(self, code, description=''):
 
-        return label
+        self.ui.imgStatus.set_visible(code != None)
+        self.ui.lblStatus.set_visible(code != None)
 
-    def set_label(self, label):
-        fd = open(__LABEL_FILE__, 'w')
-        if fd != None:
-            fd.write(label)
-            fd.close()
+        if code == None:
+            return
+
+        if code == 0:
+            icon = Gtk.STOCK_YES
+
+        else:
+            icon = Gtk.STOCK_DIALOG_ERROR
+
+        self.ui.imgStatus.set_from_stock(icon, Gtk.IconSize.MENU)
+        self.ui.lblStatus.set_label(description)
 
     def previous_page(self, load_page_callback):
-        load_page_callback(firstboot.pages.dateSync)
+        load_page_callback(firstboot.pages.network)
 
     def next_page(self, load_page_callback):
-        load_page_callback(firstboot.pages.linkToServer)
+        load_page_callback(firstboot.pages.pcLabel)

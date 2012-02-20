@@ -22,10 +22,11 @@ __license__ = "GPL-2"
 
 
 import network
+import dateSync
 import pcLabel
 import linkToServer
 import localUsers
 import installSoftware
 
-pages = ['network', 'pcLabel', 'linkToServer',
+pages = ['network', 'dateSync',  'pcLabel', 'linkToServer',
         'linkToChef', 'localUsers', 'installSoftware']
