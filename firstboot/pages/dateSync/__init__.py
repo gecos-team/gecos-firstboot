@@ -26,6 +26,7 @@ import shlex
 import subprocess
 from gi.repository import Gtk
 from firstboot_lib import PageWindow
+from firstboot import serverconf
 
 import gettext
 from gettext import gettext as _
@@ -54,20 +55,44 @@ class DateSyncPage(PageWindow.PageWindow):
     def load_page(self, params=None):
         self.emit('status-changed', 'dateSync', not __REQUIRED__)
 
+        self.ui.chkAutoconf.set_active(False)
+        self.ui.txtAutoconf.set_sensitive(False)
+
+        if serverconf.json_is_cached():
+            self.ui.boxCheckAutoconf.set_visible(False)
+            self.serverconf = serverconf.get_server_conf(None)
+            self.ui.txtHost.set_text(self.serverconf.get_ntp_conf().get_host())
+
     def translate(self):
-        desc = _('You can type a description for this workstation, it will be \
-shown in the GECOS Server admin interface and will help you to find out the \
-workstation later.')
+        desc = _('It is important that this workstation and the GECOS server have \
+their time synchronized. From this page you can set the workstation time with an NTP server.')
 
         self.ui.lblDescription.set_text(desc)
-        self.ui.lblDomain.set_label(_('Domain'))
+        self.ui.chkAutoconf.set_label(_('Check this button if you want to get the \
+default configuration from the server.'))
+        self.ui.lblAutoconf.set_label(_('URL'))
+        self.ui.lblHost.set_label(_('Host'))
         self.ui.btnSync.set_label(_('Synchronize'))
+
+    def on_chkAutoconf_toggled(self, widget):
+        self.ui.txtAutoconf.set_sensitive(self.ui.chkAutoconf.get_active())
 
     def on_btnSync_clicked(self, widget):
 
         self.ui.btnSync.set_sensitive(False)
 
-        cmd = 'ntpdate -u %s' % (self.ui.txtDomain.get_text(),)
+        if self.ui.chkAutoconf.get_active():
+            url = self.ui.txtAutoconf.get_text()
+            try:
+                self.serverconf = serverconf.get_server_conf(url)
+                self.ui.txtHost.set_text(self.serverconf.get_ntp_conf().get_host())
+
+            except Exception as e:
+                self.set_status(1, str(e))
+                self.ui.btnSync.set_sensitive(True)
+                return
+
+        cmd = 'ntpdate -u %s' % (self.ui.txtHost.get_text(),)
         args = shlex.split(cmd)
 
         process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
