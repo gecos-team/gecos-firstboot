@@ -43,7 +43,6 @@ __STATUS_CONFIG_CHANGED__ = 1
 __STATUS_CONNECTING__ = 2
 __STATUS_ERROR__ = 3
 
-__JSON_CACHE__ = '/tmp/json_cached'
 __LDAP__ = 'ldap'
 __AD__ = 'ad'
 
@@ -61,7 +60,7 @@ class LinkToServerPage(PageWindow.PageWindow):
 
         self.show_status()
 
-        self.json_cached = os.path.exists(__JSON_CACHE__)
+        self.json_cached = serverconf.json_is_cached()
         self.unlink_ldap = False
         self.unlink_ad = False
 
@@ -69,11 +68,10 @@ class LinkToServerPage(PageWindow.PageWindow):
         self.ad_is_configured = serverconf.ad_is_configured()
         is_configured = self.ldap_is_configured or self.ad_is_configured
 
-        self.ui.boxOptionsSection.set_visible(not (self.json_cached and not is_configured))
+        self.ui.boxOptionsSection.set_visible(not self.json_cached)
         self.ui.boxUnlinkOptions.set_visible(is_configured)
         self.ui.boxLinkOptions.set_visible(not is_configured)
         self.ui.boxAuthSection.set_visible(not is_configured)
-        self.ui.radioOmit.set_active(is_configured)
         self.main_window.btnNext.set_sensitive(True)
 
         self.ui.chkUnlinkLDAP.set_visible(self.ldap_is_configured)
@@ -109,6 +107,7 @@ a default configuration from the server.')
         self.ui.lblDescription.set_text(desc)
         self.ui.lblDescription1.set_text(desc1)
         self.ui.lblDescription2.set_text(desc2)
+        self.ui.chkUnlinkLDAP.set_label(_('Unlink from LDAP'))
         self.ui.chkUnlinkLDAP.set_label(_('Unlink from LDAP'))
         self.ui.chkUnlinkAD.set_label(_('Unlink from Active Directory'))
         self.ui.radioOmit.set_label(_('Omit'))
@@ -208,10 +207,9 @@ a default configuration from the server.')
         self.show_status()
 
         try:
-            server_conf = None
             if self.ui.radioAuto.get_active():
                 url = self.ui.txtUrl.get_text()
-                server_conf = serverconf.get_server_conf(url, self.json_cached)
+                server_conf = serverconf.get_server_conf(url)
 
             load_page_callback(LinkToServerConfEditorPage, {
                 'server_conf': server_conf,
