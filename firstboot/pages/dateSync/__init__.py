@@ -52,7 +52,7 @@ class DateSyncPage(PageWindow.PageWindow):
         self.set_status(None)
 
     def load_page(self, params=None):
-        self.emit('status-changed', 'pcLabel', not __REQUIRED__)
+        self.emit('status-changed', 'dateSync', not __REQUIRED__)
 
     def translate(self):
         desc = _('You can type a description for this workstation, it will be \
