@@ -1,10 +1,4 @@
 #!/bin/bash
-pgrep gnome-shell
-while [ $? -ne 0 ]; do 
-        sleep 1
-	pgrep gnome-shell
-	echo $? > /tmp/t
-done
 	
-gksu python /usr/bin/firstboot
+gksu -g python /usr/bin/firstboot
 
