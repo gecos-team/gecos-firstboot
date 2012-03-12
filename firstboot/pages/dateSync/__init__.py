@@ -70,8 +70,8 @@ their time synchronized. From this page you can set the workstation time with an
         self.ui.lblDescription.set_text(desc)
         self.ui.chkAutoconf.set_label(_('Check this button if you want to get the \
 default configuration from the server.'))
-        self.ui.lblAutoconf.set_label(_('URL'))
-        self.ui.lblHost.set_label(_('Host'))
+        self.ui.lblAutoconf.set_label(_('Autoconfig URL'))
+        self.ui.lblHost.set_label(_('NTP Server'))
         self.ui.btnSync.set_label(_('Synchronize'))
 
     def on_chkAutoconf_toggled(self, widget):

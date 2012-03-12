@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-20 17:28+0100\n"
+"POT-Creation-Date: 2012-03-12 17:55+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -366,11 +366,11 @@ msgid ""
 msgstr ""
 
 #: ../firstboot/pages/dateSync/__init__.py:73
-msgid "URL"
+msgid "Autoconfig URL"
 msgstr ""
 
 #: ../firstboot/pages/dateSync/__init__.py:74
-msgid "Host"
+msgid "NTP Server"
 msgstr ""
 
 #: ../firstboot/pages/dateSync/__init__.py:75
@@ -388,6 +388,7 @@ msgstr ""
 msgid "Hostname"
 msgstr ""
 
+#. self.txtHostname.modify_text(Gtk.StateFlags.NORMAL, Gdk.Color(255, 0, 0))
 #: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:86
 msgid "The host name is in use."
 msgstr ""
