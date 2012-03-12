@@ -140,6 +140,7 @@ workstation to different services',
         'firstboot.pages.localUsers',
         'firstboot.pages.network',
         'firstboot.pages.pcLabel',
+        'firstboot.pages.dateSync',
     ],
 
     package_dir={
@@ -153,6 +154,7 @@ workstation to different services',
         'firstboot.pages.localUsers': 'firstboot/pages/localUsers',
         'firstboot.pages.network': 'firstboot/pages/network',
         'firstboot.pages.pcLabel': 'firstboot/pages/pcLabel',
+        'firstboot.pages.dateSync': 'firstboot/pages/dateSync',
         },
 
     scripts=[
