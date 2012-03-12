@@ -496,7 +496,7 @@ msgstr "Las URLs de Chef y su certificado deben estar bien formadas."
 
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:163
 msgid "The host name is empty or contains invalid characters."
-msgstr "El nobre de host está vacío o contiene caracteres inválidos."
+msgstr "El nombre de host está vacío o contiene caracteres inválidos."
 
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:178
 msgid ""
