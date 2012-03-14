@@ -118,7 +118,7 @@ update_conf() {
 
     # Run chef-client in daemon mode
     if [ -f $chefclient ]; then
-        output=`$chefclient -j /tmp/base_json.json`
+        $chefclient -j /tmp/base_json.json > /tmp/chef-reg
         ret=$?
         #service chef-client restart
     fi
@@ -129,7 +129,12 @@ update_conf() {
         exit 0
     else
         echo "There was a problem running chef-client:"
-        echo $output
+        cat /tmp/chef-reg
+        rest=$(restore)
+        if [ $rest -ne 0 ]; then
+            echo "Fail to restore configuration"
+        fi
+
         exit 1
     fi
 }
