@@ -130,6 +130,8 @@ class FirstbootWindow(Window):
     def confirm_exit(self):
 
         if self.fully_configured == True:
+            if os.path.exists(__DESKTOP_FILE__):
+                os.rename(__DESKTOP_FILE__, '/tmp/firstboot.desktop')
             return False
 
         dialog = Gtk.MessageDialog(self,
