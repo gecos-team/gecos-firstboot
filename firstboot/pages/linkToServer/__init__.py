@@ -207,6 +207,7 @@ a default configuration from the server.')
         self.show_status()
 
         try:
+            server_conf = None
             if self.ui.radioAuto.get_active():
                 url = self.ui.txtUrl.get_text()
                 server_conf = serverconf.get_server_conf(url)
