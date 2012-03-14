@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gecos-firstboot 0.2.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-20 17:28+0100\n"
+"POT-Creation-Date: 2012-03-12 17:55+0100\n"
 "PO-Revision-Date: 2011-11-29 14:43+0200\n"
 "Last-Translator: Roberto C. Morano <rcmorano@emergya.com>\n"
 "Language-Team: Spanish\n"
@@ -378,15 +378,16 @@ msgid ""
 "Check this button if you want to get the default configuration from the "
 "server."
 msgstr ""
-"Marque esta casilla si quiere obtener la configuración por defecto del servidor."
+"Marque esta casilla si quiere obtener la configuración por defecto del "
+"servidor."
 
 #: ../firstboot/pages/dateSync/__init__.py:73
-msgid "URL"
-msgstr "URL"
+msgid "Autoconfig URL"
+msgstr "Autoconfig URL"
 
 #: ../firstboot/pages/dateSync/__init__.py:74
-msgid "Host"
-msgstr "Host"
+msgid "NTP Server"
+msgstr "Servidor NTP"
 
 #: ../firstboot/pages/dateSync/__init__.py:75
 msgid "Synchronize"
@@ -406,6 +407,7 @@ msgstr ""
 msgid "Hostname"
 msgstr "Hostname"
 
+#. self.txtHostname.modify_text(Gtk.StateFlags.NORMAL, Gdk.Color(255, 0, 0))
 #: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:86
 msgid "The host name is in use."
 msgstr "El nombre de host está en uso"
@@ -676,6 +678,12 @@ msgstr "Interfaz"
 #: ../firstboot/pages/network/__init__.py:79
 msgid "IP"
 msgstr "IP"
+
+#~ msgid "URL"
+#~ msgstr "URL"
+
+#~ msgid "Host"
+#~ msgstr "Host"
 
 #~ msgid "Please check the Chef Cert URL, it seems to be wrong."
 #~ msgstr ""
