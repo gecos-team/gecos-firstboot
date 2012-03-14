@@ -68,7 +68,7 @@ class LinkToServerPage(PageWindow.PageWindow):
         self.ad_is_configured = serverconf.ad_is_configured()
         is_configured = self.ldap_is_configured or self.ad_is_configured
 
-        self.ui.boxOptionsSection.set_visible(not self.json_cached)
+        self.ui.boxOptionsSection.set_visible(not self.json_cached or is_configured)
         self.ui.boxUnlinkOptions.set_visible(is_configured)
         self.ui.boxLinkOptions.set_visible(not is_configured)
         self.ui.boxAuthSection.set_visible(not is_configured)
@@ -199,7 +199,7 @@ a default configuration from the server.')
             })
             return
 
-        if self.ui.radioOmit.get_active():
+        if self.ui.radioOmit.get_active() or (self.ldap_is_configured or self.ad_is_configured):
             self.emit('status-changed', 'linkToServer', True)
             load_page_callback(firstboot.pages.linkToChef)
             return
