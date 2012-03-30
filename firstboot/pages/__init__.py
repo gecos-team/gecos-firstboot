@@ -28,5 +28,5 @@ import linkToServer
 import localUsers
 import installSoftware
 
-pages = ['network', 'dateSync',  'pcLabel', 'linkToServer',
+pages = ['network', 'autoConfig', 'dateSync',  'pcLabel', 'linkToServer',
         'linkToChef', 'localUsers', 'installSoftware']
