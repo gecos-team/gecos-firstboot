@@ -16,7 +16,7 @@
 # along with this package; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
-__author__ = "Antonio Hernández <ahernandez@emergya.com>"
+__author__ = "David Amian <damian@emergya.com>"
 __copyright__ = "Copyright (C) 2011, Junta de Andalucía <devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
@@ -37,62 +37,41 @@ import firstboot.pages
 
 __REQUIRED__ = False
 
-__TITLE__ = _('Date Synchronization')
+__TITLE__ = _('Auto Configuration')
 
 
 def get_page(main_window):
 
-    page = DateSyncPage(main_window)
+    page = AutoConfigPage(main_window)
     return page
 
 
-class DateSyncPage(PageWindow.PageWindow):
-    __gtype_name__ = "DateSyncPage"
+class AutoConfigPage(PageWindow.PageWindow):
+    __gtype_name__ = "AutoConfigPage"
 
     def finish_initializing(self):
         self.set_status(None)
 
     def load_page(self, params=None):
-        self.emit('status-changed', 'dateSync', not __REQUIRED__)
+        self.emit('status-changed', 'autoConfig', not __REQUIRED__)
+        
 
-
+        self.ui.chkAutoconf.set_visible(False)
         if serverconf.json_is_cached():
+            self.ui.boxCheckAutoconf.set_visible(True)
+            self.ui.chkAutoconf.set_visible(True)
+            self.ui.txtAutoconf.set_sensitive(False)
             self.serverconf = serverconf.get_server_conf(None)
-            self.ui.txtHost.set_text(self.serverconf.get_ntp_conf().get_host())
 
     def translate(self):
-        desc = _('It is important that this workstation and the GECOS server have \
-their time synchronized. From this page you can set the workstation time with an NTP server.')
+        desc = _('If you have any configuration please put default configuration URL from the server to use it.')
 
         self.ui.lblDescription.set_text(desc)
-        self.ui.lblHost.set_label(_('NTP Server'))
-        self.ui.btnSync.set_label(_('Synchronize'))
+        self.ui.chkAutoconf.set_label(_('Check this button if you want to get the default configuration from the server again \nand discard the cached configuration.'))
+        self.ui.lblAutoconf.set_label(_('Autoconfig URL'))
 
-
-    def on_btnSync_clicked(self, widget):
-
-        self.ui.btnSync.set_sensitive(False)
-        if serverconf.json_is_cached():
-            try:
-                 self.serverconf = serverconf.get_server_conf(None)
-                 self.ui.txtHost.set_text(self.serverconf.get_ntp_conf().get_host())
-
-            except Exception as e:
-                self.set_status(1, str(e))
-                self.ui.btnSync.set_sensitive(True)
-                return
-
-        cmd = 'ntpdate -u %s' % (self.ui.txtHost.get_text(),)
-        args = shlex.split(cmd)
-
-        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        #exit_code = os.waitpid(process.pid, 0)
-        exit_code = process.wait()
-        output = process.communicate()
-        output = "%s%s" % (output[0].strip(), output[1].strip())
-
-        self.ui.btnSync.set_sensitive(True)
-        self.set_status(exit_code, output)
+    def on_chkAutoconf_toggled(self, widget):
+        self.ui.txtAutoconf.set_sensitive(self.ui.chkAutoconf.get_active())
 
     def set_status(self, code, description=''):
 
@@ -112,7 +91,21 @@ their time synchronized. From this page you can set the workstation time with an
         self.ui.lblStatus.set_label(description)
 
     def previous_page(self, load_page_callback):
-        load_page_callback(firstboot.pages.autoConfig)
+  
+        load_page_callback(firstboot.pages.network)
 
     def next_page(self, load_page_callback):
-        load_page_callback(firstboot.pages.pcLabel)
+        if not serverconf.json_is_cached() or (serverconf.json_is_cached() and self.ui.chkAutoconf.get_active()):
+           url = self.ui.txtAutoconf.get_text()
+           if url != '' and url != None:
+               try:
+                   if serverconf.json_is_cached():
+                       serverconf.clean_json_cached()
+                   self.serverconf = serverconf.get_server_conf(url)
+
+               except Exception as e:
+                    self.set_status(1, str(e))
+                    return
+           
+ 
+        load_page_callback(firstboot.pages.dateSync)

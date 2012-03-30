@@ -103,10 +103,7 @@ in the Chef server, you may not modify this parameter unless you really\nknow wh
         self.ui.lblDefaultRole.set_label(_('Default Group'))
 
     def previous_page(self, load_page_callback):
-        if serverconf.json_is_cached():
-            load_page_callback(firstboot.pages.linkToServer)
-        else:
-            load_page_callback(firstboot.pages.linkToChef)
+        load_page_callback(firstboot.pages.linkToChef)
 
     def next_page(self, load_page_callback):
 

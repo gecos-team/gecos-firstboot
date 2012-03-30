@@ -68,25 +68,14 @@ class LinkToServerPage(PageWindow.PageWindow):
         self.ad_is_configured = serverconf.ad_is_configured()
         is_configured = self.ldap_is_configured or self.ad_is_configured
 
-        self.ui.boxOptionsSection.set_visible(not self.json_cached or is_configured)
+
         self.ui.boxUnlinkOptions.set_visible(is_configured)
-        self.ui.boxLinkOptions.set_visible(not is_configured)
         self.ui.boxAuthSection.set_visible(not is_configured)
         self.main_window.btnNext.set_sensitive(True)
 
         self.ui.chkUnlinkLDAP.set_visible(self.ldap_is_configured)
         self.ui.chkUnlinkAD.set_visible(self.ad_is_configured)
 
-        url_config = self.fbe.get_url()
-        url = self.cmd_options.url
-
-        if url == None or len(url) == 0:
-            url = url_config
-
-        if url == None or len(url) == 0:
-            url = ''
-
-        self.ui.txtUrl.set_text(url)
 
     def translate(self):
         desc = _('When a workstation is linked to an authentication server \
@@ -99,8 +88,8 @@ server.')
             desc1 = _('This workstation is currently linked to an Active Directory \
 server.')
         else:
-            desc1 = _('You can type the options manually or download \
-a default configuration from the server.')
+            desc1 = _('You can type the options manually or automaitc if you selected \
+this in "Auto Configuration" phase.')
 
         desc2 = _('Select the authentication method you would like to use:')
 
@@ -108,13 +97,10 @@ a default configuration from the server.')
         self.ui.lblDescription1.set_text(desc1)
         self.ui.lblDescription2.set_text(desc2)
         self.ui.chkUnlinkLDAP.set_label(_('Unlink from LDAP'))
-        self.ui.chkUnlinkLDAP.set_label(_('Unlink from LDAP'))
         self.ui.chkUnlinkAD.set_label(_('Unlink from Active Directory'))
-        self.ui.radioOmit.set_label(_('Omit'))
-        self.ui.radioManual.set_label(_('Manual'))
-        self.ui.radioAuto.set_label(_('Automatic'))
         self.ui.radioLDAP.set_label(_('LDAP'))
         self.ui.radioAD.set_label(_('Active Directory'))
+        self.ui.radioNone.set_label(_('None'))
 
     def on_chkUnlinkLDAP_toggle(self, button):
         active = button.get_active()
@@ -125,21 +111,6 @@ a default configuration from the server.')
         active = button.get_active()
         self.unlink_ad = active
         self.main_window.btnNext.set_sensitive(active)
-
-    def on_radioOmit_toggled(self, button):
-        self.ui.boxAutoOptionsDetails.set_visible(False)
-        self.ui.boxAuthSection.set_visible(False)
-        self.show_status()
-
-    def on_radioManual_toggled(self, button):
-        self.ui.boxAutoOptionsDetails.set_visible(False)
-        self.ui.boxAuthSection.set_visible(True)
-        self.show_status()
-
-    def on_radioAutomatic_toggled(self, button):
-        self.ui.boxAutoOptionsDetails.set_visible(True)
-        self.ui.boxAuthSection.set_visible(True)
-        self.show_status()
 
     def get_auth_method(self):
         if self.ui.radioLDAP.get_active():
@@ -199,7 +170,7 @@ a default configuration from the server.')
             })
             return
 
-        if self.ui.radioOmit.get_active() or (self.ldap_is_configured or self.ad_is_configured):
+        if self.ui.radioNone.get_active() or (self.ldap_is_configured or self.ad_is_configured):
             self.emit('status-changed', 'linkToServer', True)
             load_page_callback(firstboot.pages.linkToChef)
             return
@@ -208,9 +179,8 @@ a default configuration from the server.')
 
         try:
             server_conf = None
-            if self.ui.radioAuto.get_active():
-                url = self.ui.txtUrl.get_text()
-                server_conf = serverconf.get_server_conf(url)
+            if self.json_cached:
+                server_conf = serverconf.get_server_conf(None)
 
             load_page_callback(LinkToServerConfEditorPage, {
                 'server_conf': server_conf,
