@@ -53,41 +53,26 @@ def get_page(main_window):
 class LinkToChefPage(PageWindow.PageWindow):
     __gtype_name__ = "LinkToChefPage"
 
-    def load_page(self, params=None):
-        if serverconf.json_is_cached() and not self.chef_is_configured:
-            self.json_cached = True
-            server_conf = serverconf.get_server_conf(None)
-            self.emit('page-changed', LinkToChefConfEditorPage, {
-                    'server_conf': server_conf,
-                    'chef_is_configured': self.chef_is_configured,
-                    'unlink_from_chef': False
-            })
-
-        else:
-            self.json_cached = False
+#    def load_page(self, params=None):
+#        if serverconf.json_is_cached() and not self.chef_is_configured:
+#            self.json_cached = True
+#            server_conf = serverconf.get_server_conf(None)
+#            self.emit('page-changed', LinkToChefConfEditorPage, {
+#                    'server_conf': server_conf,
+#                    'chef_is_configured': self.chef_is_configured,
+#                    'unlink_from_chef': False
+#            })
+#
+#        else:
+#            self.json_cached = False
 
     def finish_initializing(self):
         self.chef_is_configured = serverconf.chef_is_configured()
-
+        self.json_cached = serverconf.json_is_cached()
         self.show_status()
 
-        self.ui.radioOmit.set_visible(not self.chef_is_configured)
-        self.ui.radioManual.set_visible(not self.chef_is_configured)
-        self.ui.radioAuto.set_visible(not self.chef_is_configured)
-        self.ui.lblUrl.set_visible(not self.chef_is_configured)
-        self.ui.txtUrl.set_visible(not self.chef_is_configured)
         self.ui.chkUnlinkChef.set_visible(self.chef_is_configured)
-
-        url_config = self.fbe.get_url()
-        url = self.cmd_options.url
-
-        if url == None or len(url) == 0:
-            url = url_config
-
-        if url == None or len(url) == 0:
-            url = ''
-
-        self.ui.txtUrl.set_text(url)
+        self.ui.chkLinkChef.set_visible(not self.chef_is_configured)
 
     def translate(self):
         desc = _('When a workstation is linked to a Chef server can be \
@@ -95,28 +80,12 @@ easily managed remotely.\n\n')
 
         self.ui.lblDescription.set_text(desc)
         self.ui.chkUnlinkChef.set_label(_('Unlink from Chef'))
-        self.ui.radioOmit.set_label(_('Omit'))
-        self.ui.radioManual.set_label(_('Manual'))
-        self.ui.radioAuto.set_label(_('Automatic'))
+        self.ui.chkLinkChef.set_label(_('Link to Chef server?'))
 
     def on_chkUnlinkChef_toggle(self, button):
         #self.main_window.btnNext.set_sensitive(button.get_active())
         pass
 
-    def on_radioOmit_toggled(self, button):
-        self.ui.lblUrl.set_visible(False)
-        self.ui.txtUrl.set_visible(False)
-        self.show_status()
-
-    def on_radioManual_toggled(self, button):
-        self.ui.lblUrl.set_visible(False)
-        self.ui.txtUrl.set_visible(False)
-        self.show_status()
-
-    def on_radioAutomatic_toggled(self, button):
-        self.ui.lblUrl.set_visible(True)
-        self.ui.txtUrl.set_visible(True)
-        self.show_status()
 
     def show_status(self, status=None, exception=None):
 
@@ -154,7 +123,7 @@ easily managed remotely.\n\n')
         load_page_callback(firstboot.pages.linkToServer)
 
     def next_page(self, load_page_callback):
-        if self.ui.radioOmit.get_active() or \
+        if not self.ui.chkLinkChef.get_active() or \
             (self.chef_is_configured and not self.ui.chkUnlinkChef.get_active()):
             self.emit('status-changed', 'linkToChef', True)
             load_page_callback(firstboot.pages.localUsers)
@@ -164,9 +133,8 @@ easily managed remotely.\n\n')
             server_conf = None
 
             if not self.chef_is_configured:
-                if self.ui.radioAuto.get_active():
-                    url = self.ui.txtUrl.get_text()
-                    server_conf = serverconf.get_server_conf(url)
+                if self.json_cached:
+                    server_conf = serverconf.get_server_conf(None)
 
                 load_page_callback(LinkToChefConfEditorPage, {
                     'server_conf': server_conf,
