@@ -55,11 +55,8 @@ class DateSyncPage(PageWindow.PageWindow):
     def load_page(self, params=None):
         self.emit('status-changed', 'dateSync', not __REQUIRED__)
 
-        self.ui.chkAutoconf.set_active(False)
-        self.ui.txtAutoconf.set_sensitive(False)
 
         if serverconf.json_is_cached():
-            self.ui.boxCheckAutoconf.set_visible(False)
             self.serverconf = serverconf.get_server_conf(None)
             self.ui.txtHost.set_text(self.serverconf.get_ntp_conf().get_host())
 
@@ -68,24 +65,17 @@ class DateSyncPage(PageWindow.PageWindow):
 their time synchronized. From this page you can set the workstation time with an NTP server.')
 
         self.ui.lblDescription.set_text(desc)
-        self.ui.chkAutoconf.set_label(_('Check this button if you want to get the \
-default configuration from the server.'))
-        self.ui.lblAutoconf.set_label(_('Autoconfig URL'))
         self.ui.lblHost.set_label(_('NTP Server'))
         self.ui.btnSync.set_label(_('Synchronize'))
 
-    def on_chkAutoconf_toggled(self, widget):
-        self.ui.txtAutoconf.set_sensitive(self.ui.chkAutoconf.get_active())
 
     def on_btnSync_clicked(self, widget):
 
         self.ui.btnSync.set_sensitive(False)
-
-        if self.ui.chkAutoconf.get_active():
-            url = self.ui.txtAutoconf.get_text()
+        if serverconf.json_is_cached():
             try:
-                self.serverconf = serverconf.get_server_conf(url)
-                self.ui.txtHost.set_text(self.serverconf.get_ntp_conf().get_host())
+                 self.serverconf = serverconf.get_server_conf(None)
+                 self.ui.txtHost.set_text(self.serverconf.get_ntp_conf().get_host())
 
             except Exception as e:
                 self.set_status(1, str(e))
@@ -122,7 +112,7 @@ default configuration from the server.'))
         self.ui.lblStatus.set_label(description)
 
     def previous_page(self, load_page_callback):
-        load_page_callback(firstboot.pages.network)
+        load_page_callback(firstboot.pages.autoConfig)
 
     def next_page(self, load_page_callback):
         load_page_callback(firstboot.pages.pcLabel)
