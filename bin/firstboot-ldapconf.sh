@@ -146,6 +146,7 @@ check_configuration() {
     r_pass=`egrep "^bindpw $bindpw" $tmpconf`
 
     if [ "" == "$r_uri" -o "" == "$r_base" -o "" == "$r_bind" -o "" == "$r_pass" ]; then
+        restore
         echo "The configuration couldn't be updated correctly."
         exit 1
     fi
