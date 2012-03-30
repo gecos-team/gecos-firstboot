@@ -121,6 +121,9 @@ def validate_credentials(url):
 def json_is_cached():
     return os.path.exists(__JSON_CACHE__)
 
+def clean_json_cached():
+    return os.remove(__JSON_CACHE__)
+
 def get_server_conf(url):
 
     is_cached = json_is_cached()
