@@ -57,9 +57,8 @@ class PCLabelPage(PageWindow.PageWindow):
         self.emit('status-changed', 'pcLabel', not __REQUIRED__)
 
     def translate(self):
-        desc = _('You can type a description for this workstation, it will be \
-shown in the GECOS Server admin interface and will help you to find out the \
-workstation later.')
+        desc = _('Describe this workstation. This text doesn\'t need to be unique, and you can use spaces or symbols. \
+\nYou will find this description in your GECOS server reports later.')
 
         self.ui.lblDescription.set_text(desc)
         self.ui.lblLabel.set_label(_('Description'))
@@ -68,7 +67,7 @@ workstation later.')
         try:
             self.set_label(self.ui.txtLabel.get_text())
             self.ui.imgStatus.set_from_stock(Gtk.STOCK_YES, Gtk.IconSize.MENU)
-            self.ui.lblStatus.set_label(_('The label has been updated correctly.'))
+            self.ui.lblStatus.set_label(_('PC label has been updated correctly.'))
 
         except Exception as e:
             self.ui.imgStatus.set_from_stock(Gtk.STOCK_DIALOG_ERROR, Gtk.IconSize.MENU)

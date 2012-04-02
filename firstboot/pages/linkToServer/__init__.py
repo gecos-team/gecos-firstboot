@@ -78,18 +78,14 @@ class LinkToServerPage(PageWindow.PageWindow):
 
 
     def translate(self):
-        desc = _('When a workstation is linked to an authentication server \
-existing users in the server can login into this workstation.\n\n')
+        desc = _('Users in this workstation can be authenticated against a external system.\n\n')
 
         if self.ldap_is_configured:
-            desc1 = _('This workstation is currently linked to a LDAP \
-server.')
+            desc1 = _('This workstation currently uses a LDAP server for user authentication.')
         elif self.ad_is_configured:
-            desc1 = _('This workstation is currently linked to an Active Directory \
-server.')
+            desc1 = _('This workstation currently uses an Active Directory server for user authentication.')
         else:
-            desc1 = _('You can type the options manually or automaitc if you selected \
-this in "Auto Configuration" phase.')
+            desc1 = _('No authentication system is currently configured.')
 
         desc2 = _('Select the authentication method you would like to use:')
 

@@ -72,7 +72,7 @@ updated successfully.'))
             self.emit('status-changed', 'linkToServer', True)
 
         else:
-            self.ui.lblDescription.set_text(_('There are some errors you may fix.'))
+            self.ui.lblDescription.set_text(_('There are some errors you must fix.'))
             self.emit('status-changed', 'linkToServer', False)
 
     def new_message(self, message, icon):

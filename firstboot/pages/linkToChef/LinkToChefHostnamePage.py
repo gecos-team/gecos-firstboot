@@ -57,9 +57,8 @@ class LinkToChefHostnamePage(PageWindow.PageWindow):
         self.hostnames = []
 
     def translate(self):
-        desc = _('This workstation is going to be linked to a Chef server, \
-therefore it must be given a host name. That name will be used for \
-uniquely identify this workstation.')
+        desc = _('You must provide an unique valid short name for the workstation.\
+ Only ASCII letters, numbers and the hyphen (-) are allowed.')
 
         self.ui.lblDescription.set_text(desc)
         self.ui.lblHostname.set_label(_('Hostname'))
@@ -83,7 +82,7 @@ uniquely identify this workstation.')
         for name in self.hostnames:
             if name == text:
                 #self.txtHostname.modify_text(Gtk.StateFlags.NORMAL, Gdk.Color(255, 0, 0))
-                self.show_error(_('The host name is in use.'))
+                self.show_error(_('This name is already used.'))
                 self.main_window.btnNext.set_sensitive(False)
                 return
 
@@ -100,11 +99,11 @@ uniquely identify this workstation.')
         hostname = self.ui.txtHostname.get_text()
 
         if len(hostname) == 0:
-            self.show_error(_('The host name cannot be empty.'))
+            self.show_error(_('Host name can not be empty.'))
             return
 
         elif hostname in self.hostnames:
-            self.show_error(_('The host name already exists in the Chef server.'))
+            self.show_error(_('This name already exists in your organization.'))
             return
 
         self.server_conf.get_chef_conf().set_hostname(hostname)

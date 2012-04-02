@@ -61,8 +61,8 @@ class DateSyncPage(PageWindow.PageWindow):
             self.ui.txtHost.set_text(self.serverconf.get_ntp_conf().get_host())
 
     def translate(self):
-        desc = _('It is important that this workstation and the GECOS server have \
-their time synchronized. From this page you can set the workstation time with an NTP server.')
+        desc = _('Workstations and server time must be synchronized.\nPlease,\
+ provide the name or IP address of a valid Network Time Protocol server.')
 
         self.ui.lblDescription.set_text(desc)
         self.ui.lblHost.set_label(_('NTP Server'))

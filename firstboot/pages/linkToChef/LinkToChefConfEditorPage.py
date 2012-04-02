@@ -82,21 +82,18 @@ class LinkToChefConfEditorPage(PageWindow.PageWindow):
         return '<b>%s</b>' % str
 
     def translate(self):
-        desc = _('These are the parameters you need to configure to join this workstation to \
-a Chef server:')
+        desc = _('These parameters are required in order to join a Chef server:')
 
         self.ui.lblDescription.set_text(desc)
-        self.ui.lblUrlChefDesc.set_label(_('The "Chef URL" parameter is the URL this workstation\nwill use to comunicate with the server.'))
-        self.ui.lblUrlChefCertDesc.set_label(_('The "Chef Certificate" parameter is the URL from which\nthis assistant will download a required \
-certificate for joining to the Chef server.'))
-        self.ui.lblHostnameDesc.set_label(_('The "Node Name" parameter must be an unique name\n \
-for this wokstation.'))
-        self.ui.lblDefaultRoleDesc.set_label(_('The "Default Group" parameter is the default group for this workstation\n \
-in the Chef server, you may not modify this parameter unless you really\nknow what you are doing.'))
+        self.ui.lblUrlChefDesc.set_label(_('"Chef URL": an existant URL in your server where Chef is installed.'))
+        self.ui.lblUrlChefCertDesc.set_label(_('"Chef Certificate": Validation certificate URL\
+ in order to autoregister this workstation in the Chef server.'))
+        self.ui.lblHostnameDesc.set_label(_('"Node Name": must be an unique name.'))
+        self.ui.lblDefaultRoleDesc.set_label(_('"Default Group": a global group for all the workstations in your organization.\nIf you are not an advanced Chef administrator, do not change this.'))
 
         self.ui.lblVersion.set_label(_('Version'))
         self.ui.lblOrganization.set_label(_('Organization'))
-        self.ui.lblNotes.set_label(_('Notes'))
+        self.ui.lblNotes.set_label(_('Comments'))
         self.ui.lblUrlChef.set_label('Chef URL')
         self.ui.lblUrlChefCert.set_label(_('Certificate URL'))
         self.ui.lblHostname.set_label(_('Node Name'))
@@ -154,13 +151,13 @@ in the Chef server, you may not modify this parameter unless you really\nknow wh
 
         if not self.server_conf.get_chef_conf().validate():
             valid = False
-            messages.append({'type': 'error', 'message': _('Chef and Chef Cert URLs must be well formed URLs.')})
+            messages.append({'type': 'error', 'message': _('Chef and Chef Cert URLs must be valid URLs.')})
 
         hostname = self.server_conf.get_chef_conf().get_hostname()
 
         if not validation.is_qname(hostname):
             valid = False
-            messages.append({'type': 'error', 'message': _('The host name is empty or contains invalid characters.')})
+            messages.append({'type': 'error', 'message': _('Node name is empty or contains invalid characters.')})
 
         try:
             used_hostnames = serverconf.get_chef_hostnames(self.server_conf.get_chef_conf())
@@ -175,6 +172,6 @@ in the Chef server, you may not modify this parameter unless you really\nknow wh
 
         if hostname in used_hostnames:
             valid = False
-            messages.append({'type': 'error', 'message': _('The host name already exists in the Chef server. Choose a different one.')})
+            messages.append({'type': 'error', 'message': _('Node name already exists in the Chef server. Choose a different one.')})
 
         return valid, messages

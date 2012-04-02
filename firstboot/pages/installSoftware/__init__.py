@@ -50,8 +50,8 @@ class InstallSoftwarePage(PageWindow.PageWindow):
 
     def translate(self):
         self.ui.btnInstallSoftware.set_label(_('Install software'))
-        self.ui.lblDescription.set_text(_('From this window you can install \
-software and manage packages.'))
+        self.ui.lblDescription.set_text(_('Install software packages from a safe repository.\
+\n\nYou can skip this step if this workstation will be managed from your GECOS server.'))
 
     def on_btnInstallSoftware_Clicked(self, button):
         cmd = '/usr/sbin/synaptic'
