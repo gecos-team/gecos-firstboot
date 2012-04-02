@@ -77,9 +77,9 @@ class LocalUsersPage(PageWindow.PageWindow):
             print e
 
     def translate(self):
-        self.ui.lblDescription.set_text(_('You can manage local users on this \
-workstation. Note if this workstation is linked to a GECOS server, it\'s \
-likely you don\'t need to create local users.'))
+        self.ui.lblDescription.set_text(_('You can create or delete local users on this\
+workstation. \n\nUsers autenticated in external services do not need to be created here.\
+\n\nCheck default OEM users and change its passwords if needed.'))
 
         self.ui.lblName.set_text(_('Name'))
         self.ui.lblPassword.set_text(_('Password'))
@@ -235,15 +235,15 @@ likely you don\'t need to create local users.'))
         messages = []
 
         if not validation.is_qname(user['login']):
-            messages.append(_('The user login is empty or contains invalid characters.'))
+            messages.append(_('User login is empty or contains invalid characters.'))
             valid = False
 
         if validation.is_empty(user['password']):
-            messages.append(_('The user password couldn\'t be empty.'))
+            messages.append(_('User password can not be empty.'))
             valid = False
 
         elif user['password'] != __DUMMY_PASSWORD__ and user['password'] != user['confirm']:
-            messages.append(_('The passwords doesn\'t match.'))
+            messages.append(_('Passwords do not match.'))
             valid = False
 
         if not valid:

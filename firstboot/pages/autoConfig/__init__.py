@@ -74,11 +74,11 @@ class AutoConfigPage(PageWindow.PageWindow):
             self.serverconf = serverconf.get_server_conf(None)
 
     def translate(self):
-        desc = _('If you have any configuration please put default configuration URL from the server to use it.')
+        desc = _('Parameters can be filled automatically if an autoconfiguration file is available in your GECOS server.')
 
         self.ui.lblDescription.set_text(desc)
-        self.ui.chkAutoconf.set_label(_('Check this button if you want to get the default configuration from the server again \nand discard the cached configuration.'))
-        self.ui.lblAutoconf.set_label(_('Autoconfig URL'))
+        self.ui.chkAutoconf.set_label(_('Download a new file with default configuration parameters.'))
+        self.ui.lblAutoconf.set_label(_('Autoconfig file URL'))
 
     def on_chkAutoconf_toggled(self, widget):
         self.ui.txtAutoconf.set_sensitive(self.ui.chkAutoconf.get_active())

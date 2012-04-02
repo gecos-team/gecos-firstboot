@@ -51,11 +51,10 @@ class NetworkPage(PageWindow.PageWindow):
         self.main_window.btnPrev.set_sensitive(False)
 
     def translate(self):
-        self.ui.btnNetworkDialog.set_label(_('Configure the network'))
-        self.ui.lblDescription.set_text(_('You need to be connected to the network \
-for linking this workstation to a GECOS server and for installing software.'))
-        self.ui.lblDescription1.set_text(_('Below are shown the current \
-detected networks.'))
+        self.ui.btnNetworkDialog.set_label(_('Configure a network card'))
+        self.ui.lblDescription.set_text(_('This workstation needs a network connection in order to autenticate users, \
+link to a GECOS server, and software installation.'))
+        self.ui.lblDescription1.set_text(_('Available network cards are listed below:'))
 
     def load_page(self, params=None):
         self.main_window.connect('link-status', self.on_link_status_changed)
