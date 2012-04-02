@@ -313,7 +313,7 @@ class FirstbootWindow(Window):
 
     def show_applications(self):
 
-        filter = ['firefox', 'firefox-firma', 'gnome-terminal']
+        filter = ['firefox', 'gnome-terminal']
         app_list = Gio.app_info_get_all()
 
         for app in app_list:
