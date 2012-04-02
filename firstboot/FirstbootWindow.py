@@ -148,7 +148,7 @@ class FirstbootWindow(Window):
                 os.rename(__DESKTOP_FILE__, '/tmp/firstboot.desktop')
             retval = False
 
-        return retval
+        return False
 
     def on_btnIndex_Clicked(self, button, page_name, module=None):
         self.set_current_page(self.pages[page_name]['module'])
