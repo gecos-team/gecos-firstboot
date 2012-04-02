@@ -32,7 +32,7 @@ class FirstbootEntry(IniFile):
             fd.write('firststart=0\n')
             fd.write('\n')
             fd.write('[LinkToServer]\n')
-            fd.write('url=\n')
+            fd.write('url=https://GECOS-SERVER/autoconfig\n')
             fd.write('\n')
             fd.close()
 

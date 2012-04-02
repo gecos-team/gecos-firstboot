@@ -123,7 +123,7 @@ easily managed remotely.\n\n')
         load_page_callback(firstboot.pages.linkToServer)
 
     def next_page(self, load_page_callback):
-        if not self.ui.chkLinkChef.get_active() or \
+        if (self.ui.chkLinkChef.get_visible() and not self.ui.chkLinkChef.get_active()) or \
             (self.chef_is_configured and not self.ui.chkUnlinkChef.get_active()):
             self.emit('status-changed', 'linkToChef', True)
             load_page_callback(firstboot.pages.localUsers)

@@ -70,11 +70,14 @@ def fix_psmouse():
     except Exception as e:
         pass
 
+def check_live():
+    return os.path.exists('/var/lib/dpkg/info/ubiquity.list')
+
 if __name__ == '__main__':
     if os.getuid() != 0:
         sys.stdout.write(_('You need to be root to run this program.'))
         sys.stdout.flush()
         sys.exit(1)
-
-    fix_psmouse()
-    firstboot.main()
+    if not check_live():
+        fix_psmouse()
+        firstboot.main()

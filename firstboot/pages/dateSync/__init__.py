@@ -72,16 +72,6 @@ their time synchronized. From this page you can set the workstation time with an
     def on_btnSync_clicked(self, widget):
 
         self.ui.btnSync.set_sensitive(False)
-        if serverconf.json_is_cached():
-            try:
-                 self.serverconf = serverconf.get_server_conf(None)
-                 self.ui.txtHost.set_text(self.serverconf.get_ntp_conf().get_host())
-
-            except Exception as e:
-                self.set_status(1, str(e))
-                self.ui.btnSync.set_sensitive(True)
-                return
-
         cmd = 'ntpdate -u %s' % (self.ui.txtHost.get_text(),)
         args = shlex.split(cmd)
 
