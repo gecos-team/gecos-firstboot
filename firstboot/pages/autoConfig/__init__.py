@@ -57,6 +57,16 @@ class AutoConfigPage(PageWindow.PageWindow):
         
 
         self.ui.chkAutoconf.set_visible(False)
+        url_config = self.fbe.get_url()
+        url = self.cmd_options.url
+
+        if url == None or len(url) == 0:
+            url = url_config
+
+        if url == None or len(url) == 0:
+            url = ''
+
+        self.ui.txtAutoconf.set_text(url)
         if serverconf.json_is_cached():
             self.ui.boxCheckAutoconf.set_visible(True)
             self.ui.chkAutoconf.set_visible(True)
