@@ -25,7 +25,7 @@ msgstr "Muestra mensaje de depuración (-vv también depura firstboot_lib)"
 #: ../firstboot/__init__.py:46
 msgid "Debug mode. Force run the application after the first start"
 msgstr ""
-"Modo depuracion. Fuerza a correr la aplicacion despues del primer arranque"
+"Modo depuración. Fuerza a correr la aplicacion despues del primer arranque"
 
 #: ../firstboot/__init__.py:50
 msgid "Use this URL by default in the \"Link to Server\" page."
@@ -35,7 +35,7 @@ msgstr "Usa esta URL por defecto en la página \"Enlazar a Servidor\"."
 msgid ""
 "These parameters are required in order to join an authentication server:"
 msgstr ""
-"Estos párametros son requeridos para unirse a un servidor de autenticación: "
+"Estos parámetros son requeridos para unirse a un servidor de autenticación: "
 
 #: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:103
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:94
