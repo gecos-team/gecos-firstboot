@@ -32,6 +32,7 @@ class LdapConf():
         self._data['basegroup'] = ''
         self._data['binddn'] = ''
         self._data['bindpw'] = ''
+        self._data['anonymous'] = ''
 
     def load_data(self, conf):
         msg = 'ServerConf: Key "%s" not found in the configuration file.'
@@ -55,13 +56,15 @@ class LdapConf():
             self.set_password(conf['bindpw'])
         except KeyError as e:
             print msg % ('bindpw',)
+        try:
+            self.set_anonymous(conf['anonymous'])
+        except KeyError as e:
+            print msg % ('anonymous',)
 
     def validate(self):
         valid = validation.is_url(self._data['uri']) \
             and not validation.is_empty(self._data['base']) \
-            and not validation.is_empty(self._data['basegroup']) \
-            and not validation.is_empty(self._data['binddn']) \
-            and not validation.is_empty(self._data['bindpw'])
+            and not validation.is_empty(self._data['basegroup']) 
         return valid
 
     def get_url(self):
@@ -99,5 +102,12 @@ class LdapConf():
         self._data['bindpw'] = password
         return self
 
+    def get_anonymous(self):
+        return self._data['anonymous'].encode('utf-8')
+
     def __str__(self):
         return str(self._data)
+
+    def set_anonymous(self, anonymous):
+        self._data['anonymous'] = anonymous
+        return self

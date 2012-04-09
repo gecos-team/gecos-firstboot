@@ -396,6 +396,11 @@ def link_to_ldap(ldap_conf):
     basedngroup = ldap_conf.get_basedngroup()
     binddn = ldap_conf.get_binddn()
     password = ldap_conf.get_password()
+    anonymous = ldap_conf.get_anonymous()
+    if anonymous == True:
+        anonymous = 1
+    else:
+        anonymous = 0
     errors = []
 
     if len(url) == 0:
@@ -403,9 +408,6 @@ def link_to_ldap(ldap_conf):
 
     if len(basedn) == 0:
         errors.append({'type': 'error', 'message': _('The LDAP BaseDN cannot be empty.')})
-
-    if len(binddn) == 0:
-        errors.append({'type': 'error', 'message': _('The LDAP BindDN cannot be empty.')})
 
     if len(errors) > 0:
         return errors
@@ -416,7 +418,7 @@ def link_to_ldap(ldap_conf):
         if not os.path.exists(script):
             raise LinkToLDAPException(_("The LDAP configuration script couldn't be found") + ': ' + script)
 
-        cmd = '"%s" "%s" "%s" "%s" "%s" "%s"' % (script, url, basedn, basedngroup, binddn, password)
+        cmd = '"%s" "%s" "%s" "%s" "%s" "%s" "%s"' % (script, url, basedn, basedngroup, anonymous, binddn, password)
         args = shlex.split(cmd)
 
         process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
