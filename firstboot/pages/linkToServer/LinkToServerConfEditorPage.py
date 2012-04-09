@@ -59,6 +59,7 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
                 self.ui.txtBaseDN.set_text(self.server_conf.get_ldap_conf().get_basedn())
                 self.ui.txtBaseDNGroup.set_text(self.server_conf.get_ldap_conf().get_basedngroup())
                 self.ui.txtBindDN.set_text(self.server_conf.get_ldap_conf().get_binddn())
+                self.ui.chkAnonymous.set_active(self.server_conf.get_ldap_conf().get_anonymoys())
                 self.ui.txtPassword.set_text(self.server_conf.get_ldap_conf().get_password())
                 self.ui.txtFqdnAD.set_text(self.server_conf.get_ad_conf().get_fqdn())
                 self.ui.txtDnsDomain.set_text(self.server_conf.get_ad_conf().get_dns_domain())
@@ -83,6 +84,10 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
             self.ui.ldapBox.set_visible(False)
             self.ui.adBox.set_visible(True)
             self.link_ad = True
+        
+        if self.ui.chkAnonymous.get_active():
+            self.ui.txtBindDN.set_sensitive(False)
+            self.ui.txtPassword.set_sensitive(False)
 
         if params['ldap_is_configured'] or params['ad_is_configured']:
             self.ui.lblDescription.set_visible(False)
@@ -105,6 +110,7 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
         self.ui.lblPassword.set_label(_('Password'))
         self.ui.lblFqdnAD.set_label('FQDN')
         self.ui.lblDnsDomain.set_label(_('Domain DNS'))
+        self.ui.chkAnonymous.set_label(_('Bind anonymously?'))
 
     def previous_page(self, load_page_callback):
         load_page_callback(firstboot.pages.linkToServer)
@@ -140,6 +146,13 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
             'messages': messages
          })
 
+    def on_chkAnonymous_toggle(self, button):
+        active = button.get_active()
+        self.ui.txtBindDN.set_sensitive(not active)
+        self.ui.txtPassword.set_sensitive(not active)
+        self.server_conf.get_ldap_conf().set_anonymous(self.ui.chkAnonymous.get_active())
+
+
     def on_serverConf_changed(self, entry):
         if not self.update_server_conf:
             return
@@ -149,6 +162,7 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
             self.server_conf.get_ldap_conf().set_basedngroup(self.ui.txtBaseDNGroup.get_text())
             self.server_conf.get_ldap_conf().set_binddn(self.ui.txtBindDN.get_text())
             self.server_conf.get_ldap_conf().set_password(self.ui.txtPassword.get_text())
+            self.server_conf.get_ldap_conf().set_anonymous(self.ui.chkAnonymous.get_active())
         else:
             self.server_conf.get_ad_conf().set_fqdn(self.ui.txtFqdnAD.get_text())
             self.server_conf.get_ad_conf().set_dns_domain(self.ui.txtDnsDomain.get_text())
