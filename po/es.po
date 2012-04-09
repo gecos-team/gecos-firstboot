@@ -171,7 +171,7 @@ msgid ""
 "available in your GECOS server."
 msgstr ""
 "Los parámetros pueden ser rellenados automáticamente si dispones de un "
-"fichero de autoconfiguración en tu servidor GECOS"
+"fichero de autoconfiguración en su servidor GECOS"
 
 #: ../firstboot/pages/autoConfig/__init__.py:80
 msgid "Download a new file with default configuration parameters."
@@ -184,7 +184,7 @@ msgstr "URL fichero de autoconfiguración"
 
 #: ../firstboot/pages/pcLabel/__init__.py:37
 msgid "Describe this workstation"
-msgstr "Describir este puesto"
+msgstr "Descripción del puesto de trabajo"
 
 #: ../firstboot/pages/pcLabel/__init__.py:60
 msgid ""
@@ -192,9 +192,9 @@ msgid ""
 "use spaces or symbols. \n"
 "You will find this description in your GECOS server reports later."
 msgstr ""
-"Describe este puesto de trabajo. Este texto no tiene que ser único, y puede "
+"Describa este puesto de trabajo. Este texto no tiene que ser único, y puede "
 "usar espacios o símbolos. \n"
-"Encontraras ésta descripción en los informes de tu servidor GECOS."
+"Encontraras ésta descripción en los informes de su servidor GECOS."
 
 #: ../firstboot/pages/pcLabel/__init__.py:64
 msgid "Description"
@@ -220,7 +220,7 @@ msgid ""
 "You can skip this step if this workstation will be managed from your GECOS "
 "server."
 msgstr ""
-"Instala paquetes de software desde un repositorio seguro.\n"
+"Instale paquetes de software desde un repositorio seguro.\n"
 "\n"
 "Puede saltarse este paso si el puesto de trabajo va a ser controlado desde "
 "su servidor GECOS."
@@ -236,7 +236,7 @@ msgid ""
 "server."
 msgstr ""
 "La hora del puesto de trabajo y del servidor deben estar sincronizadas.\n"
-"Por favor, introduzca un nombre o dirección IP de un servidor de horas (NTP)"
+"Por favor, introduzca un nombre o dirección IP de un servidor de horas (NTP) "
 "valido."
 
 #: ../firstboot/pages/dateSync/__init__.py:68
@@ -253,7 +253,7 @@ msgstr "El usuario no se pudo actualizar. Por favor, revise los parámetros."
 
 #: ../firstboot/pages/localUsers/SystemUsers.py:115
 msgid "The password couldn't be changed."
-msgstr "La contraseña no se pudo cambiar."
+msgstr "La contraseña no se pudo actualizar."
 
 #: ../firstboot/pages/localUsers/SystemUsers.py:127
 msgid "The user couldn't be created. Please check the parameters."
@@ -261,7 +261,7 @@ msgstr "El usuario no pudo ser creado. Por favor, revise los parámetros."
 
 #: ../firstboot/pages/localUsers/SystemUsers.py:144
 msgid "The user to delete was not a system account."
-msgstr "El usuario a eliminar no era una cuenta del sistema."
+msgstr "El usuario a eliminar no pertenecía al sistema."
 
 #: ../firstboot/pages/localUsers/SystemUsers.py:147
 msgid "There is no such user."
@@ -311,7 +311,7 @@ msgstr "Gestionar usuarios locales"
 msgid ""
 "You can create or delete local users on thisworkstation. \n"
 "\n"
-"Users autenticated in external services do not need to be created here.\n"
+"Users autenticated in external services do not to be created here.\n"
 "\n"
 "Check default OEM users and change its passwords if needed."
 msgstr ""
@@ -359,7 +359,7 @@ msgstr "El login del usuario está vacío o contiene caracteres inválidos."
 
 #: ../firstboot/pages/localUsers/__init__.py:242
 msgid "User password can not be empty."
-msgstr "La contraseña del usuario no puede quedar vacía."
+msgstr "La contraseña del usuario no puede estar vacía."
 
 #: ../firstboot/pages/localUsers/__init__.py:246
 msgid "Passwords do not match."
@@ -397,11 +397,11 @@ msgstr "Eliminar usuario"
 #: ../firstboot/pages/localUsers/Dialogs.py:109
 #, python-format
 msgid "The user %s is going to be removed, are you sure?"
-msgstr "El usuario %s va a ser eliminar, ¿Está seguro?"
+msgstr "El usuario %s va a ser eliminado, ¿Está seguro?"
 
 #: ../firstboot/pages/localUsers/Dialogs.py:112
 msgid "Remove the user home?"
-msgstr "¿Eliminar el home del usuario?"
+msgstr "¿Eliminar la carpeta personal del usuario?"
 
 #: ../firstboot/pages/localUsers/Dialogs.py:131
 msgid "Error"
@@ -415,7 +415,7 @@ msgstr ""
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:88
 msgid "\"Chef URL\": an existant URL in your server where Chef is installed."
 msgstr ""
-"\"URL Chef\": URL existente de su servidor donde se encuentre instalado Chef."
+"\"URL Chef\": URL del servidor donde se encuentre instalado Chef."
 
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:89
 msgid ""
@@ -423,7 +423,7 @@ msgid ""
 "this workstation in the Chef server."
 msgstr ""
 "\"Certificado Chef\": URL del certificado de validación para autoregistrar "
-"el puesto de trabajo en el servidor Chef."
+"el puesto de trabajo contra el servidor Chef."
 
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:91
 msgid "\"Node Name\": must be an unique name."
@@ -435,9 +435,9 @@ msgid ""
 "organization.\n"
 "If you are not an advanced Chef administrator, do not change this."
 msgstr ""
-"\"Default Group\": grupo global para todos los puestos de trabajo en "
+"\"Default Group\": grupo global para todos los puestos de trabajo en su "
 "organización.\n"
-"Si no eres un administrador de Chef avanzado, no cambie ésto."
+"Si no es un administrador avanzado de Chef, no cambie ésto."
 
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:96
 msgid "Comments"
@@ -453,7 +453,7 @@ msgstr "Nombre del nodo"
 
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:100
 msgid "Default Group"
-msgstr "Grupo por Defecto"
+msgstr "Grupo por defecto"
 
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:154
 msgid "Chef and Chef Cert URLs must be valid URLs."
@@ -465,15 +465,15 @@ msgstr "El nombre del nodo está vacío o contiene caracteres inválidos."
 
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:175
 msgid "Node name already exists in the Chef server. Choose a different one."
-msgstr "El nombre del nodo ya existe en el servidor Chef. Elige uno diferente."
+msgstr "El nombre del nodo ya existe en el servidor Chef. Elija uno diferente."
 
 #: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:60
 msgid ""
 "You must provide an unique valid short name for the workstation. Only ASCII "
 "letters, numbers and the hyphen (-) are allowed."
 msgstr ""
-"Debe introducir un nombre único, corto y valido para el puesto de trabajo, "
-"Sólo letras ASCII, números y guión alto (-) están permitidos."
+"Debe introducir un nombre único, corto y valido para el puesto de trabajo. "
+"Sólo letras, números y guión alto (-) están permitidos."
 
 #: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:64
 msgid "Hostname"
@@ -485,7 +485,7 @@ msgstr "El nombre ya está en uso"
 
 #: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:102
 msgid "Host name can not be empty."
-msgstr "El nombre de host no puede ser vacío."
+msgstr "El nombre de host no puede estar vacío."
 
 #: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:106
 msgid "This name already exists in your organization."
@@ -493,7 +493,7 @@ msgstr "El nombre ya existe en su organización."
 
 #: ../firstboot/pages/linkToChef/__init__.py:39
 msgid "Link workstation to a Chef server"
-msgstr "Enlazar puesto a un servidor Chef"
+msgstr "Enlazar el puesto de trabajo al servidor Chef"
 
 #: ../firstboot/pages/linkToChef/__init__.py:78
 msgid ""
@@ -501,17 +501,17 @@ msgid ""
 "remotely.\n"
 "\n"
 msgstr ""
-"Cuando un puesto de trabajo está vinculado a un servidor Chef este puede ser "
+"Cuando un puesto de trabajo está vinculado al servidor Chef, éste puede ser "
 "gestionado remotamente de forma sencilla.\n"
 "\n"
 
 #: ../firstboot/pages/linkToChef/__init__.py:82
 msgid "Unlink from Chef"
-msgstr "Desvincular de Chef"
+msgstr "Desvincular del servidor Chef"
 
 #: ../firstboot/pages/linkToChef/__init__.py:83
 msgid "Link to Chef server?"
-msgstr "¿Enlazar puesto a un servidor Chef?"
+msgstr "¿Enlazar puesto de trabajo al servidor Chef?"
 
 #: ../firstboot/pages/network/__init__.py:37
 msgid "Configure the network"
@@ -615,11 +615,11 @@ msgstr "Este puesto de trabajo se ha desvinculado del Directorio Activo."
 #: ../firstboot/serverconf/__init__.py:358
 msgid "The Active Directory has been configured successfully."
 msgstr ""
-"Este puesto de trabajo se ha vinculado correctamente a un Directorio Activo."
+"Este puesto de trabajo se ha vinculado correctamente al Directorio Activo."
 
 #: ../firstboot/serverconf/__init__.py:368
 msgid "Workstation has been unlinked from Chef."
-msgstr "Este puesto de trabajo se ha desvinculado de Chef."
+msgstr "Este puesto de trabajo se ha desvinculado del servidor Chef."
 
 #: ../firstboot/serverconf/__init__.py:378
 msgid "The Chef client has been configured successfully."
@@ -635,7 +635,7 @@ msgstr "El BaseDN del LDAP no puede estar vacío."
 
 #: ../firstboot/serverconf/__init__.py:446
 msgid "The Active Directory URL cannot be empty."
-msgstr "La URL del Directorio Activo no puede quedar vacía."
+msgstr "La URL del Directorio Activo no puede estar vacía."
 
 #: ../firstboot/serverconf/__init__.py:449
 msgid "The DNS Domain cannot be empty."
@@ -647,7 +647,7 @@ msgstr "El administrador no puede estar vacío."
 
 #: ../firstboot/serverconf/__init__.py:453
 msgid "The administrator password cannot be empty."
-msgstr "La contraseña de adminstrador no puede quedar vacio."
+msgstr "La contraseña de adminstrador no puede estar vacía."
 
 #: ../firstboot/serverconf/__init__.py:496
 msgid "An error has ocurred unlinking from LDAP"
@@ -659,19 +659,19 @@ msgstr "Ha ocurrido un error desvinculándose del Directorio Activo"
 
 #: ../firstboot/serverconf/__init__.py:539
 msgid "The Chef URL cannot be empty."
-msgstr "LA URL de Chef no puede quedar vacía."
+msgstr "LA URL del servidor Chef no puede estar vacía."
 
 #: ../firstboot/serverconf/__init__.py:542
 msgid "The Chef certificate URL cannot be empty."
-msgstr "La URL del certificado de Chef no puede quedar vacía."
+msgstr "La URL del certificado de Chef no puede estar vacía."
 
 #: ../firstboot/serverconf/__init__.py:545
 msgid "The Chef host name cannot be empty."
-msgstr "El nombre de host para Chef no puede quedar vacío."
+msgstr "El nombre de host para Chef no puede estar vacío."
 
 #: ../firstboot/serverconf/__init__.py:588
 msgid "An error has ocurred unlinking from Chef"
-msgstr "Ha ocurrido un error desvinculándose de Chef"
+msgstr "Ha ocurrido un error desvinculándose del servidor Chef"
 
 #: ../firstboot/serverconf/__init__.py:606
 msgid "user"
