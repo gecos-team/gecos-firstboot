@@ -3,12 +3,13 @@
 uri=$1
 basedn=$2
 basedngroup=$3
-binddn=$4
-bindpw=$5
+anonymous=$4
+binddn=$5
+bindpw=$6
 
-ldapconf=/etc/ldap.conf
-bakconf=/etc/ldap.conf.gecos-firststart.bak
-tmpconf=/tmp/ldap.conf.tmp
+ldapconf=/etc/nslcd.conf
+bakconf=/etc/nslcd.conf.gecos-firststart.bak
+tmpconf=/tmp/nslcd.conf.tmp
 debconffile=/usr/share/firstboot/debconf.ldap
 pamdconfig=/usr/share/firstboot/pamd-ldap
 bakdir=/usr/share/firstboot/pamd-ldap.bak
@@ -27,6 +28,20 @@ need_root() {
 
 # Check prerequisites
 check_prerequisites() {
+    
+    installed_libnss_ldapd=`dpkg -l | grep libnss-ldapd`
+    installed_nslcd=`dpkg -l | grep nslcd`
+    installed_libnss_ldapd=`dpkg -l | grep libpam-ldapd`
+
+    if [ $installed_libnss_ldapd -ne 0 -o $installed_nslcd -ne 0 -o $installed_libnss_ldapd -ne 0 ]; then
+
+        result=`DEBCONF_PRIORITY=critical DEBIAN_FRONTEND=noninteractive apt-get install libnss-ldapd nslcd libpam-ldapd -y --assume-yes --force-yes`      
+        if [ $result -ne 0 ]; then
+            echo "Impossible install libnss-ldapd nslcd libpam-ldapd packges"
+            exit 1
+
+        fi
+    fi
 
     if [ ! -f $ldapconf ]; then
         echo "File not found: "$ldapconf
@@ -76,7 +91,6 @@ restore() {
     mv $ldapconf $ldapconf".bak"
     mv $bakconf $ldapconf
     mv $bakdir/nsswitch.conf $nsswitch
-    mv $bakdir/nscd.conf /etc/nscd.conf
     mv $bakdir/* $pamd/
     rm -rf $bakdir
     exit 0
@@ -90,11 +104,9 @@ backup() {
     if [ ! -d $bakdir ]; then
         mkdir $bakdir
         cp -r $pamd/* $bakdir
-        cp /etc/nscd.conf $bakdir
         cp $nsswitch $bakdir
     else
         cp -r $pamd/* $bakdir
-        cp /etc/nscd.conf $bakdir
         cp $nsswitch $bakdir
     fi
 
@@ -107,19 +119,40 @@ update_conf() {
     check_prerequisites
     backup
 
-    cp -r $pamdconfig/ldap.conf $ldapconf
-    sed -e s@"^uri .*"@"uri $uri"@ \
-        -e s/"^base .*"/"base $basedn"/g \
-        -e s/"^nss_base_group .*"/"nss_base_group $basedngroup"/g \
-        -e s/"^binddn .*"/"binddn $binddn"/g \
-        -e s/"^bindpw .*"/"bindpw $bindpw"/g \
-        $ldapconf > $tmpconf
+    cp -r $pamdconfig/nslcd.conf $ldapconf
+    if [ $anonymous -ne 0 ]; then
+        sed -e s@"^uri .*"@"uri $uri"@ \
+            -e s/"^base .*"/"base $basedn"/g \
+            -e s/"^nss_base_group .*"/"nss_base_group $basedngroup"/g \
+            -e s/"^binddn .*"/"binddn $binddn"/g \
+            -e s/"^bindpw .*"/"bindpw $bindpw"/g \
+            $ldapconf > $tmpconf
+    else
+        sed -e s@"^uri .*"@"uri $uri"@ \
+            -e s/"^base .*"/"base $basedn"/g \
+            -e s/"^nss_base_group .*"/"nss_base_group $basedngroup"/g \
+            -e s/"^binddn .*"/"#binddn"/g \
+            -e s/"^bindpw .*"/"#bindpw"/g \
+            $ldapconf > $tmpconf
+    fi
 
     # It's posible that some options are commented,
     # be sure to decomment them.
-    sed -e s/"^#base .*"/"base $basedn"/g \
-        -e s/"^#nss_base_group .*"/"nss_base_group $basedngroup"/g \
-        -e s/"^#binddn .*"/"binddn $binddn"/g \
+    if [ $anonymous -ne 0 ]; then
+        sed -e s@"#^uri .*"@"uri $uri"@ \
+            -e s/"#^base .*"/"base $basedn"/g \
+            -e s/"#^nss_base_group .*"/"nss_base_group $basedngroup"/g \
+            -e s/"#^binddn .*"/"binddn $binddn"/g \
+            -e s/"#^bindpw .*"/"bindpw $bindpw"/g \
+            $tmpconf > $tmpconf".2"
+    else
+        sed -e s@"^#uri .*"@"uri $uri"@ \
+            -e s/"^#base .*"/"base $basedn"/g \
+            -e s/"^#nss_base_group .*"/"nss_base_group $basedngroup"/g \
+            -e s/"^binddn .*"/"#binddn"/g \
+            -e s/"^bindpw .*"/"#bindpw"/g \
+            $tmpconf > $tmpconf".2"
+    fi
         -e s/"^#bindpw .*"/"bindpw $bindpw"/g \
         $tmpconf > $tmpconf".2"
 
@@ -130,8 +163,7 @@ update_conf() {
     mv $tmpconf $ldapconf
     cp -r $pamdconfig/pam.d/* $pamd
     cp -r $pamdconfig/nsswitch.conf $nsswitch
-    cp -r $pamdconfig/nscd.conf /etc/nscd.conf
-    service nscd restart
+    service nslcd restart
     echo "The configuration was updated successfully."
 
     exit 0
@@ -145,10 +177,19 @@ check_configuration() {
     r_bind=`egrep "^binddn $binddn" $tmpconf`
     r_pass=`egrep "^bindpw $bindpw" $tmpconf`
 
-    if [ "" == "$r_uri" -o "" == "$r_base" -o "" == "$r_bind" -o "" == "$r_pass" ]; then
+    if [ "" == "$r_uri" -o "" == "$r_base"  ]; then
         restore
         echo "The configuration couldn't be updated correctly."
         exit 1
+    fi
+    if [ $anonymous -eq 1 ]; then
+
+        if [ "" == "$r_bind" -o "" == "$r_pass"  ]; then
+            restore
+            echo "The configuration couldn't be updated correctly."
+            exit 1
+        fi
+
     fi
 }
 
