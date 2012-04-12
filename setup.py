@@ -179,6 +179,8 @@ workstation to different services',
        ('/etc/xdg/autostart/', glob.glob('data/firstboot.desktop')),
        ('/opt/likewise/', glob.glob('data/debconf.likewise')),
        ('share/firstboot/', glob.glob('data/debconf.ldap')),
+       ('share/firstboot/', glob.glob('data/nscd.conf')),
+       ('share/firstboot/', glob.glob('data/dbus.conf')),
        ('/usr/sbin/', glob.glob('data/pam-auth-update.firstboot')),
     ],
 
