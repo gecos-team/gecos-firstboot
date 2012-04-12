@@ -63,8 +63,7 @@ class LdapConf():
 
     def validate(self):
         valid = validation.is_url(self._data['uri']) \
-            and not validation.is_empty(self._data['base']) \
-            and not validation.is_empty(self._data['basegroup']) 
+            and not validation.is_empty(self._data['base']) 
         return valid
 
     def get_url(self):
