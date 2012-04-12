@@ -2,8 +2,8 @@
 
 uri=$1
 basedn=$2
-basedngroup=$3
-anonymous=$4
+anonymous=$3
+basedngroup=$4
 binddn=$5
 bindpw=$6
 
@@ -29,15 +29,22 @@ need_root() {
 # Check prerequisites
 check_prerequisites() {
     
-    installed_libnss_ldapd=`dpkg -l | grep libnss-ldapd`
-    installed_nslcd=`dpkg -l | grep nslcd`
-    installed_libnss_ldapd=`dpkg -l | grep libpam-ldapd`
+    dpkg -l | grep --regexp=' libnss-ldapd '
+    installed_libnss_ldapd=$?
+    dpkg -l | grep --regexp=' nslcd '
+    installed_nslcd=$?
+    dpkg -l | grep --regexp=' libpam-ldapd '
+    installed_libnss_ldapd=$?
+    dpkg -l | grep --regexp=' nscd '
+    installed_nscd=$?
 
-    if [ $installed_libnss_ldapd -ne 0 -o $installed_nslcd -ne 0 -o $installed_libnss_ldapd -ne 0 ]; then
+    if [ "$installed_libnss_ldapd" != 0 -o "$installed_nslcd" != 0 -o "$installed_libnss_ldapd" != 0 "$installed_nscd" != 0 ]; then
 
-        result=`DEBCONF_PRIORITY=critical DEBIAN_FRONTEND=noninteractive apt-get install libnss-ldapd nslcd libpam-ldapd -y --assume-yes --force-yes`      
-        if [ $result -ne 0 ]; then
-            echo "Impossible install libnss-ldapd nslcd libpam-ldapd packges"
+        DEBCONF_PRIORITY=critical DEBIAN_FRONTEND=noninteractive apt-get install libnss-ldapd nslcd libpam-ldapd nscd -y --assume-yes --force-yesi
+        result=$?
+
+        if [ "$result" != 0 ]; then
+            echo "Impossible install libnss-ldapd nslcd libpam-ldapd nscd packges"
             exit 1
 
         fi
@@ -58,10 +65,6 @@ check_prerequisites() {
         exit 1
     fi
 
-    if [ "" == "$basedngroup" ]; then
-        echo "Base DN Group couldn't be empty."
-        exit 1
-    fi
 
     if [ "" == "$binddn" ]; then
         echo "Bind DN couldn't be empty."
@@ -91,6 +94,7 @@ restore() {
     mv $ldapconf $ldapconf".bak"
     mv $bakconf $ldapconf
     mv $bakdir/nsswitch.conf $nsswitch
+    mv $bakdir/nscd.conf /etc/nscd.conf
     mv $bakdir/* $pamd/
     rm -rf $bakdir
     exit 0
@@ -104,9 +108,11 @@ backup() {
     if [ ! -d $bakdir ]; then
         mkdir $bakdir
         cp -r $pamd/* $bakdir
+        cp /etc/nscd.conf $bakdir
         cp $nsswitch $bakdir
     else
         cp -r $pamd/* $bakdir
+        cp /etc/nscd.conf $bakdir
         cp $nsswitch $bakdir
     fi
 
@@ -120,41 +126,43 @@ update_conf() {
     backup
 
     cp -r $pamdconfig/nslcd.conf $ldapconf
-    if [ $anonymous -ne 0 ]; then
+    if [ $anonymous -ne 1 ]; then
         sed -e s@"^uri .*"@"uri $uri"@ \
-            -e s/"^base .*"/"base $basedn"/g \
-            -e s/"^nss_base_group .*"/"nss_base_group $basedngroup"/g \
+            -e s/"^base [^group] .*"/"base $basedn"/g \
+            -e s/"^base group .*"/"base group $basedngroup"/g \
             -e s/"^binddn .*"/"binddn $binddn"/g \
             -e s/"^bindpw .*"/"bindpw $bindpw"/g \
             $ldapconf > $tmpconf
     else
         sed -e s@"^uri .*"@"uri $uri"@ \
-            -e s/"^base .*"/"base $basedn"/g \
-            -e s/"^nss_base_group .*"/"nss_base_group $basedngroup"/g \
+            -e s/"^base [^group] .*"/"base $basedn"/g \
+            -e s/"^base group .*"/"base group $basedngroup"/g \
             -e s/"^binddn .*"/"#binddn"/g \
             -e s/"^bindpw .*"/"#bindpw"/g \
             $ldapconf > $tmpconf
     fi
-
     # It's posible that some options are commented,
     # be sure to decomment them.
-    if [ $anonymous -ne 0 ]; then
+    if [ $anonymous -ne 1 ]; then
         sed -e s@"#^uri .*"@"uri $uri"@ \
-            -e s/"#^base .*"/"base $basedn"/g \
-            -e s/"#^nss_base_group .*"/"nss_base_group $basedngroup"/g \
+            -e s/"#^base [^group] .*"/"base $basedn"/g \
+            -e s/"#^base group .*"/"base group $basedngroup"/g \
             -e s/"#^binddn .*"/"binddn $binddn"/g \
             -e s/"#^bindpw .*"/"bindpw $bindpw"/g \
             $tmpconf > $tmpconf".2"
     else
         sed -e s@"^#uri .*"@"uri $uri"@ \
-            -e s/"^#base .*"/"base $basedn"/g \
-            -e s/"^#nss_base_group .*"/"nss_base_group $basedngroup"/g \
+            -e s/"^#base [^group] .*"/"base $basedn"/g \
+            -e s/"^#base group .*"/"base group $basedngroup"/g \
             -e s/"^binddn .*"/"#binddn"/g \
             -e s/"^bindpw .*"/"#bindpw"/g \
             $tmpconf > $tmpconf".2"
     fi
-        -e s/"^#bindpw .*"/"bindpw $bindpw"/g \
-        $tmpconf > $tmpconf".2"
+
+    if [ "" == "$basedngroup" ]; then
+        sed -e s/"^base group .*"/"#base group $basedngroup"/g \
+            $ldapconf > $tmpconf
+    fi
 
     mv $tmpconf".2" $tmpconf
 
@@ -163,7 +171,9 @@ update_conf() {
     mv $tmpconf $ldapconf
     cp -r $pamdconfig/pam.d/* $pamd
     cp -r $pamdconfig/nsswitch.conf $nsswitch
+    cp -r $pamdconfig/nscd.conf /etc/nscd.conf
     service nslcd restart
+    service nscd restart
     echo "The configuration was updated successfully."
 
     exit 0
