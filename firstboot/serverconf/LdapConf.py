@@ -103,7 +103,7 @@ class LdapConf():
         return self
 
     def get_anonymous(self):
-        return self._data['anonymous'].encode('utf-8')
+        return self._data['anonymous']
 
     def __str__(self):
         return str(self._data)
