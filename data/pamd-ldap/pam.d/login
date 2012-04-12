@@ -6,7 +6,7 @@
 # (Replaces the `FAIL_DELAY' setting from login.defs)
 # Note that other modules may require another minimal delay. (for example,
 # to disable any delay, you should add the nodelay option to pam_unix)
-auth       optional   pam_faildelay.so  delay=300000000000000000000000
+auth       optional   pam_faildelay.so  delay=3000000
 
 # Outputs an issue file prior to each login prompt (Replaces the
 # ISSUE_FILE option from login.defs). Uncomment for use
@@ -14,7 +14,22 @@ auth       optional   pam_faildelay.so  delay=300000000000000000000000
 
 # Disallows root logins except on tty's listed in /etc/securetty
 # (Replaces the `CONSOLE' setting from login.defs)
-auth       [success=ok ignore=ignore user_unknown=ignore default=die]  pam_securetty.so
+#
+# With the default control of this module:
+#   [success=ok new_authtok_reqd=ok ignore=ignore user_unknown=bad default=die]
+# root will not be prompted for a password on insecure lines.
+# if an invalid username is entered, a password is prompted (but login
+# will eventually be rejected)
+#
+# You can change it to a "requisite" module if you think root may mis-type
+# her login and should not be prompted for a password in that case. But
+# this will leave the system as vulnerable to user enumeration attacks.
+#
+# You can change it to a "required" module if you think it permits to
+# guess valid user names of your system (invalid user names are considered
+# as possibly being root on insecure lines), but root passwords may be
+# communicated over insecure lines.
+auth [success=ok new_authtok_reqd=ok ignore=ignore user_unknown=bad default=die] pam_securetty.so
 
 # Disallows other than root logins when /etc/nologin exists
 # (Replaces the `NOLOGINS_FILE' option from login.defs)
@@ -22,9 +37,10 @@ auth       requisite  pam_nologin.so
 
 # SELinux needs to be the first session rule. This ensures that any 
 # lingering context has been cleared. Without out this it is possible 
-# that a module could execute code in the wrong domain.  (When SELinux
+# that a module could execute code in the wrong domain.
+# When the module is present, "required" would be sufficient (When SELinux
 # is disabled, this returns success.)
-session    required   pam_selinux.so close
+session [success=ok ignore=ignore module_unknown=ignore default=bad] pam_selinux.so close
 
 # This module parses environment configuration file(s)
 # and also allows you to use an extended config
@@ -80,11 +96,12 @@ session    optional   pam_mail.so standard
 
 # Standard Un*x account and session
 @include common-account
-@include common-session
 @include common-password
+@include common-session
 
 # SELinux needs to intervene at login time to ensure that the process
 # starts in the proper default security context. Only sessions which are
-# intended to run in the user's context should be run after this.  (When
-# SELinux is disabled, this returns success.)
-session required pam_selinux.so open
+# intended to run in the user's context should be run after this.
+session [success=ok ignore=ignore module_unknown=ignore default=bad] pam_selinux.so open
+# When the module is present, "required" would be sufficient (When SELinux
+# is disabled, this returns success.)

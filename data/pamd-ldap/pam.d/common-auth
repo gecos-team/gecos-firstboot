@@ -12,29 +12,27 @@
 # local modules either before or after the default block, and use
 # pam-auth-update to manage selection of other modules.  See
 # pam-auth-update(8) for details.
-
-# here are the per-package modules (the "Primary" block)
 auth required pam_env.so
-auth [success=ignore default=1] pam_localuser.so
-auth [success=done new_authtok_reqd=done default=die]	pam_unix.so likeauth nullok shadow
-auth    required     pam_group.so use_first_pass
-auth [authinfo_unavail=ignore  success=1  default=2 ]	pam_ldap.so
+auth [success=ignore default=1]  pam_localuser.so
+auth [success=done new_authtok_reqd=done default=die] pam_unix.so likeauth nullok shadow
+auth required pam_group.so use_first_pass
+auth [success=1 default=ignore ] pam_ldap.so ignore_authinfo_unavail
 auth [success=done default=die] pam_ccreds.so action=validate use_first_pass
 auth [success=done default=die] pam_ccreds.so action=store use_first_pass
 auth [default=ignore] pam_echo.so Delete cached password
 auth [default=bad] pam_ccreds.so action=update
+auth requisite pam_deny.so
+# here are the per-package modules (the "Primary" block)
+#auth	[success=4 default=ignore]	pam_unix.so nullok_secure
+#auth	[success=3 default=ignore]	pam_ldap.so minimum_uid=1000 use_first_pass
+#auth	[success=2 default=ignore]	pam_ccreds.so minimum_uid=1000 action=validate use_first_pass
+#auth	[default=ignore]		pam_ccreds.so minimum_uid=1000 action=update
 ## here's the fallback if no module succeeds
-auth	requisite			pam_deny.so
-# prime the stack with a positive return value if there isn't one already;
-# this avoids us returning an error just because nothing sets a success code
-# since the modules above will each just jump around
-#auth [success=2 default=die]            pam_ccreds.so action=validate use_first_pass
-#auth [default=1]               pam_ccreds.so action=store
-#auth [default=die]                      pam_ccreds.so action=update
-#auth  optional				pam_mount.so
-#auth  optional				pam_group.so debug
+##auth	requisite			pam_deny.so
+## prime the stack with a positive return value if there isn't one already;
+## this avoids us returning an error just because nothing sets a success code
+## since the modules above will each just jump around
 #auth	required			pam_permit.so
-# and here are more per-package modules (the "Additional" block)
-#auth	optional	pam_mount.so use_first_pass
-#auth	optional	pam_ecryptfs.so unwrap
-# end of pam-auth-update config
+## and here are more per-package modules (the "Additional" block)
+#auth	optional			pam_ccreds.so minimum_uid=1000 action=store
+## end of pam-auth-update config
