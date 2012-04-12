@@ -40,7 +40,7 @@ check_prerequisites() {
 
     if [ "$installed_libnss_ldapd" != 0 -o "$installed_nslcd" != 0 -o "$installed_libnss_ldapd" != 0 "$installed_nscd" != 0 ]; then
 
-        DEBCONF_PRIORITY=critical DEBIAN_FRONTEND=noninteractive apt-get install libnss-ldapd nslcd libpam-ldapd nscd -y --assume-yes --force-yesi
+        DEBCONF_PRIORITY=critical DEBIAN_FRONTEND=noninteractive apt-get install libnss-ldapd nslcd libpam-ldapd nscd -y --assume-yes --force-yes
         result=$?
 
         if [ "$result" != 0 ]; then
@@ -66,10 +66,6 @@ check_prerequisites() {
     fi
 
 
-    if [ "" == "$binddn" ]; then
-        echo "Bind DN couldn't be empty."
-        exit 1
-    fi
 
 }
 
@@ -96,7 +92,17 @@ restore() {
     mv $bakdir/nsswitch.conf $nsswitch
     mv $bakdir/nscd.conf /etc/nscd.conf
     mv $bakdir/* $pamd/
+    cp -r /etc/init/dbus.conf.gecos-bak /etc/init/dbus.conf
+    rm -rf /etc/init/nscd.conf
     rm -rf $bakdir
+    DEBCONF_PRIORITY=critical DEBIAN_FRONTEND=noninteractive apt-get remove libnss-ldapd nslcd libpam-ldapd nscd -y --assume-yes --force-yes
+    result=$?
+
+    if [ "$result" != 0 ]; then
+        echo "Impossible uninstall libnss-ldapd nslcd libpam-ldapd nscd packges"
+        exit 1
+    fi
+
     exit 0
 }
 
@@ -172,6 +178,9 @@ update_conf() {
     cp -r $pamdconfig/pam.d/* $pamd
     cp -r $pamdconfig/nsswitch.conf $nsswitch
     cp -r $pamdconfig/nscd.conf /etc/nscd.conf
+    cp -r /etc/init/dbus.conf /etc/init/dbus.conf.gecos-bak
+    cp -r /usr/share/firstboot/nscd.conf /etc/init/
+    cp -r /usr/share/firstboot/dbus.conf /etc/init/
     service nslcd restart
     service nscd restart
     echo "The configuration was updated successfully."
