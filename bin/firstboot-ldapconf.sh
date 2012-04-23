@@ -7,14 +7,14 @@ basedngroup=$4
 binddn=$5
 bindpw=$6
 
-ldapconf=/etc/nslcd.conf
-bakconf=/etc/nslcd.conf.gecos-firststart.bak
-tmpconf=/tmp/nslcd.conf.tmp
-debconffile=/usr/share/firstboot/debconf.ldap
-pamdconfig=/usr/share/firstboot/pamd-ldap
-bakdir=/usr/share/firstboot/pamd-ldap.bak
-pamd=/etc/pam.d/
-nsswitch=/etc/nsswitch.conf
+ldapconf=/etc/sssd/sssd.conf
+bakconf=/etc/sssd/sssd.conf.gecos-firststart.bak
+tmpconf=/tmp/sssd.conf.tmp
+firstbootconfdir=/usr/share/firstboot/
+
+#bakdir=/usr/share/firstboot/pamd-ldap.bak
+#pamd=/etc/pam.d/
+#nsswitch=/etc/nsswitch.conf
 
 
 
@@ -29,26 +29,20 @@ need_root() {
 # Check prerequisites
 check_prerequisites() {
     
-    dpkg -l | grep --regexp='ii  libnss-ldapd '
-    installed_libnss_ldapd=$?
-    dpkg -l | grep --regexp='ii  nslcd '
-    installed_nslcd=$?
-    dpkg -l | grep --regexp='ii  libpam-ldapd '
-    installed_libnss_ldapd=$?
-    dpkg -l | grep --regexp='ii  nscd '
-    installed_nscd=$?
+# packages: sssd libnss-sss libpam-sss auth-client-config
+    
+    for pkg in sssd libnss-sss libpam-sss auth-client-config
+    do
+     dpkg -l $pkg | grep ii
+     if [ $? != 0 ]; then 
+        DEBCONF_PRIORITY=critical DEBIAN_FRONTEND=noninteractive apt-get install $pkg -y --assume-yes --force-yes
 
-    if [ "$installed_libnss_ldapd" != 0 -o "$installed_nslcd" != 0 -o "$installed_libnss_ldapd" != 0 -o "$installed_nscd" != 0 ]; then
-
-        DEBCONF_PRIORITY=critical DEBIAN_FRONTEND=noninteractive apt-get install libnss-ldapd nslcd libpam-ldapd nscd -y --assume-yes --force-yes
-        result=$?
-
-        if [ "$result" != 0 ]; then
-            echo "Impossible install libnss-ldapd nslcd libpam-ldapd nscd packges"
-            exit 1
-
+        if [ $? != 0 ]; then
+             echo "ERROR: installing $pkg"
+          exit 1
         fi
-    fi
+      fi
+    done  
 
     if [ ! -f $ldapconf ]; then
         echo "File not found: "$ldapconf
@@ -64,8 +58,6 @@ check_prerequisites() {
         echo "Base DN couldn't be empty."
         exit 1
     fi
-
-
 
 }
 
@@ -87,19 +79,16 @@ restore() {
         exit 1
     fi
 
+    auth-client-config -a -r -p sssd
     mv $ldapconf $ldapconf".bak"
     mv $bakconf $ldapconf
-    mv $bakdir/nsswitch.conf $nsswitch
-    mv $bakdir/nscd.conf /etc/nscd.conf
-    mv $bakdir/* $pamd/
     cp -r /etc/init/dbus.conf.gecos-bak /etc/init/dbus.conf
-    rm -rf /etc/init/nscd.conf
-    rm -rf $bakdir
-    DEBCONF_PRIORITY=critical DEBIAN_FRONTEND=noninteractive apt-get remove libnss-ldapd nslcd libpam-ldapd nscd -y --assume-yes --force-yes
+
+    DEBCONF_PRIORITY=critical DEBIAN_FRONTEND=noninteractive apt-get remove sssd libpam-sss libnss-sss -y --assume-yes --force-yes
     result=$?
 
     if [ "$result" != 0 ]; then
-        echo "Impossible uninstall libnss-ldapd nslcd libpam-ldapd nscd packges"
+        echo "ERROR: uninstalling PAM SSS packages"
         exit 1
     fi
 
@@ -111,17 +100,6 @@ backup() {
     if [ ! -f $bakconf ]; then
         cp $ldapconf $bakconf
     fi
-    if [ ! -d $bakdir ]; then
-        mkdir $bakdir
-        cp -r $pamd/* $bakdir
-        cp /etc/nscd.conf $bakdir
-        cp $nsswitch $bakdir
-    else
-        cp -r $pamd/* $bakdir
-        cp /etc/nscd.conf $bakdir
-        cp $nsswitch $bakdir
-    fi
-
 }
 
 
@@ -131,86 +109,38 @@ update_conf() {
     check_prerequisites
     backup
 
-    cp -r $pamdconfig/nslcd.conf $ldapconf
+    cp -r $firstbootconfdir/sssd.conf $ldapconf
     if [ $anonymous -ne 1 ]; then
-        sed -e s@"^uri .*"@"uri $uri"@ \
-            -e s/"^base [^group].*"/"base $basedn"/g \
-            -e s/"^base group .*"/"base group $basedngroup"/g \
-            -e s/"^binddn .*"/"binddn $binddn"/g \
-            -e s/"^bindpw .*"/"bindpw $bindpw"/g \
+        sed -e s@"^ldap_uri = .*"@"ldap_uri $uri"@ \
+            -e s/"^ldap_search_base = .*"/"ldap_search_base $basedn"/g \
+            -e s/"^ldap_user_search_base = .*"/"ldap_user_search_base $basedn"/g \
+            -e s/"^ldap_group_search_base = .*"/"ldap_group_search_base $basedngroup"/g \
+            -e s/"^ldap_binddn = .*"/"ldap_binddn $binddn"/g \
+            -e s/"^ldap_bindpw = .*"/"ldap_bindpw $bindpw"/g \
             $ldapconf > $tmpconf
     else
-        sed -e s@"^uri .*"@"uri $uri"@ \
-            -e s/"^base [^group].*"/"base $basedn"/g \
-            -e s/"^base group .*"/"base group $basedngroup"/g \
-            -e s/"^binddn .*"/"#binddn"/g \
-            -e s/"^bindpw .*"/"#bindpw"/g \
+        sed -e s@"^ldap_uri = .*"@"ldap_uri $uri"@ \
+            -e s/"^ldap_search_base = .*"/"ldap_search_base $basedn"/g \
+            -e s/"^ldap_user_search_base = .*"/"ldap_user_search_base $basedn"/g \
+            -e s/"^ldap_group_search_base = .*"/"ldap_group_search_base $basedngroup"/g \
+            -e s/"^ldap_binddn = .*"/"#ldap_binddn $binddn"/g \
+            -e s/"^ldap_bindpw = .*"/"#ldap_bindpw $bindpw"/g \
             $ldapconf > $tmpconf
     fi
-    # It's posible that some options are commented,
-    # be sure to decomment them.
-    if [ $anonymous -ne 1 ]; then
-        sed -e s@"#^uri .*"@"uri $uri"@ \
-            -e s/"#^base [^group].*"/"base $basedn"/g \
-            -e s/"#^base group .*"/"base group $basedngroup"/g \
-            -e s/"#^binddn .*"/"binddn $binddn"/g \
-            -e s/"#^bindpw .*"/"bindpw $bindpw"/g \
-            $tmpconf > $tmpconf".2"
-    else
-        sed -e s@"^#uri .*"@"uri $uri"@ \
-            -e s/"^#base [^group].*"/"base $basedn"/g \
-            -e s/"^#base group .*"/"base group $basedngroup"/g \
-            -e s/"^binddn .*"/"#binddn"/g \
-            -e s/"^bindpw .*"/"#bindpw"/g \
-            $tmpconf > $tmpconf".2"
-    fi
 
-    if [ "" == "$basedngroup" ]; then
-        sed -e s/"^base group .*"/"#base group $basedngroup"/g \
-            $tmpconf > $tmpconf".2"
-    fi
-
-    mv $tmpconf".2" $tmpconf
-
-    check_configuration
 
     mv $tmpconf $ldapconf
-    cp -r $pamdconfig/pam.d/* $pamd
-    cp -r $pamdconfig/nsswitch.conf $nsswitch
-    cp -r $pamdconfig/nscd.conf /etc/nscd.conf
+    chmod 600 $ldapconf
+    cp -r $firstbootconfdir/acc-sssd /etc/auth-client-config/profile.d/
+    auth-client-config -a -p sssd
+    service sssd restart
     cp -r /etc/init/dbus.conf /etc/init/dbus.conf.gecos-bak
-    cp -r /usr/share/firstboot/nscd.conf /etc/init/
-    cp -r /usr/share/firstboot/dbus.conf /etc/init/
-    service nslcd restart
-    service nscd restart
-    echo "The configuration was updated successfully."
+    cp -r $firstbootconfdir/dbus.conf /etc/init/
+    echo "Configuration updated successfully."
 
     exit 0
 }
 
-# Check the changes are valid
-check_configuration() {
-    r_uri=`egrep "^uri $uri" $tmpconf`
-    r_base=`egrep "^base $basedn" $tmpconf`
-    r_base_group=`egrep "^base group $basedngroup" $tmpconf`
-    r_bind=`egrep "^binddn $binddn" $tmpconf`
-    r_pass=`egrep "^bindpw $bindpw" $tmpconf`
-
-    if [ "" == "$r_uri" -o "" == "$r_base"  ]; then
-        restore
-        echo "The configuration couldn't be updated correctly."
-        exit 1
-    fi
-    if [ $anonymous -eq 0 ]; then
-
-        if [ "" == "$r_bind" -o "" == "$r_pass"  ]; then
-            restore
-            echo "The configuration couldn't be updated correctly."
-            exit 1
-        fi
-
-    fi
-}
 
 # Restore or update the LDAP configuration
 case $uri in
